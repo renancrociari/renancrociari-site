@@ -1631,11 +1631,6 @@ h1.hero {
 
 /************** EXPERIENCE DETAILS - 480px - 767px *****************/
 
-.experience-content {
-  margin-left: -8px; /* Overrides margin from .wrapper*/
-  margin-right: -8px;
-}
-
 
 .experience-details > summary {
   grid-template-columns: 80px minmax(100px, 590px) 16px;
