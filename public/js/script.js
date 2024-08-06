@@ -7,12 +7,11 @@ const body = document.body;
 // Armazena a posição de rolagem
 let scrollPosition = 0;
 
-
 // Função para abrir a dialog e adicionar um estado ao histórico
 function openDialog() {
   scrollPosition = window.scrollY;
-  body.style.overflow = 'hidden';
   body.style.top = `-${scrollPosition}px`;
+  body.classList.add('body-fixed'); // Add class to keep body fixed
   modal.showModal();
   modal.classList.remove('fade-out');
   
@@ -25,7 +24,8 @@ function closeDialog() {
   modal.classList.add('fade-out');
   setTimeout(() => {
     modal.close();
-    body.style.overflow = 'auto';
+    body.classList.remove('body-fixed'); // Remove the class
+    body.style.top = ''; // Reset top property
     window.scrollTo(0, scrollPosition);
     
     // Remove the hash from the URL
