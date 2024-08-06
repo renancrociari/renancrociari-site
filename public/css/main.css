@@ -1254,10 +1254,6 @@ details > div > div {
 }
 
 
-.testimonial-detail-quote {
-  z-index: 10;
-}
-
 .testimonial-detail-author {
   display: grid;
   grid-template-columns: 48px 1fr;

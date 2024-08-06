@@ -27,6 +27,9 @@ function closeDialog() {
     modal.close();
     body.style.overflow = 'auto';
     window.scrollTo(0, scrollPosition);
+    
+    // Remove the hash from the URL
+    history.replaceState(null, '', window.location.pathname);
   }, 450);
 }
 
