@@ -950,7 +950,7 @@ color: var(--typography-green-dark);
   border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   transition: transform 0.3s ease-out, background-color 0.3s ease-out;
   will-change: transform, background-color;
-  z-index: 10;
+  z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
   will-change: transform;
 }
 
@@ -963,7 +963,7 @@ color: var(--typography-green-dark);
   width: 100%;
   height: 90px;
   background-color: rgba(255, 255, 255, 0);
-  z-index: 0;
+  z-index: 100; /* Needs to be lower than the navbar-bg and lower than the dialog */
   transition: background-color 0.3s ease-out;
   will-change: background-color;
 }
