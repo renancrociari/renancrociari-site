@@ -1369,6 +1369,20 @@ h1.hero {
 
 
 
+/********** MARGINS 480 - 767 **********/
+
+/* Top Margin */
+.mt-xxl { margin-top: var(--spacing-xl); } /* 64px changes to 48px */
+.mt-xxxl { margin-top: var(--spacing-xxl); } /* 80px changes to 64px */
+.mt-xxxxl { margin-top: var(--spacing-xxxl); } /* 128 changes to 80px */
+
+
+/* Bottom Margin */
+.mb-xxl { margin-top: var(--spacing-xl); } /* 64px to 48px */
+.mb-xxxl { margin-top: var(--spacing-xxl); } /* 80px to 64px */
+.mb-xxxxl { margin-top: var(--spacing-xxxl); } /* 128px to 80px */
+
+
 /********** GENERAL 480 - 767 **********/
 
   body {
