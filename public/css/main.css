@@ -1532,7 +1532,7 @@ h1.hero {
   left: -20px;
   height: 100vh;
   background: linear-gradient(280deg, #C8F686 20%, #75EF81 90%);
-  padding: 112px 16px 0 16px;
+  padding: 112px 20px 0 20px;
   display: flex;
   flex-direction: column;
   gap: 24px;
