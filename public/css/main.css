@@ -457,8 +457,8 @@ color: var(--typography-green-dark);
 .home-logo-svg {
   display: inline-block;
   position: relative;
-  width: 158px;
-  height: 18px;
+  width: 140.44px;
+  height: 16px;
 }
 
 .home-logo-svg:before {
@@ -993,8 +993,8 @@ color: var(--typography-green-dark);
 .general-logo-svg {
   display: inline-block;
   position: relative;
-  width: 158px;
-  height: 18px;
+  width: 140.44px;
+  height: 16px;
   opacity: 0.8;
   /* filter: invert(6%) sepia(37%) saturate(0%) hue-rotate(200deg) brightness(101%) contrast(85%) opacity(0.7); */
   transition: opacity 0.6s ease-in-out;
