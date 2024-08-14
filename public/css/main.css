@@ -1555,44 +1555,36 @@ h1.hero {
 }
 
 
-/* Immediate fade-out for inner elements when the min-nav is closed */
-.main-nav-list[data-visible="false"] .main-nav-a,
-.main-nav-list[data-visible="false"] .social-icon > * {
-  opacity: 0;
-  transition: opacity 0.1s ease-in; /* This controls the fade-out timing */
-}
-
-/* Delayed scaling down for the .main-nav */
+/* Animation that closes the navbar */
 .main-nav-list[data-visible="false"] {
   transform: scaleY(0);
-  transition: transform 0.4s cubic-bezier(.65,.05,.36,1) /* Delay this to start after the inner elements fade out */
-              
+  transition: transform 400ms cubic-bezier(.65,.05,.36,1);              
 }
 
-
-.main-nav-list[data-visible="false"] .main-nav-a, .main-nav-list[data-visible="false"] .social-icon > * {
-  opacity: 0;
-  transform: translateY(0px); /* Move up for closing animation */
-  transition: transform 0.1s ease-in, opacity 0.3s ease; /* Timing for move-up and fade */
-}
-
-
-.main-nav-list[data-visible="true"] .main-nav-a, .main-nav-list[data-visible="true"] .social-icon > * {
-  opacity: 1;
-  transform: translateY(0); /* This controls the move-up effect */
-  transition: opacity 0.1s ease 0.55s; 
-}
-
+/*Animation that opens the navbar*/
 .main-nav-list[data-visible="true"] {
-  display: flex;
   transform: scaleY(1);
-  transition: transform 0.4s cubic-bezier(.65,.05,.36,1)
+  transition: transform 400ms cubic-bezier(.65,.05,.36,1);
 }
+
+
+
+/* Fade-out for inner elements when the navbar is closed */
+.main-nav-list[data-visible="false"] .main-nav-a {
+  opacity: 0;
+  transition: opacity 100ms ease-in; /* This controls the fade-out timing */
+}
+
+/* Fade-in for inner elements when the navbar is opened */
+.main-nav-list[data-visible="true"] .main-nav-a {
+  opacity: 1;
+  transition: opacity 200ms ease 950ms; /* This controls the fade-in timing */ 
+}
+
 
 .main-nav-list-items {
   flex-direction: column;
 }
-
 
 .main-nav-a {
   font-size: 26px;
