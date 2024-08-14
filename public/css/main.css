@@ -1554,33 +1554,43 @@ h1.hero {
   overflow: hidden; /* Prevent content from being visible when nav is closed */
 }
 
+.main-nav-list-items {
+  flex-direction: column;
+}
 
-/* Animation that closes the navbar */
-.main-nav-list[data-visible="false"] {
+.main-nav-a {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.navbar-icons {
+  gap: 24px;
+}
+
+/***************** Animations that open and close the navbar and its inner elements ******************************/
+
+
+.main-nav-list[data-visible="false"] { /* Animation that closes the navbar */
   transform: scaleY(0);
   transition: transform 300ms cubic-bezier(.65,.05,.36,1) 150ms;              
 }
 
-/*Animation that opens the navbar*/
-.main-nav-list[data-visible="true"] {
+.main-nav-list[data-visible="true"] { /* Animation that opens the navbar */
   transform: scaleY(1);
   transition: transform 300ms cubic-bezier(.65,.05,.36,1);
 }
 
-
-/* Fade-out for inner elements when the navbar is closed */
-.main-nav-list[data-visible="false"] .main-nav-a {
+.main-nav-list[data-visible="false"] .main-nav-a { /* Fade-out for inner elements when the navbar is closing */
   opacity: 0;
-  transition: opacity 100ms ease-in; /* This controls the fade-out timing */
+  transition: opacity 100ms ease-in;
 }
 
-/* Fade-in for inner elements when the navbar is opened */
-.main-nav-list[data-visible="true"] .main-nav-a {
+.main-nav-list[data-visible="true"] .main-nav-a { /* Fade-in for inner elements when the navbar is opening */
   opacity: 1;
-  transition: opacity 250ms cubic-bezier(.17,.84,.44,1) 350ms; /* This controls the fade-in timing */ 
+  transition: opacity 250ms cubic-bezier(.17,.84,.44,1) 350ms;
 }
 
-/**Test animate social icons **/
+/* Animations for the navbar icons */
 
 .main-nav-list[data-visible="false"] .navbar-icons {
   opacity: 0;
@@ -1594,9 +1604,6 @@ h1.hero {
   display: flex;
   animation: FadeIn 450ms ease forwards;
 }
-
-
-/*** Experiment keyframes ****/
 
 @keyframes FadeIn {
   0% {
@@ -1624,28 +1631,7 @@ h1.hero {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-.main-nav-list-items {
-  flex-direction: column;
-}
-
-.main-nav-a {
-  font-size: 26px;
-  font-weight: bold;
-}
-
-
-/** Hamburger menu style **/
+/***************** Hamburger menu style ***************/
 
 .mobile-nav-toggle, .mobile-nav-email {
   display: block;
