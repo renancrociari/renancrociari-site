@@ -1514,7 +1514,7 @@ h1.hero {
 .navbar {
   margin-left: 4px;
   margin-right: 4px;
-
+  top: 4px;
 }
 
 .navbar, .navbar-bg {
@@ -1541,9 +1541,9 @@ h1.hero {
   z-index: 100;
   position: fixed;
   top: 0;
-  right: -20px;
+  right: -4px;
   bottom: 0;
-  left: -20px;
+  left: -4px;
   height: 100dvh;
   background: linear-gradient(280deg, #C8F686 20%, #75EF81 90%);
   padding: 112px 20px 0 20px;
@@ -1565,6 +1565,7 @@ h1.hero {
 
 .navbar-icons {
   gap: 24px;
+  margin-left: -8px;
 }
 
 /***************** Animations that open and close the navbar and its inner elements ******************************/
@@ -1582,7 +1583,7 @@ h1.hero {
 
 .main-nav-list[data-visible="false"] .main-nav-a { /* Fade-out for inner elements when the navbar is closing */
   opacity: 0;
-  transition: opacity 100ms ease-in;
+  transition: opacity 100ms cubic-bezier(.17,.84,.44,1);
 }
 
 .main-nav-list[data-visible="true"] .main-nav-a { /* Fade-in for inner elements when the navbar is opening */
@@ -1595,7 +1596,7 @@ h1.hero {
 .main-nav-list[data-visible="false"] .navbar-icons {
   opacity: 0;
   display: none;
-  animation: FadeOut 90ms cubic-bezier(.17,.84,.44,1);
+  animation: FadeOut 250ms cubic-bezier(.17,.84,.44,1);
 }
 
 
