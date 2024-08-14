@@ -185,7 +185,7 @@ document.addEventListener('click', function(event) {
   }
 });
 
-
+/*
 // Animation for the navbar scrolling
 
 const navbar = document.querySelector('.navbar');
@@ -214,3 +214,5 @@ window.addEventListener('scroll', () => {
   const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
   navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
 });
+
+*/
