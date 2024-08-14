@@ -979,7 +979,7 @@ color: var(--typography-green-dark);
 
 
 
-.mobile-nav-toggle, .main-nav-list[data-visible="false"] .social-icons {
+.mobile-nav-toggle, .main-nav-list[data-visible="false"] .navbar-icons {
   display: none;
 }
 
@@ -1544,7 +1544,7 @@ h1.hero {
   right: -20px;
   bottom: 0;
   left: -20px;
-  height: 100vh;
+  height: 100dvh;
   background: linear-gradient(280deg, #C8F686 20%, #75EF81 90%);
   padding: 112px 20px 0 20px;
   display: flex;
@@ -1558,15 +1558,14 @@ h1.hero {
 /* Animation that closes the navbar */
 .main-nav-list[data-visible="false"] {
   transform: scaleY(0);
-  transition: transform 400ms cubic-bezier(.65,.05,.36,1);              
+  transition: transform 300ms cubic-bezier(.65,.05,.36,1) 150ms;              
 }
 
 /*Animation that opens the navbar*/
 .main-nav-list[data-visible="true"] {
   transform: scaleY(1);
-  transition: transform 400ms cubic-bezier(.65,.05,.36,1);
+  transition: transform 300ms cubic-bezier(.65,.05,.36,1);
 }
-
 
 
 /* Fade-out for inner elements when the navbar is closed */
@@ -1578,8 +1577,62 @@ h1.hero {
 /* Fade-in for inner elements when the navbar is opened */
 .main-nav-list[data-visible="true"] .main-nav-a {
   opacity: 1;
-  transition: opacity 200ms ease 950ms; /* This controls the fade-in timing */ 
+  transition: opacity 250ms cubic-bezier(.17,.84,.44,1) 350ms; /* This controls the fade-in timing */ 
 }
+
+/**Test animate social icons **/
+
+.main-nav-list[data-visible="false"] .navbar-icons {
+  opacity: 0;
+  display: none;
+  animation: FadeOut 90ms cubic-bezier(.17,.84,.44,1);
+}
+
+
+.main-nav-list[data-visible="true"] .navbar-icons {
+  opacity: 1;
+  display: flex;
+  animation: FadeIn 450ms ease forwards;
+}
+
+
+/*** Experiment keyframes ****/
+
+@keyframes FadeIn {
+  0% {
+    opacity: 0;
+  }
+  83% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes FadeOut {
+  from {
+    display: flex;
+    opacity: 1;
+  }
+  to {
+    display: none;
+    opacity: 0;
+  } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .main-nav-list-items {
@@ -1591,13 +1644,6 @@ h1.hero {
   font-weight: bold;
 }
 
-.social-icons {
-  display: flex;
-  flex-direction: row;
-  gap: 32px;
-  margin: 32px 0 0 -8px;
-  
-}
 
 /** Hamburger menu style **/
 
