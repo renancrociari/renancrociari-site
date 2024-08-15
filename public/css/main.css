@@ -944,10 +944,9 @@ color: var(--typography-green-dark);
   left: 0;
   height: 90px;
   margin: 0 auto;
-  margin-left: 16px;
-  margin-right: 16px;
-  padding-left: 32px;
-  padding-right: 32px;
+  margin-left: 48px;
+  margin-right: 48px;
+  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1317,10 +1316,10 @@ details > div > div {
 /********** NAVBAR 768 - 991 **********/
 
 .navbar {
-  margin-left: 16px;
-  margin-right: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
+  margin-left: 32px;
+  margin-right: 32px;
+  padding: 0;
+
 }
 
 /********** HERO 768 - 991 **********/
@@ -1512,8 +1511,9 @@ h1.hero {
 /************** MOBILE NAVIGATION  - 480px - 767px **************/
 
 .navbar {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 0;
   top: 4px;
 }
 
@@ -1541,9 +1541,9 @@ h1.hero {
   z-index: 100;
   position: fixed;
   top: 0;
-  right: -4px;
+  right: -20px;
   bottom: 0;
-  left: -4px;
+  left: -20px;
   height: 100dvh;
   background: linear-gradient(280deg, #C8F686 20%, #75EF81 90%);
   padding: 112px 20px 0 20px;
