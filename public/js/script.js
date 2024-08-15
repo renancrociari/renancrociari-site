@@ -185,13 +185,18 @@ document.addEventListener('click', function(event) {
   }
 });
 
-/*
+
 // Animation for the navbar scrolling
 
 const navbar = document.querySelector('.navbar');
+const mainNavList = document.querySelector('#main-nav-list');
 let lastScrollY = window.scrollY;
+let isListeningToScroll = true;
 
-window.addEventListener('scroll', () => {
+// Function to handle scroll events
+const onScroll = () => {
+  if (!isListeningToScroll) return;
+
   const currentScrollY = window.scrollY;
 
   if (currentScrollY > lastScrollY) {
@@ -205,7 +210,27 @@ window.addEventListener('scroll', () => {
   }
 
   lastScrollY = currentScrollY;
+};
+
+// Add scroll event listener
+window.addEventListener('scroll', onScroll);
+
+// Create a mutation observer to monitor changes in attributes
+const observer = new MutationObserver((mutationsList) => {
+  for (let mutation of mutationsList) {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'data-visible') {
+      const visibility = mainNavList.getAttribute('data-visible');
+      if (visibility === "true") {
+        isListeningToScroll = false;
+      } else if (visibility === "false") {
+        isListeningToScroll = true;
+      }
+    }
+  }
 });
+
+// Start observing the target node for configured mutations
+observer.observe(mainNavList, { attributes: true });
 
 const navbarBg = document.querySelector('.navbar-bg');
 
@@ -214,5 +239,3 @@ window.addEventListener('scroll', () => {
   const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
   navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
 });
-
-*/
