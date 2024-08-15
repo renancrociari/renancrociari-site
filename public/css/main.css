@@ -609,7 +609,7 @@ color: var(--typography-green-dark);
 
 .dialog-heading {
   text-align: center;
-  margin: 140px 0 32px 0;
+  margin: 14vh 0 32px 0;
 }
 
 .dialog-show-email.fade-out {
