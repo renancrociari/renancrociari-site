@@ -556,8 +556,11 @@ color: var(--typography-green-dark);
 
 .body-fixed {/* actived via javascript when dialog is opened to avoid scroll up */
   overflow: hidden;
-  position: fixed;
   width: 100%;
+}
+
+.dialog, .dialog[open] {
+  position: fixed;
 }
 
 .dialog[open] {

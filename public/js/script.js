@@ -9,8 +9,7 @@ let scrollPosition = 0;
 
 // Função para abrir a dialog e adicionar um estado ao histórico
 function openDialog() {
-  scrollPosition = window.scrollY;
-  body.style.top = `-${scrollPosition}px`;
+
   body.classList.add('body-fixed'); // Add class to keep body fixed
   modal.showModal();
   modal.classList.remove('fade-out');
@@ -25,8 +24,7 @@ function closeDialog() {
   setTimeout(() => {
     modal.close();
     body.classList.remove('body-fixed'); // Remove the class
-    body.style.top = ''; // Reset top property
-    window.scrollTo(0, scrollPosition);
+   
     
     // Remove the hash from the URL
     history.replaceState(null, '', window.location.pathname);
@@ -88,6 +86,7 @@ async function copyToClipboard() {
 
 const primaryNav = document.querySelector(".main-nav-list");
 const navToggle = document.querySelector(".mobile-nav-toggle");
+const focusableElements = primaryNav.querySelectorAll('a, button'); // Adjust the selector if there are more focusable elements
 
 navToggle.addEventListener("click", () => {
   const visibility = primaryNav.getAttribute("data-visible");
@@ -99,6 +98,9 @@ navToggle.addEventListener("click", () => {
     navToggle.setAttribute('aria-expanded', true);
     body.style.overflow = 'hidden';
     navToggle.classList.add("open"); // Add the open class to the toggle
+    
+    // Enable focus on elements
+    focusableElements.forEach(el => el.removeAttribute('tabindex'));
   } else if (visibility === "true") {
     primaryNav.setAttribute("data-visible", false);
     navToggle.setAttribute('aria-expanded', false);
@@ -108,8 +110,14 @@ navToggle.addEventListener("click", () => {
       window.scrollTo(0, scrollPosition);
     }, 450);
     navToggle.classList.remove("open"); // Remove the open class from the toggle
+    
+    // Disable focus on elements
+    focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
   }
 });
+
+// Initially disable focus on elements
+focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
 
 
 
