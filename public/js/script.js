@@ -86,7 +86,7 @@ async function copyToClipboard() {
 
 const primaryNav = document.querySelector(".main-nav-list");
 const navToggle = document.querySelector(".mobile-nav-toggle");
-const focusableElements = primaryNav.querySelectorAll('a, button'); // Adjust the selector if there are more focusable elements
+const focusableElements = primaryNav.querySelectorAll('.main-nav-a'); // Adjust the selector if there are more focusable elements
 
 navToggle.addEventListener("click", () => {
   const visibility = primaryNav.getAttribute("data-visible");
@@ -97,10 +97,11 @@ navToggle.addEventListener("click", () => {
     primaryNav.setAttribute("data-visible", true);
     navToggle.setAttribute('aria-expanded', true);
     body.style.overflow = 'hidden';
-    navToggle.classList.add("open"); // Add the open class to the toggle
-    
+
     // Enable focus on elements
     focusableElements.forEach(el => el.removeAttribute('tabindex'));
+    // Focus on the first link
+    focusableElements[0].focus();
   } else if (visibility === "true") {
     primaryNav.setAttribute("data-visible", false);
     navToggle.setAttribute('aria-expanded', false);
@@ -109,8 +110,7 @@ navToggle.addEventListener("click", () => {
       // Restore the scroll position
       window.scrollTo(0, scrollPosition);
     }, 450);
-    navToggle.classList.remove("open"); // Remove the open class from the toggle
-    
+
     // Disable focus on elements
     focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
   }
@@ -118,6 +118,29 @@ navToggle.addEventListener("click", () => {
 
 // Initially disable focus on elements
 focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
+
+// Handle keyboard navigation loop
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Tab') {
+    const visibility = primaryNav.getAttribute("data-visible");
+    if (visibility === "true") {
+      const firstFocusableElement = navToggle; // First focusable element (mobile-nav-toggle)
+      const lastFocusableElement = focusableElements[focusableElements.length - 1]; // Last focusable element
+
+      if (event.shiftKey) { // Shift + Tab
+        if (document.activeElement === firstFocusableElement) {
+          event.preventDefault();
+          lastFocusableElement.focus();
+        }
+      } else { // Tab
+        if (document.activeElement === lastFocusableElement) {
+          event.preventDefault();
+          firstFocusableElement.focus();
+        }
+      }
+    }
+  }
+});
 
 
 
