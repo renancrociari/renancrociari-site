@@ -1,11 +1,12 @@
-// Função para controlar a dialog
+/////////////////////////////////////////////////////////////////
+///Função para controlar a dialog
+/////////////////////////////////////////////////////////////////
+
 const modal = document.querySelector('.dialog-show-email');
 const openModal = document.querySelectorAll('.btn-show-email'); // Seleciona todos os botões que abrem a modal
 const closeModal = document.querySelector('.btn-close-email');
 const body = document.body;
 
-// Armazena a posição de rolagem
-let scrollPosition = 0;
 
 // Função para abrir a dialog e adicionar um estado ao histórico
 function openDialog() {
@@ -64,7 +65,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-/////////// Function to copy email to the clipboard
+/////////////////////////////////////////////////////////////////
+///Função para copiar email para a clipboard
+/////////////////////////////////////////////////////////////////
 
 async function copyToClipboard() {
   const emailSpan = document.querySelector(".email-to-copy");
@@ -82,7 +85,9 @@ async function copyToClipboard() {
 }
 
 
-/////////// Function to load the mobile nav
+/////////////////////////////////////////////////////////////////
+///Função para controlar a navbar
+/////////////////////////////////////////////////////////////////
 
 const primaryNav = document.querySelector(".main-nav-list");
 const navToggle = document.querySelector(".mobile-nav-toggle");
@@ -93,7 +98,6 @@ navToggle.addEventListener("click", () => {
 
   if (visibility === "false") {
     // Store the current scroll position
-    scrollPosition = window.scrollY;
     primaryNav.setAttribute("data-visible", true);
     navToggle.setAttribute('aria-expanded', true);
     body.style.overflow = 'hidden';
