@@ -86,7 +86,7 @@ async function copyToClipboard() {
 
 
 /////////////////////////////////////////////////////////////////
-///Função para controlar a navbar
+/// Função para controlar a navbar
 /////////////////////////////////////////////////////////////////
 
 const primaryNav = document.querySelector(".main-nav-list");
@@ -112,7 +112,6 @@ navToggle.addEventListener("click", () => {
     setTimeout(() => {
       body.style.overflow = 'auto';
       // Restore the scroll position
-      window.scrollTo(0, scrollPosition);
     }, 450);
 
     // Disable focus on elements
