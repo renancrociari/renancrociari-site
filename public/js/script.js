@@ -146,8 +146,9 @@ document.addEventListener('keydown', (event) => {
 });
 
 
-
-/*********** Function to calculate Springer Nature Work duration */
+/////////////////////////////////////////////////////////////////
+/// Function to calculate Springer Nature Work duration
+/////////////////////////////////////////////////////////////////
 
 function calculateWorkDuration(startDate) {
   const start = new Date(startDate);
@@ -169,7 +170,9 @@ const startDate = '2021-01-01'; // Use your own start date
 document.getElementById('workDuration').innerText = calculateWorkDuration(startDate);
 
 
-/********* Animate experience accordion details element *************/
+/////////////////////////////////////////////////////////////////
+/// Animate experience accordion details element
+/////////////////////////////////////////////////////////////////
 
 
 document.addEventListener('click', function(event) {
@@ -220,7 +223,9 @@ document.addEventListener('click', function(event) {
 });
 
 
-// Animation for the navbar scrolling
+/////////////////////////////////////////////////////////////////
+/// Animation for the navbar scrolling
+/////////////////////////////////////////////////////////////////
 
 const navbar = document.querySelector('.navbar');
 const mainNavList = document.querySelector('#main-nav-list');
