@@ -233,23 +233,56 @@ let lastScrollY = window.scrollY;
 let isListeningToScroll = true;
 
 // Function to handle scroll events
+
 const onScroll = () => {
   if (!isListeningToScroll) return;
 
   const currentScrollY = window.scrollY;
+  const screenWidth = window.innerWidth;
 
-  if (currentScrollY > lastScrollY) {
-    // User is scrolling down
-    navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
-    navbar.classList.remove('scrolled-up');
+  if (screenWidth < 767) {
+    // Existing logic for screen widths below 767px
+    if (currentScrollY > 4) {
+      navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
+      if (currentScrollY > lastScrollY) {
+        navbar.classList.remove('scrolled-up');
+      } else {
+        navbar.classList.add('scrolled-up');
+        navbar.style.transform = `translateY(0px)`; // Ensure navbar reappears when scrolling up
+      }
+    } else {
+      navbar.style.transform = `translateY(0px)`;
+      navbar.classList.remove('scrolled-up');
+    }
   } else {
-    // User is scrolling up
-    navbar.style.transform = `translateY(0px)`;
-    navbar.classList.add('scrolled-up');
+    // Logic for screen widths of 768px and above
+    if (currentScrollY > 16) {
+      navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
+      if (currentScrollY > lastScrollY) {
+        navbar.classList.remove('scrolled-up');
+      } else {
+        navbar.classList.add('scrolled-up');
+        navbar.style.transform = `translateY(0px)`; // Ensure navbar reappears when scrolling up
+      }
+    } else if (currentScrollY <= 16) {
+      const topPosition = Math.min(16, 16 - currentScrollY);
+      navbar.style.top = `${topPosition}px`;
+      if (currentScrollY === 0) {
+        navbar.style.top = '16px'; // Ensure top is 16px when at the top
+      } else if (currentScrollY < lastScrollY) {
+        navbar.classList.add('scrolled-up');
+      }
+    } else {
+      navbar.style.transform = `translateY(0px)`;
+      navbar.classList.remove('scrolled-up');
+    }
   }
 
   lastScrollY = currentScrollY;
 };
+
+
+
 
 // Add scroll event listener
 window.addEventListener('scroll', onScroll);
@@ -271,6 +304,9 @@ const observer = new MutationObserver((mutationsList) => {
 // Start observing the target node for configured mutations
 observer.observe(mainNavList, { attributes: true });
 
+
+
+/*
 const navbarBg = document.querySelector('.navbar-bg');
 
 window.addEventListener('scroll', () => {
@@ -278,3 +314,6 @@ window.addEventListener('scroll', () => {
   const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
   navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
 });
+
+
+*/
