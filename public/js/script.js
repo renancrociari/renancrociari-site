@@ -240,7 +240,7 @@ const onScroll = () => {
 
   if (currentScrollY > lastScrollY) {
     // User is scrolling down
-    navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
+    navbar.style.transform = `translateY(-${Math.min(currentScrollY, 106)}px)`;
     navbar.classList.remove('scrolled-up');
   } else {
     // User is scrolling up
@@ -271,10 +271,13 @@ const observer = new MutationObserver((mutationsList) => {
 // Start observing the target node for configured mutations
 observer.observe(mainNavList, { attributes: true });
 
+
+
+
 const navbarBg = document.querySelector('.navbar-bg');
 
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
   const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
-  navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
+  navbarBg.style.backgroundColor = `rgba(180, 156, 100, ${alpha})`;
 });
