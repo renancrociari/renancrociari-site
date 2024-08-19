@@ -923,6 +923,7 @@ color: var(--typography-green-dark);
 
 .content-header {
   background: linear-gradient(255deg, #D6FEB2 0%, #94F89D 100%);
+  margin-top: -90px;
 }
 
 .content-header-border {
