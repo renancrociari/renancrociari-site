@@ -279,5 +279,5 @@ const navbarBg = document.querySelector('.navbar-bg');
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
   const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
-  navbarBg.style.backgroundColor = `rgba(180, 156, 100, ${alpha})`;
+  navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
 });

@@ -955,18 +955,22 @@ color: var(--typography-green-dark);
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   transition: transform 0.3s ease-out;
   will-change: transform;
   z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
-  position: fixed;
   position: sticky;
-  border: 1px solid red;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
 }
 
+
+@-moz-document url-prefix() { /* Applies a border that avoids the navbar to break when sticky in Firefox */
+  .navbar {
+    border-top: 1px solid transparent; /* Adjust as necessary */
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
 
 
 
@@ -1411,7 +1415,7 @@ h1.hero {
 
   body {
     border: 4px solid rgb(243, 36, 229);
-    border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;
+    border-image: linear-gradient(273deg, #C8F686, #75EF81) 1;
   }
 
 
@@ -1531,6 +1535,7 @@ h1.hero {
   left: 4px;
   right: 4px;
 }
+
 
 .general-logo-container {
   z-index: 200;
