@@ -4,8 +4,7 @@ body {
   margin: 0;
   padding: 0;
   border: 16px solid;
-  border-color: blue;
-  /*border-image: linear-gradient(0deg,#C8F686,#75EF81) 1;*/
+  border-image: linear-gradient(0deg,#C8F686,#75EF81) 1;
   box-sizing: border-box;
   color: var(--typography-gray-200);
 }
@@ -1412,7 +1411,7 @@ h1.hero {
 
   body {
     border: 4px solid rgb(243, 36, 229);
-    /*border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;*/
+    border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;
   }
 
 
