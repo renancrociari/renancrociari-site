@@ -290,6 +290,16 @@ color: var(--typography-green-dark);
 }
 
 
+
+.btn.body-medium > .svg-button { /* Adjust position of the arrow when text is medium */
+  margin-top: 20px;
+}
+
+.btn.body-small > .svg-button { /* Adjust position of the arrow when text is small */
+  margin-top: 40px;
+}
+
+
 .btn > .svg-button {
   fill: var(--typography-green-light); /* default color of the button */
   width: 24.96px;
