@@ -980,7 +980,6 @@ color: var(--typography-green-dark);
   left: 16px; /* Must follow body border width */
   right: 16px; /* Must follow body border width*/
   background-color: rgba(255, 255, 255, 0);
-  box-shadow: 0px 0px 14px 6px rgba(0, 0, 0, 0.05);
   z-index: 100; /* Needs to be lower than the navbar-bg and lower than the dialog */
   transition: background-color 0.3s ease-out;
   will-change: background-color;
