@@ -240,7 +240,7 @@ const onScroll = () => {
 
   if (currentScrollY > lastScrollY) {
     // User is scrolling down
-    navbar.style.transform = `translateY(-${Math.min(currentScrollY, 106)}px)`;
+    navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
     navbar.classList.remove('scrolled-up');
   } else {
     // User is scrolling up
