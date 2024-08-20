@@ -942,7 +942,7 @@ color: var(--typography-green-dark);
 }
 
 body.about .content-header {
-  background: linear-gradient(255deg, #fed0b2 0%, #94F89D 100%);
+  background: linear-gradient(255deg, #D6FEB2 0%, #94F89D 100%);
 }
 
 body.case-farfetch .content-header {
