@@ -932,7 +932,6 @@ color: var(--typography-green-dark);
 /***************** CONTENT HEADER *********************/
 
 .content-header {
-  background: linear-gradient(255deg, #D6FEB2 0%, #94F89D 100%);
   margin-top: -90px;
 }
 
@@ -942,6 +941,13 @@ color: var(--typography-green-dark);
   margin-top: -80px;
 }
 
+body.about .content-header {
+  background: linear-gradient(255deg, #D6FEB2 0%, #94F89D 100%);
+}
+
+body.case-farfetch .content-header {
+  background: linear-gradient(75deg, #970d0d 0%, #d5815d 100%);
+}
 
 
 
