@@ -1672,7 +1672,7 @@ h1.hero {
   transition: all 0.2s ease-in-out;
 }
 
-.mobile-nav-toggle.open .hamburger-menu-svg{
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-menu-svg{ /*Animate the hamburger menu when the navbar is open*/
   .top {
     transform: rotate(45deg);
     transform-origin: center top;
