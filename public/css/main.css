@@ -971,8 +971,8 @@ body.case-farfetch .content-header {
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  transition: transform 250ms ease-out, background-color 1000ms ease-out;
-  will-change: transform;
+  transition: transform 250ms ease-out, background-color 800ms ease-out, box-shadow 1000ms ease-out;
+  will-change: transform, background-color, box-shadow;
   z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
   position: sticky;
   box-sizing: border-box;
@@ -1011,6 +1011,8 @@ body.case-farfetch .content-header {
 
 .navbar.scrolled-up {
   background-color: white;
+  transition: transform 250ms ease-out, background-color 0s, box-shadow 0s;
+  will-change: transform, background-color, box-shadow;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid transparent;
 }
