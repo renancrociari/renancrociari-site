@@ -1144,7 +1144,7 @@ details > summary::-webkit-details-marker {
 }
 
 .experience-description {
-  margin: 0 80px 16px 208px;
+  margin: 0 80px 48px 208px;
 }
 
 
@@ -1734,9 +1734,6 @@ h1.hero {
   padding: 16px 16px 16px 8px;
 }
 
-.experience-details[open] > summary {
-  margin-bottom: 8px;
-}
 
 .experience-title {
   gap: 0;
@@ -1748,8 +1745,7 @@ h1.hero {
 }
 
 .experience-description {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin: 0 16px 36px 16px;
 }
 
 
