@@ -986,6 +986,10 @@ body.case-farfetch .content-header {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
+
+  .main-nav-list[data-visible="true"] {
+    box-shadow: 0px -1px 0px #95EC8D;
+  }
 }
 
 
