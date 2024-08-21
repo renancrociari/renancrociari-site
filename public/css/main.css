@@ -971,7 +971,7 @@ body.case-farfetch .content-header {
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  transition: transform 0.3s ease-out;
+  transition: transform 300ms ease-out, background-color 300ms ease-out;
   will-change: transform;
   z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
   position: sticky;
@@ -994,7 +994,14 @@ body.case-farfetch .content-header {
 
 
 
+.navbar.scrolled-up {
+  background-color: green;
+  background-color 300ms ease-out;
+}
+
+
 .navbar-bg {
+  display: none;
   position: fixed;
   top: 0;
   left: 16px; /* Must follow body border width */
