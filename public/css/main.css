@@ -970,7 +970,7 @@ body.case-farfetch .content-header {
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  transition: transform 300ms ease-out, background-color 300ms ease-out;
+  transition: transform 250ms ease-out, background-color 1000ms ease-out;
   will-change: transform;
   z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
   position: sticky;
@@ -991,19 +991,28 @@ body.case-farfetch .content-header {
   }
 }
 
-.navbar {
-  background-color: yellow;
-}
 
 /************** Style of the navbar when scrolled up *******/
 
+
+.about .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+  color: white;
+}
+
 .navbar.scrolled-up {
-  background-color: green;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid transparent;
-  background-color: 300ms ease-out;
 }
 
 
+.navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
+  color: var(--typography-green-light);
+}
+
+.navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
+  color: var(--typography-gray-200);
+}
 
 
 .navbar-bg {
