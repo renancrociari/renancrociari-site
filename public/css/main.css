@@ -958,6 +958,7 @@ body.case-farfetch .content-header {
 }
 
 .navbar {
+  height: 90px;
   top: 0;
   right: 0;
   left: 0;
@@ -974,8 +975,17 @@ body.case-farfetch .content-header {
   will-change: transform;
   z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
   position: sticky;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   box-sizing: border-box;
+}
+
+.navbar::before { /* Defines margin-bottom of the navbar */
+  content: "";
+  position: absolute;
+  left: 32px;
+  bottom: 0;
+  right: 32px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 
@@ -1003,6 +1013,10 @@ body.case-farfetch .content-header {
   background-color: white;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid transparent;
+}
+
+.navbar.scrolled-up::before { /* Removes border-bottom of the navbar when scrolled up */
+  background-color: transparent;
 }
 
 
@@ -1554,6 +1568,12 @@ h1.hero {
 .navbar {
   padding: 0 20px;
   top: 0px;
+}
+
+.navbar::before { /*Defines margin-bottom of the navbar */
+  left: 20px;
+  right: 20px;
+
 }
 
 .navbar, .navbar-bg {
