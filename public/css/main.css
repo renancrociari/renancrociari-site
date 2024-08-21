@@ -1719,6 +1719,10 @@ h1.hero {
   margin-top: -70px;
 }
 
+.content-hero {
+  padding-top: 184px;
+}
+
 .featured-image {
   margin-top: 24px;
 }
