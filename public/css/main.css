@@ -963,9 +963,8 @@ body.case-farfetch .content-header {
   left: 0;
   height: 90px;
   margin: 0 auto;
-  margin-left: 48px;
-  margin-right: 48px;
-  padding: 0;
+  margin: 0;
+  padding: 0 32px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -992,12 +991,18 @@ body.case-farfetch .content-header {
   }
 }
 
+.navbar {
+  background-color: yellow;
+}
+
 
 
 .navbar.scrolled-up {
   background-color: green;
-  background-color 300ms ease-out;
+  background-color: 300ms ease-out;
 }
+
+
 
 
 .navbar-bg {
@@ -1348,16 +1353,6 @@ details > div > div {
 }
 
 
-
-/********** NAVBAR 768 - 991 **********/
-
-.navbar {
-  margin-left: 32px;
-  margin-right: 32px;
-  padding: 0;
-
-}
-
 /********** HERO 768 - 991 **********/
 
 .hero-content {
@@ -1547,9 +1542,7 @@ h1.hero {
 /************** MOBILE NAVIGATION  - 480px - 767px **************/
 
 .navbar {
-  margin-left: 20px;
-  margin-right: 20px;
-  padding: 0;
+  padding: 0 20px;
   top: 0px;
 }
 
