@@ -995,10 +995,11 @@ body.case-farfetch .content-header {
   background-color: yellow;
 }
 
-
+/************** Style of the navbar when scrolled up *******/
 
 .navbar.scrolled-up {
   background-color: green;
+  border-bottom: 1px solid transparent;
   background-color: 300ms ease-out;
 }
 
@@ -1571,9 +1572,9 @@ h1.hero {
   z-index: 100;
   position: fixed;
   top: 0;
-  right: -24px;
+  right: 0;
   bottom: 0;
-  left: -24px;
+  left: 0;
   height: 100dvh;
   background: linear-gradient(280deg, #C8F686 20%, #75EF81 90%);
   padding: 112px 20px 0 20px;
