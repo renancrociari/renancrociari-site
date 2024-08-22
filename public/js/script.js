@@ -285,3 +285,17 @@ window.addEventListener('scroll', () => {
   navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
   navbarBg.style.boxShadow = `0px 0px 14px 6px rgba(0, 0, 0, ${alpha * 0.05})`;
 });
+
+
+/////////////////////////////////////////////////////////////////
+///// Initialize medium-zoom library
+/////////////////////////////////////////////////////////////////
+
+
+mediumZoom('.medium-zoom-image', {
+  margin: 24,
+  background: '#FFFFFF',
+  scrollOffset: 0,
+  container: null,
+  template: null
+});
