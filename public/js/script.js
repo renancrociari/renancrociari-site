@@ -1,18 +1,17 @@
-// Função para controlar a dialog
+/////////////////////////////////////////////////////////////////
+///Função para controlar a dialog
+/////////////////////////////////////////////////////////////////
+
 const modal = document.querySelector('.dialog-show-email');
 const openModal = document.querySelectorAll('.btn-show-email'); // Seleciona todos os botões que abrem a modal
 const closeModal = document.querySelector('.btn-close-email');
 const body = document.body;
 
-// Armazena a posição de rolagem
-let scrollPosition = 0;
-
 
 // Função para abrir a dialog e adicionar um estado ao histórico
 function openDialog() {
-  scrollPosition = window.scrollY;
-  body.style.overflow = 'hidden';
-  body.style.top = `-${scrollPosition}px`;
+
+  body.classList.add('body-fixed'); // Add class to keep body fixed
   modal.showModal();
   modal.classList.remove('fade-out');
   
@@ -25,8 +24,11 @@ function closeDialog() {
   modal.classList.add('fade-out');
   setTimeout(() => {
     modal.close();
-    body.style.overflow = 'auto';
-    window.scrollTo(0, scrollPosition);
+    body.classList.remove('body-fixed'); // Remove the class
+   
+    
+    // Remove the hash from the URL
+    history.replaceState(null, '', window.location.pathname);
   }, 450);
 }
 
@@ -63,7 +65,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-/////////// Function to copy email to the clipboard
+/////////////////////////////////////////////////////////////////
+///Função para copiar email para a clipboard
+/////////////////////////////////////////////////////////////////
 
 async function copyToClipboard() {
   const emailSpan = document.querySelector(".email-to-copy");
@@ -81,36 +85,70 @@ async function copyToClipboard() {
 }
 
 
-/////////// Function to load the mobile nav
+/////////////////////////////////////////////////////////////////
+/// Função para controlar a navbar
+/////////////////////////////////////////////////////////////////
 
 const primaryNav = document.querySelector(".main-nav-list");
 const navToggle = document.querySelector(".mobile-nav-toggle");
+const focusableElements = primaryNav.querySelectorAll('.main-nav-a'); // Adjust the selector if there are more focusable elements
 
 navToggle.addEventListener("click", () => {
   const visibility = primaryNav.getAttribute("data-visible");
 
   if (visibility === "false") {
     // Store the current scroll position
-    scrollPosition = window.scrollY;
     primaryNav.setAttribute("data-visible", true);
     navToggle.setAttribute('aria-expanded', true);
     body.style.overflow = 'hidden';
-    navToggle.classList.add("open"); // Add the open class to the toggle
+
+    // Enable focus on elements
+    focusableElements.forEach(el => el.removeAttribute('tabindex'));
+    // Focus on the first link
+    focusableElements[0].focus();
   } else if (visibility === "true") {
     primaryNav.setAttribute("data-visible", false);
     navToggle.setAttribute('aria-expanded', false);
     setTimeout(() => {
       body.style.overflow = 'auto';
       // Restore the scroll position
-      window.scrollTo(0, scrollPosition);
     }, 450);
-    navToggle.classList.remove("open"); // Remove the open class from the toggle
+
+    // Disable focus on elements
+    focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
+  }
+});
+
+// Initially disable focus on elements
+focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
+
+// Handle keyboard navigation loop
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Tab') {
+    const visibility = primaryNav.getAttribute("data-visible");
+    if (visibility === "true") {
+      const firstFocusableElement = navToggle; // First focusable element (mobile-nav-toggle)
+      const lastFocusableElement = focusableElements[focusableElements.length - 1]; // Last focusable element
+
+      if (event.shiftKey) { // Shift + Tab
+        if (document.activeElement === firstFocusableElement) {
+          event.preventDefault();
+          lastFocusableElement.focus();
+        }
+      } else { // Tab
+        if (document.activeElement === lastFocusableElement) {
+          event.preventDefault();
+          firstFocusableElement.focus();
+        }
+      }
+    }
   }
 });
 
 
-
-/*********** Function to calculate Springer Nature Work duration */
+/////////////////////////////////////////////////////////////////
+/// Function to calculate Springer Nature Work duration
+/////////////////////////////////////////////////////////////////
 
 function calculateWorkDuration(startDate) {
   const start = new Date(startDate);
@@ -132,7 +170,9 @@ const startDate = '2021-01-01'; // Use your own start date
 document.getElementById('workDuration').innerText = calculateWorkDuration(startDate);
 
 
-/********* Animate experience accordion details element *************/
+/////////////////////////////////////////////////////////////////
+/// Animate experience accordion details element
+/////////////////////////////////////////////////////////////////
 
 
 document.addEventListener('click', function(event) {
@@ -183,15 +223,25 @@ document.addEventListener('click', function(event) {
 });
 
 
-// Animation for the navbar scrolling
+/////////////////////////////////////////////////////////////////
+/// Animation for the navbar scrolling
+/////////////////////////////////////////////////////////////////
 
 const navbar = document.querySelector('.navbar');
+const mainNavList = document.querySelector('#main-nav-list');
 let lastScrollY = window.scrollY;
+let isListeningToScroll = true;
 
-window.addEventListener('scroll', () => {
+// Function to handle scroll events
+const onScroll = () => {
+  if (!isListeningToScroll) return;
+
   const currentScrollY = window.scrollY;
 
-  if (currentScrollY > lastScrollY) {
+  if (currentScrollY === 0) {
+    // User has scrolled to the top
+    navbar.classList.remove('scrolled-up');
+  } else if (currentScrollY > lastScrollY) {
     // User is scrolling down
     navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
     navbar.classList.remove('scrolled-up');
@@ -202,7 +252,30 @@ window.addEventListener('scroll', () => {
   }
 
   lastScrollY = currentScrollY;
+};
+
+// Add scroll event listener
+window.addEventListener('scroll', onScroll);
+
+// Create a mutation observer to monitor changes in attributes
+const observer = new MutationObserver((mutationsList) => {
+  for (let mutation of mutationsList) {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'data-visible') {
+      const visibility = mainNavList.getAttribute('data-visible');
+      if (visibility === "true") {
+        isListeningToScroll = false;
+      } else if (visibility === "false") {
+        isListeningToScroll = true;
+      }
+    }
+  }
 });
+
+// Start observing the target node for configured mutations
+observer.observe(mainNavList, { attributes: true });
+
+
+
 
 const navbarBg = document.querySelector('.navbar-bg');
 
@@ -210,4 +283,5 @@ window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
   const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
   navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
+  navbarBg.style.boxShadow = `0px 0px 14px 6px rgba(0, 0, 0, ${alpha * 0.05})`;
 });

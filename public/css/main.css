@@ -290,6 +290,16 @@ color: var(--typography-green-dark);
 }
 
 
+
+.btn.body-medium > .svg-button { /* Adjust position of the arrow when text is medium */
+  margin-top: 20px;
+}
+
+.btn.body-small > .svg-button { /* Adjust position of the arrow when text is small */
+  margin-top: 40px;
+}
+
+
 .btn > .svg-button {
   fill: var(--typography-green-light); /* default color of the button */
   width: 24.96px;
@@ -457,8 +467,8 @@ color: var(--typography-green-dark);
 .home-logo-svg {
   display: inline-block;
   position: relative;
-  width: 158px;
-  height: 18px;
+  width: 140.44px;
+  height: 16px;
 }
 
 .home-logo-svg:before {
@@ -556,8 +566,11 @@ color: var(--typography-green-dark);
 
 .body-fixed {/* actived via javascript when dialog is opened to avoid scroll up */
   overflow: hidden;
-  position: fixed;
   width: 100%;
+}
+
+.dialog, .dialog[open] {
+  position: fixed;
 }
 
 .dialog[open] {
@@ -609,7 +622,7 @@ color: var(--typography-green-dark);
 
 .dialog-heading {
   text-align: center;
-  margin: 140px 0 32px 0;
+  margin: 14vh 0 32px 0;
 }
 
 .dialog-show-email.fade-out {
@@ -919,7 +932,7 @@ color: var(--typography-green-dark);
 /***************** CONTENT HEADER *********************/
 
 .content-header {
-  background-color: #77F082;
+  margin-top: -90px;
 }
 
 .content-header-border {
@@ -928,48 +941,111 @@ color: var(--typography-green-dark);
   margin-top: -80px;
 }
 
+body.about .content-header {
+  background: linear-gradient(255deg, #D6FEB2 0%, #94F89D 100%);
+}
+
+body.case-farfetch .content-header {
+  background: linear-gradient(75deg, #970d0d 0%, #d5815d 100%);
+}
 
 
 
 /****************** GENERAL NAVBAR ****************/
 
-
+.navbar, .navbar-bg {
+  height: 90px;
+}
 
 .navbar {
-  position: sticky;
+  height: 90px;
   top: 0;
+  right: 0;
+  left: 0;
   height: 90px;
   margin: 0 auto;
-  margin-left: 16px;
-  margin-right: 16px;
+  margin: 0;
+  padding: 0 32px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-  transition: transform 0.3s ease-out, background-color 0.3s ease-out;
-  will-change: transform, background-color;
-  z-index: 10;
-  will-change: transform;
+  transition: transform 250ms ease-out, background-color 800ms ease-out, box-shadow 1000ms ease-out;
+  will-change: transform, background-color, box-shadow;
+  z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
+  position: sticky;
+  box-sizing: border-box;
+}
+
+.navbar::before { /* Defines margin-bottom of the navbar */
+  content: "";
+  position: absolute;
+  left: 32px;
+  bottom: 0;
+  right: 32px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 
+@-moz-document url-prefix() { /* Applies a border that avoids the navbar to break when sticky in Firefox */
+  .navbar {
+    border-top: 1px solid transparent; /* Adjust as necessary */
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .main-nav-list[data-visible="true"] {
+    box-shadow: 0px -1px 0px #95EC8D;
+  }
+}
+
+
+/************** Style of the navbar when scrolled up *******/
+
+
+.about .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+  color: white;
+}
+
+.navbar.scrolled-up {
+  background-color: white;
+  transition: transform 250ms ease-out, background-color 0s, box-shadow 0s;
+  will-change: transform, background-color, box-shadow;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid transparent;
+}
+
+.navbar.scrolled-up::before { /* Removes border-bottom of the navbar when scrolled up */
+  background-color: transparent;
+}
+
+
+.navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
+  color: var(--typography-green-light);
+}
+
+.navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
+  color: var(--typography-gray-200);
+}
+
 
 .navbar-bg {
+  display: none;
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 90px;
+  left: 16px; /* Must follow body border width */
+  right: 16px; /* Must follow body border width*/
   background-color: rgba(255, 255, 255, 0);
-  z-index: 0;
+  z-index: 100; /* Needs to be lower than the navbar-bg and lower than the dialog */
   transition: background-color 0.3s ease-out;
   will-change: background-color;
 }
 
 
-.mobile-nav-toggle, .main-nav-list[data-visible="false"] .social-icons {
+
+.mobile-nav-toggle, .main-nav-list[data-visible="false"] .navbar-icons {
   display: none;
 }
 
@@ -991,8 +1067,8 @@ color: var(--typography-green-dark);
 .general-logo-svg {
   display: inline-block;
   position: relative;
-  width: 158px;
-  height: 18px;
+  width: 140.44px;
+  height: 16px;
   opacity: 0.8;
   /* filter: invert(6%) sepia(37%) saturate(0%) hue-rotate(200deg) brightness(101%) contrast(85%) opacity(0.7); */
   transition: opacity 0.6s ease-in-out;
@@ -1016,7 +1092,6 @@ color: var(--typography-green-dark);
 
 .content-hero {
   padding-top: 234px;
-  margin-top: -91px;
 }
 
 .featured-image {
@@ -1107,7 +1182,7 @@ details > summary::-webkit-details-marker {
 }
 
 .experience-description {
-  margin: 0 80px 16px 208px;
+  margin: 0 80px 48px 208px;
 }
 
 
@@ -1254,10 +1329,6 @@ details > div > div {
 }
 
 
-.testimonial-detail-quote {
-  z-index: 10;
-}
-
 .testimonial-detail-author {
   display: grid;
   grid-template-columns: 48px 1fr;
@@ -1390,8 +1461,8 @@ h1.hero {
 /********** GENERAL 480 - 767 **********/
 
   body {
-    border: 4px solid;
-    border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;
+    border: 4px solid rgb(243, 36, 229);
+    border-image: linear-gradient(273deg, #C8F686, #75EF81) 1;
   }
 
 
@@ -1415,7 +1486,6 @@ h1.hero {
     font-family: var(--font-paragraph), serif;
     font-size: 18px;
     line-height: 32px;
-    margin-bottom: 24px;
   }
   
   
@@ -1498,8 +1568,25 @@ h1.hero {
 /************** MOBILE NAVIGATION  - 480px - 767px **************/
 
 .navbar {
+  padding: 0 20px;
+  top: 0px;
+}
+
+.navbar::before { /*Defines margin-bottom of the navbar */
+  left: 20px;
+  right: 20px;
+
+}
+
+.navbar, .navbar-bg {
   height: 70px;
 }
+
+.navbar-bg {
+  left: 4px;
+  right: 4px;
+}
+
 
 .general-logo-container {
   z-index: 200;
@@ -1516,12 +1603,12 @@ h1.hero {
   z-index: 100;
   position: fixed;
   top: 0;
-  right: -32px;
+  right: 0;
   bottom: 0;
-  left: -32px;
-  height: 100vh;
+  left: 0;
+  height: 100dvh;
   background: linear-gradient(280deg, #C8F686 20%, #75EF81 90%);
-  padding: 112px 16px 0 16px;
+  padding: 112px 20px 0 20px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -1529,62 +1616,85 @@ h1.hero {
   overflow: hidden; /* Prevent content from being visible when nav is closed */
 }
 
-
-/* Immediate fade-out for inner elements when the min-nav is closed */
-.main-nav-list[data-visible="false"] .main-nav-a,
-.main-nav-list[data-visible="false"] .social-icon > * {
-  opacity: 0;
-  transition: opacity 0.1s ease-in; /* This controls the fade-out timing */
-}
-
-/* Delayed scaling down for the .main-nav */
-.main-nav-list[data-visible="false"] {
-  opacity: 1; /* or another value if you want it slightly visible while closing */
-  transform: scaleY(0);
-  transition: transform 0.6s ease-in-out 0.2s; /* Delay this to start after the inner elements fade out */
-              
-}
-
-
-.main-nav-list[data-visible="false"] .main-nav-a, .main-nav-list[data-visible="false"] .social-icon > * {
-  opacity: 0;
-  transform: translateY(0px); /* Move up for closing animation */
-  transition: transform 0.1s ease-in, opacity 0.3s ease; /* Timing for move-up and fade */
-}
-
-
-.main-nav-list[data-visible="true"] .main-nav-a, .main-nav-list[data-visible="true"] .social-icon > * {
-  opacity: 1;
-  transform: translateY(0); /* This controls the move-up effect */
-  transition: opacity 0.1s ease 0.55s; 
-}
-
-.main-nav-list[data-visible="true"] {
-  display: flex;
-  opacity: 1;
-  transform: scaleY(1);
-  transition: transform 0.7s ease-in-out, opacity 0.3s ease-in-out;
-}
-
 .main-nav-list-items {
   flex-direction: column;
 }
-
 
 .main-nav-a {
   font-size: 26px;
   font-weight: bold;
 }
 
-.social-icons {
-  display: flex;
-  flex-direction: row;
-  gap: 32px;
-  margin: 32px 0 0 -8px;
-  
+.navbar-icons {
+  gap: 24px;
+  margin-left: -8px;
 }
 
-/** Hamburger menu style **/
+/***************** Animations that open and close the navbar and its inner elements ******************************/
+
+
+.main-nav-list[data-visible="false"] { /* Animation that closes the navbar */
+  transform: scaleY(0);
+  transition: transform 300ms cubic-bezier(.65,.05,.36,1) 150ms;              
+}
+
+.main-nav-list[data-visible="true"] { /* Animation that opens the navbar */
+  transform: scaleY(1);
+  transition: transform 300ms cubic-bezier(.65,.05,.36,1);
+}
+
+.main-nav-list[data-visible="false"] .main-nav-a { /* Fade-out for inner elements when the navbar is closing */
+  opacity: 0;
+  transition: opacity 100ms cubic-bezier(.17,.84,.44,1);
+}
+
+.main-nav-list[data-visible="true"] .main-nav-a { /* Fade-in for inner elements when the navbar is opening */
+  opacity: 1;
+  transition: opacity 250ms cubic-bezier(.17,.84,.44,1) 350ms;
+}
+
+/* Animations for the navbar icons */
+
+.main-nav-list[data-visible="false"] .navbar-icons {
+  opacity: 0;
+  display: none;
+  animation: FadeOut 250ms cubic-bezier(.17,.84,.44,1);
+}
+
+
+.main-nav-list[data-visible="true"] .navbar-icons {
+  opacity: 1;
+  display: flex;
+  animation: FadeIn 450ms ease forwards;
+}
+
+@keyframes FadeIn {
+  0% {
+    opacity: 0;
+  }
+  83% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes FadeOut {
+  from {
+    display: flex;
+    opacity: 1;
+  }
+  to {
+    display: none;
+    opacity: 0;
+  } 
+}
+
+
+
+
+/***************** Hamburger menu style ***************/
 
 .mobile-nav-toggle, .mobile-nav-email {
   display: block;
@@ -1614,7 +1724,7 @@ h1.hero {
   transition: all 0.2s ease-in-out;
 }
 
-.mobile-nav-toggle.open .hamburger-menu-svg{
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-menu-svg{ /*Animate the hamburger menu when the navbar is open*/
   .top {
     transform: rotate(45deg);
     transform-origin: center top;
@@ -1637,6 +1747,14 @@ h1.hero {
 
 /************** GENERAL HEADER  - 480px - 767px **************/
 
+.content-header {
+  margin-top: -70px;
+}
+
+.content-hero {
+  padding-top: 184px;
+}
+
 .featured-image {
   margin-top: 24px;
 }
@@ -1645,11 +1763,6 @@ h1.hero {
 
 /************** EXPERIENCE DETAILS - 480px - 767px *****************/
 
-.experience-content {
-  margin-left: -8px; /* Overrides margin from .wrapper*/
-  margin-right: -8px;
-}
-
 
 .experience-details > summary {
   grid-template-columns: 80px minmax(100px, 590px) 16px;
@@ -1657,9 +1770,6 @@ h1.hero {
   padding: 16px 16px 16px 8px;
 }
 
-.experience-details[open] > summary {
-  margin-bottom: 8px;
-}
 
 .experience-title {
   gap: 0;
@@ -1671,8 +1781,7 @@ h1.hero {
 }
 
 .experience-description {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin: 0 16px 36px 16px;
 }
 
 
@@ -1711,7 +1820,7 @@ h1.hero {
 /********** DIALOG 0 - 480px **********/
 
 .dialog-container {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .dialog-heading {
