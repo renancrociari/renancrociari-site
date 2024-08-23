@@ -289,23 +289,28 @@ color: var(--typography-green-dark);
   border: none;
 }
 
-
+.btn.body-large > .svg-button { /* Adjust position of the arrow when text is large */
+  margin-top: 4px;
+  width: 24.96px;
+  height: 14.4px;
+}
 
 .btn.body-medium > .svg-button { /* Adjust position of the arrow when text is medium */
-  margin-top: 20px;
+  margin-top: 2px;
+  width: 22.88px;
+  height: 13.2px;
 }
 
 .btn.body-small > .svg-button { /* Adjust position of the arrow when text is small */
-  margin-top: 40px;
+  margin-top: 2px;
+  width: 20.8px;
+  height: 12px;
 }
 
 
 .btn > .svg-button {
   fill: var(--typography-green-light); /* default color of the button */
-  width: 24.96px;
-  height: 14.4px;
   display: flex;
-  margin-top: 4px;
   opacity: 1;
   transition: color 0.3s ease;
   transform: translateX(0); /* Initial postion of the arrow */
@@ -1448,13 +1453,13 @@ h1.hero {
 }
 
 
-/************************ Medium devices (landscape tablets, 480px - 767px) ****************************/
+/********************************** Medium devices (landscape tablets, 480px - 767px) *******************************************/
 
 @media only screen and (max-width: 767px) {
 
 
 
-/********** MARGINS 480 - 767 **********/
+/********** MARGINS 480px - 767px **********/
 
 /* Top Margin */
 .mt-xxl { margin-top: var(--spacing-xl); } /* 64px changes to 48px */
@@ -1471,13 +1476,32 @@ h1.hero {
 /********** GENERAL 480 - 767 **********/
 
   body {
-    border: 4px solid rgb(243, 36, 229);
+    border: 4px solid var(--typography-green-light);
     border-image: linear-gradient(273deg, #C8F686, #75EF81) 1;
   }
 
 
+  /********** HOME PROJECT CARDS 480px - 767px **********/
+
   .project-card {
     height: 500px;
+  }
+
+
+
+  /************** BUTTONS 480px - 767px **************/
+
+
+  .btn.body-large > .svg-button { /* Adjust position of the arrow when text is large */
+    margin-top: 1px;
+  }
+  
+  .btn.body-medium > .svg-button { /* Adjust position of the arrow when text is medium */
+    margin-top: 2px;
+  }
+  
+  .btn.body-small > .svg-button { /* Adjust position of the arrow when text is small */
+    margin-top: 1px;
   }
 
 
@@ -1529,7 +1553,7 @@ h1.hero {
     line-height: 30px;
   }
   
-  .body-medium, .body-medium-semibold {
+  .body-medium {
     font-family: inherit;
     font-size: var(--font-xxxs);
     line-height: 26px;
@@ -1837,7 +1861,7 @@ h1.hero {
 /********** DIALOG 0 - 480px **********/
 
 .dialog-container {
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .dialog-heading {
