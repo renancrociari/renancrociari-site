@@ -233,16 +233,11 @@ h3, h4, h5, h6, .display-md {
   line-height: 32px;
 }
 
-
-.body-medium, .body-medium-semibold {
+.body-medium {
   font-family: inherit;
   font-size: var(--font-xxs);
   line-height: 30px;
   letter-spacing: 0.3px;
-}
-
-.body-medium-semibold {
-  font-weight: 600;
 }
 
 .body-small {
@@ -1163,7 +1158,7 @@ details > summary::-webkit-details-marker {
 .experience-title {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .experience-btn {
@@ -1353,9 +1348,11 @@ details > div > div {
 }
 
 .testimonial-detail-author-info-name {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
+  display: inline-block;
+}
+
+.testimonial-detail-author-info-name > .divider {
+  margin: 0 var(--spacing-xxxs);
 }
 
 
@@ -1525,17 +1522,24 @@ h1.hero {
     line-height: 26px;
     font-weight: 700;
   }
+
+  .body-large {
+    font-family: inherit;
+    font-size: var(--font-xxs);
+    line-height: 30px;
+  }
   
   .body-medium, .body-medium-semibold {
     font-family: inherit;
-    font-size: 16px;
-    line-height: 22px;
+    font-size: var(--font-xxxs);
+    line-height: 26px;
   }
   
   .body-small {
     font-family: inherit;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: var(--font-xxxxs);
+    line-height: 22px;
+    letter-spacing: 0.4px;
   }
 
   .logo-svg {

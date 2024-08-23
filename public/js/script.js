@@ -293,7 +293,7 @@ window.addEventListener('scroll', () => {
 
 
 mediumZoom('.medium-zoom-image', {
-  margin: 24,
+  margin: 20,
   background: '#FFFFFF',
   scrollOffset: 0,
   container: null,
