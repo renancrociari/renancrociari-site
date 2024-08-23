@@ -199,10 +199,6 @@ a:hover {
 }
 
 
-b, .t-bold {
-  font-weight: 700;
-}
-
 h1, .hero h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), sans-serif;
   margin: 0;
@@ -232,11 +228,16 @@ h3, h4, h5, h6, .display-md {
   font-weight: 700;
 }
 
+.body-large {
+  font-size: var(--font-xs);
+  line-height: 32px;
+}
+
 
 .body-medium, .body-medium-semibold {
   font-family: inherit;
-  font-size: var(--font-xs);
-  line-height: 32px;
+  font-size: var(--font-xxs);
+  line-height: 30px;
   letter-spacing: 0.3px;
 }
 
@@ -255,7 +256,11 @@ h3, h4, h5, h6, .display-md {
   font-weight: 400;
 }
 
-.t-bold {
+.t-semibold {
+  font-weight: 600;
+}
+
+b, .t-bold {
   font-weight: 700;
 }
 
