@@ -294,7 +294,7 @@ window.addEventListener('scroll', () => {
 
 mediumZoom('.medium-zoom-image', {
   margin: 20,
-  background: '#FFFFFF',
+  background: 'rgba(255, 255, 255, 0.95)',
   scrollOffset: 0,
   container: null,
   template: null

@@ -458,59 +458,132 @@ color: var(--typography-green-dark);
 
 .home-logo-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
   justify-content: center;
   margin-top: 32px;
 }
 
-.home-logo-link {
+
+/********** Nav logo **********/
+
+.nav-logo-link {
   position: relative;
 }
 
-
-/********** home logo **********/
-
-.home-logo-svg {
+.nav-logo-svg {
   display: inline-block;
   position: relative;
   width: 140.44px;
   height: 16px;
 }
 
-.home-logo-svg:before {
-  content: "";
+.nav-logo-svg > * {
+  background-size: cover;
+}
+
+.nav-logo-svg .color-default {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
   background-image: url(../../public/images/renan-crociari-default.svg);
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  transition: opacity 0.6s ease-in-out;
 }
 
-.home-logo-svg::after {
-  content: "";
+.nav-logo-svg .color-hover {
   position: absolute;
-  background-image: url(../../public/images/renan-crociari-hover.svg);
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
   transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-hover.svg);
 }
 
-.home-logo-svg:hover::before {
-  opacity: 0;
+.nav-logo-svg .gray {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-gray.svg);
 }
 
-.home-logo-svg:hover::after {
+.nav-logo-svg .white {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-white.svg);
   opacity: 1;
 }
 
+/* Behavior of the colored logo */
+.nav-logo-link.color .color-default {
+  opacity: 1;
+}
 
-/********** end home logo **********/
+.nav-logo-link.color .color-hover, 
+.nav-logo-link.color .gray, 
+.nav-logo-link.color .white {
+  opacity: 0;
+}
 
+.nav-logo-link.color:hover .color-hover {
+  opacity: 1;
+}
+
+.nav-logo-link.color:hover .color-default,
+.nav-logo-link.color:hover .gray,
+.nav-logo-link.color:hover .white {
+  opacity: 0;
+}
+
+/* Behavior of the gray logo */
+
+.nav-logo-link.gray .gray {
+  opacity: 1;
+  transition: opacity 400ms ease-in;
+}
+
+.nav-logo-link.gray .color-default, 
+.nav-logo-link.gray .color-hover, 
+.nav-logo-link.gray .white {
+  opacity: 0;
+}
+
+.nav-logo-link.gray:hover .gray {
+  opacity: 0.6;
+  transition: opacity 400ms ease-in;
+}
+
+/* Behavior of the white logo */
+
+.nav-logo-link.white .white {
+  opacity: 1;
+  transition: opacity 400ms ease-in;
+}
+
+.nav-logo-link.white .color-default, 
+.nav-logo-link.white .color-hover, 
+.nav-logo-link.white .gray {
+  opacity: 0;
+}
+
+.nav-logo-link.white:hover .white {
+  opacity: 0.6;
+  transition: opacity 400ms ease-in;
+}
+
+
+
+/********** HOME - HERO **********/
 
 
 .home-hero {
@@ -964,10 +1037,10 @@ body.case-farfetch .content-header {
 
 .navbar {
   height: 90px;
+  position: sticky;
   top: 0;
   right: 0;
   left: 0;
-  height: 90px;
   margin: 0 auto;
   margin: 0;
   padding: 0 32px;
@@ -979,7 +1052,6 @@ body.case-farfetch .content-header {
   transition: transform 250ms ease-out, background-color 800ms ease-out, box-shadow 1000ms ease-out;
   will-change: transform, background-color, box-shadow;
   z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
-  position: sticky;
   box-sizing: border-box;
 }
 
@@ -996,7 +1068,7 @@ body.case-farfetch .content-header {
 
 @-moz-document url-prefix() { /* Applies a border that avoids the navbar to break when sticky in Firefox */
   .navbar {
-    border-top: 1px solid transparent; /* Adjust as necessary */
+    border-top: 1px solid transparent; 
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
@@ -1007,10 +1079,20 @@ body.case-farfetch .content-header {
 }
 
 
-/************** Style of the navbar when scrolled up *******/
+
+/************** Default dark navbar ******************/
 
 
-.about .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+
+/************** Default light navbar ***************/
+
+
+
+
+/************** Scrolled up navbar ******************/
+
+
+.light .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
   color: white;
 }
 
@@ -1580,7 +1662,7 @@ h1.hero {
 
 /************ HOME HEADER - 480px - 767px ************/
 
-.home-logo-svg {
+.nav-logo-svg {
   width: 123px;
   height: 14px;
 }
