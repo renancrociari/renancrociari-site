@@ -463,6 +463,7 @@ color: var(--typography-green-dark);
   gap: 32px;
   justify-content: center;
   margin-top: 32px;
+  height: 64px;
 }
 
 
@@ -470,6 +471,9 @@ color: var(--typography-green-dark);
 
 .nav-logo-link {
   position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .nav-logo-svg {
@@ -524,7 +528,7 @@ color: var(--typography-green-dark);
   opacity: 1;
 }
 
-/* Behavior of the colored logo */
+/* Behavior of the COLORED logo */
 .nav-logo-link.color .color-default {
   opacity: 1;
 }
@@ -545,7 +549,7 @@ color: var(--typography-green-dark);
   opacity: 0;
 }
 
-/* Behavior of the gray logo */
+/* Behavior of the GRAY logo */
 
 .nav-logo-link.gray .gray {
   opacity: 1;
@@ -563,7 +567,7 @@ color: var(--typography-green-dark);
   transition: opacity 400ms ease-in;
 }
 
-/* Behavior of the white logo */
+/* Behavior of the WHITE logo */
 
 .nav-logo-link.white .white {
   opacity: 1;
@@ -1661,6 +1665,10 @@ h1.hero {
 }
 
 /************ HOME HEADER - 480px - 767px ************/
+
+.home-logo-container {
+  margin-top: 4px;
+}
 
 .nav-logo-svg {
   width: 123px;
