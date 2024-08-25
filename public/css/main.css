@@ -585,6 +585,48 @@ color: var(--typography-green-dark);
   transition: opacity 400ms ease-in;
 }
 
+/********** Behavior of the Scrolled up navbar **********/
+
+.navbar.scrolled-up .nav-logo-link.colored .gray,
+.navbar.scrolled-up .nav-logo-link.white .gray,
+.navbar.scrolled-up .nav-logo-link.gray .gray,
+.navbar.scrolled-up .nav-logo-link.colored .white,
+.navbar.scrolled-up .nav-logo-link.white .white,
+.navbar.scrolled-up .nav-logo-link.gray .white {
+  opacity: 0;
+  transition: opacity 0s;
+}
+
+.navbar.scrolled-up .nav-logo-link.colored .color-default,
+.navbar.scrolled-up .nav-logo-link.white .color-default,
+.navbar.scrolled-up .nav-logo-link.gray .color-default{
+  opacity: 1;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.navbar.scrolled-up .nav-logo-link.colored .color-hover,
+.navbar.scrolled-up .nav-logo-link.white .color-hover,
+.navbar.scrolled-up .nav-logo-link.gray .color-hover{
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.navbar.scrolled-up .nav-logo-link.colored:hover .color-default,
+.navbar.scrolled-up .nav-logo-link.white:hover .color-default,
+.navbar.scrolled-up .nav-logo-link.gray:hover .color-default{
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.navbar.scrolled-up .nav-logo-link.colored:hover .color-hover,
+.navbar.scrolled-up .nav-logo-link.white:hover .color-hover,
+.navbar.scrolled-up .nav-logo-link.gray:hover .color-hover{
+  opacity: 1;
+  transition: opacity 0.6s ease-in-out;
+}
+
+
+
 
 
 /********** HOME - HERO **********/
