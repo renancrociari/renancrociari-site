@@ -601,7 +601,7 @@ color: var(--typography-green-dark);
 .navbar.scrolled-up .nav-logo-link.white .color-default,
 .navbar.scrolled-up .nav-logo-link.gray .color-default{
   opacity: 1;
-  transition: opacity 0.6s ease-in-out;
+  transition: opacity 0s;
 }
 
 .navbar.scrolled-up .nav-logo-link.colored .color-hover,
@@ -1128,7 +1128,9 @@ body.case-farfetch .content-header {
 
 /************** Default dark navbar ******************/
 
-
+.light .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+  color: white;
+}
 
 /************** Default light navbar ***************/
 
@@ -1137,10 +1139,6 @@ body.case-farfetch .content-header {
 
 /************** Scrolled up navbar ******************/
 
-
-.light .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
-  color: white;
-}
 
 .navbar.scrolled-up {
   background-color: white;
@@ -1175,7 +1173,6 @@ body.case-farfetch .content-header {
   transition: background-color 0.3s ease-out;
   will-change: background-color;
 }
-
 
 
 .mobile-nav-toggle, .main-nav-list[data-visible="false"] .navbar-icons {
@@ -1220,6 +1217,10 @@ body.case-farfetch .content-header {
   display: flex;
   flex-direction: row;
   gap: 48px;
+}
+
+.main-nav-list-items li:first-child {
+  display: none;
 }
 
 
@@ -1793,13 +1794,22 @@ h1.hero {
   flex-direction: column;
 }
 
+.main-nav-list-items li:first-child {
+  display: unset; /*Show link to homepage on mobile nav */
+}
+
+.main-nav-list-items li.linkedin {
+  display: none; /* Hide LinkedIn link on mobile nav */
+}
+
+
 .main-nav-a {
   font-size: 26px;
   font-weight: bold;
 }
 
 .navbar-icons {
-  gap: 24px;
+  gap: 32px;
   margin-left: -8px;
 }
 
