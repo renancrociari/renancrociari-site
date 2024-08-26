@@ -1129,7 +1129,7 @@ body.case-farfetch .content-header {
 /************** Default dark navbar ******************/
 
 .light .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
-  color: white;
+  color: #FFFFFF;
 }
 
 /************** Default light navbar ***************/
