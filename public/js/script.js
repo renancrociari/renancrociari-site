@@ -277,16 +277,6 @@ observer.observe(mainNavList, { attributes: true });
 
 
 
-const navbarBg = document.querySelector('.navbar-bg');
-
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
-  navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
-  navbarBg.style.boxShadow = `0px 0px 14px 6px rgba(0, 0, 0, ${alpha * 0.05})`;
-});
-
-
 /////////////////////////////////////////////////////////////////
 ///// Initialize medium-zoom library
 /////////////////////////////////////////////////////////////////
