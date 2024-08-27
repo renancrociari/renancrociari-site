@@ -101,14 +101,17 @@ navToggle.addEventListener("click", () => {
     primaryNav.setAttribute("data-visible", true);
     navToggle.setAttribute('aria-expanded', true);
     body.style.overflow = 'hidden';
+    navbar.classList.add('open');
 
     // Enable focus on elements
     focusableElements.forEach(el => el.removeAttribute('tabindex'));
     // Focus on the first link
     focusableElements[0].focus();
+
   } else if (visibility === "true") {
     primaryNav.setAttribute("data-visible", false);
     navToggle.setAttribute('aria-expanded', false);
+    navbar.classList.remove('open');
     setTimeout(() => {
       body.style.overflow = 'auto';
       // Restore the scroll position
