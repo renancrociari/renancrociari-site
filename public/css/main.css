@@ -571,7 +571,7 @@ color: var(--typography-green-dark);
 
 .nav-logo-link.white .white {
   opacity: 1;
-  transition: opacity 400ms ease-in;
+  transition: opacity 0ms ease-in;
 }
 
 .nav-logo-link.white .color-default, 
@@ -633,15 +633,24 @@ color: var(--typography-green-dark);
   opacity: 0;
 }
 
+
+
 .navbar.open .nav-logo-link .gray { /* Make the logo always gray when the navbar is open */
   opacity: 1!important;
-  transition: opacity 300ms ease-in !important;
-}
-
-.navbar .nav-logo-link .gray {
   transition: opacity 500ms ease-in!important;
 }
 
+/*******/
+
+.navbar.closed.scrolled-up .nav-logo-link.gray .color-default {
+  opacity: 1!important;
+  transition: opacity 1000ms ease-in!important;
+}
+
+.navbar.closed.scrolled-up .nav-logo-link.gray .gray {
+  opacity: 0!important;
+  transition: opacity 500ms ease-in!important;
+}
 
 
 /********** HOME - HERO **********/

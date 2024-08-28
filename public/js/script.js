@@ -102,6 +102,7 @@ navToggle.addEventListener("click", () => {
     navToggle.setAttribute('aria-expanded', true);
     body.style.overflow = 'hidden';
     navbar.classList.add('open');
+    navbar.classList.remove('closed');
 
     // Enable focus on elements
     focusableElements.forEach(el => el.removeAttribute('tabindex'));
@@ -112,6 +113,7 @@ navToggle.addEventListener("click", () => {
     primaryNav.setAttribute("data-visible", false);
     navToggle.setAttribute('aria-expanded', false);
     navbar.classList.remove('open');
+    navbar.classList.add('closed');
     setTimeout(() => {
       body.style.overflow = 'auto';
       // Restore the scroll position
