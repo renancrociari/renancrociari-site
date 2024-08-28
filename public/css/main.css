@@ -517,6 +517,17 @@ color: var(--typography-green-dark);
   background-image: url(../../public/images/renan-crociari-gray.svg);
 }
 
+.nav-logo-svg .gray-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-gray.svg);
+}
+
+
 .nav-logo-svg .white {
   position: absolute;
   top: 0;
@@ -553,19 +564,35 @@ color: var(--typography-green-dark);
 
 .nav-logo-link.gray .gray {
   opacity: 1;
-  transition: opacity 400ms ease-in;
+  transition: opacity 600ms ease-in-out;
 }
 
 .nav-logo-link.gray .color-default, 
 .nav-logo-link.gray .color-hover, 
 .nav-logo-link.gray .white {
   opacity: 0;
+  transition: opacity 600ms ease-in;
 }
 
 .nav-logo-link.gray:hover .gray {
   opacity: 0.6;
   transition: opacity 400ms ease-in;
 }
+
+/* Behavior of the GRAY 2 logo */
+
+.nav-logo-link.gray .gray-2 {
+  opacity: 0;
+  transition: opacity 0s;
+}
+
+
+.nav-logo-link.gray:hover .gray-2 {
+  opacity: 0.6;
+  transition: opacity 400ms ease-in;
+}
+
+
 
 /* Behavior of the WHITE logo */
 
@@ -597,12 +624,22 @@ color: var(--typography-green-dark);
   transition: opacity 0s;
 }
 
+.navbar.scrolled-up .nav-logo-link.colored .gray-2,
+.navbar.scrolled-up .nav-logo-link.white .gray-2,
+.navbar.scrolled-up .nav-logo-link.gray .gray-2 {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+
 .navbar.scrolled-up .nav-logo-link.colored .color-default,
 .navbar.scrolled-up .nav-logo-link.white .color-default,
 .navbar.scrolled-up .nav-logo-link.gray .color-default{
   opacity: 1;
-  transition: opacity 0s;
+  transition: opacity 0ms ease-in-out;
 }
+
+/* Scrolled navbar - HOVERED **********/
 
 .navbar.scrolled-up .nav-logo-link.colored .color-hover,
 .navbar.scrolled-up .nav-logo-link.white .color-hover,
@@ -636,21 +673,19 @@ color: var(--typography-green-dark);
 
 
 .navbar.open .nav-logo-link .gray { /* Make the logo always gray when the navbar is open */
-  opacity: 1!important;
-  transition: opacity 500ms ease-in!important;
+  opacity: 1;
 }
+
+.navbar.scrolled-up.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+}
+
+
 
 /*******/
 
-.navbar.closed.scrolled-up .nav-logo-link.gray .color-default {
-  opacity: 1!important;
-  transition: opacity 1000ms ease-in!important;
-}
 
-.navbar.closed.scrolled-up .nav-logo-link.gray .gray {
-  opacity: 0!important;
-  transition: opacity 500ms ease-in!important;
-}
 
 
 /********** HOME - HERO **********/
