@@ -628,7 +628,7 @@ color: var(--typography-green-dark);
 .navbar.scrolled-up .nav-logo-link.white .gray-2,
 .navbar.scrolled-up .nav-logo-link.gray .gray-2 {
   opacity: 0;
-  transition: opacity 0.6s ease-in-out;
+  transition: opacity 600ms ease-in-out;
 }
 
 
@@ -678,7 +678,7 @@ color: var(--typography-green-dark);
 
 .navbar.scrolled-up.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
   opacity: 1;
-  transition: opacity 1000ms ease-in;
+  transition: opacity 600ms ease-in;
 }
 
 
