@@ -603,7 +603,8 @@ color: var(--typography-green-dark);
 
 .nav-logo-link.white .color-default, 
 .nav-logo-link.white .color-hover, 
-.nav-logo-link.white .gray {
+.nav-logo-link.white .gray,
+.nav-logo-link.white .gray-2 {
   opacity: 0;
 }
 
@@ -1129,7 +1130,7 @@ body.about .content-header {
 }
 
 body.case-farfetch .content-header {
-  background: linear-gradient(75deg, #970d0d 0%, #d5815d 100%);
+  background-color: #C50511;
 }
 
 
