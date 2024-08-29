@@ -586,6 +586,10 @@ color: var(--typography-green-dark);
   transition: opacity 0s;
 }
 
+.nav-logo-link.white .gray-2 {
+  opacity: 0;
+  transition: opacity 600s ease-in-out;
+}
 
 .nav-logo-link.gray:hover .gray-2 {
   opacity: 0.6;
@@ -602,11 +606,18 @@ color: var(--typography-green-dark);
 }
 
 .nav-logo-link.white .color-default, 
-.nav-logo-link.white .color-hover, 
+.nav-logo-link.white .color-hover,
+.nav-logo-link.white .gray {
+  opacity: 0;
+}
+
 .nav-logo-link.white .gray,
 .nav-logo-link.white .gray-2 {
   opacity: 0;
+  transition: opacity 400ms ease-in;
 }
+
+
 
 .nav-logo-link.white:hover .white {
   opacity: 0.6;
@@ -677,9 +688,33 @@ color: var(--typography-green-dark);
   opacity: 1;
 }
 
+
+
+
+
+
+.navbar.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
+  opacity: 1;
+  transition: opacity 600ms ease-in;
+}
+
+
+
 .navbar.scrolled-up.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
   opacity: 1;
   transition: opacity 600ms ease-in;
+}
+
+
+
+.nav-logo-link.white .gray-2 {
+  opacity: 0;
+  transition: opacity 600ms ease-in;
+  z-index: 1;
+}
+
+.navbar.open .nav-logo-link.white .gray {
+  opacity: 0;
 }
 
 
