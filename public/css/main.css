@@ -591,6 +591,11 @@ color: var(--typography-green-dark);
   transition: opacity 600s ease-in-out;
 }
 
+.nav-logo-link.gray:hover .gray-2 {
+  opacity: 0.6;
+  transition: opacity 400ms ease-in;
+}
+
 
 
 /* Behavior of the WHITE logo */
@@ -684,15 +689,11 @@ color: var(--typography-green-dark);
 }
 
 
-body.gray .navbar:not(.scrolled-up).open .nav-logo-link .gray-2 {
-  opacity: 0; /*Hide the gray logo on gray navbar when navbar is open but not scrolled*/
-}
 
-body.white .navbar:not(.scrolled-up).open .nav-logo-link .gray-2 {
-  opacity: 1; /*Show the gray logo on white navbar when navbar is open but not scrolled*/
-}
 
-.navbar.scrolled-up.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
+
+
+.navbar.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
   opacity: 1;
   transition: opacity 600ms ease-in;
 }
@@ -1216,12 +1217,6 @@ body.case-farfetch .content-header {
   .main-nav-list[data-visible="true"] {
     box-shadow: 0px -1px 0px #95EC8D;
   }
-}
-
-
-.navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
-  opacity: 1;
-  transition: opacity 300ms ease-in-out;
 }
 
 
