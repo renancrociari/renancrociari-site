@@ -1220,14 +1220,26 @@ body.case-farfetch .content-header {
 }
 
 
-
-/************** Default dark navbar ******************/
-
-.light .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
-  color: #FFFFFF;
+.navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
+  /*Hover style for navbar links*/
+  opacity: 0.6;
+  transition: opacity 300ms ease-in-out;
 }
 
-/************** Default light navbar ***************/
+
+/************** Default white navbar ******************/
+
+.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+  color: #FFFFFF;
+  transition: opacity 300ms ease-in-out;
+}
+
+
+
+
+
+/************** Default gray navbar ***************/
+
 
 
 
@@ -1250,10 +1262,12 @@ body.case-farfetch .content-header {
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
   color: var(--typography-green-light);
+  transition: color 300ms ease-in-out;
 }
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
   color: var(--typography-gray-200);
+  transition: color 300ms ease-in-out;
 }
 
 
@@ -1995,6 +2009,19 @@ h1.hero {
   width: 24px;
   height: 16px;
 }
+
+body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
+   /*Makes hamburger menu icon white in dark background*/
+  fill: #FFFFFF;
+}
+
+.navbar.scrolled-up .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg { 
+  /*Makes hamburger menu icon green when navbar is scrolled up*/
+  fill: var(--typography-green-light);
+}
+
+
+
 
 /* Hamburger menu animation */
 
