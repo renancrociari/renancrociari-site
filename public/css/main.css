@@ -458,59 +458,274 @@ color: var(--typography-green-dark);
 
 .home-logo-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
   justify-content: center;
   margin-top: 32px;
+  height: 64px;
 }
 
-.home-logo-link {
+
+/********** Nav logo **********/
+
+.nav-logo-link {
   position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
-
-/********** home logo **********/
-
-.home-logo-svg {
+.nav-logo-svg {
   display: inline-block;
   position: relative;
   width: 140.44px;
   height: 16px;
 }
 
-.home-logo-svg:before {
-  content: "";
+.nav-logo-svg > * {
+  background-size: contain;
+}
+
+.nav-logo-svg .color-default {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
   background-image: url(../../public/images/renan-crociari-default.svg);
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  transition: opacity 0.6s ease-in-out;
 }
 
-.home-logo-svg::after {
-  content: "";
+.nav-logo-svg .color-hover {
   position: absolute;
-  background-image: url(../../public/images/renan-crociari-hover.svg);
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-hover.svg);
+}
+
+.nav-logo-svg .gray {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-gray.svg);
+}
+
+.nav-logo-svg .gray-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-gray.svg);
+}
+
+
+.nav-logo-svg .white {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
+  background-image: url(../../public/images/renan-crociari-white.svg);
+  opacity: 1;
+}
+
+/* Behavior of the COLORED logo */
+.nav-logo-link.color .color-default {
+  opacity: 1;
+}
+
+.nav-logo-link.color .color-hover, 
+.nav-logo-link.color .gray, 
+.nav-logo-link.color .white {
+  opacity: 0;
+}
+
+.nav-logo-link.color:hover .color-hover {
+  opacity: 1;
+}
+
+.nav-logo-link.color:hover .color-default,
+.nav-logo-link.color:hover .gray,
+.nav-logo-link.color:hover .white {
+  opacity: 0;
+}
+
+/* Behavior of the GRAY logo */
+
+.nav-logo-link.gray .gray {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.nav-logo-link.gray .color-default, 
+.nav-logo-link.gray .color-hover, 
+.nav-logo-link.gray .white {
+  opacity: 0;
+  transition: opacity 600ms ease-in;
+}
+
+.nav-logo-link.gray:hover .gray {
+  opacity: 0.6;
+  transition: opacity 300ms ease-in;
+}
+
+/* Behavior of the GRAY 2 logo */
+
+.nav-logo-link.gray .gray-2 {
+  opacity: 0;
+  transition: opacity 0s;
+}
+
+.nav-logo-link.white .gray-2 {
+  opacity: 0;
+  transition: opacity 600s ease-in-out;
+}
+
+
+
+
+
+/* Behavior of the WHITE logo */
+
+.nav-logo-link.white .white {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.nav-logo-link.white .color-default, 
+.nav-logo-link.white .color-hover,
+.nav-logo-link.white .gray {
+  opacity: 0;
+}
+
+.nav-logo-link.white .gray,
+.nav-logo-link.white .gray-2 {
+  opacity: 0;
+  transition: opacity 400ms ease-in;
+}
+
+
+
+.nav-logo-link.white:hover .white {
+  opacity: 0.6;
+  transition: opacity 300ms ease-in;
+}
+
+/********** Behavior of the Scrolled up navbar **********/
+
+.navbar.scrolled-up .nav-logo-link.colored .gray,
+.navbar.scrolled-up .nav-logo-link.white .gray,
+.navbar.scrolled-up .nav-logo-link.gray .gray,
+.navbar.scrolled-up .nav-logo-link.colored .white,
+.navbar.scrolled-up .nav-logo-link.white .white,
+.navbar.scrolled-up .nav-logo-link.gray .white {
+  opacity: 0;
+  transition: opacity 0s;
+}
+
+.navbar.scrolled-up .nav-logo-link.colored .gray-2,
+.navbar.scrolled-up .nav-logo-link.white .gray-2,
+.navbar.scrolled-up .nav-logo-link.gray .gray-2 {
+  opacity: 0;
+  transition: opacity 600ms ease-in-out;
+}
+
+
+.navbar.scrolled-up .nav-logo-link.colored .color-default,
+.navbar.scrolled-up .nav-logo-link.white .color-default,
+.navbar.scrolled-up .nav-logo-link.gray .color-default{
+  opacity: 1;
+  transition: opacity 0ms ease-in-out;
+}
+
+/* Scrolled navbar - HOVERED **********/
+
+.navbar.scrolled-up .nav-logo-link.colored .color-hover,
+.navbar.scrolled-up .nav-logo-link.white .color-hover,
+.navbar.scrolled-up .nav-logo-link.gray .color-hover{
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
 }
 
-.home-logo-svg:hover::before {
+.navbar.scrolled-up .nav-logo-link.colored:hover .color-default,
+.navbar.scrolled-up .nav-logo-link.white:hover .color-default,
+.navbar.scrolled-up .nav-logo-link.gray:hover .color-default{
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.navbar.scrolled-up .nav-logo-link.colored:hover .color-hover,
+.navbar.scrolled-up .nav-logo-link.white:hover .color-hover,
+.navbar.scrolled-up .nav-logo-link.gray:hover .color-hover{
+  opacity: 1;
+  transition: opacity 0.6s ease-in-out;
+}
+
+/*********** Behavior of the open navbar ***********/
+
+.navbar.open .nav-logo-link .color-default,
+.navbar.open .nav-logo-link .color-hover,
+.navbar.open .nav-logo-link .white{
   opacity: 0;
 }
 
-.home-logo-svg:hover::after {
+
+
+.navbar.open .nav-logo-link .gray { /* Make the logo always gray when the navbar is open */
   opacity: 1;
 }
 
 
-/********** end home logo **********/
 
+
+
+
+.navbar.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
+  opacity: 1;
+  transition: opacity 600ms ease-in;
+}
+
+.navbar.open:not(.scrolled-up) .nav-logo-link.gray .gray-2 {
+  opacity: 0;
+}
+
+
+
+.navbar.scrolled-up.open .nav-logo-link .gray-2 { /* Make the logo always gray when the navbar is open */
+  opacity: 1;
+  transition: opacity 600ms ease-in;
+}
+
+
+
+.nav-logo-link.white .gray-2 {
+  opacity: 0;
+  transition: opacity 600ms ease-in;
+  z-index: 1;
+}
+
+.navbar.open .nav-logo-link.white .gray {
+  opacity: 0;
+}
+
+
+
+/*******/
+
+
+
+
+/********** HOME - HERO **********/
 
 
 .home-hero {
@@ -951,7 +1166,7 @@ body.about .content-header {
 }
 
 body.case-farfetch .content-header {
-  background: linear-gradient(75deg, #970d0d 0%, #d5815d 100%);
+  background-color: #C50511;
 }
 
 
@@ -964,10 +1179,10 @@ body.case-farfetch .content-header {
 
 .navbar {
   height: 90px;
+  position: sticky;
   top: 0;
   right: 0;
   left: 0;
-  height: 90px;
   margin: 0 auto;
   margin: 0;
   padding: 0 32px;
@@ -979,7 +1194,6 @@ body.case-farfetch .content-header {
   transition: transform 250ms ease-out, background-color 800ms ease-out, box-shadow 1000ms ease-out;
   will-change: transform, background-color, box-shadow;
   z-index: 200; /* Needs to be higher than the navbar-bg and lower than the dialog */
-  position: sticky;
   box-sizing: border-box;
 }
 
@@ -996,7 +1210,7 @@ body.case-farfetch .content-header {
 
 @-moz-document url-prefix() { /* Applies a border that avoids the navbar to break when sticky in Firefox */
   .navbar {
-    border-top: 1px solid transparent; /* Adjust as necessary */
+    border-top: 1px solid transparent; 
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
@@ -1007,12 +1221,43 @@ body.case-farfetch .content-header {
 }
 
 
-/************** Style of the navbar when scrolled up *******/
-
-
-.about .navbar .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
-  color: white;
+.navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
+  /*Hover style for navbar links*/
+  opacity: 0.6;
 }
+
+
+/************** Default gray navbar ******************/
+
+body.gray .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
+  transition: opacity 300ms ease-in;
+}
+
+
+body.gray .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
+  transition: opacity 300ms ease-in;
+}
+
+
+/************** Default white navbar ******************/
+
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+  color: var(--typography-white);
+  transition: opacity 300ms ease-in;
+}
+
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { /*This is a class that is applied for bright or dark header backgrounds*/
+  opacity: 0.6;
+  transition: opacity 300ms ease-in;
+}
+
+
+
+
+
+
+/************** Scrolled up navbar ******************/
+
 
 .navbar.scrolled-up {
   background-color: white;
@@ -1029,10 +1274,12 @@ body.case-farfetch .content-header {
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
   color: var(--typography-green-light);
+  transition: color 300ms ease-in-out;
 }
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
   color: var(--typography-gray-200);
+  transition: color 300ms ease-in-out;
 }
 
 
@@ -1047,7 +1294,6 @@ body.case-farfetch .content-header {
   transition: background-color 0.3s ease-out;
   will-change: background-color;
 }
-
 
 
 .mobile-nav-toggle, .main-nav-list[data-visible="false"] .navbar-icons {
@@ -1092,6 +1338,10 @@ body.case-farfetch .content-header {
   display: flex;
   flex-direction: row;
   gap: 48px;
+}
+
+.main-nav-list-items li:first-child {
+  display: none;
 }
 
 
@@ -1580,7 +1830,11 @@ h1.hero {
 
 /************ HOME HEADER - 480px - 767px ************/
 
-.home-logo-svg {
+.home-logo-container {
+  margin-top: 4px;
+}
+
+.nav-logo-svg {
   width: 123px;
   height: 14px;
 }
@@ -1661,13 +1915,22 @@ h1.hero {
   flex-direction: column;
 }
 
+.main-nav-list-items li:first-child {
+  display: unset; /*Show link to homepage on mobile nav */
+}
+
+.main-nav-list-items li.linkedin {
+  display: none; /* Hide LinkedIn link on mobile nav */
+}
+
+
 .main-nav-a {
   font-size: 26px;
   font-weight: bold;
 }
 
 .navbar-icons {
-  gap: 24px;
+  gap: 32px;
   margin-left: -8px;
 }
 
@@ -1733,6 +1996,12 @@ h1.hero {
 }
 
 
+/* Fix behavior of the nav links when the navbar is closing on mobile */
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a,
+body.white .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a { 
+  color: var(--typography-gray-200);
+}
+
 
 
 /***************** Hamburger menu style ***************/
@@ -1758,6 +2027,19 @@ h1.hero {
   width: 24px;
   height: 16px;
 }
+
+body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
+   /*Makes hamburger menu icon white in dark background*/
+  fill: #FFFFFF;
+}
+
+.navbar.scrolled-up .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg { 
+  /*Makes hamburger menu icon green when navbar is scrolled up*/
+  fill: var(--typography-green-light);
+}
+
+
+
 
 /* Hamburger menu animation */
 

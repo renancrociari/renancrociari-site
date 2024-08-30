@@ -101,14 +101,19 @@ navToggle.addEventListener("click", () => {
     primaryNav.setAttribute("data-visible", true);
     navToggle.setAttribute('aria-expanded', true);
     body.style.overflow = 'hidden';
+    navbar.classList.add('open');
+    navbar.classList.remove('closed');
 
     // Enable focus on elements
     focusableElements.forEach(el => el.removeAttribute('tabindex'));
     // Focus on the first link
     focusableElements[0].focus();
+
   } else if (visibility === "true") {
     primaryNav.setAttribute("data-visible", false);
     navToggle.setAttribute('aria-expanded', false);
+    navbar.classList.remove('open');
+    navbar.classList.add('closed');
     setTimeout(() => {
       body.style.overflow = 'auto';
       // Restore the scroll position
@@ -277,16 +282,6 @@ observer.observe(mainNavList, { attributes: true });
 
 
 
-const navbarBg = document.querySelector('.navbar-bg');
-
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const alpha = Math.min(scrollY / 90, 1); // Calculate alpha value between 0 and 1
-  navbarBg.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
-  navbarBg.style.boxShadow = `0px 0px 14px 6px rgba(0, 0, 0, ${alpha * 0.05})`;
-});
-
-
 /////////////////////////////////////////////////////////////////
 ///// Initialize medium-zoom library
 /////////////////////////////////////////////////////////////////
@@ -294,7 +289,7 @@ window.addEventListener('scroll', () => {
 
 mediumZoom('.medium-zoom-image', {
   margin: 20,
-  background: '#FFFFFF',
+  background: 'rgba(255, 255, 255, 0.95)',
   scrollOffset: 0,
   container: null,
   template: null
