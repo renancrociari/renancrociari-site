@@ -1220,38 +1220,38 @@ body.case-farfetch .content-header {
   }
 }
 
+.main-nav-a {
+  cursor: pointer;
+  background-clip: unset;
+  transition: opacity 300ms ease-in;
+}
 
-.navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
-  /*Hover style for navbar links*/
+.main-nav-a:hover {
   opacity: 0.6;
+  transition: opacity 300ms ease-in;
 }
 
 
 /************** Default gray navbar ******************/
 
-body.gray .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
-  transition: opacity 100ms ease-in;
-}
-
-
-body.gray .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
-  transition: opacity 300ms ease-in;
+body.gray .navbar .main-nav-a { 
+  color: var(--typography-gray-200);
 }
 
 
 /************** Default white navbar ******************/
 
-body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
   color: var(--typography-white);
-  transition: opacity 300ms ease-in;
 }
 
-body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { /*This is a class that is applied for bright or dark header backgrounds*/
+body.white .main-nav-list[data-visible="true"] .main-nav-a { 
+  color: var(--typography-gray-200);
+}
+
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
   opacity: 0.6;
-  transition: opacity 300ms ease-in;
 }
-
-
 
 
 
