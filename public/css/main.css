@@ -1224,22 +1224,33 @@ body.case-farfetch .content-header {
 .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
   /*Hover style for navbar links*/
   opacity: 0.6;
-  transition: opacity 300ms ease-in-out;
+}
+
+
+/************** Default gray navbar ******************/
+
+body.gray .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
+  transition: opacity 300ms ease-in;
+}
+
+
+body.gray .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { 
+  transition: opacity 300ms ease-in;
 }
 
 
 /************** Default white navbar ******************/
 
-.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
   color: var(--typography-white);
-  transition: opacity 300ms ease-in-out;
+  transition: opacity 300ms ease-in;
 }
 
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover { /*This is a class that is applied for bright or dark header backgrounds*/
+  opacity: 0.6;
+  transition: opacity 300ms ease-in;
+}
 
-
-
-
-/************** Default gray navbar ***************/
 
 
 
@@ -1985,9 +1996,9 @@ h1.hero {
 }
 
 
-
-.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
-  /*Fix behavior of the nav links when the navbar is closing on mobile*/
+/* Fix behavior of the nav links when the navbar is closing on mobile */
+body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a,
+body.white .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a { 
   color: var(--typography-gray-200);
 }
 
