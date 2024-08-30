@@ -1284,6 +1284,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 }
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
+  opacity: 1;
   color: var(--typography-gray-200);
   transition: color 300ms ease-in-out;
 }
@@ -1953,12 +1954,13 @@ h1.hero {
   transition: transform 300ms cubic-bezier(.65,.05,.36,1);
 }
 
-.main-nav-list[data-visible="false"] .main-nav-a { /* Fade-out for inner elements when the navbar is closing */
+ .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a,
+ .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { /* Fade-out for inner elements when the navbar is closing */
   opacity: 0;
   transition: opacity 100ms cubic-bezier(.17,.84,.44,1);
 }
 
-.main-nav-list[data-visible="true"] .main-nav-a { /* Fade-in for inner elements when the navbar is opening */
+.navbar .main-nav-list[data-visible="true"] .main-nav-a { /* Fade-in for inner elements when the navbar is opening */
   opacity: 1;
   transition: opacity 250ms cubic-bezier(.17,.84,.44,1) 350ms;
 }
