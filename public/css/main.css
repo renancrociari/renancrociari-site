@@ -1238,6 +1238,12 @@ body.gray .navbar .main-nav-a {
   color: var(--typography-gray-200);
 }
 
+body.gray .navbar .main-nav-a,
+body.white .navbar .main-nav-a {
+  transition: color 1000ms ease-in, opacity 300ms ease-in;
+  will-change: color, opacity;
+}
+
 
 /************** Default white navbar ******************/
 
@@ -1274,7 +1280,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
   color: var(--typography-green-light);
-  transition: color 300ms ease-in, opacity 100ms ease-in;
+  transition: color 0ms linear, opacity 0ms linear;
 }
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
