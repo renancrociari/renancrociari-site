@@ -602,7 +602,7 @@ color: var(--typography-green-dark);
 
 .nav-logo-link.white .white {
   opacity: 1;
-  transition: opacity 0ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 
 .nav-logo-link.white .color-default, 
