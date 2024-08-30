@@ -1231,7 +1231,7 @@ body.case-farfetch .content-header {
 /************** Default white navbar ******************/
 
 .white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { /*This is a class that is applied for bright or dark header backgrounds*/
-  color: #FFFFFF;
+  color: var(--typography-white);
   transition: opacity 300ms ease-in-out;
 }
 
@@ -1984,6 +1984,12 @@ h1.hero {
   } 
 }
 
+
+
+.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
+  /*Fix behavior of the nav links when the navbar is closing on mobile*/
+  color: var(--typography-gray-200);
+}
 
 
 
