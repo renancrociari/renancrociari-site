@@ -484,7 +484,7 @@ color: var(--typography-green-dark);
 }
 
 .nav-logo-svg > * {
-  background-size: cover;
+  background-size: contain;
 }
 
 .nav-logo-svg .color-default {
@@ -621,7 +621,7 @@ color: var(--typography-green-dark);
 
 .nav-logo-link.white:hover .white {
   opacity: 0.6;
-  transition: opacity 400ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 
 /********** Behavior of the Scrolled up navbar **********/
