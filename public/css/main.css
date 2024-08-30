@@ -2000,6 +2000,7 @@ h1.hero {
 body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a,
 body.white .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a { 
   color: var(--typography-gray-200);
+  transition: opacity 100ms ease-in;
 }
 
 
