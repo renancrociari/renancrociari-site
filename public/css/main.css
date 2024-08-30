@@ -1230,7 +1230,7 @@ body.case-farfetch .content-header {
 /************** Default gray navbar ******************/
 
 body.gray .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a { 
-  transition: opacity 300ms ease-in;
+  transition: opacity 100ms ease-in;
 }
 
 
@@ -1274,7 +1274,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
   color: var(--typography-green-light);
-  transition: color 300ms ease-in-out;
+  transition: color 300ms ease-in, opacity 100ms ease-in;
 }
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
@@ -2001,6 +2001,8 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 body.white .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a { 
   color: var(--typography-gray-200);
 }
+
+
 
 
 
