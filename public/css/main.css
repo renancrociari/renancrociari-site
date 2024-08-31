@@ -217,8 +217,8 @@ h1.hero, .display-xxxl {
 }
 
 h2, .display-xl { 
-  font-size: 32px;
-  line-height: 38px;
+  font-size: 36px;
+  line-height: 42px;
   font-weight: 600;
 }
 
@@ -1356,8 +1356,16 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   padding-top: 234px;
 }
 
+.content-hero h1 {
+  max-width: 670px;
+}
+
+.content-hero .divider {
+  margin: 0 8px;
+  color: var(--typography-white);
+}
+
 .featured-image {
-  margin-top: 48px;
   width: 100%;
   height: auto;
 }
