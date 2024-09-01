@@ -167,23 +167,26 @@ input::placeholder {
 
 .ul { 
   list-style-type: disc; 
-  list-style-position: inside; 
+  list-style-position: outside; 
 }
 .ol { 
   list-style-type: decimal; 
-  list-style-position: inside; 
+  list-style-position: outside; 
 }
 .ul .ul, .ol .ul { 
   list-style-type: circle; 
-  list-style-position: inside; 
+  list-style-position: outside; 
   margin-left: 15px; 
 }
 .ol .ol, .ul .ol { 
   list-style-type: lower-latin; 
-  list-style-position: inside; 
-  margin-left: 15px; 
+  list-style-position: outside; 
+  margin-left: 16px; 
 }
 
+.ul li, .ol li {
+  margin-left: 32px;
+}
 
 /************** TYPOGRAPHY ****************/
 
@@ -276,7 +279,7 @@ h3, h4, h5, h6, .display-md {
   font-weight: 600;
 }
 
-b, .t-bold {
+b, strong, .t-bold {
   font-weight: 700;
 }
 
@@ -1661,11 +1664,17 @@ details > div > div {
 /**************** MEDIUM ZOOM OVERLAY ****************/
 
 .medium-zoom-overlay, .medium-zoom-image--opened {
-      z-index: 9999;
-    }
+   z-index: 9999;
+}
 
+.medium-zoom-medium, .medium-zoom-large {
+  width: 100%;
+  height: auto;
+}
 
-
+.medium-zoom-medium {
+  max-width: 764px;
+}
 
 
 /********************************************************************* MEDIA QUERIES ************************************************************/
@@ -1801,6 +1810,13 @@ h1.hero {
     margin-top: 1px;
   }
 
+  /********** LIST OL UL LI **********/
+
+
+.ul li, .ol li {
+  margin-left: 16px;
+}
+
 
  /********** TYPOGRAPHY - 480px - 767px **********/ 
 
@@ -1813,7 +1829,7 @@ h1.hero {
     letter-spacing: 0.3px;
   }
   
-  p {
+  p, .p {
     font-family: var(--font-paragraph), serif;
     font-size: 18px;
     line-height: 32px;
