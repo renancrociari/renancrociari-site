@@ -1165,8 +1165,20 @@ body.about .content-header {
   background: linear-gradient(255deg, #D6FEB2 0%, #94F89D 100%);
 }
 
+/** HEADERS OF THE CASES ****/
+
+/** Farfetch **/
 body.case-farfetch .content-header {
   background-color: #C50511;
+}
+
+body.case-farfetch .content-hero h1 {
+  max-width: 670px;
+}
+
+/** SL Mobile **/
+body.sl-mobile .content-header {
+  background-color: #8944A1;
 }
 
 
@@ -1328,7 +1340,6 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   width: 140.44px;
   height: 16px;
   opacity: 0.8;
-  /* filter: invert(6%) sepia(37%) saturate(0%) hue-rotate(200deg) brightness(101%) contrast(85%) opacity(0.7); */
   transition: opacity 0.6s ease-in-out;
   will-change: opacity;
 }
@@ -1351,14 +1362,12 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   display: none;
 }
 
+/********** CONTENT HERO **********/
 
 .content-hero {
   padding-top: 234px;
 }
 
-.content-hero h1 {
-  max-width: 670px;
-}
 
 .content-hero .divider {
   margin: 0 8px;
@@ -1374,6 +1383,8 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   width: 100%;
   height: auto;
 }
+
+/********** ARTICLE CONTENT **********/
 
 .article-content {
   display: flex;
