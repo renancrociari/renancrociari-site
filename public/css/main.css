@@ -201,8 +201,8 @@ body, span, div, li, th, td {
 
 p, .p {
   font-family: var(--font-paragraph), serif;
-  font-size: 20px;
-  line-height: 34px;
+  font-size: 20.8px;
+  line-height: 36px;
   font-weight: 400;
   letter-spacing: 0px;
 }
@@ -1417,7 +1417,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 }
 
 .text-block {
-  max-width: 764px;
+  max-width: 800px;
   padding: 0 32px;
 }
 
@@ -1430,6 +1430,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   align-items: center;
   gap: 24px;
   margin-top: 80px;
+  max-width: 1060px;
 }
 
 .experience-details {
@@ -2201,13 +2202,13 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
 
 
 /*********************** Small devices (portrait tablets and large phones, 0 - 480px) *******************************/
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 479px) {
 
 .featured-projects {
   grid-template-columns: 1fr;
 }
 
-/********** DIALOG 0 - 480px **********/
+/********** DIALOG 0 - 479px **********/
 
 .dialog-container {
   margin-top: 18px;
