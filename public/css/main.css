@@ -803,7 +803,7 @@ color: var(--typography-green-dark);
 .home-nav {
   display: flex;
   gap: var(--spacing-xxl);
-  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 /********** GENRAL DIALOG  **********/
@@ -1730,6 +1730,10 @@ h1.hero {
   text-align: center;
 }
 
+.home-nav {
+  justify-content: center;
+}
+
 
 /********** HOME PROJECT CARDS 768 - 991 **********/
 
@@ -1913,7 +1917,7 @@ h1.hero {
 }
 
 .home-nav {
-  gap: 32px;
+  gap: 0px 32px;
 }
 
 
