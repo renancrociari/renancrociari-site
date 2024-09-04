@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Redirecionar para https e www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^[^.]+(\.[^.]+)*$ [NC]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
