@@ -1456,10 +1456,6 @@ details > summary::-webkit-details-marker {
 }
 
 
-/* .experience-details:last-child {
-  border-bottom: none;
-} */
-
 .experience-title {
   display: flex;
   flex-direction: column;
