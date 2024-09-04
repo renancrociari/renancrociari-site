@@ -172,8 +172,10 @@ function calculateWorkDuration(startDate) {
 
 // Example usage:
 const startDate = '2021-01-01'; // Use your own start date
-document.getElementById('workDuration').innerText = calculateWorkDuration(startDate);
-
+const workDurationElement = document.getElementById('workDuration');
+if (workDurationElement) {
+  workDurationElement.innerText = calculateWorkDuration(startDate);
+}
 
 /////////////////////////////////////////////////////////////////
 /// Animate experience accordion details element
