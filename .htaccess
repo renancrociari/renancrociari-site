@@ -1,7 +1,11 @@
 RewriteEngine On
 
-# Redirecionar para https e www
+# Redirect to HTTPS and add www if not present
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^[^.]+(\.[^.]+)*$ [NC]
 RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Redirect /index.html to root domain
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /.*index\.html?\ HTTP/
+RewriteRule ^(.*)index\.html?$ https://%{HTTP_HOST}/ [R=301,L]
