@@ -1684,7 +1684,9 @@ details > div > div {
 /*************************** Large devices (laptops/desktops, 992px - 1199px) *************************/
 @media only screen and (max-width: 1199px) {
 
-
+  .project-card-content {
+    padding: 64px 32px 0 32px;
+  }
 
 }
 
@@ -1743,9 +1745,6 @@ h1.hero {
 
 /*project card original*/
 
-.project-card-content {
-  padding: 64px 32px 0 32px;
-}
 
 .project-card {
     height: 580px;
