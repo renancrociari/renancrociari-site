@@ -2218,6 +2218,25 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
   margin-top: 20vh;
 }
 
+/********** CONTENT 0 - 479px **********/
+
+.content-header-border {
+  height: 50px;
+  margin-top: -50px;
+}
+
+
+.text-block {
+  padding: 0 16px;
+}
+ 
+
+/*********** FOOTER  0 - 479px ***********/
+
+.footer-nav {
+  gap: 32px;
+}
+
 
 }
 
