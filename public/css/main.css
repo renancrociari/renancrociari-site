@@ -1676,6 +1676,21 @@ details > div > div {
   max-width: 764px;
 }
 
+/**************** BRANDS LIST ****************/
+
+.brands-list {
+  text-align: center;
+  max-width: 1344px;
+  width: 100%;
+}
+
+.brands-list-grid {  
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
+  row-gap: 16px;
+}
+
 
 /********************************************************************* MEDIA QUERIES ************************************************************/
 
@@ -2202,6 +2217,17 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
 
 }
 
+/**************** BRANDS LIST ****************/
+
+.brands-list {
+  padding: 0 8px;
+}
+
+.brands-list-grid {  
+  grid-template-columns: repeat(4, 1fr);
+}
+
+
 
 /*********************** Small devices (portrait tablets and large phones, 0 - 480px) *******************************/
 @media only screen and (max-width: 479px) {
@@ -2237,6 +2263,16 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
 
 .footer-nav {
   gap: 32px;
+}
+
+/**************** BRANDS LIST ****************/
+
+.brands-list {
+  padding: 0;
+}
+
+.brands-list-grid {  
+  grid-template-columns: repeat(3, 1fr);
 }
 
 
