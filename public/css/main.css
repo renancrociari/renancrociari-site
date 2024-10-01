@@ -1194,6 +1194,11 @@ body.about .content-header {
 
 /** HEADERS OF THE CASES ****/
 
+/** About **/
+body.about .content-hero h1 {
+  max-width: 960px;
+}
+
 /** Farfetch **/
 body.farfetch .content-header {
   background-color: #C50511;
