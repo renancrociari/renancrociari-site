@@ -1429,6 +1429,11 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   padding: 0 32px;
 }
 
+.separator::before {
+  content: "...";
+  text-align: center;
+} 
+
 
 /********** EXPERIENCE ACCORDIONS **********/
 
@@ -1695,6 +1700,8 @@ details > div > div {
   justify-items: center;
   row-gap: 16px;
 }
+
+
 
 
 /********************************************************************* MEDIA QUERIES ************************************************************/
