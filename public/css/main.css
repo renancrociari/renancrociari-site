@@ -10,6 +10,7 @@ body {
   border-image: linear-gradient(0deg,#C8F686,#75EF81) 1;
   box-sizing: border-box;
   color: var(--typography-gray-200);
+  font-optical-sizing: auto;
 }
 
 
@@ -192,6 +193,51 @@ input::placeholder {
 }
 
 /************** TYPOGRAPHY ****************/
+
+@font-face {
+  font-family: 'Degular';
+  src: url('/public/fonts/degular.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif';
+  src: url('/public/fonts/source-serif-regular-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif';
+  src: url('/public/fonts/source-serif-regular-400-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif';
+  src: url('/public/fonts/source-serif-bold-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif';
+  src: url('/public/fonts/source-serif-bold-700-italic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+
+
+
+
 
 body, span, div, li, th, td {
   font-family: var(--font-display), sans-serif;
@@ -1749,9 +1795,7 @@ details > div > div {
   font-size: 22px;
 }
 
-.metric-number.arrow-up:before {
-  
-}
+
 
 
 /********************************************************************* MEDIA QUERIES ************************************************************/

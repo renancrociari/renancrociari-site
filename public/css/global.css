@@ -1,8 +1,8 @@
 
 :root {
   /* Fonts */
-  --font-display: degular;
-  --font-paragraph: "source-serif-pro";
+  --font-display: 'Degular', sans-serif;
+  --font-paragraph: 'Source Serif', 'Georgia', serif;
 
   /* Font sizes */
   --font-xxxxs: 16px;
