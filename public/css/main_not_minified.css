@@ -1073,8 +1073,8 @@ color: var(--typography-green-dark);
 /*cards backgrounds*/
 
 .card-1 {
-  background: #8944A1 url(../../public/images/redesign-mobile.png) no-repeat bottom -200px center;
-  background-size: 114%;
+  background: #8944A1 url(../../public/images/redesign-mobile-home.webp) no-repeat bottom 0px center;
+  background-size: 82%;
 }
 
 .card-1:hover {
