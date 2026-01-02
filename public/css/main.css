@@ -193,12 +193,20 @@ input::placeholder {
 .ul li, .ol li {
   padding-left: 8px;
   margin-left: 12px;
-  
+}
+
+.no-bullet {
+  list-style-type: none;
+}
+
+.no-bullet li {
+  padding-left: 0px;
+  margin-left: 0px;
 }
 
 li::marker {
     color: var(--typography-green-light);   
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 
@@ -2341,6 +2349,21 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
 .brands-list-grid {  
   grid-template-columns: repeat(4, 1fr);
 }
+
+
+  /********** FEATURED METRICS 480px - 767px **********/
+
+  .metrics-list {
+    flex-direction: column;
+  }
+
+  .metric {
+    max-width: 100%;
+  }
+
+  .metric-number {
+    align-items: normal;
+  }
 
 
 
