@@ -1502,8 +1502,9 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 }
 
 .executive-summary-text {
-  column-count: 2; 
-  column-gap: 48px; 
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 48px 32px;
   text-align: left;
 }
 
@@ -1853,11 +1854,6 @@ details > div > div {
   padding-right: 16px;
 }
 
-.executive-summary-text {
-  column-count: 1;
-  max-width: 800px;
-  padding: 0 32px;
-}
 
 
 /********** HERO 768 - 991 **********/
@@ -1964,12 +1960,6 @@ h1.hero {
     margin-top: 1px;
   }
 
-  /********** LIST OL UL LI **********/
-
-
-.ul li, .ol li {
-  margin-left: 16px;
-}
 
 
  /********** TYPOGRAPHY - 480px - 767px **********/ 
@@ -2349,6 +2339,13 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
   background-size: 43px 20px;
 }
 
+/********** EXECUTIVE SUMMARY 480px - 767px  **********/
+
+.executive-summary-text {
+  grid-template-columns: 1fr;
+  padding: 0 32px;
+}
+
 
 
 /**************** BRANDS LIST ****************/
@@ -2375,6 +2372,8 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
   .metric-number {
     align-items: normal;
   }
+
+
 
 }
 
