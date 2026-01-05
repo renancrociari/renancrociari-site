@@ -1768,7 +1768,9 @@ details > div > div {
   max-width: 1344px;
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 16px;
+  margin-left: 32px;
+  margin-right: 32px;
 }
 
 /**************** BRANDS LIST ****************/
@@ -1907,7 +1909,21 @@ h1.hero {
   height: 360px;
 }
 
+/********** TWO COLUMN IMAGE 768 - 991 **********/
+
+.two-column-image {
+  flex-direction: column;
 }
+
+.medium-zoom-small {
+  width: 100%;
+}
+
+
+}
+
+
+
 
 
 /********************************** Medium devices (landscape tablets, 480px - 767px) *******************************************/
@@ -2364,6 +2380,7 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
   .featured-metrics {
     padding: 64px 16px;
   }
+
   .metrics-list {
     flex-direction: column;
   }
@@ -2412,6 +2429,11 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
 
 .featured-metrics {
   width: calc(100% - 32px);
+}
+
+.two-column-image {
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
 /*********** FOOTER  0 - 479px ***********/
