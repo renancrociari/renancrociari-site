@@ -2361,6 +2361,9 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
 
   /********** FEATURED METRICS 480px - 767px **********/
 
+  .featured-metrics {
+    padding: 64px 16px;
+  }
   .metrics-list {
     flex-direction: column;
   }
@@ -2406,7 +2409,10 @@ body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
 .text-block {
   padding: 0 16px;
 }
- 
+
+.featured-metrics {
+  width: calc(100% - 32px);
+}
 
 /*********** FOOTER  0 - 479px ***********/
 
