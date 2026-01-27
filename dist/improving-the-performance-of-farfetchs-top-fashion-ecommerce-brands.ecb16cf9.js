@@ -207,11 +207,11 @@
       });
     }
   }
-})({"5LFvW":[function(require,module,exports,__globalThis) {
+})({"e26ys":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
-var HMR_SERVER_PORT = 1234;
+var HMR_SERVER_PORT = 52053;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
 var HMR_USE_SSE = false;
@@ -715,6 +715,6 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"l2QXf":[function(require,module,exports,__globalThis) {
 
-},{}]},["5LFvW","l2QXf"], "l2QXf", "parcelRequire0291", {})
+},{}]},["e26ys","l2QXf"], "l2QXf", "parcelRequire0291", {})
 
 //# sourceMappingURL=improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.ecb16cf9.js.map
