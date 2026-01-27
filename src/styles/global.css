@@ -1,0 +1,51 @@
+
+:root {
+  /* Fonts */
+  --font-display: 'Degular', sans-serif;
+  --font-paragraph: 'Source Serif', 'Georgia', serif;
+
+  /* Font sizes */
+  --font-xxxxs: 16px;
+  --font-xxxs: 18px;
+  --font-xxs: 20px;
+  --font-xs: 22px;
+  --font-md: 24px;
+  --font-lg: 26px;
+  --font-xl: 32px;
+  --font-xxl: 36px;
+  --font-xxxl: 40px;
+  --font-xxxxl: 60px;
+  
+
+  /* Colors */
+  --typography-white: #ffffff;
+  --typography-green-light: #38C545;
+  --typography-green-dark: #099415;
+  --typography-gradient-1: #25D16A;
+  --typography-gradient-2: #9EE825;
+  --typography-gray-200: #222222;
+  --typography-gray-300: #B6B6B6;
+  --background-gray-light: #f1f2f5;
+  --background-gray-medium: #E9EAEE;
+  --border-gray: #E9EAEE;
+  --border-red: #FF6060;
+
+
+  /* Spacing */
+  --spacing-xxxs: 4px;
+  --spacing-xxs: 8px;
+  --spacing-xs: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 64px;
+  --spacing-xxxl: 80px;
+  --spacing-xxxxl: 128px;
+
+
+  /* Border radiuses */
+    --br-xxxs: 4px;
+  --br-xxs: 8px;
+  --br-xs: 16px;
+  --br-md: 24px;
+}
