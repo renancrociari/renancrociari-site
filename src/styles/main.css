@@ -1379,6 +1379,22 @@ strong,
   background-color: red;
 }
 
+/* Loading spinner for password validation */
+.btn-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(34, 34, 34, 0.2);
+  border-top-color: var(--typography-gray-200);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /********** DIALOG CONTENT PROTECTED **********/
 
 .dialog-content-protected {

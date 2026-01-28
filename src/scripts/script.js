@@ -14,7 +14,7 @@ function openDialog() {
   body.classList.add('body-fixed'); // Add class to keep body fixed
   modal.showModal();
   modal.classList.remove('fade-out');
-  
+
   // Adiciona um estado ao histórico quando a dialog é aberta
   history.pushState({ page: 'my-email' }, 'my-email', '#my-email');
 }
@@ -25,8 +25,8 @@ function closeDialog() {
   setTimeout(() => {
     modal.close();
     body.classList.remove('body-fixed'); // Remove the class
-   
-    
+
+
     // Remove the hash from the URL
     history.replaceState(null, '', window.location.pathname);
   }, 450);
@@ -69,16 +69,35 @@ document.addEventListener('DOMContentLoaded', (event) => {
 ///Função para controlar a password dialog
 /////////////////////////////////////////////////////////////////
 
+import { validatePassword, storeAuthToken, getRedirectUrl } from './password-auth.js';
+
 const passwordModal = document.querySelector('.dialog-show-password');
 const openPasswordModal = document.querySelectorAll('.btn-show-password');
 const closePasswordModal = passwordModal?.querySelector('.btn-close-email');
 
 if (passwordModal && openPasswordModal.length > 0) {
+  const passwordInput = passwordModal.querySelector('input[type="password"]');
+  const submitButton = passwordModal.querySelector('.btn-submit');
+  const errorMessage = passwordModal.querySelector('.error-message');
+
+  // Store current content ID
+  let currentContentId = null;
+
   // Função para abrir a password dialog
   function openPasswordDialog() {
     body.classList.add('body-fixed');
     passwordModal.showModal();
     passwordModal.classList.remove('fade-out');
+
+    // Clear previous input and errors
+    if (passwordInput) {
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+    if (errorMessage) {
+      errorMessage.style.display = 'none';
+    }
+
     history.pushState({ page: 'password-protected' }, 'password-protected', '#password-protected');
   }
 
@@ -92,10 +111,95 @@ if (passwordModal && openPasswordModal.length > 0) {
     }, 450);
   }
 
+  // Show error message
+  function showError(message) {
+    if (errorMessage) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      setTimeout(() => {
+        errorMessage.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  // Handle password submission
+  async function handlePasswordSubmit() {
+    const password = passwordInput?.value.trim();
+
+    if (!password) {
+      showError('Please enter a password');
+      return;
+    }
+
+    if (!currentContentId) {
+      showError('Content ID not found');
+      console.error('No content ID set for password dialog');
+      return;
+    }
+
+    // Show loading state with spinner
+    const originalButtonContent = submitButton.innerHTML;
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<div class="btn-spinner"></div>';
+
+    try {
+      // Validate password
+      const isValid = await validatePassword(currentContentId, password);
+
+      if (isValid) {
+        // Store auth token
+        storeAuthToken(currentContentId);
+
+        // Get redirect URL
+        const redirectUrl = getRedirectUrl(currentContentId);
+
+        if (redirectUrl) {
+          // Redirect to protected page
+          window.location.href = redirectUrl;
+        } else {
+          showError('Redirect URL not found');
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonContent;
+        }
+      } else {
+        // Show error
+        showError('Password incorrect');
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonContent;
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    } catch (error) {
+      console.error('Error validating password:', error);
+      showError('An error occurred. Please try again.');
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonContent;
+    }
+  }
+
   // Adiciona evento de clique para todos os botões que abrem a password modal
   openPasswordModal.forEach(button => {
-    button.addEventListener("click", openPasswordDialog);
+    button.addEventListener("click", () => {
+      // Get content ID from data attribute
+      currentContentId = button.dataset.contentId;
+      openPasswordDialog();
+    });
   });
+
+  // Submit on button click
+  if (submitButton) {
+    submitButton.addEventListener('click', handlePasswordSubmit);
+  }
+
+  // Submit on Enter key
+  if (passwordInput) {
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handlePasswordSubmit();
+      }
+    });
+  }
 
   // Adiciona evento de clique para o botão que fecha a password modal
   if (closePasswordModal) {
@@ -119,8 +223,15 @@ if (passwordModal && openPasswordModal.length > 0) {
   });
 
   // Verifica se a URL contém o hash '#password-protected' quando a página é carregada
+  // Also check for content ID in query params
   document.addEventListener('DOMContentLoaded', (event) => {
-    if (window.location.hash === '#password-protected') {
+    if (window.location.hash.includes('#password-protected')) {
+      // Extract content ID from query params if present
+      const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
+      const contentId = urlParams.get('content');
+      if (contentId) {
+        currentContentId = contentId;
+      }
       openPasswordDialog();
     }
   });
@@ -136,13 +247,13 @@ async function copyToClipboard() {
   const emailText = emailSpan.innerText;
 
   try {
-      await navigator.clipboard.writeText(emailText);
-      const successMessage = document.querySelector(".success-message");
-      successMessage.style.display = "block";
+    await navigator.clipboard.writeText(emailText);
+    const successMessage = document.querySelector(".success-message");
+    successMessage.style.display = "block";
   } catch (error) {
-      console.error("Erro ao copiar para a área de transferência:", error);
-      const errorMessage = document.querySelector(".error-message");
-      errorMessage.style.display = "block";
+    console.error("Erro ao copiar para a área de transferência:", error);
+    const errorMessage = document.querySelector(".error-message");
+    errorMessage.style.display = "block";
   }
 }
 
@@ -244,7 +355,7 @@ if (workDurationElement) {
 /////////////////////////////////////////////////////////////////
 
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   let target = event.target;
   // Traverse up to find the closest summary or details element
   while (target != null && !target.matches('summary') && !target.matches('details')) {

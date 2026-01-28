@@ -14,7 +14,7 @@
     <link rel="preload" href="../fonts/degular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="../fonts/source-serif-regular-400.woff2" as="font" type="font/woff2" crossorigin>
     <!-- Scripts -->
-    <script src="../scripts/script.js" defer></script>
+    <script type="module" src="../scripts/script.js"></script>
     <style>
         .design-system {
             padding: 64px 32px;
@@ -458,7 +458,8 @@
                         <button class="btn body-medium btn-green btn-show-email" aria-haspopup="dialog">
                             Open Email Dialog
                         </button>
-                        <button class="btn body-medium btn-green btn-show-password" aria-haspopup="dialog">
+                        <button class="btn body-medium btn-green btn-show-password" data-content-id="case-study-1"
+                            aria-haspopup="dialog">
                             Open Password Dialog
                         </button>
                     </div>
