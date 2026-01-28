@@ -1308,6 +1308,11 @@ strong,
   /* 'forwards' mantém o estado final após a animação */
 }
 
+.dialog-show-password.fade-out {
+  animation: myFadeOut 0.6s ease forwards;
+  /* 'forwards' mantém o estado final após a animação */
+}
+
 /*************** DIALOG SHOW EMAIL ************/
 
 .dialog-show-email[open]>* {

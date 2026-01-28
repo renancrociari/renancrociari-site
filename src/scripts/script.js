@@ -66,6 +66,68 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 /////////////////////////////////////////////////////////////////
+///Função para controlar a password dialog
+/////////////////////////////////////////////////////////////////
+
+const passwordModal = document.querySelector('.dialog-show-password');
+const openPasswordModal = document.querySelectorAll('.btn-show-password');
+const closePasswordModal = passwordModal?.querySelector('.btn-close-email');
+
+if (passwordModal && openPasswordModal.length > 0) {
+  // Função para abrir a password dialog
+  function openPasswordDialog() {
+    body.classList.add('body-fixed');
+    passwordModal.showModal();
+    passwordModal.classList.remove('fade-out');
+    history.pushState({ page: 'password-protected' }, 'password-protected', '#password-protected');
+  }
+
+  // Função para fechar a password dialog
+  function closePasswordDialog() {
+    passwordModal.classList.add('fade-out');
+    setTimeout(() => {
+      passwordModal.close();
+      body.classList.remove('body-fixed');
+      history.replaceState(null, '', window.location.pathname);
+    }, 450);
+  }
+
+  // Adiciona evento de clique para todos os botões que abrem a password modal
+  openPasswordModal.forEach(button => {
+    button.addEventListener("click", openPasswordDialog);
+  });
+
+  // Adiciona evento de clique para o botão que fecha a password modal
+  if (closePasswordModal) {
+    closePasswordModal.addEventListener("click", closePasswordDialog);
+  }
+
+  // Evento para fechar a password dialog com a tecla ESC
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && passwordModal.hasAttribute('open')) {
+      closePasswordDialog();
+    }
+  });
+
+  // Detecta quando o usuário clica em 'voltar' ou 'avançar' no navegador
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.page === 'password-protected') {
+      openPasswordDialog();
+    } else if (passwordModal.hasAttribute('open')) {
+      closePasswordDialog();
+    }
+  });
+
+  // Verifica se a URL contém o hash '#password-protected' quando a página é carregada
+  document.addEventListener('DOMContentLoaded', (event) => {
+    if (window.location.hash === '#password-protected') {
+      openPasswordDialog();
+    }
+  });
+}
+
+
+/////////////////////////////////////////////////////////////////
 ///Função para copiar email para a clipboard
 /////////////////////////////////////////////////////////////////
 
