@@ -2,6 +2,12 @@
 
 Senior Product Designer portfolio showcasing 15+ years of experience in digital product design.
 
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed on your machine:
+- **Node.js** (v16 or higher) - [Download here](https://nodejs.org/)
+- **Git** - [Download here](https://git-scm.com/)
+
 ## 🚀 Quick Start
 
 ```bash
