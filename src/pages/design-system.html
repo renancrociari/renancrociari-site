@@ -184,76 +184,7 @@
     <include src="components/email-dialog.html"></include>
     <include src="components/password-dialog.html"></include>
 
-    <nav class="navbar closed">
-        <div class="general-logo-container">
-            <a class="nav-logo-link gray" href="index.html" aria-label="Homepage">
-                <i class="nav-logo-svg" aria-label="Renan Crociari">
-                    <span class="visually-hidden">Homepage</span>
-                    <div class="color-default"></div>
-                    <div class="color-hover"></div>
-                    <div class="gray"></div>
-                    <div class="gray-2"></div>
-                    <div class="white"></div>
-                </i>
-            </a>
-        </div>
-
-        <button class="mobile-nav-toggle" aria-controls="main-nav-list" aria-expanded="false">
-            <span class="visually-hidden">Menu</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="hamburger-menu-svg" viewBox="0 0 24 16">
-                <rect class="top" width="20" height="2" x="4" y="0" rx="1" ry="1"></rect>
-                <rect class="middle" width="24" height="2" x="0" y="7" rx="1" ry="1"></rect>
-                <rect class="bottom" width="20" height="2" x="4" y="14" rx="1" ry="1"></rect>
-            </svg>
-        </button>
-
-        <div id="main-nav-list" data-visible="false" class="main-nav-list">
-            <ul class="main-nav-list-items">
-                <li>
-                    <a class="main-nav-a body-small" href="index.html" aria-label="Homepage">Home</a>
-                </li>
-                <li>
-                    <a class="main-nav-a body-small" href="about" aria-label="About">About</a>
-                </li>
-                <li>
-                    <a class="main-nav-a body-small" href="/public/downloads/renancrociari-cv.pdf"
-                        aria-label="Resumé">Resumé</a>
-                </li>
-                <li class="linkedin">
-                    <a class="main-nav-a body-small" href="https://www.linkedin.com/in/renancrociari/"
-                        aria-label="LinkedIn">LinkedIn</a>
-                </li>
-                <li>
-                    <button class="main-nav-a body-small btn-show-email" aria-haspopup="dialog">Email</button>
-                </li>
-            </ul>
-
-            <ul class="navbar-icons mt-lg">
-                <li>
-                    <a class="main-nav-a" href="https://www.linkedin.com/in/renancrociari/" target="_blank"
-                        aria-label="LinkedIn">
-                        <img src="../images/icons/linkedin-icon.svg" class="navbar-icons-svg"
-                            aria-label="LinkedIn Logo" />
-                        <span class="visually-hidden">Renan Crociari LinkedIn</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="main-nav-a" href="https://medium.com/@renancrociari" target="_blank" aria-label="Medium">
-                        <img src="../images/icons/medium-icon.svg" class="navbar-icons-svg" aria-label="Medium Logo" />
-                        <span class="visually-hidden">Renan Crociari Medium</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="main-nav-a" href="https://dribbble.com/renancrociari" target="_blank"
-                        aria-label="Dribbble">
-                        <img src="../images/icons/dribbble-icon.svg" class="navbar-icons-svg"
-                            aria-label="Dribbble Logo" />
-                        <span class="visually-hidden">Renan Crociari Dribbble</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <include src="components/navbar-gray.html"></include>
 
     <div class="design-system">
         <h1 class="hero" style="margin-bottom: 16px;">Design System</h1>

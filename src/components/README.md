@@ -116,3 +116,39 @@ All dialog components follow the same structure:
 ✅ **Easy maintenance** - Modify components independently
 ✅ **Consistency** - Same behavior across all pages
 ✅ **Flexibility** - Use either or both dialogs on any page
+
+---
+
+## Navbar Components
+
+### navbar-gray.html
+Navbar with **gray logo** variant for light backgrounds.
+
+**Usage:**
+```html
+<include src="components/navbar-gray.html"></include>
+```
+
+**Used by:**
+- `about.html`
+- `design-system.html`
+
+### navbar-white.html
+Navbar with **white logo** variant for dark backgrounds.
+
+**Usage:**
+```html
+<include src="components/navbar-white.html"></include>
+```
+
+**Used by:**
+- `redesigning-the-mobile-experience-of-a-dating-platform.html`
+- `improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html`
+
+**Features:**
+- Complete navigation with logo, hamburger menu, and navigation links
+- Mobile-responsive with hamburger menu toggle
+- Social media icons (LinkedIn, Medium, Dribbble)
+- Email dialog trigger button
+- Scroll behavior and animations handled by `script.js`
+
