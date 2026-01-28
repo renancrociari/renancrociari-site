@@ -668,6 +668,7 @@ h6,
 }
 
 .body-large {
+  font-family: inherit;
   font-size: var(--font-xs);
   line-height: 32px;
 }
