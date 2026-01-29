@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 ///Função para controlar a password dialog
 /////////////////////////////////////////////////////////////////
 
-import { validatePassword, storeAuthToken, getRedirectUrl } from './password-auth.js';
+import { validatePassword, storeAuthToken, getRedirectUrl, isAuthenticated } from './password-auth.js';
 
 const passwordModal = document.querySelector('.dialog-show-password');
 const openPasswordModal = document.querySelectorAll('.btn-show-password');
@@ -195,7 +195,18 @@ if (passwordModal && openPasswordModal.length > 0) {
     button.addEventListener("click", () => {
       // Get content ID from data attribute
       currentContentId = button.dataset.contentId;
-      openPasswordDialog();
+
+      // Check if user is already authenticated for this content
+      if (isAuthenticated(currentContentId)) {
+        // User is already authenticated, navigate directly to the protected page
+        const redirectUrl = getRedirectUrl(currentContentId);
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        }
+      } else {
+        // User is not authenticated, open password dialog
+        openPasswordDialog();
+      }
     });
   });
 
