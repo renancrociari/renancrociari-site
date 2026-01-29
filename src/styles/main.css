@@ -1314,6 +1314,12 @@ strong,
   /* 'forwards' mantém o estado final após a animação */
 }
 
+/* Skip fade-in animation when dialog opens from redirect */
+.dialog-show-password.no-animation[open] {
+  animation: none;
+}
+
+
 /*************** DIALOG SHOW EMAIL ************/
 
 .dialog-show-email[open]>* {

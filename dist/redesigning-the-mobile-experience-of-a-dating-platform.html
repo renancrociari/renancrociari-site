@@ -54,8 +54,7 @@
   <link rel="preload" href="/source-serif-regular-400-italic.42c91340.woff2" as="font" type="font/woff2" crossorigin="">
   <link rel="preload" href="/source-serif-bold-700.25e5d553.woff2" as="font" type="font/woff2" crossorigin="">
   <link rel="preload" href="/source-serif-bold-700-italic.cc389784.woff2" as="font" type="font/woff2" crossorigin="">
-  <!-- Scripts -->
-  <script type="module" src="/about.0b7f0800.js"></script>
+  <!-- Immediate authentication check to prevent content flash -->
   <script>// modules are defined as an array
 // [ module function, map of requires ]
 //
@@ -772,34 +771,15 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"15O6V":[function(require,module,exports,__globalThis) {
-var _protectedPageJs = require("../scripts/protected-page.js");
-(0, _protectedPageJs.initProtectedPage)('case-study-2');
+var _passwordAuthJs = require("../scripts/password-auth.js");
+// Check authentication immediately
+if (!(0, _passwordAuthJs.isAuthenticated)('case-study-2')) {
+    // Not authenticated - redirect immediately before any content renders
+    sessionStorage.setItem('rc_attempted_url', window.location.pathname);
+    window.location.href = '/#password-protected?content=case-study-2';
+} // If authenticated, page will continue loading normally
 
-},{"../scripts/protected-page.js":"eHNVD"}],"eHNVD":[function(require,module,exports,__globalThis) {
-/**
- * Protected Page Module
- * 
- * Handles access control for password-protected pages.
- * Include this script on any page that requires authentication.
- */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/**
- * Initialize protection for a page
- * Redirects to home page with password dialog if user is not authenticated
- * @param {string} contentId - The ID of the protected content
- */ parcelHelpers.export(exports, "initProtectedPage", ()=>initProtectedPage);
-var _passwordAuthJs = require("./password-auth.js");
-function initProtectedPage(contentId) {
-    // Check if user is authenticated
-    if (!(0, _passwordAuthJs.isAuthenticated)(contentId)) {
-        // Store the attempted URL for potential redirect back after auth
-        sessionStorage.setItem('rc_attempted_url', window.location.pathname);
-        // Redirect to home page with hash to open password dialog
-        window.location.href = `/#password-protected?content=${contentId}`;
-    }
-}
-
-},{"./password-auth.js":"3z7pW","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3z7pW":[function(require,module,exports,__globalThis) {
+},{"../scripts/password-auth.js":"3z7pW"}],"3z7pW":[function(require,module,exports,__globalThis) {
 /**
  * Password Authentication Module
  * 
@@ -948,6 +928,8 @@ exports.export = function(dest, destName, get) {
 },{}]},["9rvxl","15O6V"], "15O6V", "parcelRequire0291", {})
 
 </script>
+  <!-- Scripts -->
+  <script type="module" src="/about.0b7f0800.js"></script>
   <script src="https://unpkg.com/medium-zoom@latest/dist/medium-zoom.min.js"></script>
 </head>
 

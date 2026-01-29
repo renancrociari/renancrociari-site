@@ -50,6 +50,20 @@
   <link rel="stylesheet" href="/about.5525e4b8.css">
   <!-- Fonts -->
   <link rel="preload" href="/degular.d36c1fc3.woff2" as="font" type="font/woff2" crossorigin="">
+  <!-- Prevent content flash when redirected from protected page -->
+  <script>// Check if URL contains password-protected hash
+if (window.location.hash.includes('#password-protected')) {
+    // Hide body immediately to prevent flash
+    document.documentElement.style.visibility = 'hidden';
+    // Show once DOM is ready and dialog opens
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            document.documentElement.style.visibility = 'visible';
+        }, 100);
+    });
+}
+
+</script>
   <!-- Scripts -->
   <script type="module" src="/about.0b7f0800.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Renan Crociari","url":"https://www.renancrociari.com/"}</script>

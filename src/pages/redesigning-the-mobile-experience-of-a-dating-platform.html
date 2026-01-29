@@ -58,12 +58,20 @@
   <link rel="preload" href="../fonts/source-serif-regular-400-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../fonts/source-serif-bold-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../fonts/source-serif-bold-700-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Immediate authentication check to prevent content flash -->
+  <script type="module">
+    import { isAuthenticated } from '../scripts/password-auth.js';
+
+    // Check authentication immediately
+    if (!isAuthenticated('case-study-2')) {
+      // Not authenticated - redirect immediately before any content renders
+      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
+      window.location.href = '/#password-protected?content=case-study-2';
+    }
+    // If authenticated, page will continue loading normally
+  </script>
   <!-- Scripts -->
   <script type="module" src="../scripts/script.js"></script>
-  <script type="module">
-    import { initProtectedPage } from '../scripts/protected-page.js';
-    initProtectedPage('case-study-2');
-  </script>
   <script src="https://unpkg.com/medium-zoom@latest/dist/medium-zoom.min.js"></script>
 </head>
 

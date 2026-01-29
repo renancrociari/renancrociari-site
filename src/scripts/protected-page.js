@@ -20,5 +20,8 @@ export function initProtectedPage(contentId) {
 
         // Redirect to home page with hash to open password dialog
         window.location.href = `/#password-protected?content=${contentId}`;
+    } else {
+        // User is authenticated, show the page content
+        document.body.style.visibility = 'visible';
     }
 }

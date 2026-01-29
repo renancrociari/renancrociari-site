@@ -51,6 +51,20 @@
   <link rel="stylesheet" href="../styles/main.css" />
   <!-- Fonts -->
   <link rel="preload" href="../fonts/degular.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Prevent content flash when redirected from protected page -->
+  <script>
+    // Check if URL contains password-protected hash
+    if (window.location.hash.includes('#password-protected')) {
+      // Hide body immediately to prevent flash
+      document.documentElement.style.visibility = 'hidden';
+      // Show once DOM is ready and dialog opens
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+          document.documentElement.style.visibility = 'visible';
+        }, 100);
+      });
+    }
+  </script>
   <!-- Scripts -->
   <script type="module" src="../scripts/script.js"></script>
   <script type="application/ld+json">

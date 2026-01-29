@@ -84,10 +84,23 @@ if (passwordModal && openPasswordModal.length > 0) {
   let currentContentId = null;
 
   // Função para abrir a password dialog
-  function openPasswordDialog() {
+  function openPasswordDialog(skipAnimation = false) {
     body.classList.add('body-fixed');
+
+    // Add no-animation class to skip fade-in when opening from redirect
+    if (skipAnimation) {
+      passwordModal.classList.add('no-animation');
+    } else {
+      passwordModal.classList.remove('no-animation');
+    }
+
     passwordModal.showModal();
-    passwordModal.classList.remove('fade-out');
+
+    // Only remove fade-out class if not skipping animation
+    // When redirected from protected page, we want instant display
+    if (!skipAnimation) {
+      passwordModal.classList.remove('fade-out');
+    }
 
     // Clear previous input and errors
     if (passwordInput) {
@@ -232,7 +245,8 @@ if (passwordModal && openPasswordModal.length > 0) {
       if (contentId) {
         currentContentId = contentId;
       }
-      openPasswordDialog();
+      // Skip animation when opening from redirect to prevent flash
+      openPasswordDialog(true);
     }
   });
 }
