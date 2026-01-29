@@ -282,6 +282,13 @@ async function copyToClipboard() {
   }
 }
 
+// Attach event listener to copy button
+const copyButton = document.querySelector('.btn-copy-email');
+if (copyButton) {
+  copyButton.addEventListener('click', copyToClipboard);
+}
+
+
 
 /////////////////////////////////////////////////////////////////
 /// Função para controlar a navbar
