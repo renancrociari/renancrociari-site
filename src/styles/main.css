@@ -717,6 +717,10 @@ strong,
   color: var(--typography-green-dark);
 }
 
+.t-ct {
+  text-align: center;
+}
+
 /************** BUTTONS ****************/
 
 .btn {
