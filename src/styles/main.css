@@ -1679,6 +1679,11 @@ body.sl-mobile .content-header {
   background-color: #8944A1;
 }
 
+/** Journal Finder **/
+body.journal-finder .content-header {
+  background-color: #C6E0F9;
+}
+
 
 
 /****************** GENERAL NAVBAR ****************/
@@ -1879,7 +1884,8 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 .content-hero .divider {
   margin: 0 8px;
-  color: var(--typography-white);
+  color: var(--typography-gray-200);
+  opacity: 0.2;
 }
 
 .featured-image {
