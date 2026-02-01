@@ -2187,12 +2187,9 @@ details>div>div {
 }
 
 .two-column-image {
-  max-width: 1344px;
   display: flex;
   flex-direction: row;
   gap: 16px;
-  margin-left: 32px;
-  margin-right: 32px;
 }
 
 /**************** BRANDS LIST ****************/
