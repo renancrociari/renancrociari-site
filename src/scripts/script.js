@@ -410,7 +410,12 @@ document.addEventListener('click', function (event) {
     }
 
     const onAnimationEnd = (callback) => {
-      contentElement.addEventListener('animationend', callback, { once: true });
+      contentElement.addEventListener('animationend', (e) => {
+        // Only respond to the grid-expand animation, ignore other animations
+        if (e.animationName === 'grid-expand') {
+          callback(e);
+        }
+      }, { once: true });
     };
 
     // Add animation class to start animation
