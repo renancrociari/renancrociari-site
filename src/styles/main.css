@@ -520,7 +520,7 @@ input::placeholder {
 .ul li,
 .ol li {
   padding-left: var(--spacing-xxs);
-  margin-left: 12px;
+  margin-left: 17px;
 }
 
 .no-bullet {
@@ -534,7 +534,7 @@ input::placeholder {
 
 li::marker {
   color: var(--typography-green-light);
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 
@@ -1990,6 +1990,12 @@ details>summary::-webkit-details-marker {
 
 .experience-description {
   margin: 0 var(--spacing-xxxl) var(--spacing-xl) 208px;
+  margin-bottom: 0;
+}
+
+.experience-description>div>*:last-child {
+  /* This is a workaround to add margin to the description*/
+  margin-bottom: var(--spacing-xxl);
 }
 
 
