@@ -41,10 +41,10 @@ openModal.forEach(button => {
 closeModal.addEventListener("click", closeDialog);
 
 // Evento para fechar a dialog com a tecla ESC
-window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && modal.hasAttribute('open')) {
-    closeDialog();
-  }
+// Evento para fechar a dialog com a tecla ESC
+modal.addEventListener('cancel', (event) => {
+  event.preventDefault();
+  closeDialog();
 });
 
 // Detecta quando o usuário clica em 'voltar' ou 'avançar' no navegador
@@ -231,10 +231,10 @@ if (passwordModal && openPasswordModal.length > 0) {
   }
 
   // Evento para fechar a password dialog com a tecla ESC
-  window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && passwordModal.hasAttribute('open')) {
-      closePasswordDialog();
-    }
+  // Evento para fechar a password dialog com a tecla ESC
+  passwordModal.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closePasswordDialog();
   });
 
   // Detecta quando o usuário clica em 'voltar' ou 'avançar' no navegador
