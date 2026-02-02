@@ -404,7 +404,7 @@ document.addEventListener('click', function (event) {
 
     // Chrome sometimes does not properly animate, ensure classes are managed
     if (contentElement.classList.contains('animation')) {
-      contentView.classList.remove('animation', 'collapsing');
+      contentElement.classList.remove('animation', 'collapsing');
       // Force reflow
       void contentElement.offsetWidth;
     }
