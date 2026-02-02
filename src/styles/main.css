@@ -2127,6 +2127,20 @@ details>div>div {
   margin-top: -88px;
 }
 
+.icon-arrow-new-tab {
+  margin-bottom: -2px;
+}
+
+.icon-arrow-new-tab svg {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.cv-btn-linkedin:hover .icon-arrow-new-tab svg,
+.cv-btn-resume:hover .icon-arrow-new-tab svg {
+  opacity: 0.7;
+  transform: translate(2px, -2px);
+}
+
 /********** SKILLSET **********/
 
 .testimonial-list {
