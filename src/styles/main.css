@@ -1,7 +1,3 @@
-/*** Link to minifier
-https://www.cleancss.com/css-minify/
-***/
-
 /********** GENERAL **********/
 
 body {
@@ -19,8 +15,8 @@ body {
   width: 100%;
   max-width: 1344px;
   margin: 0 auto;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
 }
 
 .visually-hidden {
@@ -41,7 +37,7 @@ body {
 a:focus-visible,
 button:focus-visible,
 summary:focus-visible {
-  outline: 2px dotted #222;
+  outline: 2px dotted var(--typography-gray-200);
 }
 
 input:focus {
@@ -52,7 +48,7 @@ input:focus {
 /********** INPUTS *************/
 
 input {
-  padding: 24px 80px 24px 24px;
+  padding: var(--spacing-md) var(--spacing-xxxl) var(--spacing-md) var(--spacing-md);
   border: 2px solid #AEB5C7;
   transition: border 0.4s ease-in-out;
 }
@@ -71,7 +67,7 @@ input:focus {
 }
 
 input::placeholder {
-  color: #B6B6B6;
+  color: var(--typography-gray-300);
   letter-spacing: 0px;
 }
 
@@ -523,7 +519,7 @@ input::placeholder {
 
 .ul li,
 .ol li {
-  padding-left: 8px;
+  padding-left: var(--spacing-xxs);
   margin-left: 12px;
 }
 
@@ -596,7 +592,7 @@ td {
   font-weight: 400;
   color: var(--typography-gray-200);
   margin: 0;
-  font-size: 16px;
+  font-size: var(--font-xxxxs);
   letter-spacing: 0.3px;
 }
 
@@ -638,21 +634,21 @@ h6 {
 
 h1,
 .display-xxl {
-  font-size: 40px;
+  font-size: var(--font-xxxl);
   line-height: 44px;
   font-weight: 700;
 }
 
 h1.hero,
 .display-xxxl {
-  font-size: 60px;
+  font-size: var(--font-xxxxl);
   line-height: 60px;
   font-weight: 700;
 }
 
 h2,
 .display-xl {
-  font-size: 36px;
+  font-size: var(--font-xxl);
   line-height: 42px;
   font-weight: 600;
 }
@@ -662,7 +658,7 @@ h4,
 h5,
 h6,
 .display-md {
-  font-size: 22px;
+  font-size: var(--font-xs);
   line-height: 24px;
   font-weight: 700;
 }
@@ -795,7 +791,7 @@ strong,
 
 .btn-green {
   color: var(--typography-green-light);
-  background-image: linear-gradient(to right, #25D16A, #9EE825);
+  background-image: linear-gradient(to right, var(--typography-gradient-1), var(--typography-gradient-2));
   background-clip: text;
   -webkit-background-clip: text;
   transition: color 0.6s ease, background 0.6s ease;
@@ -836,7 +832,7 @@ strong,
 
 .btn-gray-test {
   color: var(--typography-gray-200);
-  background-image: linear-gradient(to right, #25D16A, #9EE825);
+  background-image: linear-gradient(to right, var(--typography-gradient-1), var(--typography-gradient-2));
   background-clip: text;
   -webkit-background-clip: text;
   transition: color 0.6s ease, background 0.6s ease;
@@ -1231,7 +1227,7 @@ strong,
 }
 
 .hero-content span {
-  margin: 32px 0;
+  margin: var(--spacing-lg) 0;
   display: block;
 }
 
@@ -1305,7 +1301,7 @@ strong,
 
 .dialog-heading {
   text-align: center;
-  margin: 14vh 0 32px 0;
+  margin: 14vh 0 var(--spacing-lg) 0;
 }
 
 .dialog-show-email.fade-out {
@@ -1331,7 +1327,7 @@ strong,
 }
 
 .image-show-email {
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-md);
 }
 
 .dialog-box-copy-email {
@@ -1340,7 +1336,7 @@ strong,
   align-items: center;
   gap: 48px;
   background-color: var(--background-gray-medium);
-  padding: 16px 24px;
+  padding: var(--spacing-xs) var(--spacing-md);
 }
 
 .email-to-copy {
@@ -1374,7 +1370,7 @@ strong,
 
 .success-message,
 .error-message {
-  padding: 4px 0 8px;
+  padding: var(--spacing-xxxs) 0 var(--spacing-xxs);
   animation: slideDown 0.1s ease-out forwards;
   transform-origin: top;
 }
@@ -1540,9 +1536,9 @@ strong,
 /********** FOOTER **********/
 
 .footer {
-  margin-top: 128px;
+  margin-top: var(--spacing-xxxxl);
   padding: var(--spacing-xxxxl) 0;
-  background-color: #E9EAEE;
+  background-color: var(--background-gray-medium);
 }
 
 .footer-content {
@@ -1553,7 +1549,7 @@ strong,
   display: flex;
   flex-direction: row;
   gap: 32px;
-  margin: 32px 0 24px -6px;
+  margin: var(--spacing-lg) 0 var(--spacing-md) -6px;
 }
 
 
@@ -1701,7 +1697,7 @@ body.journal-finder .content-header {
   left: 0;
   margin: 0 auto;
   margin: 0;
-  padding: 0 32px;
+  padding: 0 var(--spacing-lg);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1883,7 +1879,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 
 .content-hero .divider {
-  margin: 0 8px;
+  margin: 0 var(--spacing-xxs);
   color: var(--typography-gray-200);
   opacity: 0.2;
 }
@@ -1908,7 +1904,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 .text-block {
   max-width: 800px;
-  padding: 0 32px;
+  padding: 0 var(--spacing-lg);
 }
 
 .separator::before {
@@ -1937,7 +1933,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  margin-top: 80px;
+  margin-top: var(--spacing-xxxl);
   max-width: 1060px;
 }
 
@@ -1954,7 +1950,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   grid-template-columns: 168px minmax(200px, 990px) 32px;
   align-items: center;
   gap: 24px;
-  padding: 8px 32px 8px 16px;
+  padding: var(--spacing-xxs) var(--spacing-lg) var(--spacing-xxs) var(--spacing-xs);
   list-style: none;
   /* Makes the default arrow hide in all browsers */
 }
@@ -1993,7 +1989,7 @@ details>summary::-webkit-details-marker {
 }
 
 .experience-description {
-  margin: 0 80px 48px 208px;
+  margin: 0 var(--spacing-xxxl) var(--spacing-xl) 208px;
 }
 
 
@@ -2038,7 +2034,7 @@ details>div>div {
 
 .skillset {
   width: 100%;
-  background-color: #E9EAEE;
+  background-color: var(--background-gray-medium);
 }
 
 
@@ -2055,8 +2051,8 @@ details>div>div {
 
 .tag {
   background-color: #BCF585;
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: var(--spacing-xxs) var(--spacing-xs);
+  font-size: var(--font-xxxxs);
   line-height: 22px;
   letter-spacing: 1px;
   font-weight: 700;
@@ -2067,7 +2063,7 @@ details>div>div {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2px;
-  background: #FFF;
+  background: var(--typography-white);
 }
 
 
@@ -2099,8 +2095,8 @@ details>div>div {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 16px;
-  background-color: #F1F2F5;
+  padding: var(--spacing-xl) var(--spacing-xs);
+  background-color: var(--background-gray-light);
 }
 
 .skillset-border {
@@ -2116,7 +2112,7 @@ details>div>div {
   width: 100%;
   text-align: center;
   background-color: #F5FFEC;
-  padding-bottom: 128px;
+  padding-bottom: var(--spacing-xxxxl);
   margin-bottom: -128px;
 }
 
@@ -2148,7 +2144,7 @@ details>div>div {
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 16px;
-  margin-top: 16px;
+  margin-top: var(--spacing-xs);
 }
 
 
@@ -2220,7 +2216,7 @@ details>div>div {
   max-width: 1344px;
   background-color: var(--background-gray-light);
   text-align: center;
-  padding: 80px 0px 80px 0px;
+  padding: var(--spacing-xxxl) 0px var(--spacing-xxxl) 0px;
 }
 
 .metrics-list {
@@ -2230,8 +2226,8 @@ details>div>div {
   gap: 32px;
   flex-wrap: wrap;
   margin: 0 auto;
-  margin-top: 64px;
-  padding: 0 32px;
+  margin-top: var(--spacing-xxl);
+  padding: 0 var(--spacing-lg);
 }
 
 .metric {
@@ -2265,7 +2261,7 @@ details>div>div {
 @media only screen and (max-width: 1199px) {
 
   .project-card-content {
-    padding: 64px 32px 0 32px;
+    padding: var(--spacing-xxl) var(--spacing-lg) 0 var(--spacing-lg);
   }
 
 }
@@ -2278,8 +2274,8 @@ details>div>div {
   /********** GENERAL 768 - 991 **********/
 
   .wrapper {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: var(--spacing-xs);
+    padding-right: var(--spacing-xs);
   }
 
 
@@ -2298,7 +2294,7 @@ details>div>div {
     width: 140px;
     height: 140px;
     background-size: 140px;
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-xxs);
   }
 
   h1.hero {
@@ -2441,35 +2437,35 @@ details>div>div {
     font-weight: 400;
     color: var(--typography-gray-200);
     margin: 0;
-    font-size: 16px;
+    font-size: var(--font-xxxxs);
     letter-spacing: 0.3px;
   }
 
   p,
   .p {
     font-family: var(--font-paragraph), serif;
-    font-size: 18px;
+    font-size: var(--font-xxxs);
     line-height: 32px;
   }
 
 
   h1,
   .display-xxl {
-    font-size: 24px;
+    font-size: var(--font-md);
     line-height: 28px;
     font-weight: 700;
   }
 
   h1.hero,
   .display-xxxl {
-    font-size: 26px;
+    font-size: var(--font-lg);
     line-height: 30px;
     font-weight: 700;
   }
 
   h2,
   .display-xl {
-    font-size: 22px;
+    font-size: var(--font-xs);
     line-height: 28px;
     font-weight: 600;
   }
@@ -2479,7 +2475,7 @@ details>div>div {
   h5,
   h6,
   .display-md {
-    font-size: 20px;
+    font-size: var(--font-xxs);
     line-height: 26px;
     font-weight: 700;
   }
@@ -2532,7 +2528,7 @@ details>div>div {
   }
 
   .hero-content>span {
-    margin: 16px 0 32px 0;
+    margin: var(--spacing-xs) 0 var(--spacing-lg) 0;
   }
 
   .home-nav {
@@ -2617,7 +2613,7 @@ details>div>div {
 
 
   .main-nav-a {
-    font-size: 26px;
+    font-size: var(--font-lg);
     font-weight: bold;
   }
 
@@ -2725,14 +2721,14 @@ details>div>div {
 
 
   .hamburger-menu-svg {
-    fill: #222222;
+    fill: var(--typography-gray-200);
     width: 24px;
     height: 16px;
   }
 
   body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
     /*Makes hamburger menu icon white in dark background*/
-    fill: #FFFFFF;
+    fill: var(--typography-white);
   }
 
   .navbar.scrolled-up .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
@@ -2796,7 +2792,7 @@ details>div>div {
   .experience-details>summary {
     grid-template-columns: 80px minmax(100px, 590px) 16px;
     gap: 8px;
-    padding: 16px 16px 16px 8px;
+    padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) var(--spacing-xxs);
   }
 
 
@@ -2810,7 +2806,7 @@ details>div>div {
   }
 
   .experience-description {
-    margin: 0 16px 36px 16px;
+    margin: 0 var(--spacing-xs) 36px var(--spacing-xs);
   }
 
 
@@ -2840,7 +2836,7 @@ details>div>div {
 
   .executive-summary-text {
     grid-template-columns: 1fr;
-    padding: 0 32px;
+    padding: 0 var(--spacing-lg);
   }
 
 
@@ -2848,7 +2844,7 @@ details>div>div {
   /**************** BRANDS LIST ****************/
 
   .brands-list {
-    padding: 0 8px;
+    padding: 0 var(--spacing-xxs);
   }
 
   .brands-list-grid {
@@ -2859,7 +2855,7 @@ details>div>div {
   /********** FEATURED METRICS 480px - 767px **********/
 
   .featured-metrics {
-    padding: 64px 16px;
+    padding: var(--spacing-xxl) var(--spacing-xs);
   }
 
   .metrics-list {
