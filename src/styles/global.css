@@ -1,4 +1,3 @@
-
 :root {
   /* Fonts */
   --font-display: 'Degular', sans-serif;
@@ -15,9 +14,9 @@
   --font-xxl: 36px;
   --font-xxxl: 40px;
   --font-xxxxl: 60px;
-  
 
-  /* Colors */
+
+  /* Colors typography */
   --typography-white: #ffffff;
   --typography-green-light: #38C545;
   --typography-green-dark: #099415;
@@ -25,8 +24,12 @@
   --typography-gradient-2: #9EE825;
   --typography-gray-200: #222222;
   --typography-gray-300: #B6B6B6;
+
+  /* Colors background */
   --background-gray-light: #f1f2f5;
   --background-gray-medium: #E9EAEE;
+
+  /* Colors border */
   --border-gray: #E9EAEE;
   --border-red: #FF6060;
 
@@ -44,7 +47,7 @@
 
 
   /* Border radiuses */
-    --br-xxxs: 4px;
+  --br-xxxs: 4px;
   --br-xxs: 8px;
   --br-xs: 16px;
   --br-md: 24px;

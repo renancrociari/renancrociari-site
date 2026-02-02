@@ -48,13 +48,14 @@ input:focus {
 /********** INPUTS *************/
 
 input {
-  padding: var(--spacing-md) var(--spacing-xxxl) var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-xs);
   border: 2px solid #AEB5C7;
   transition: border 0.4s ease-in-out;
 }
 
-input [type="password"] {
+input[type="password"] {
   letter-spacing: 8px;
+  font-weight: 900;
 
 }
 
@@ -69,6 +70,7 @@ input:focus {
 input::placeholder {
   color: var(--typography-gray-300);
   letter-spacing: 0px;
+  font-weight: 400;
 }
 
 
@@ -1304,6 +1306,11 @@ strong,
   margin: 14vh 0 var(--spacing-lg) 0;
 }
 
+.dialog-heading>picture {
+  display: block;
+  margin-bottom: var(--spacing-md);
+}
+
 .dialog-show-email.fade-out {
   animation: myFadeOut 0.6s ease forwards;
   /* 'forwards' mantém o estado final após a animação */
@@ -1327,7 +1334,8 @@ strong,
 }
 
 .image-show-email {
-  margin-bottom: var(--spacing-md);
+  width: 101px;
+  height: 60px;
 }
 
 .dialog-box-copy-email {
