@@ -1513,21 +1513,21 @@ strong,
 }
 
 .card-2 {
-  background: #CFF3BB url(../images/journal-suggester.png) no-repeat center bottom -60px;
+  background: #C6E0F9 url(../images/case-journal-finder/journal-finder-home.webp) no-repeat center bottom -60px;
   background-size: 140%;
 }
 
 .card-2:hover {
-  background-color: #ADEC8A;
+  background-color: #ADD1F3;
 }
 
 .card-3 {
-  background: #C6E0F9 url(../images/subject-page.png) no-repeat left 80px bottom -60px;
+  background: #b4ffb8 url(../images/subject-page.png) no-repeat left 80px bottom -60px;
   background-size: 100%;
 }
 
 .card-3:hover {
-  background-color: #ADD1F3;
+  background-color: #8bf084;
 }
 
 .card-4 {
