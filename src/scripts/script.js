@@ -296,64 +296,93 @@ if (copyButton) {
 
 const primaryNav = document.querySelector(".main-nav-list");
 const navToggle = document.querySelector(".mobile-nav-toggle");
-const focusableElements = primaryNav.querySelectorAll('.main-nav-a'); // Adjust the selector if there are more focusable elements
 
-navToggle.addEventListener("click", () => {
-  const visibility = primaryNav.getAttribute("data-visible");
+if (primaryNav && navToggle) {
+  const focusableElements = primaryNav.querySelectorAll('.main-nav-a');
 
-  if (visibility === "false") {
-    // Store the current scroll position
-    primaryNav.setAttribute("data-visible", true);
-    navToggle.setAttribute('aria-expanded', true);
-    body.style.overflow = 'hidden';
-    navbar.classList.add('open');
-    navbar.classList.remove('closed');
+  // Function to update tabindex based on screen size and menu state
+  const updateTabIndex = () => {
+    const isMobile = window.getComputedStyle(navToggle).display !== 'none';
+    const isVisible = primaryNav.getAttribute("data-visible") === "true";
 
-    // Enable focus on elements
-    focusableElements.forEach(el => el.removeAttribute('tabindex'));
-    // Focus on the first link
-    focusableElements[0].focus();
+    focusableElements.forEach(el => {
+      if (isMobile) {
+        // On mobile, only focusable if menu is open
+        el.setAttribute('tabindex', isVisible ? '0' : '-1');
+      } else {
+        // On desktop, always focusable
+        el.removeAttribute('tabindex');
+      }
+    });
 
-  } else if (visibility === "true") {
-    primaryNav.setAttribute("data-visible", false);
-    navToggle.setAttribute('aria-expanded', false);
-    navbar.classList.remove('open');
-    navbar.classList.add('closed');
-    setTimeout(() => {
+    // Reset data-visible attribute when switching to desktop to prevent weird states
+    if (!isMobile && isVisible) {
+      primaryNav.setAttribute("data-visible", "false");
+      navToggle.setAttribute('aria-expanded', "false");
+      navbar.classList.remove('open');
+      navbar.classList.add('closed');
       body.style.overflow = 'auto';
-      // Restore the scroll position
-    }, 450);
+    }
+  };
 
-    // Disable focus on elements
-    focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
-  }
-});
-
-// Initially disable focus on elements
-focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
-
-// Handle keyboard navigation loop
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Tab') {
+  navToggle.addEventListener("click", () => {
     const visibility = primaryNav.getAttribute("data-visible");
-    if (visibility === "true") {
-      const firstFocusableElement = navToggle; // First focusable element (mobile-nav-toggle)
-      const lastFocusableElement = focusableElements[focusableElements.length - 1]; // Last focusable element
 
-      if (event.shiftKey) { // Shift + Tab
-        if (document.activeElement === firstFocusableElement) {
-          event.preventDefault();
-          lastFocusableElement.focus();
-        }
-      } else { // Tab
-        if (document.activeElement === lastFocusableElement) {
-          event.preventDefault();
-          firstFocusableElement.focus();
+    if (visibility === "false") {
+      primaryNav.setAttribute("data-visible", true);
+      navToggle.setAttribute('aria-expanded', true);
+      body.style.overflow = 'hidden';
+      navbar.classList.add('open');
+      navbar.classList.remove('closed');
+
+      // Enable focus on elements
+      focusableElements.forEach(el => el.removeAttribute('tabindex'));
+      // Focus on the first link
+      focusableElements[0].focus();
+
+    } else if (visibility === "true") {
+      primaryNav.setAttribute("data-visible", false);
+      navToggle.setAttribute('aria-expanded', false);
+      navbar.classList.remove('open');
+      navbar.classList.add('closed');
+      setTimeout(() => {
+        body.style.overflow = 'auto';
+      }, 450);
+
+      // Disable focus on elements (mobile only logic handled by click, but safer to rely on state)
+      focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
+    }
+  });
+
+  // Handle keyboard navigation loop
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Tab') {
+      const visibility = primaryNav.getAttribute("data-visible");
+      const isMobile = window.getComputedStyle(navToggle).display !== 'none';
+
+      if (isMobile && visibility === "true") {
+        const firstFocusableElement = navToggle;
+        const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstFocusableElement) {
+            event.preventDefault();
+            lastFocusableElement.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastFocusableElement) {
+            event.preventDefault();
+            firstFocusableElement.focus();
+          }
         }
       }
     }
-  }
-});
+  });
+
+  // Initial check and listen for resize
+  updateTabIndex();
+  window.addEventListener('resize', updateTabIndex);
+}
 
 
 /////////////////////////////////////////////////////////////////
