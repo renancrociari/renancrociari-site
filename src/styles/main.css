@@ -601,10 +601,18 @@ td {
 p,
 .p {
   font-family: var(--font-paragraph), serif;
-  font-size: 20.8px;
+  font-size: 18.4px;
   line-height: 36px;
   font-weight: 400;
   letter-spacing: 0px;
+}
+
+.p-high {
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--font-lg);
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 a {
