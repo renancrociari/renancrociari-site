@@ -1202,7 +1202,7 @@ strong,
 }
 
 .hero-content {
-  max-width: 672px;
+  max-width: 564px;
   position: relative;
 }
 
@@ -1237,7 +1237,6 @@ strong,
 }
 
 .hero-content span {
-  margin: var(--spacing-lg) 0;
   display: block;
 }
 
@@ -2562,9 +2561,6 @@ details>div>div {
     height: 2px;
   }
 
-  .hero-content>span {
-    margin: var(--spacing-xs) 0 var(--spacing-lg) 0;
-  }
 
   .home-nav {
     gap: 0px 32px;
