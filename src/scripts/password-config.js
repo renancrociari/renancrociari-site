@@ -23,9 +23,9 @@ export const PASSWORD_CONFIG = {
         hash: 'd3ad9315b7be5dd53b31a273b3b3aba5defe700808305aa16a3062b76658a791',
         redirectUrl: '/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html'
     },
-    'case-study-2': {
-        hash: 'd3ad9315b7be5dd53b31a273b3b3aba5defe700808305aa16a3062b76658a791',
-        redirectUrl: '/redesigning-the-mobile-experience-of-a-dating-platform.html'
+    'case-journal-finder': {
+        hash: 'e4e2ff1a6fc2a6ce836b66c424aa2bdd4803d5b92d9750b0db4df4b1d1a8a597',
+        redirectUrl: '/connecting-researchers-with-the-perfect-home-for-scientific-discoveries.html'
     }
 };
 
