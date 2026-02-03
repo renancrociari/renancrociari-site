@@ -1,0 +1,9 @@
+{
+  "extends": "@parcel/config-default",
+  "transformers": {
+    "*.{jpg,jpeg,png,webp}": ["@parcel/transformer-raw"]
+  },
+  "optimizers": {
+    "*.{jpg,jpeg,png,webp}": []
+  }
+}
