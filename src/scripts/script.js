@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 ///Função para controlar a password dialog
 /////////////////////////////////////////////////////////////////
 
+import mediumZoom from 'medium-zoom';
 import { validatePassword, storeAuthToken, getRedirectUrl, isAuthenticated } from './password-auth.js';
 
 const passwordModal = document.querySelector('.dialog-show-password');
@@ -477,16 +478,18 @@ const navbar = document.querySelector('.navbar');
 const mainNavList = document.querySelector('#main-nav-list');
 let lastScrollY = window.scrollY;
 let isListeningToScroll = true;
+let ticking = false;
 
-// Function to handle scroll events
-const onScroll = () => {
-  if (!isListeningToScroll) return;
+// Function to update navbar position
+const updateNavbar = () => {
+  if (!navbar) return;
 
   const currentScrollY = window.scrollY;
 
   if (currentScrollY === 0) {
     // User has scrolled to the top
     navbar.classList.remove('scrolled-up');
+    navbar.style.transform = 'translateY(0px)';
   } else if (currentScrollY > lastScrollY) {
     // User is scrolling down
     navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
@@ -498,6 +501,17 @@ const onScroll = () => {
   }
 
   lastScrollY = currentScrollY;
+  ticking = false;
+};
+
+// Function to handle scroll events
+const onScroll = () => {
+  if (!isListeningToScroll) return;
+
+  if (!ticking) {
+    window.requestAnimationFrame(updateNavbar);
+    ticking = true;
+  }
 };
 
 // Add scroll event listener
@@ -518,7 +532,9 @@ const observer = new MutationObserver((mutationsList) => {
 });
 
 // Start observing the target node for configured mutations
-observer.observe(mainNavList, { attributes: true });
+if (mainNavList) {
+  observer.observe(mainNavList, { attributes: true });
+}
 
 
 
