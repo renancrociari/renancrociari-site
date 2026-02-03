@@ -1521,12 +1521,12 @@ strong,
 }
 
 .card-3 {
-  background: #b4ffb8 url(../images/subject-page.webp) no-repeat left 80px bottom -60px;
+  background: #D7F2C0 url(../images/subject-page.webp) no-repeat left 80px bottom -60px;
   background-size: 100%;
 }
 
 .card-3:hover {
-  background-color: #8bf084;
+  background-color: #b3e389;
 }
 
 .card-4 {
