@@ -14,9 +14,27 @@ function fixPathsInFile(filePath) {
     let content = fs.readFileSync(filePath, 'utf8');
     let modified = false;
 
-    // Replace /up_/up_/public/downloads/ with /downloads/
+    // Replace /up_/up_/public/downloads/ with /downloads/ (with leading slash)
     if (content.includes('/up_/up_/public/downloads/')) {
         content = content.replace(/\/up_\/up_\/public\/downloads\//g, '/downloads/');
+        modified = true;
+    }
+
+    // Replace up_/up_/public/downloads/ with /downloads/ (without leading slash, for minified HTML)
+    if (content.includes('up_/up_/public/downloads/')) {
+        content = content.replace(/up_\/up_\/public\/downloads\//g, '/downloads/');
+        modified = true;
+    }
+
+    // Replace /up_/up_/downloads/ with /downloads/ (with leading slash)
+    if (content.includes('/up_/up_/downloads/')) {
+        content = content.replace(/\/up_\/up_\/downloads\//g, '/downloads/');
+        modified = true;
+    }
+
+    // Replace up_/up_/downloads/ with /downloads/ (without leading slash, for minified HTML)
+    if (content.includes('up_/up_/downloads/')) {
+        content = content.replace(/up_\/up_\/downloads\//g, '/downloads/');
         modified = true;
     }
 
