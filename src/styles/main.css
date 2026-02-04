@@ -1503,7 +1503,7 @@ strong,
 /*cards backgrounds*/
 
 .card-1 {
-  background: #8944A1 url(../images/redesign-mobile-home.webp) no-repeat bottom 0px center;
+  background: #8944A1 url(../images/case-sl-mobile/redesign-mobile-home.webp) no-repeat bottom 0px center;
   background-size: 82%;
 }
 
@@ -1530,7 +1530,7 @@ strong,
 }
 
 .card-4 {
-  background: #C72932 url(../images/farfetch.png) no-repeat center bottom 0px;
+  background: #C72932 url(../images/case-farfetch/farfetch-home.webp) no-repeat center bottom 0px;
   background-size: 100%;
 }
 
