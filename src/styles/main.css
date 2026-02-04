@@ -677,6 +677,7 @@ h6,
   font-family: inherit;
   font-size: var(--font-xs);
   line-height: 32px;
+  letter-spacing: 0.3px;
 }
 
 .body-medium {
@@ -690,7 +691,7 @@ h6,
   font-family: inherit;
   font-size: var(--font-xxxs);
   line-height: 26px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
 }
 
 .t-regular {
@@ -1214,7 +1215,7 @@ strong,
   top: -84px;
   left: -130px;
   z-index: -10;
-  background: url(../images/renan-profile@2x.png) no-repeat left top;
+  background: url(../images/renan-profile.webp) no-repeat left top;
   background-size: 160px;
 }
 
@@ -2184,6 +2185,7 @@ details>div>div {
 .testimonial-detail-author>a>img {
   width: 48px;
   height: 48px;
+  border-radius: 50%;
 }
 
 .testimonial-detail-author-info {
@@ -2517,12 +2519,14 @@ details>div>div {
     font-family: inherit;
     font-size: var(--font-xxs);
     line-height: 30px;
+    letter-spacing: 0.3px;
   }
 
   .body-medium {
     font-family: inherit;
     font-size: var(--font-xxxs);
     line-height: 26px;
+    letter-spacing: 0.3px;
   }
 
   .body-small {

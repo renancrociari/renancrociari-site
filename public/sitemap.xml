@@ -6,32 +6,41 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
-
 <url>
   <loc>https://www.renancrociari.com/</loc>
-  <lastmod>2024-10-20T22:09:22+00:00</lastmod>
+  <lastmod>2026-02-04T21:35:11+00:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://www.renancrociari.com/about</loc>
-  <lastmod>2024-10-20T22:05:26+00:00</lastmod>
+  <lastmod>2026-02-04T21:35:11+00:00</lastmod>
+  <changefreq>yearly</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.renancrociari.com/public/downloads/renancrociari-cv.pdf</loc>
-  <lastmod>2024-09-12T20:02:10+00:00</lastmod>
-  <priority>0.80</priority>
+  <loc>https://www.renancrociari.com/downloads/renancrociari-cv.pdf</loc>
+  <lastmod>2026-02-04T21:46:03+00:00</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.renancrociari.com/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands</loc>
-  <lastmod>2024-10-20T22:05:23+00:00</lastmod>
+  <lastmod>2026-02-04T21:35:11+00:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.renancrociari.com/redesigning-the-mobile-experience-of-a-dating-platform</loc>
-  <lastmod>2024-10-20T22:05:33+00:00</lastmod>
+  <lastmod>2026-02-04T21:35:11+00:00</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>0.80</priority>
 </url>
-
+<url>
+  <loc>https://www.renancrociari.com/connecting-researchers-with-the-perfect-home-for-scientific-discoveries</loc>
+  <lastmod>2026-02-04T21:35:11+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.80</priority>
+</url>
 
 </urlset>
