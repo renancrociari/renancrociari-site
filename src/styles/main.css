@@ -1564,7 +1564,6 @@ strong,
   display: flex;
   flex-direction: row;
   gap: 32px;
-  margin: var(--spacing-lg) 0 var(--spacing-md) -6px;
 }
 
 
