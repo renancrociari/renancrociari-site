@@ -112,7 +112,7 @@ If you need to deploy manually without GitHub Actions:
 npm run build
 
 # Deploy via rsync (requires SSH key)
-rsync -avzr --delete --exclude='.git' \
+rsync -rlvz --delete --no-perms --no-owner --no-group --exclude='.git' \
   -e "ssh -i ~/.ssh/umbler_deploy -p 9922" \
   dist/ ssh-renancrociari-com@renancrociari-com.umbler.net:~/public/
 ```
@@ -130,6 +130,7 @@ The site uses clean URLs via `.htaccess` rewriting:
 - Check GitHub Actions logs for specific errors
 - Verify GitHub secrets are configured correctly
 - Ensure SSH key is authorized in Umbler panel
+- **Rsync errors**: If you see "rsync error: some files/attrs were not transferred (code 23)", ensure you are using `--no-perms --no-owner --no-group` as shared hosting may not allow changing file ownership.
 
 ### 404 errors on deployed site
 - Ensure `.htaccess` file is in `dist/` folder after build

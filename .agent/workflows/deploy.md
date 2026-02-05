@@ -36,7 +36,7 @@ gh run view --log
 2. Installs dependencies with `npm ci`
 3. Builds the project with `npm run build`
 4. Connects to Umbler via SSH
-5. Syncs the `dist/` folder to Umbler's `public/` directory
+5. Syncs the `dist/` folder to Umbler's `public/` directory (using `--no-perms --no-owner` to avoid shared hosting errors)
 6. Your website is live!
 
 ## Troubleshooting
@@ -45,3 +45,4 @@ If deployment fails:
 - Check the GitHub Actions logs in the repository
 - Verify SSH credentials are correct in GitHub secrets
 - Ensure Umbler hosting is accessible via SSH
+- **Rsync failing (code 23)?** Ensure `--no-perms --no-owner --no-group` flags are used in the workflow.
