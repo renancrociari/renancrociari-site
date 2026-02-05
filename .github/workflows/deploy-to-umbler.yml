@@ -34,7 +34,7 @@ jobs:
       - name: Setup SSH key for rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -rltvz --delete --exclude='.git' --exclude='up_***'
+          switches: -rlvz --delete --no-perms --no-owner --no-group --exclude='.git' --exclude='up_***'
           path: dist/
           remote_path: ~/public/
           remote_host: ${{ secrets.UMBLER_SSH_HOST }}
