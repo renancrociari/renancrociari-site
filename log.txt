@@ -1,0 +1,454 @@
+Build and Deploy to Umbler	Set up job	﻿2026-02-05T00:01:34.9293447Z Current runner version: '2.331.0'
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9318802Z ##[group]Runner Image Provisioner
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9320197Z Hosted Compute Agent
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9320858Z Version: 20260123.484
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9321530Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9322468Z Build Date: 2026-01-23T19:41:17Z
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9323219Z Worker ID: {db50f471-2419-47ba-bfb0-4045e8cf7af1}
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9324046Z Azure Region: westus
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9324702Z ##[endgroup]
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9326302Z ##[group]Operating System
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9327080Z Ubuntu
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9327671Z 24.04.3
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9328293Z LTS
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9328889Z ##[endgroup]
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9329739Z ##[group]Runner Image
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9330444Z Image: ubuntu-24.04
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9331132Z Version: 20260126.10.1
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9332271Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260126.10/images/ubuntu/Ubuntu2404-Readme.md
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9334715Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260126.10
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9336110Z ##[endgroup]
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9337420Z ##[group]GITHUB_TOKEN Permissions
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9339827Z Contents: read
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9340531Z Metadata: read
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9341190Z Packages: read
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9341818Z ##[endgroup]
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9344082Z Secret source: Actions
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9345032Z Prepare workflow directory
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9663936Z Prepare all required actions
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:34.9702865Z Getting action download info
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:35.4727648Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:35.5830937Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:35.7336223Z Download action repository 'burnett01/rsync-deployments@7.0.1' (SHA:796cf0d5e4b535745ce49d7429f77cf39e25ef39)
+Build and Deploy to Umbler	Set up job	2026-02-05T00:01:36.5023718Z Complete job name: Build and Deploy to Umbler
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	﻿2026-02-05T00:01:36.5501039Z ##[group]Build container for action use: '/home/runner/work/_actions/burnett01/rsync-deployments/7.0.1/Dockerfile'.
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:36.5552388Z ##[command]/usr/bin/docker build -t 7de7aa:b57bf15ed60d47db92a4202846581fa0 -f "/home/runner/work/_actions/burnett01/rsync-deployments/7.0.1/Dockerfile" "/home/runner/work/_actions/burnett01/rsync-deployments/7.0.1"
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.3021127Z #0 building with "default" instance using docker driver
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.3022411Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.3022941Z #1 [internal] load build definition from Dockerfile
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.3024263Z #1 transferring dockerfile: 271B done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.3025399Z #1 DONE 0.0s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.3025894Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.3027508Z #2 [internal] load metadata for docker.io/drinternet/rsync@sha256:15b2949838074bd93c49421c22380396a0cd53a322439e799ac87afcadcfe234
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.5378726Z #2 ...
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.5379735Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.5380536Z #3 [auth] drinternet/rsync:pull token for registry-1.docker.io
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.5382113Z #3 DONE 0.0s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.6874876Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:37.6878049Z #2 [internal] load metadata for docker.io/drinternet/rsync@sha256:15b2949838074bd93c49421c22380396a0cd53a322439e799ac87afcadcfe234
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.1345519Z #2 DONE 1.0s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2529965Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2530595Z #4 [internal] load .dockerignore
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2531382Z #4 transferring context: 2B done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2532660Z #4 DONE 0.0s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2533144Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2533570Z #5 [internal] load build context
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2534382Z #5 transferring context: 907B done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2535325Z #5 DONE 0.0s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2535711Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2536505Z #6 [1/3] FROM docker.io/drinternet/rsync@sha256:15b2949838074bd93c49421c22380396a0cd53a322439e799ac87afcadcfe234
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2537929Z #6 resolve docker.io/drinternet/rsync@sha256:15b2949838074bd93c49421c22380396a0cd53a322439e799ac87afcadcfe234 done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2539812Z #6 sha256:15b2949838074bd93c49421c22380396a0cd53a322439e799ac87afcadcfe234 1.77kB / 1.77kB done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2540833Z #6 sha256:e3e00ef61af204eaa5083103924ca4286abf396df2a0202ef58383e2b21e2ad5 2.17kB / 2.17kB done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2541633Z #6 sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8 0B / 3.41MB 0.1s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2542397Z #6 sha256:d0d59afdfbe915d0264b504fe496c77eb775717e2b1e1ef77844cb11656f4174 0B / 206B 0.1s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.2543147Z #6 sha256:673dab6a778399532989dcde44534b5d7272b5a8c78c829b22a1797b4985361a 0B / 4.64MB 0.1s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.3789857Z #6 sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8 3.41MB / 3.41MB 0.1s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.3791105Z #6 sha256:673dab6a778399532989dcde44534b5d7272b5a8c78c829b22a1797b4985361a 2.10MB / 4.64MB 0.2s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.3792079Z #6 extracting sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8 0.1s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.3793105Z #6 sha256:1b6825f0ae04444194fc54e31f40576471163d211d98f8b6ed0bfa01bc31df0b 0B / 114B 0.2s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4971506Z #6 sha256:d0d59afdfbe915d0264b504fe496c77eb775717e2b1e1ef77844cb11656f4174 206B / 206B 0.2s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4973211Z #6 sha256:673dab6a778399532989dcde44534b5d7272b5a8c78c829b22a1797b4985361a 4.64MB / 4.64MB 0.2s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4974791Z #6 sha256:1b6825f0ae04444194fc54e31f40576471163d211d98f8b6ed0bfa01bc31df0b 114B / 114B 0.3s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4976272Z #6 extracting sha256:673dab6a778399532989dcde44534b5d7272b5a8c78c829b22a1797b4985361a 0.1s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4977781Z #6 sha256:dd2ed445aa09b437c95624a022db605cf1d8d182c514de803cd3580adb195e75 0B / 952B 0.3s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4979375Z #6 sha256:018458017b2853e8ec59281823240c65129d6b4a320605f1c6d5349aa74b9d4e 0B / 948B 0.3s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4980815Z #6 sha256:a4b2a24db84003d780d6196b4252e45427f5f6f91484055a112bef4909f829e6 0B / 148B 0.3s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.4982514Z #6 extracting sha256:d0d59afdfbe915d0264b504fe496c77eb775717e2b1e1ef77844cb11656f4174
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6036777Z #6 sha256:dd2ed445aa09b437c95624a022db605cf1d8d182c514de803cd3580adb195e75 952B / 952B 0.3s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6038069Z #6 sha256:018458017b2853e8ec59281823240c65129d6b4a320605f1c6d5349aa74b9d4e 948B / 948B 0.3s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6039577Z #6 sha256:a4b2a24db84003d780d6196b4252e45427f5f6f91484055a112bef4909f829e6 148B / 148B 0.4s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6040796Z #6 extracting sha256:d0d59afdfbe915d0264b504fe496c77eb775717e2b1e1ef77844cb11656f4174 done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6042511Z #6 extracting sha256:1b6825f0ae04444194fc54e31f40576471163d211d98f8b6ed0bfa01bc31df0b done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6043741Z #6 extracting sha256:dd2ed445aa09b437c95624a022db605cf1d8d182c514de803cd3580adb195e75 done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6044844Z #6 extracting sha256:018458017b2853e8ec59281823240c65129d6b4a320605f1c6d5349aa74b9d4e done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6045825Z #6 extracting sha256:a4b2a24db84003d780d6196b4252e45427f5f6f91484055a112bef4909f829e6 done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6046749Z #6 DONE 0.4s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6047110Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6047350Z #7 [2/3] COPY entrypoint.sh /entrypoint.sh
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.6047823Z #7 DONE 0.0s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.7422017Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.7422604Z #8 [3/3] RUN chmod +x /entrypoint.sh
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.7423183Z #8 DONE 0.1s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.8939848Z 
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.8940357Z #9 exporting to image
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:38.8940895Z #9 exporting layers
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:39.0084538Z #9 exporting layers 0.3s done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:39.0338367Z #9 writing image sha256:19cd4c2f96d89cee938dd82297e7a80f6588a5b2b919e10d244854d7b707ade5 done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:39.0339832Z #9 naming to docker.io/library/7de7aa:b57bf15ed60d47db92a4202846581fa0 done
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:39.0340573Z #9 DONE 0.3s
+Build and Deploy to Umbler	Build burnett01/rsync-deployments@7.0.1	2026-02-05T00:01:39.0407181Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	﻿2026-02-05T00:01:39.0707412Z ##[group]Run actions/checkout@v4
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0708024Z with:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0708243Z   ref: main
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0708507Z   repository: renancrociari/renancrociari-site
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0709620Z   token: ***
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0709859Z   ssh-strict: true
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0710081Z   ssh-user: git
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0710303Z   persist-credentials: true
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0710558Z   clean: true
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0710790Z   sparse-checkout-cone-mode: true
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0711056Z   fetch-depth: 1
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0711273Z   fetch-tags: false
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0711493Z   show-progress: true
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0711714Z   lfs: false
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0711920Z   submodules: false
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0712142Z   set-safe-directory: true
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.0712702Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1826208Z Syncing repository: renancrociari/renancrociari-site
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1828429Z ##[group]Getting Git version info
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1829510Z Working directory is '/home/runner/work/renancrociari-site/renancrociari-site'
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1830813Z [command]/usr/bin/git version
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1833813Z git version 2.52.0
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1860134Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1875584Z Temporarily overriding HOME='/home/runner/work/_temp/f4d53976-ea0d-43b7-9c01-c5ab9a53f62a' before making global git config changes
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1877098Z Adding repository directory to the temporary git global config as a safe directory
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1889377Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/renancrociari-site/renancrociari-site
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1933341Z Deleting the contents of '/home/runner/work/renancrociari-site/renancrociari-site'
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1937107Z ##[group]Initializing the repository
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.1942089Z [command]/usr/bin/git init /home/runner/work/renancrociari-site/renancrociari-site
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2071078Z hint: Using 'master' as the name for the initial branch. This default branch name
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2072249Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2073200Z hint: to use in all of your new repositories, which will suppress this warning,
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2073825Z hint: call:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2074188Z hint:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2074568Z hint: 	git config --global init.defaultBranch <name>
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2074927Z hint:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2075276Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2075853Z hint: 'development'. The just-created branch can be renamed via this command:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2076291Z hint:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2076517Z hint: 	git branch -m <name>
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2076773Z hint:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2077145Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2082734Z Initialized empty Git repository in /home/runner/work/renancrociari-site/renancrociari-site/.git/
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2094367Z [command]/usr/bin/git remote add origin https://github.com/renancrociari/renancrociari-site
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2127923Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2128688Z ##[group]Disabling automatic garbage collection
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2133152Z [command]/usr/bin/git config --local gc.auto 0
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2162241Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2162986Z ##[group]Setting up auth
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2169971Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2200344Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2637167Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2671426Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2906260Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.2939523Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.3184084Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.3220400Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.3221459Z ##[group]Fetching the repository
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:39.3229365Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +refs/heads/main*:refs/remotes/origin/main* +refs/tags/main*:refs/tags/main*
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5125628Z From https://github.com/renancrociari/renancrociari-site
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5126305Z  * [new branch]      main       -> origin/main
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5158453Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5159449Z ##[group]Determining the checkout info
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5245620Z [command]/usr/bin/git branch --list --remote origin/main
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5246527Z   origin/main
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5248411Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5248935Z [command]/usr/bin/git sparse-checkout disable
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5250699Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5273940Z ##[group]Checking out the ref
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:41.5278010Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:42.0835055Z Switched to a new branch 'main'
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:42.0836135Z branch 'main' set up to track 'origin/main'.
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:42.0861127Z ##[endgroup]
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:42.0904257Z [command]/usr/bin/git log -1 --format=%H
+Build and Deploy to Umbler	Checkout code	2026-02-05T00:01:42.0929734Z d04faf8a4e9d3416e91531959c3896fda0a6e0e0
+Build and Deploy to Umbler	Setup Node.js	﻿2026-02-05T00:01:42.1140202Z ##[group]Run actions/setup-node@v4
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.1140519Z with:
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.1140735Z   node-version: 18
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.1140956Z   cache: npm
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.1141160Z   always-auth: false
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.1141397Z   check-latest: false
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.1141744Z   token: ***
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.1141975Z ##[endgroup]
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:42.3193914Z Attempting to download 18...
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:43.3714677Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:44.0128981Z Extracting ...
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:44.0233712Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/b51530ff-8882-4a2f-a062-aebddb03e0d5 -f /home/runner/work/_temp/e809a0de-73e1-4c02-9ef0-ada98784ec05
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:44.9753580Z Adding to the cache ...
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:46.5467247Z ##[group]Environment details
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:46.8674327Z node: v18.20.8
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:46.8674787Z npm: 10.8.2
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:46.8675058Z yarn: 1.22.22
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:46.8675670Z ##[endgroup]
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:46.8700451Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:46.9875038Z /home/runner/.npm
+Build and Deploy to Umbler	Setup Node.js	2026-02-05T00:01:47.3136993Z npm cache is not found
+Build and Deploy to Umbler	Install dependencies	﻿2026-02-05T00:01:47.3300096Z ##[group]Run npm ci
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:47.3300418Z [36;1mnpm ci[0m
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:47.3338844Z shell: /usr/bin/bash -e {0}
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:47.3339409Z ##[endgroup]
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4510032Z 
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4518342Z added 146 packages, and audited 147 packages in 4s
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4518859Z 
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4519375Z 84 packages are looking for funding
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4519927Z   run `npm fund` for details
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4833997Z 
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4834718Z 3 moderate severity vulnerabilities
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4835113Z 
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4835338Z To address all issues, run:
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4835782Z   npm audit fix
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4836003Z 
+Build and Deploy to Umbler	Install dependencies	2026-02-05T00:01:51.4836210Z Run `npm audit` for details.
+Build and Deploy to Umbler	Build project	﻿2026-02-05T00:01:51.5131868Z ##[group]Run npm run build
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:51.5132230Z [36;1mnpm run build[0m
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:51.5166668Z shell: /usr/bin/bash -e {0}
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:51.5166967Z ##[endgroup]
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:51.6479213Z 
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:51.6480360Z > renancrociari-site@1.0.0 build
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:51.6482382Z > parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:51.6483763Z 
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:52.1347801Z Building...
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:52.7525817Z Bundling...
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:52.8953959Z Packaging & Optimizing...
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4329508Z ✨ Built in 2.57s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4366962Z 
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4381078Z dist/about.html                                                                       32.36 kB    1.48s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4382290Z dist/index.html                                                                       12.92 kB    1.51s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4383647Z dist/favicon.5e3e1e7f.ico                                                              7.41 kB    1.23s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4384939Z dist/apple-touch-icon.8fcf4a54.png                                                    15.83 kB    1.23s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4386294Z dist/favicon-32x32.1b52bcc0.png                                                        1.25 kB    1.23s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4409924Z dist/favicon-16x16.4312addd.png                                                          664 B    1.23s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4411265Z dist/up_/up_/public/site.webmanifest                                                     279 B    1.23s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4412634Z dist/android-chrome-192x192.a69730ab.png                                              17.68 kB    1.23s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4413924Z dist/android-chrome-512x512.379a1eb9.png                                              95.55 kB    1.23s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4415223Z dist/safari-pinned-tab.a594ebf5.svg                                                   59.78 kB    1.29s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4416481Z dist/degular.933e70d4.woff2                                                          115.22 kB    1.24s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4417442Z dist/copy-email.a63d780f.svg                                                           2.55 kB    1.29s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4418194Z dist/up_/up_/public/downloads/renancrociari-cv.pdf                                   703.69 kB    1.24s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4418962Z dist/content-protected.e2f987a8.svg                                                      733 B    1.29s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4419994Z dist/about.9bfea962.css                                                                  844 B    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4420644Z dist/about.e75f43ea.css                                                                  265 B    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4421267Z dist/about.22819864.css                                                               33.09 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4421956Z dist/source-serif-regular-400.7082e5c9.woff2                                          20.09 kB    1.24s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4422731Z dist/source-serif-regular-400-italic.c9de8f34.woff2                                   20.09 kB    1.24s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4423509Z dist/source-serif-bold-700.c8d41986.woff2                                             21.72 kB    1.24s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4424884Z dist/source-serif-bold-700-italic.db57a909.woff2                                      21.48 kB    1.24s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4426303Z dist/renan-crociari-default.d1cf737a.svg                                               4.35 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4427705Z dist/renan-crociari-hover.22e51063.svg                                                 4.35 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4428985Z dist/renan-crociari-gray.3b885ef3.svg                                                  3.73 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4430000Z dist/renan-crociari-white.7d15197b.svg                                                 3.73 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4431084Z dist/renan-profile.d9ce4a71.webp                                                       7.88 kB    1.25s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4431801Z dist/redesign-mobile-home.70cbb4ea.webp                                              271.29 kB    1.25s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4432701Z dist/journal-finder-home.dca8d14c.webp                                               135.05 kB    1.25s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4433393Z dist/subject-page.e25924d0.webp                                                       75.43 kB    1.25s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4434065Z dist/farfetch-home.31671fd6.webp                                                     161.86 kB    1.25s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4434765Z dist/medium-icon.cfed1456.svg                                                            493 B    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4435439Z dist/medium-icon-hover.ff4ae525.svg                                                      738 B    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4436152Z dist/linkedin-icon.c74317a9.svg                                                          585 B    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4436872Z dist/linkedin-icon-hover.216da84a.svg                                                    827 B    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4437578Z dist/dribbble-icon.e6468f62.svg                                                        1.36 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4438275Z dist/dribbble-icon-hover.a25409d0.svg                                                  1.66 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4438938Z dist/quote.d18c9414.svg                                                                  406 B    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4439708Z dist/about.e03a17b1.js                                                                17.57 kB    1.47s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4440340Z dist/img-renan.1624d9d8.webp                                                          48.44 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4441014Z dist/springernature-logo.8b2cf88e.svg                                                  3.22 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4441705Z dist/farfetch-logo.57e161f6.svg                                                        1.35 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4442366Z dist/esapiens-logo.ae667611.svg                                                        5.12 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4443028Z dist/triata-logo.f55f665b.svg                                                          4.32 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4443655Z dist/resume.51fda25b.svg                                                                 939 B    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4444346Z dist/sara-picture.36799ad5.webp                                                        2.79 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4445019Z dist/leandro-picture.c3bdf998.webp                                                     1.56 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4445701Z dist/felipe-picture.5776f8fa.webp                                                      2.34 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4446456Z dist/cinthia-picture.64b3b4a7.webp                                                     2.75 kB    1.30s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4447096Z dist/buttons.html                                                                      4.59 kB    1.47s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4447882Z dist/connecting-researchers-with-the-perfect-home-for-scientific-discoveries.html     27.27 kB    1.51s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4448740Z dist/journal-finder-featured-detail.1eacd158.webp                                    107.15 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4449596Z dist/jf-case-home-desktop.3ea30623.webp                                              105.18 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4450302Z dist/jf-case-home-desktop-2.2f975060.webp                                            118.01 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4451012Z dist/jf-case-home-mobile.ad7193ac.webp                                               108.45 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4451716Z dist/jf-case-listing-desktop.41705a87.webp                                           129.19 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4452438Z dist/jf-case-listing-mobile.3cc051a9.webp                                             63.39 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4453345Z dist/figma-icon.ea3c5816.svg                                                             779 B    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4453979Z dist/design-system.html                                                               28.87 kB    1.55s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4454877Z dist/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html         43.03 kB    1.49s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4455686Z dist/ff-case-featured.23bf80b5.webp                                                  161.19 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4456335Z dist/off-white.21c6b771.svg                                                            8.64 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4456964Z dist/pucci.39e635be.svg                                                                1.93 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4457561Z dist/ami.04c80e32.svg                                                                 18.85 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4458191Z dist/stadium-goods.5e31ae2a.svg                                                         3.5 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4458948Z dist/proenza-schouler.d2101b76.svg                                                     3.43 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4459965Z dist/palm-angels.99a6fa4c.svg                                                          4.04 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4460613Z dist/modes.2df81d6d.svg                                                                   2 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4461248Z dist/jw-anderson.12b93281.svg                                                         10.71 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4461902Z dist/roberto-cavalli.34899b25.svg                                                      8.24 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4462550Z dist/ambush.cd1d4dee.svg                                                               2.76 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4463163Z dist/browns.72e0c359.svg                                                               2.02 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4463792Z dist/thom-browne.1402091c.svg                                                          4.44 kB    1.39s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4464484Z dist/ff-case-shopping-funnel.31d738dc.webp                                            41.54 kB    1.44s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4465203Z dist/ff-case-eye-tracking.910ea616.webp                                                86.7 kB    1.44s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4465888Z dist/ff-case-old-plp.9a6b3d37.webp                                                    95.88 kB    1.44s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4466559Z dist/ff-case-new-plp.90c5fa01.webp                                                   146.55 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4467225Z dist/ff-case-old-pdp.e8bf7ec9.webp                                                   106.96 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4467905Z dist/ff-case-new-pdp.1bee3391.webp                                                   140.07 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4468595Z dist/ff-case-old-checkout.9e55c8ab.webp                                               90.55 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4469427Z dist/ff-case-new-checkout.71648777.webp                                              105.41 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4470414Z dist/redesigning-the-mobile-experience-of-a-dating-platform.html                      26.06 kB    1.51s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4471478Z dist/sl-case-featured.0d846be8.webp                                                  314.76 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4472182Z dist/first-interaction.c83fc408.webp                                                  81.47 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4472896Z dist/menu-hamburger-poster.ef203c44.webp                                              19.72 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4473653Z dist/menu-hamburger-compressed.05141368.mp4                                          332.31 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4474388Z dist/explore-page.b0fd3c3b.webp                                                      193.32 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.4475073Z dist/profile-page.6cab792c.webp                                                      314.75 kB    1.45s
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5302528Z 🔧 Fixing URL paths in HTML files...
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5318944Z ✓ Fixed paths in: about.html
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5325863Z ✓ Fixed paths in: connecting-researchers-with-the-perfect-home-for-scientific-discoveries.html
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5331936Z ✓ Fixed paths in: design-system.html
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5348209Z ✓ Fixed paths in: improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5351531Z ✓ Fixed paths in: index.html
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5360604Z ✓ Fixed paths in: redesigning-the-mobile-experience-of-a-dating-platform.html
+Build and Deploy to Umbler	Build project	2026-02-05T00:01:54.5362623Z ✅ Path fixing complete!
+Build and Deploy to Umbler	Setup SSH key for rsync	﻿2026-02-05T00:01:54.5532573Z ##[group]Run burnett01/rsync-deployments@7.0.1
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5532940Z with:
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5533274Z   switches: -rltvz --delete --exclude='.git' --exclude='up_***'
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5533652Z   path: dist/
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5533870Z   remote_path: ~/public/
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5534283Z   remote_host: ***
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5534518Z   remote_port: ***
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5534768Z   remote_user: ***
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5536657Z   remote_key: ***
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5536897Z   legacy_allow_rsa_hostkeys: false
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5537194Z ##[endgroup]
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:54.5635861Z ##[command]/usr/bin/docker run --name de7aab57bf15ed60d47db92a4202846581fa0_783ead --label 7de7aa --workdir /github/workspace --rm -e "INPUT_SWITCHES" -e "INPUT_PATH" -e "INPUT_REMOTE_PATH" -e "INPUT_REMOTE_HOST" -e "INPUT_REMOTE_PORT" -e "INPUT_REMOTE_USER" -e "INPUT_REMOTE_KEY" -e "INPUT_RSH" -e "INPUT_LEGACY_ALLOW_RSA_HOSTKEYS" -e "INPUT_REMOTE_KEY_PASS" -e "HOME" -e "GITHUB_JOB" -e "GITHUB_REF" -e "GITHUB_SHA" -e "GITHUB_REPOSITORY" -e "GITHUB_REPOSITORY_OWNER" -e "GITHUB_REPOSITORY_OWNER_ID" -e "GITHUB_RUN_ID" -e "GITHUB_RUN_NUMBER" -e "GITHUB_RETENTION_DAYS" -e "GITHUB_RUN_ATTEMPT" -e "GITHUB_ACTOR_ID" -e "GITHUB_ACTOR" -e "GITHUB_WORKFLOW" -e "GITHUB_HEAD_REF" -e "GITHUB_BASE_REF" -e "GITHUB_EVENT_NAME" -e "GITHUB_SERVER_URL" -e "GITHUB_API_URL" -e "GITHUB_GRAPHQL_URL" -e "GITHUB_REF_NAME" -e "GITHUB_REF_PROTECTED" -e "GITHUB_REF_TYPE" -e "GITHUB_WORKFLOW_REF" -e "GITHUB_WORKFLOW_SHA" -e "GITHUB_REPOSITORY_ID" -e "GITHUB_TRIGGERING_ACTOR" -e "GITHUB_WORKSPACE" -e "GITHUB_ACTION" -e "GITHUB_EVENT_PATH" -e "GITHUB_ACTION_REPOSITORY" -e "GITHUB_ACTION_REF" -e "GITHUB_PATH" -e "GITHUB_ENV" -e "GITHUB_STEP_SUMMARY" -e "GITHUB_STATE" -e "GITHUB_OUTPUT" -e "RUNNER_OS" -e "RUNNER_ARCH" -e "RUNNER_NAME" -e "RUNNER_ENVIRONMENT" -e "RUNNER_TOOL_CACHE" -e "RUNNER_TEMP" -e "RUNNER_WORKSPACE" -e "ACTIONS_RUNTIME_URL" -e "ACTIONS_RUNTIME_TOKEN" -e "ACTIONS_CACHE_URL" -e "ACTIONS_RESULTS_URL" -e "ACTIONS_ORCHESTRATION_ID" -e GITHUB_ACTIONS=true -e CI=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/_temp":"/github/runner_temp" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" -v "/home/runner/work/_temp/_runner_file_commands":"/github/file_commands" -v "/home/runner/work/renancrociari-site/renancrociari-site":"/github/workspace" 7de7aa:b57bf15ed60d47db92a4202846581fa0
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:55.8434132Z Identity added: (stdin) (renancrociari@github)
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:56.7710122Z Warning: Permanently added '[***]:***' (ED25519) to the list of known hosts.
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.6906023Z sending incremental file list
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8650406Z rsync: failed to set times on "/home/renancrociari.com/public/.": Operation not permitted (1)
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8651471Z ./
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8652258Z rsync: delete_file: unlink(temporary.html) failed: Operation not permitted (1)
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8653977Z .htaccess
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8656913Z about.22819864.css
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8670631Z about.22819864.css.map
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8706693Z about.9bfea962.css
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8707249Z about.9bfea962.css.map
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8708829Z about.e03a17b1.js
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8716786Z about.e03a17b1.js.map
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8768566Z about.e75f43ea.css
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8769403Z about.e75f43ea.css.map
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8770608Z about.html
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8781905Z ambush.cd1d4dee.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8783836Z ami.04c80e32.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8796799Z android-chrome-192x192.a69730ab.png
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8808869Z android-chrome-512x512.379a1eb9.png
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8876160Z apple-touch-icon.8fcf4a54.png
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8886540Z browns.72e0c359.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8888232Z buttons.html
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8890333Z cinthia-picture.64b3b4a7.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8893509Z connecting-researchers-with-the-perfect-home-for-scientific-discoveries.html
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8904005Z content-protected.e2f987a8.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8905022Z copy-email.a63d780f.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8906729Z degular.933e70d4.woff2
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8988002Z design-system.html
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8996417Z dribbble-icon-hover.a25409d0.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8997272Z dribbble-icon.e6468f62.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.8998590Z esapiens-logo.ae667611.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9002371Z explore-page.b0fd3c3b.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9145335Z farfetch-home.31671fd6.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9260940Z farfetch-logo.57e161f6.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9261533Z favicon-16x16.4312addd.png
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9261942Z favicon-32x32.1b52bcc0.png
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9263268Z favicon.5e3e1e7f.ico
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9268410Z felipe-picture.5776f8fa.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9270978Z ff-case-eye-tracking.910ea616.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:58.9331134Z ff-case-featured.23bf80b5.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0377718Z ff-case-new-checkout.71648777.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0451611Z ff-case-new-pdp.1bee3391.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0551767Z ff-case-new-plp.90c5fa01.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0655449Z ff-case-old-checkout.9e55c8ab.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0718691Z ff-case-old-pdp.e8bf7ec9.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0793906Z ff-case-old-plp.9a6b3d37.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0859908Z ff-case-shopping-funnel.31d738dc.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0888212Z figma-icon.ea3c5816.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0889015Z first-interaction.c83fc408.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0946781Z img-renan.1624d9d8.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0981246Z improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.0997910Z index.html
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1003580Z jf-case-home-desktop-2.2f975060.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1087357Z jf-case-home-desktop.3ea30623.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1161676Z jf-case-home-mobile.ad7193ac.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1238768Z jf-case-listing-desktop.41705a87.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1329963Z jf-case-listing-mobile.3cc051a9.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1373247Z journal-finder-featured-detail.1eacd158.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1450203Z journal-finder-home.dca8d14c.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1546035Z jw-anderson.12b93281.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1553005Z leandro-picture.c3bdf998.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1554790Z linkedin-icon-hover.216da84a.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1555883Z linkedin-icon.c74317a9.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1556691Z medium-icon-hover.ff4ae525.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1557822Z medium-icon.cfed1456.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1558542Z menu-hamburger-compressed.05141368.mp4
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1795981Z menu-hamburger-poster.ef203c44.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1808551Z modes.2df81d6d.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1809946Z off-white.21c6b771.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1815759Z palm-angels.99a6fa4c.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1818728Z proenza-schouler.d2101b76.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.1821443Z profile-page.6cab792c.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2047493Z pucci.39e635be.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2048128Z quote.d18c9414.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2049207Z redesign-mobile-home.70cbb4ea.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2247941Z redesigning-the-mobile-experience-of-a-dating-platform.html
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2259391Z renan-crociari-default.d1cf737a.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2261735Z renan-crociari-gray.3b885ef3.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2264002Z renan-crociari-hover.22e51063.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2266590Z renan-crociari-white.7d15197b.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2268811Z renan-profile.d9ce4a71.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2275102Z resume.51fda25b.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2275785Z roberto-cavalli.34899b25.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2280951Z safari-pinned-tab.a594ebf5.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2361910Z sara-picture.36799ad5.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2365158Z sl-case-featured.0d846be8.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2589364Z source-serif-bold-700-italic.db57a909.woff2
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2603128Z source-serif-bold-700.c8d41986.woff2
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2617829Z source-serif-regular-400-italic.c9de8f34.woff2
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2631491Z source-serif-regular-400.7082e5c9.woff2
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2645093Z springernature-logo.8b2cf88e.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2647432Z stadium-goods.5e31ae2a.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2649824Z subject-page.e25924d0.webp
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2703245Z thom-browne.1402091c.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2706240Z triata-logo.f55f665b.svg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2708633Z downloads/
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.2709945Z downloads/renancrociari-cv.pdf
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.3005241Z images/
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.3005901Z images/ff-case-og-image.jpg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.3174858Z images/jf-case-og-image.jpg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.3301920Z images/renan-og-image.jpg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.3446326Z images/sl-mobile-og-image.jpg
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.9505908Z rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1336) [sender=3.2.7]
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.9507038Z 
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.9507371Z sent 7,006 bytes  received 52,422 bytes  13,206.22 bytes/sec
+Build and Deploy to Umbler	Setup SSH key for rsync	2026-02-05T00:01:59.9507912Z total size is 5,952,846  speedup is 100.17
+Build and Deploy to Umbler	Post Checkout code	﻿2026-02-05T00:02:00.0348742Z Post job cleanup.
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1299449Z [command]/usr/bin/git version
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1336118Z git version 2.52.0
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1379832Z Temporarily overriding HOME='/home/runner/work/_temp/ec1031f4-49a8-4285-8d3e-0bd513859f29' before making global git config changes
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1381463Z Adding repository directory to the temporary git global config as a safe directory
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1386567Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/renancrociari-site/renancrociari-site
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1423670Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1457052Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1694454Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1716117Z http.https://github.com/.extraheader
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1729023Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1760355Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.1991801Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build and Deploy to Umbler	Post Checkout code	2026-02-05T00:02:00.2025218Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Build and Deploy to Umbler	Complete job	﻿2026-02-05T00:02:00.2384552Z Cleaning up orphan processes
