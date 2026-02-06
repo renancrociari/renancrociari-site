@@ -106,7 +106,7 @@ if (passwordModal && openPasswordModal.length > 0) {
     // Clear previous input and errors
     if (passwordInput) {
       passwordInput.value = '';
-      passwordInput.focus();
+      // passwordInput.focus(); // Removed to respect autofocus on close button
     }
     if (errorMessage) {
       errorMessage.style.display = 'none';
