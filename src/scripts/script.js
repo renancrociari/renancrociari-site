@@ -107,6 +107,28 @@ if (passwordModal && openPasswordModal.length > 0) {
     if (passwordInput) {
       passwordInput.value = '';
       // passwordInput.focus(); // Removed to respect autofocus on close button
+
+      // Scroll input into view when keyboard appears on mobile devices
+      // Only apply on touch-enabled devices to avoid unnecessary behavior on desktop
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+      if (isTouchDevice) {
+        passwordInput.addEventListener('focus', () => {
+          // Use requestAnimationFrame for better timing coordination
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              // Verify input still exists and is focused before scrolling
+              if (passwordInput && document.activeElement === passwordInput) {
+                passwordInput.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'center',
+                  inline: 'nearest'
+                });
+              }
+            }, 300); // Delay to allow keyboard animation to complete
+          });
+        }, { once: true });
+      }
     }
     if (errorMessage) {
       errorMessage.style.display = 'none';
