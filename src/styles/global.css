@@ -15,25 +15,6 @@
   --font-xxxl: 40px;
   --font-xxxxl: 60px;
 
-
-  /* Colors typography */
-  --typography-white: #ffffff;
-  --typography-green-light: #38C545;
-  --typography-green-dark: #099415;
-  --typography-gradient-1: #25D16A;
-  --typography-gradient-2: #9EE825;
-  --typography-gray-200: #222222;
-  --typography-gray-300: #B6B6B6;
-
-  /* Colors background */
-  --background-gray-light: #f1f2f5;
-  --background-gray-medium: #E9EAEE;
-
-  /* Colors border */
-  --border-gray: #E9EAEE;
-  --border-red: #FF6060;
-
-
   /* Spacing */
   --spacing-xxxs: 4px;
   --spacing-xxs: 8px;
@@ -44,6 +25,7 @@
   --spacing-xxl: 64px;
   --spacing-xxxl: 80px;
   --spacing-xxxxl: 128px;
+  --spacing-xxxxxl: 224px;
 
 
   /* Border radiuses */
@@ -51,4 +33,48 @@
   --br-xxs: 8px;
   --br-xs: 16px;
   --br-md: 24px;
+
+
+  /* WHITE MODE
+    
+    
+    Colors typography
+  --typography-white: #ffffff;
+  --typography-green-light: #38C545;
+  --typography-green-dark: #099415;
+  --typography-gradient-1: #25D16A;
+  --typography-gradient-2: #9EE825;
+  --typography-gray-200: #222222;
+  --typography-gray-300: #B6B6B6;
+
+  Colors background
+  --background-gray-light: #f1f2f5;
+  --background-gray-medium: #E9EAEE;
+
+  Colors border
+  --border-gray: #E9EAEE;
+  --border-red: #FF6060;
+
+  */
+
+
+  /* Colors typography */
+  --typography-white: #ffffff;
+  --typography-green-light: #38C545;
+  --typography-green-dark: #099415;
+  --typography-gradient-1: #25D16A;
+  --typography-gradient-2: #9EE825;
+  --typography-gray-200: #E3E3E3;
+  --typography-gray-300: #B6B6B6;
+
+  /* Colors background */
+  --background-body: #141414;
+  --background-gray-medium: #1E1F20;
+  --background-gray-light: #272829;
+  --background-gray-lighter: #343536;
+
+
+  /*Colors border */
+  --border-gray: #E9EAEE;
+  --border-red: #FF6060;
 }

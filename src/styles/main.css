@@ -3,11 +3,12 @@
 body {
   margin: 0;
   padding: 0;
-  border: 16px solid;
+  border: 8px solid;
   border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;
   box-sizing: border-box;
   color: var(--typography-gray-200);
   font-optical-sizing: auto;
+  background-color: var(--background-body);
 }
 
 
@@ -1657,17 +1658,15 @@ strong,
 
 .content-header {
   margin-top: -90px;
+  background-color: var(--background-gray-medium);
 }
 
 .content-header-border {
   height: 80px;
-  background-color: var(--background-gray-light);
+  background-color: var(--background-body);
   margin-top: -80px;
 }
 
-body.about .content-header {
-  background: linear-gradient(255deg, #D6FEB2 0%, #94F89D 100%);
-}
 
 /** HEADERS OF THE CASES ****/
 
@@ -1676,23 +1675,8 @@ body.about .content-hero h1 {
   max-width: 960px;
 }
 
-/** Farfetch **/
-body.farfetch .content-header {
-  background-color: #C50511;
-}
-
 body.farfetch .content-hero h1 {
   max-width: 710px;
-}
-
-/** SL Mobile **/
-body.sl-mobile .content-header {
-  background-color: #8944A1;
-}
-
-/** Journal Finder **/
-body.journal-finder .content-header {
-  background-color: #C6E0F9;
 }
 
 
@@ -1732,7 +1716,7 @@ body.journal-finder .content-header {
   bottom: 0;
   right: 32px;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 
@@ -1796,7 +1780,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 
 .navbar.scrolled-up {
-  background-color: white;
+  background-color: var(--background-gray-medium);
   transition: transform 250ms ease-out, background-color 0s, box-shadow 0s;
   will-change: transform, background-color, box-shadow;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
@@ -1956,7 +1940,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
   cursor: pointer;
   margin-bottom: 0;
   background-color: var(--background-gray-medium);
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid var(--background-body);
 }
 
 .experience-details>summary {
@@ -1990,6 +1974,8 @@ details>summary::-webkit-details-marker {
 }
 
 .experience-details .experience-btn-svg {
+  fill: var(--typography-gray-200);
+
   .vertical {
     transition: all 0.2s ease-in-out;
   }
@@ -2000,6 +1986,10 @@ details>summary::-webkit-details-marker {
     height: 2.4px;
     y: 14.8px;
   }
+}
+
+.experience-image {
+  background-color: var(--background-gray-medium);
 }
 
 .experience-description {
@@ -2055,11 +2045,13 @@ details>div>div {
 .skillset {
   width: 100%;
   background-color: var(--background-gray-medium);
+  padding-bottom: 158px;
 }
 
 
 .skillset-wrapper {
   max-width: 764px;
+  position: relative;
 }
 
 .tag-list {
@@ -2080,20 +2072,38 @@ details>div>div {
 }
 
 .cv-btn {
+  position: absolute;
+  right: 0;
+  left: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  background: var(--typography-white);
+  background: var(--background-gray-light);
+}
+
+.cv-btn a:first-child {
+  border-right: 1px solid var(--background-body);
+}
+
+.cv-btn a:last-child {
+  border-left: 1px solid var(--background-body);
 }
 
 
 .cv-btn>a {
+  all: unset;
   background-clip: unset;
+  cursor: pointer;
   transition: background-color 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-xs);
+  background-color: var(--background-gray-light);
 }
 
 .cv-btn>a:hover {
-  background-color: #F7F8FA;
+  background-color: var(--background-gray-lighter);
 }
 
 .cv-btn>a:hover>span {
@@ -2108,23 +2118,7 @@ details>div>div {
   height: 52px;
 }
 
-.cv-btn-linkedin,
-.cv-btn-resume {
-  all: unset;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-xl) var(--spacing-xs);
-  background-color: var(--background-gray-light);
-}
 
-.skillset-border {
-  width: 100%;
-  height: 98px;
-  background-color: #F5FFEC;
-  margin-top: -88px;
-}
 
 .icon-arrow-new-tab {
   margin-bottom: -2px;
@@ -2134,8 +2128,12 @@ details>div>div {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.cv-btn-linkedin:hover .icon-arrow-new-tab svg,
-.cv-btn-resume:hover .icon-arrow-new-tab svg {
+.cv-btn a:first-child:hover .icon-arrow-new-tab svg {
+  opacity: 0.7;
+  transform: translate(2px, -2px);
+}
+
+.cv-btn a:last-child:hover .icon-arrow-new-tab svg {
   opacity: 0.7;
   transform: translate(2px, -2px);
 }
@@ -2145,7 +2143,6 @@ details>div>div {
 .testimonial-list {
   width: 100%;
   text-align: center;
-  background-color: #F5FFEC;
   padding-bottom: var(--spacing-xxxxl);
   margin-bottom: -128px;
 }
@@ -2851,11 +2848,6 @@ details>div>div {
     line-height: 20px;
   }
 
-  .skillset-border {
-    height: 93px;
-    margin-top: -93px;
-    background-size: 43px 20px;
-  }
 
 
   /********** TESTIMONIALS  **********/
