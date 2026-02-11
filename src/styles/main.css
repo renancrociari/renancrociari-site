@@ -615,9 +615,10 @@ p,
 
 .p-high {
   font-family: var(--font-display), sans-serif;
-  font-size: var(--font-lg);
-  line-height: 36px;
-  font-weight: 600;
+  font-size: var(--font-xl);
+  line-height: 46px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
 }
 
 a {
