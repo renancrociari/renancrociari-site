@@ -151,4 +151,3 @@ Navbar with **white logo** variant for dark backgrounds.
 - Social media icons (LinkedIn, Medium, Dribbble)
 - Email dialog trigger button
 - Scroll behavior and animations handled by `script.js`
-

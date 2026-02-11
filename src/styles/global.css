@@ -4,28 +4,28 @@
   --font-paragraph: 'Source Serif', 'Georgia', serif;
 
   /* Font sizes */
-  --font-xxxxs: 16px;
-  --font-xxxs: 18px;
-  --font-xxs: 20px;
-  --font-xs: 22px;
-  --font-md: 24px;
-  --font-lg: 26px;
-  --font-xl: 32px;
-  --font-xxl: 36px;
-  --font-xxxl: 40px;
-  --font-xxxxl: 60px;
+  --font-2xs: 16px;
+  --font-xs: 18px;
+  --font-sm: 20px;
+  --font-md: 22px;
+  --font-lg: 24px;
+  --font-xl: 26px;
+  --font-2xl: 32px;
+  --font-3xl: 36px;
+  --font-4xl: 40px;
+  --font-5xl: 60px;
 
   /* Spacing */
-  --spacing-xxxs: 4px;
-  --spacing-xxs: 8px;
-  --spacing-xs: 16px;
+  --spacing-2xs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
   --spacing-md: 24px;
   --spacing-lg: 32px;
   --spacing-xl: 48px;
-  --spacing-xxl: 64px;
-  --spacing-xxxl: 80px;
-  --spacing-xxxxl: 128px;
-  --spacing-xxxxxl: 224px;
+  --spacing-2xl: 64px;
+  --spacing-3xl: 80px;
+  --spacing-4xl: 128px;
+  --spacing-5xl: 224px;
 
 
   /* Border radiuses */
