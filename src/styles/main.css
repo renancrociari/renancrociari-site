@@ -741,6 +741,10 @@ strong,
   text-align: center;
 }
 
+.t-upper {
+  text-transform: uppercase;
+}
+
 /************** BUTTONS ****************/
 
 .btn {
@@ -749,7 +753,7 @@ strong,
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   text-decoration: none;
   cursor: pointer;
   border: none;
@@ -860,6 +864,10 @@ strong,
   background-clip: text;
   -webkit-background-clip: text;
   transition: color 0.6s ease, background 0.6s ease;
+}
+
+.btn-gray-test:hover {
+  color: transparent;
 }
 
 .btn-gray-test::before {
@@ -1399,7 +1407,7 @@ strong,
 
 .success-message,
 .error-message {
-  padding: var(--spacing-2xs) 0 var(--spacing-sm);
+  padding: var(--spacing-xs) 0 var(--spacing-xs);
   animation: slideDown 0.1s ease-out forwards;
   transform-origin: top;
 }
@@ -1411,7 +1419,7 @@ strong,
 
 .error-message {
   display: none;
-  background-color: red;
+  background-color: var(--border-red);
 }
 
 /* Loading spinner for password validation */
