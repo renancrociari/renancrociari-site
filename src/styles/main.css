@@ -2238,11 +2238,18 @@ details>div>div {
   width: 50%;
 }
 
+.medium-zoom-small img,
+.medium-zoom-medium img,
+.medium-zoom-large img {
+  display: block;
+}
+
 .two-column-image {
   display: flex;
   flex-direction: row;
   gap: 16px;
 }
+
 
 /**************** BRANDS LIST ****************/
 
