@@ -2079,6 +2079,7 @@ details>div>div {
 }
 
 .tag {
+  color: #222222;
   background-color: #BCF585;
   padding: var(--spacing-sm) var(--spacing-sm);
   font-size: var(--font-2xs);
