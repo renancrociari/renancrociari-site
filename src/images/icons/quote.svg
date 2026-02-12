@@ -1,3 +1,17 @@
-<svg width="64" height="30" viewBox="0 0 64 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M2.05651 0H27.9394C29.7715 0 30.6891 2.21516 29.3935 3.51069L3.51068 29.3935C2.21515 30.6891 0 29.7715 0 27.9394V2.05651C0 0.920733 0.920733 0 2.05651 0ZM36.0565 0H61.9394C63.7715 0 64.6891 2.21516 63.3935 3.51069L37.5107 29.3935C36.2151 30.6891 34 29.7715 34 27.9394V2.05651C34 0.920733 34.9207 0 36.0565 0Z" fill="#DCF9C8"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 64 30">
+  <!-- Generator: Adobe Illustrator 30.2.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 1)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#linear-gradient);
+        fill-rule: evenodd;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="19.48" y1="36.47" x2="36.21" y2="-9.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#25d16a"/>
+      <stop offset="1" stop-color="#cff006"/>
+    </linearGradient>
+  </defs>
+  <path class="st0" d="M2.06,0h25.88c1.83,0,2.75,2.22,1.45,3.51L3.51,29.39c-1.3,1.3-3.51.38-3.51-1.45V2.06C0,.92.92,0,2.06,0ZM36.06,0h25.88c1.83,0,2.75,2.22,1.45,3.51l-25.88,25.88c-1.3,1.3-3.51.38-3.51-1.45V2.06c0-1.14.92-2.06,2.06-2.06Z"/>
 </svg>
