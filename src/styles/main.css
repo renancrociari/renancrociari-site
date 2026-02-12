@@ -1279,9 +1279,9 @@ strong,
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: white;
+  background-color: var(--background-body);
   animation: myFadeIn 0.8s ease forwards;
-  border: 16px solid;
+  border: 8px solid;
   border-image-outset: 0;
   border-image-repeat: stretch;
   border-image-slice: 100%;
@@ -1526,21 +1526,21 @@ strong,
 }
 
 .card-2 {
-  background: #C6E0F9 url(../images/case-journal-finder/journal-finder-home.webp) no-repeat center bottom -60px;
+  background: #4874B2 url(../images/case-journal-finder/journal-finder-home.webp) no-repeat center bottom -60px;
   background-size: 140%;
 }
 
 .card-2:hover {
-  background-color: #ADD1F3;
+  background-color: #3D67A1;
 }
 
 .card-3 {
-  background: #D7F2C0 url(../images/subject-page.webp) no-repeat left 80px bottom -60px;
+  background: #4B5B31 url(../images/subject-page.webp) no-repeat left 80px bottom -60px;
   background-size: 100%;
 }
 
 .card-3:hover {
-  background-color: #b3e389;
+  background-color: #415422;
 }
 
 .card-4 {
