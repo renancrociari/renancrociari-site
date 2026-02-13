@@ -11,8 +11,8 @@
   --font-lg: 24px;
   --font-xl: 26px;
   --font-2xl: 32px;
-  --font-3xl: 36px;
-  --font-4xl: 40px;
+  --font-3xl: 40px;
+  --font-4xl: 44px;
   --font-5xl: 60px;
 
   /* Spacing */
@@ -25,7 +25,8 @@
   --spacing-2xl: 64px;
   --spacing-3xl: 80px;
   --spacing-4xl: 128px;
-  --spacing-5xl: 224px;
+  --spacing-5xl: 160px;
+  --spacing-6xl: 224px;
 
 
   /* Border radiuses */
@@ -65,7 +66,8 @@
   --typography-gradient-1: #25D16A;
   --typography-gradient-2: #9EE825;
   --typography-gray-200: #E3E3E3;
-  --typography-gray-300: #B6B6B6;
+  --typography-gray-300: #8E8E8E;
+  --typography-gray-dark: #333333;
 
   /* Colors background */
   --background-body: #141414;

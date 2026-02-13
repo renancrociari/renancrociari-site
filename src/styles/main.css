@@ -126,7 +126,7 @@ input::placeholder {
 
 /* 224px */
 .mt-5xl {
-  margin-top: var(--spacing-5xl);
+  margin-top: var(--spacing-6xl);
 }
 
 
@@ -608,15 +608,15 @@ p,
 .p {
   font-family: var(--font-paragraph), serif;
   font-size: var(--font-sm);
-  line-height: 36px;
-  font-weight: 400;
+  line-height: 38px;
+  font-weight: 300;
   letter-spacing: 0.3px;
 }
 
 .p-high {
   font-family: var(--font-display), sans-serif;
-  font-size: var(--font-xl);
-  line-height: 46px;
+  font-size: var(--font-2xl);
+  line-height: 48px;
   font-weight: 400;
   letter-spacing: 0.8px;
 }
@@ -665,8 +665,8 @@ h1.hero,
 h2,
 .display-xl {
   font-size: var(--font-3xl);
-  line-height: 42px;
-  font-weight: 600;
+  line-height: 46px;
+  font-weight: 500;
 }
 
 h3,
@@ -1786,7 +1786,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 }
 
 body.white .main-nav-list[data-visible="true"] .main-nav-a {
-  color: var(--typography-gray-200);
+  color: var(--typography-gray-dark);
 }
 
 body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover {
@@ -2419,21 +2419,26 @@ details>div>div {
   /********** MARGINS 480px - 767px **********/
 
   /* Top Margin */
+
+  /* 64px changes to 48px */
   .mt-2xl {
     margin-top: var(--spacing-xl);
   }
 
-  /* 64px changes to 48px */
+  /* 80px changes to 64px */
   .mt-3xl {
     margin-top: var(--spacing-2xl);
   }
 
-  /* 80px changes to 64px */
+  /* 128px changes to 80px */
   .mt-4xl {
     margin-top: var(--spacing-3xl);
   }
 
-  /* 128 changes to 80px */
+  /* 224px changes to 160px */
+  .mt-5xl {
+    margin-top: var(--spacing-5xl);
+  }
 
 
   /* Bottom Margin */
@@ -2509,29 +2514,34 @@ details>div>div {
   p,
   .p {
     font-family: var(--font-paragraph), serif;
-    font-size: var(--font-md);
-    line-height: 32px;
+    font-size: var(--font-xs);
+    line-height: 34px;
+  }
+
+  .p-high {
+    font-size: var(--font-xl);
+    line-height: 36px;
   }
 
 
   h1,
   .display-xxl {
-    font-size: var(--font-md);
+    font-size: var(--font-lg);
     line-height: 28px;
     font-weight: 600;
   }
 
   h1.hero,
   .display-xxxl {
-    font-size: var(--font-lg);
+    font-size: var(--font-2xl);
     line-height: 30px;
     font-weight: 600;
   }
 
   h2,
   .display-xl {
-    font-size: var(--font-md);
-    line-height: 28px;
+    font-size: var(--font-xl);
+    line-height: 32px;
     font-weight: 600;
   }
 
@@ -2540,30 +2550,30 @@ details>div>div {
   h5,
   h6,
   .display-md {
-    font-size: var(--font-sm);
-    line-height: 26px;
+    font-size: var(--font-md);
+    line-height: 28px;
     font-weight: 600;
   }
 
   .body-large {
     font-family: inherit;
     font-size: var(--font-sm);
-    line-height: 30px;
-    letter-spacing: 0.3px;
+    line-height: 28px;
+    letter-spacing: 0.6px;
   }
 
   .body-medium {
     font-family: inherit;
-    font-size: var(--font-md);
+    font-size: var(--font-xs);
     line-height: 26px;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.6px;
   }
 
   .body-small {
     font-family: inherit;
     font-size: var(--font-2xs);
     line-height: 22px;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.7px;
   }
 
   .logo-svg {
@@ -2785,7 +2795,7 @@ details>div>div {
 
 
   .hamburger-menu-svg {
-    fill: var(--typography-gray-200);
+    fill: var(--typography-gray-dark);
     width: 24px;
     height: 16px;
   }
