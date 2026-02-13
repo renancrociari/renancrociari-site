@@ -1597,8 +1597,14 @@ strong,
 
 .social-item {
   display: inline-block;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  padding: 4px 3px 4px 5px;
+  background-color: var(--background-body);
+}
+
+.social-item:hover {
+  background-clip: unset;
 }
 
 .social-icon {
@@ -1791,6 +1797,11 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 body.white .main-nav-list[data-visible="true"] .main-nav-a {
   color: var(--typography-gray-dark);
+}
+
+body.white .main-nav-list[data-visible="true"] .main-nav-a>img {
+  width: 50px;
+  height: 50px;
 }
 
 body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover {
@@ -2554,7 +2565,7 @@ details>div>div {
   .display-xl {
     font-size: var(--font-xl);
     line-height: 32px;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   h3,
@@ -2688,15 +2699,9 @@ details>div>div {
   }
 
   .main-nav-list-items li:first-child {
-    display: unset;
     /*Show link to homepage on mobile nav */
+    display: unset;
   }
-
-  .main-nav-list-items li.linkedin {
-    display: none;
-    /* Hide LinkedIn link on mobile nav */
-  }
-
 
   .main-nav-a {
     font-size: var(--font-lg);
@@ -2750,6 +2755,8 @@ details>div>div {
     display: flex;
     animation: FadeIn 450ms ease forwards;
   }
+
+
 
   @keyframes FadeIn {
     0% {
