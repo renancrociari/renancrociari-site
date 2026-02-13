@@ -674,6 +674,12 @@ h2,
 }
 
 h3,
+.display-lg {
+  font-size: var(--font-2xl);
+  line-height: 36px;
+  font-weight: 600;
+}
+
 h4,
 h5,
 h6,
@@ -1561,7 +1567,7 @@ strong,
 }
 
 .card-4:hover {
-  background-color: #C21620;
+  background-color: #B6111A;
 }
 
 .card-5 {
@@ -2569,6 +2575,12 @@ details>div>div {
   }
 
   h3,
+  .display-lg {
+    font-size: var(--font-md);
+    line-height: 30px;
+    font-weight: 600;
+  }
+
   h4,
   h5,
   h6,
