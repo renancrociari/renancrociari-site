@@ -445,6 +445,71 @@
             </div>
         </section>
 
+        <!-- CHECKBOXES -->
+        <section class="ds-section">
+            <h2 class="ds-section-title">Checkboxes</h2>
+
+            <div class="ds-subsection">
+                <h3 class="ds-subsection-title">Checkbox States</h3>
+                <div class="ds-component-demo">
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <!-- Default Unchecked -->
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-default" />
+                            <label for="checkbox-default">Default (Unchecked)</label>
+                        </div>
+
+                        <!-- Default Checked -->
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-checked" checked />
+                            <label for="checkbox-checked">Checked</label>
+                        </div>
+
+                        <!-- Hover State (instruction) -->
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-hover" />
+                            <label for="checkbox-hover">Hover (hover over to see effect)</label>
+                        </div>
+
+                        <!-- Focus State (instruction) -->
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-focus" />
+                            <label for="checkbox-focus">Focus (click to see focus outline)</label>
+                        </div>
+
+                        <!-- Disabled Unchecked -->
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-disabled" disabled />
+                            <label for="checkbox-disabled">Disabled (Unchecked)</label>
+                        </div>
+
+                        <!-- Disabled Checked -->
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-disabled-checked" checked disabled />
+                            <label for="checkbox-disabled-checked">Disabled (Checked)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="ds-code">&lt;div class="checkbox-wrapper"&gt;
+    &lt;input type="checkbox" id="example" /&gt;
+    &lt;label for="example"&gt;Label Text&lt;/label&gt;
+&lt;/div&gt;</div>
+            </div>
+
+            <div class="ds-subsection">
+                <h3 class="ds-subsection-title">Checkbox Without Label</h3>
+                <div class="ds-component-demo">
+                    <div style="display: flex; gap: 24px; align-items: center;">
+                        <input type="checkbox" id="checkbox-standalone-1" />
+                        <input type="checkbox" id="checkbox-standalone-2" checked />
+                        <input type="checkbox" id="checkbox-standalone-3" disabled />
+                        <input type="checkbox" id="checkbox-standalone-4" checked disabled />
+                    </div>
+                </div>
+                <div class="ds-code">&lt;input type="checkbox" id="example" /&gt;</div>
+            </div>
+        </section>
+
         <!-- DIALOGS -->
         <section class="ds-section">
             <h2 class="ds-section-title">Dialogs</h2>

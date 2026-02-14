@@ -74,6 +74,90 @@ input::placeholder {
 }
 
 
+/********** CHECKBOXES *************/
+
+/* Hide default checkbox */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  border: 2px solid #AEB5C7;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.1s ease;
+  background-color: transparent;
+  padding: 0;
+}
+
+/* Hover state */
+input[type="checkbox"]:hover:not(:disabled) {
+  border-color: var(--typography-green-light);
+}
+
+/* Focus state - only visible with keyboard navigation */
+input[type="checkbox"]:focus-visible {
+  border-color: var(--typography-green-light);
+  outline: 2px dotted var(--typography-gray-200);
+  outline-offset: 2px;
+}
+
+/* Checked state */
+input[type="checkbox"]:checked {
+  background-color: var(--typography-green-light);
+  box-sizing: border-box;
+  border: 2px solid var(--typography-green-light);
+}
+
+/* Checkmark */
+input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Disabled state */
+input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--typography-gray-300);
+}
+
+input[type="checkbox"]:disabled:checked {
+  background: var(--typography-gray-300);
+}
+
+/* Checkbox with label wrapper */
+.checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+.checkbox-wrapper label {
+  cursor: pointer;
+  user-select: none;
+  color: var(--typography-gray-200);
+}
+
+.checkbox-wrapper input[type="checkbox"]:disabled+label {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 
 /********** MARGINS **********/
 
