@@ -283,6 +283,55 @@ if (passwordModal && openPasswordModal.length > 0) {
       openPasswordDialog(true);
     }
   });
+
+  // Password visibility toggle functionality (industry-standard approach)
+  const togglePasswordButton = passwordModal?.querySelector('.btn-toggle-password');
+
+  if (togglePasswordButton && passwordInput) {
+    let isPasswordVisible = false;
+
+    // Function to toggle password visibility
+    const toggleVisibility = (e) => {
+      // Prevent default behavior to maintain focus
+      e.preventDefault();
+
+      // Store cursor position
+      const cursorPosition = passwordInput.selectionStart;
+
+      // Toggle state
+      isPasswordVisible = !isPasswordVisible;
+
+      // Change input type
+      passwordInput.type = isPasswordVisible ? 'text' : 'password';
+
+      // Toggle visual checkbox state and ARIA attributes
+      if (isPasswordVisible) {
+        togglePasswordButton.classList.add('checked');
+        togglePasswordButton.setAttribute('aria-checked', 'true');
+      } else {
+        togglePasswordButton.classList.remove('checked');
+        togglePasswordButton.setAttribute('aria-checked', 'false');
+      }
+
+      // Restore focus and cursor position
+      passwordInput.focus();
+      passwordInput.setSelectionRange(cursorPosition, cursorPosition);
+    };
+
+    // Use mousedown instead of click to prevent blur
+    togglePasswordButton.addEventListener('mousedown', toggleVisibility);
+
+    // Also handle touch events for mobile
+    togglePasswordButton.addEventListener('touchstart', toggleVisibility);
+
+    // Add keyboard support for accessibility (Space and Enter keys)
+    togglePasswordButton.addEventListener('keydown', (e) => {
+      // Only respond to Space or Enter keys
+      if (e.key === ' ' || e.key === 'Enter') {
+        toggleVisibility(e);
+      }
+    });
+  }
 }
 
 

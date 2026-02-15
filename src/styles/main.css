@@ -143,20 +143,88 @@ input[type="checkbox"]:disabled:checked {
   cursor: pointer;
 }
 
-.checkbox-wrapper input[type="checkbox"]:disabled {
-  cursor: not-allowed;
+.checkbox-wrapper input[type="checkbox"] {
+  pointer-events: none;
 }
 
 .checkbox-wrapper label {
   cursor: pointer;
   user-select: none;
   color: var(--typography-gray-200);
+  pointer-events: none;
+}
+
+.checkbox-wrapper input[type="checkbox"]:disabled {
+  cursor: not-allowed;
 }
 
 .checkbox-wrapper input[type="checkbox"]:disabled+label {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+/* Password toggle button styled as checkbox */
+.btn-toggle-password {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: none;
+  border: none;
+  padding: var(--spacing-xxs) 0;
+  margin-top: var(--spacing-xxs);
+  cursor: pointer;
+  font-family: var(--font-display);
+  text-align: left;
+}
+
+.visual-checkbox {
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  border: 2px solid #AEB5C7;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.1s ease;
+  background-color: transparent;
+  flex-shrink: 0;
+}
+
+.btn-toggle-password:hover .visual-checkbox {
+  border-color: var(--typography-green-light);
+}
+
+.btn-toggle-password:focus-visible .visual-checkbox {
+  border-color: var(--typography-green-light);
+  outline: 2px dotted var(--typography-gray-200);
+  outline-offset: 2px;
+}
+
+/* Checked state */
+.btn-toggle-password.checked .visual-checkbox {
+  background-color: var(--typography-green-light);
+  border-color: var(--typography-green-light);
+}
+
+/* Checkmark */
+.btn-toggle-password.checked .visual-checkbox::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.toggle-password-text {
+  cursor: pointer;
+  user-select: none;
+  color: var(--typography-gray-200);
+}
+
+
 
 
 /********** MARGINS **********/

@@ -247,10 +247,10 @@ if (window.location.hash.includes('#password-protected')) {
         <div class="feedback-message">
             <div id="password-error" class="error-message body-small t-white" role="alert">Password incorrect</div>
         </div>
-        <div class="checkbox-wrapper mt-sm">
-            <input type="checkbox">
-            <label for="checkbox-default" class="body-small">Show password</label>
-        </div>
+        <button type="button" class="btn-toggle-password mt-sm" role="switch" aria-checked="false" aria-label="Show password">
+            <span class="visual-checkbox" aria-hidden="true"></span>
+            <span class="toggle-password-text body-small">Show password</span>
+        </button>
     </div>
 </dialog>
 
