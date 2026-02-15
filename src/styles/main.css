@@ -1430,7 +1430,7 @@ strong,
   flex-wrap: wrap;
 }
 
-/********** GENRAL DIALOG  **********/
+/********** GENERAL DIALOG  **********/
 
 .body-fixed {
   /* actived via javascript when dialog is opened to avoid scroll up */
@@ -1605,6 +1605,7 @@ strong,
 .dialog-content-protected {
   background-color: white;
 }
+
 
 .image-content-protected {
   width: 80px;
@@ -2802,6 +2803,12 @@ details>div>div {
   .dialog[open] {
     border: 4px solid;
     border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;
+  }
+
+  /* Reduce heading margin when password input is focused (e.g., when keyboard is open on mobile) */
+  .dialog-content-protected:has(input[type="password"]:focus) .dialog-heading {
+    margin-top: 32px;
+    transition: margin-top 0.2s ease;
   }
 
   /************** MOBILE NAVIGATION  - 480px - 767px **************/
