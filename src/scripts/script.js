@@ -109,15 +109,33 @@ if (passwordModal && openPasswordModal.length > 0) {
       // passwordInput.focus(); // Removed to respect autofocus on close button
 
       // Detect keyboard open via visualViewport height reduction and toggle a class
-      // so CSS can adapt the layout (e.g. reduce .dialog-heading margin-top on mobile)
+      // so CSS can adapt the layout (e.g. reduce .dialog-heading margin-top on mobile).
+      //
+      // Reference notes:
+      //   - screen.height: NOT used — on Chrome/iOS it always reports portrait height,
+      //     causing false positives when the dialog is open in landscape.
+      //   - window.innerHeight: NOT used — Firefox shrinks it when the keyboard opens,
+      //     making the comparison always false on Firefox.
+      //   - Solution: capture visualViewport.height at dialog open time as the stable
+      //     reference, and update it whenever height increases (orientation change,
+      //     browser chrome resizing). This works correctly in all orientations/browsers.
       if (window.visualViewport) {
+        let referenceHeight = window.visualViewport.height;
+
         const onViewportResize = () => {
-          // Use screen.height (never changes) instead of innerHeight (shrinks on Firefox when keyboard opens)
-          const keyboardOpen = window.visualViewport.height < window.screen.height * 0.75;
+          const currentHeight = window.visualViewport.height;
+
+          // Height grew → keyboard closed, or orientation changed to a taller state.
+          // Update reference so future comparisons stay accurate.
+          if (currentHeight > referenceHeight) {
+            referenceHeight = currentHeight;
+          }
+
+          const keyboardOpen = currentHeight < referenceHeight * 0.75;
           passwordModal.classList.toggle('keyboard-open', keyboardOpen);
 
-          // Firefox scrolls the window when an input is focused, even inside a position:fixed dialog.
-          // Reset the scroll position immediately to neutralise that shift.
+          // Firefox scrolls the window when an input is focused, even inside a
+          // position:fixed dialog. Reset scroll position to neutralise that shift.
           if (keyboardOpen) {
             window.scrollTo({ top: 0, behavior: 'instant' });
           }
@@ -125,7 +143,7 @@ if (passwordModal && openPasswordModal.length > 0) {
 
         window.visualViewport.addEventListener('resize', onViewportResize);
 
-        // Clean up when the dialog is closed so the listener doesn't linger
+        // Clean up when the dialog is closed so the listener doesn't linger.
         passwordModal.addEventListener('close', () => {
           window.visualViewport.removeEventListener('resize', onViewportResize);
           passwordModal.classList.remove('keyboard-open');
@@ -320,11 +338,25 @@ if (passwordModal && openPasswordModal.length > 0) {
       passwordInput.setSelectionRange(cursorPosition, cursorPosition);
     };
 
-    // Use mousedown instead of click to prevent blur
-    togglePasswordButton.addEventListener('mousedown', toggleVisibility);
+    // pointerdown + preventDefault() prevents focus transfer on Chrome/Safari.
+    // Firefox and Firefox Focus ignore this for focus management, so we also
+    // add a blur guard: if the input blurs while the toggle is being pressed,
+    // restore focus synchronously before the keyboard has a chance to close.
+    let isToggling = false;
 
-    // Also handle touch events for mobile
-    togglePasswordButton.addEventListener('touchstart', toggleVisibility);
+    togglePasswordButton.addEventListener('pointerdown', (e) => {
+      isToggling = true;
+      toggleVisibility(e);
+      // Reset flag after a short tick in case blur doesn't fire (e.g. desktop)
+      setTimeout(() => { isToggling = false; }, 100);
+    });
+
+    passwordInput.addEventListener('blur', () => {
+      if (isToggling) {
+        isToggling = false;
+        passwordInput.focus(); // Restore focus before keyboard dismisses
+      }
+    });
 
     // Add keyboard support for accessibility (Space and Enter keys)
     togglePasswordButton.addEventListener('keydown', (e) => {
