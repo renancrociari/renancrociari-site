@@ -397,6 +397,18 @@ if (primaryNav && navToggle) {
     }
   };
 
+  // Helper to close the nav without touching history (used by both the toggle and the popstate handler)
+  function closeNav() {
+    primaryNav.setAttribute("data-visible", false);
+    navToggle.setAttribute('aria-expanded', false);
+    navbar.classList.remove('open');
+    navbar.classList.add('closed');
+    setTimeout(() => {
+      body.style.overflow = 'auto';
+    }, 450);
+    focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
+  }
+
   navToggle.addEventListener("click", () => {
     const visibility = primaryNav.getAttribute("data-visible");
 
@@ -407,27 +419,51 @@ if (primaryNav && navToggle) {
       navbar.classList.add('open');
       navbar.classList.remove('closed');
 
+      // Push a history entry so the device back button can close the menu
+      history.pushState({ menuOpen: true }, '', '#menu');
+
       // Enable focus on elements
       focusableElements.forEach(el => el.removeAttribute('tabindex'));
       // Focus on the first link
       focusableElements[0].focus();
 
     } else if (visibility === "true") {
-      primaryNav.setAttribute("data-visible", false);
-      navToggle.setAttribute('aria-expanded', false);
-      navbar.classList.remove('open');
-      navbar.classList.add('closed');
-      setTimeout(() => {
-        body.style.overflow = 'auto';
-      }, 450);
+      closeNav();
 
-      // Disable focus on elements (mobile only logic handled by click, but safer to rely on state)
-      focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
+      // Remove the history entry that was pushed when the menu opened
+      history.replaceState(null, '', window.location.pathname);
     }
   });
 
-  // Handle keyboard navigation loop
+  // Close the menu when the user presses the device back button.
+  // Guard: only act if the menu is actually open AND no dialog is currently open,
+  // so this never conflicts with the email / password dialog popstate handlers.
+  window.addEventListener('popstate', () => {
+    const isMenuOpen = primaryNav.getAttribute('data-visible') === 'true';
+    const isAnyDialogOpen = modal?.hasAttribute('open') || passwordModal?.hasAttribute('open');
+
+    if (isMenuOpen && !isAnyDialogOpen) {
+      closeNav();
+    }
+  });
+
+  // Handle keyboard navigation loop + Escape to close
   document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      const visibility = primaryNav.getAttribute("data-visible");
+      const isMobile = window.getComputedStyle(navToggle).display !== 'none';
+      const isAnyDialogOpen = modal?.hasAttribute('open') || passwordModal?.hasAttribute('open');
+
+      // Only close the nav if no dialog is currently open.
+      // The dialog's own `cancel` event already handles Escape for dialogs,
+      // so this ensures only one layer is dismissed per key press.
+      if (isMobile && visibility === "true" && !isAnyDialogOpen) {
+        closeNav();
+        history.replaceState(null, '', window.location.pathname);
+        navToggle.focus(); // Return focus to the hamburger button
+      }
+    }
+
     if (event.key === 'Tab') {
       const visibility = primaryNav.getAttribute("data-visible");
       const isMobile = window.getComputedStyle(navToggle).display !== 'none';
