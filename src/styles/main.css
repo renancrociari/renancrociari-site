@@ -237,7 +237,7 @@ input[type="checkbox"]:disabled:checked {
 }
 
 /* 8px */
-.mt-sm {
+.mt-xs {
   margin-top: var(--spacing-sm);
 }
 
