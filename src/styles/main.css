@@ -1093,6 +1093,36 @@ strong,
 
 
 
+/************** READ MORE (details/summary) ****************/
+
+.read-more {
+  border: none;
+}
+
+.read-more-toggle {
+  cursor: pointer;
+  list-style: none;
+  color: var(--typography-gray-200);
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.read-more-toggle:hover {
+  color: var(--typography-green-light);
+}
+
+/* Remove default marker in Safari/Chrome */
+.read-more-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.read-more[open]>.read-more-toggle {
+  display: none;
+}
+
+
+
+
 /********** HOME HEADER **********/
 
 .home-header {
@@ -2276,17 +2306,9 @@ details>div>div {
   left: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: var(--background-gray-light);
+  background: var(--background-body);
+  gap: 2px;
 }
-
-.cv-btn a:first-child {
-  border-right: 1px solid var(--background-body);
-}
-
-.cv-btn a:last-child {
-  border-left: 1px solid var(--background-body);
-}
-
 
 .cv-btn>a {
   all: unset;
@@ -2299,6 +2321,10 @@ details>div>div {
   justify-content: center;
   padding: var(--spacing-xl) var(--spacing-sm);
   background-color: var(--background-gray-light);
+}
+
+.cv-btn>a:focus-visible {
+  outline: 2px dotted var(--typography-gray-200);
 }
 
 .cv-btn>a:hover {
@@ -2316,8 +2342,6 @@ details>div>div {
   width: 52px;
   height: 52px;
 }
-
-
 
 .icon-arrow-new-tab {
   margin-bottom: -2px;
