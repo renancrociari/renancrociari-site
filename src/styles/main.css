@@ -2105,7 +2105,7 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 .content-hero .divider {
   margin: 0 var(--spacing-sm);
   color: var(--typography-gray-200);
-  opacity: 0.2;
+  opacity: 0.15;
 }
 
 .featured-image {
@@ -3119,6 +3119,13 @@ details>div>div {
 
   .executive-summary-text {
     grid-template-columns: 1fr;
+  }
+
+
+  /********** CONTENT HERO DIVIDER 480px - 767px **********/
+  .content-hero .divider {
+    margin: 0 var(--spacing-xs);
+
   }
 
 
