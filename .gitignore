@@ -24,6 +24,10 @@ npm-debug.log*
 # Secrets
 .env
 
+# SSL Certificates (mkcert)
+*.pem
+*.key
+
 # Testing
 coverage/
 

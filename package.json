@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "parcel src/pages/*.html",
+    "start": "parcel src/pages/*.html --cert ./localhost+3.pem --key ./localhost+3-key.pem",
     "build": "parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js"
   },
   "author": "",
