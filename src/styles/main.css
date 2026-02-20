@@ -3119,7 +3119,6 @@ details>div>div {
 
   .executive-summary-text {
     grid-template-columns: 1fr;
-    padding: 0 var(--spacing-lg);
   }
 
 
