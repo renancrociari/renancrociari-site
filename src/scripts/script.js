@@ -616,8 +616,8 @@ if (mainNavList) {
 
 
 mediumZoom('.medium-zoom-image', {
-  margin: 20,
-  background: 'rgba(255, 255, 255, 0.95)',
+  margin: 0,
+  background: 'rgba(0, 0, 0, 0.8)',
   scrollOffset: 0,
   container: null,
   template: null
