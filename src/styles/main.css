@@ -1479,6 +1479,8 @@ strong,
   right: 0;
   bottom: 0;
   left: 0;
+  overflow: hidden;
+  /* Prevents Firefox from auto-scrolling dialog content when keyboard opens */
   background-color: var(--background-body);
   animation: myFadeIn 0.8s ease forwards;
   border: 8px solid;

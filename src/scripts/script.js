@@ -112,8 +112,15 @@ if (passwordModal && openPasswordModal.length > 0) {
       // so CSS can adapt the layout (e.g. reduce .dialog-heading margin-top on mobile)
       if (window.visualViewport) {
         const onViewportResize = () => {
-          const keyboardOpen = window.visualViewport.height < window.innerHeight * 0.75;
+          // Use screen.height (never changes) instead of innerHeight (shrinks on Firefox when keyboard opens)
+          const keyboardOpen = window.visualViewport.height < window.screen.height * 0.75;
           passwordModal.classList.toggle('keyboard-open', keyboardOpen);
+
+          // Firefox scrolls the window when an input is focused, even inside a position:fixed dialog.
+          // Reset the scroll position immediately to neutralise that shift.
+          if (keyboardOpen) {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          }
         };
 
         window.visualViewport.addEventListener('resize', onViewportResize);
