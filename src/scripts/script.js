@@ -108,25 +108,20 @@ if (passwordModal && openPasswordModal.length > 0) {
       passwordInput.value = '';
       // passwordInput.focus(); // Removed to respect autofocus on close button
 
-      // Scroll input into view when keyboard appears on mobile devices
-      // Only apply on touch-enabled devices to avoid unnecessary behavior on desktop
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      // Detect keyboard open via visualViewport height reduction and toggle a class
+      // so CSS can adapt the layout (e.g. reduce .dialog-heading margin-top on mobile)
+      if (window.visualViewport) {
+        const onViewportResize = () => {
+          const keyboardOpen = window.visualViewport.height < window.innerHeight * 0.75;
+          passwordModal.classList.toggle('keyboard-open', keyboardOpen);
+        };
 
-      if (isTouchDevice) {
-        passwordInput.addEventListener('focus', () => {
-          // Use requestAnimationFrame for better timing coordination
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              // Verify input still exists and is focused before scrolling
-              if (passwordInput && document.activeElement === passwordInput) {
-                passwordInput.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'center',
-                  inline: 'nearest'
-                });
-              }
-            }, 300); // Delay to allow keyboard animation to complete
-          });
+        window.visualViewport.addEventListener('resize', onViewportResize);
+
+        // Clean up when the dialog is closed so the listener doesn't linger
+        passwordModal.addEventListener('close', () => {
+          window.visualViewport.removeEventListener('resize', onViewportResize);
+          passwordModal.classList.remove('keyboard-open');
         }, { once: true });
       }
     }

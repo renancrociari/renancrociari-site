@@ -2830,8 +2830,8 @@ details>div>div {
     border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;
   }
 
-  /* Reduce heading margin when password input is focused (e.g., when keyboard is open on mobile) */
-  .dialog-content-protected:has(input[type="password"]:focus) .dialog-heading {
+  /* Reduce heading margin when keyboard is open on mobile (class toggled via visualViewport JS) */
+  .dialog-show-password.keyboard-open .dialog-heading {
     margin-top: 32px;
     transition: margin-top 0.2s ease;
   }
