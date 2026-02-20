@@ -1870,6 +1870,7 @@ strong,
 .footer-nav {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 48px;
 }
 
@@ -3159,6 +3160,12 @@ details>div>div {
     align-items: normal;
   }
 
+  /*********** FOOTER  480px - 767px ***********/
+
+  .footer-nav {
+    gap: 16px 32px;
+  }
+
 
 
 }
@@ -3202,11 +3209,6 @@ details>div>div {
     margin-right: 16px;
   }
 
-  /*********** FOOTER  0 - 479px ***********/
-
-  .footer-nav {
-    gap: 32px;
-  }
 
   /**************** BRANDS LIST ****************/
 
