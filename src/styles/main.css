@@ -955,10 +955,9 @@ strong,
 
 .btn:hover>.svg-button {
   opacity: 0.7;
-  transform: translateX(2px);
   /* Pushes arrow to the right */
+  transform: translateX(2px);
 }
-
 
 /* this property flips the arrow to the left */
 .btn-arrow-left>.svg-button {
@@ -1020,15 +1019,20 @@ strong,
 }
 
 .btn-gray-test {
-  color: transparent;
+  color: var(--typography-gray-200);
   background-image: linear-gradient(to right, var(--btn-gray-test-g1), var(--btn-gray-test-g2));
   background-clip: text;
   -webkit-background-clip: text;
-  transition: --btn-gray-test-g1 0.6s ease, --btn-gray-test-g2 0.6s ease;
+  transition: --btn-gray-test-g1 0.6s ease, --btn-gray-test-g2 0.6s ease, color 0.6s ease, ;
+}
+
+.btn-gray-test>.svg-button {
+  transition: fill 0.2s ease;
 }
 
 .btn-gray-test:hover {
   cursor: pointer;
+  color: transparent;
   --btn-gray-test-g1: #9EE825;
   --btn-gray-test-g2: #25D16A;
 }
@@ -1037,6 +1041,11 @@ strong,
 .btn-gray-test>.svg-button {
   /* applies gray color to the arrow */
   fill: var(--typography-gray-200);
+}
+
+.btn-gray-test:hover>.svg-button {
+  fill: var(--typography-green-dark);
+  opacity: 1;
 }
 
 
