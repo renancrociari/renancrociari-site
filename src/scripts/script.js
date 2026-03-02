@@ -620,25 +620,44 @@ const mainNavList = document.querySelector('#main-nav-list');
 let lastScrollY = window.scrollY;
 let isListeningToScroll = true;
 let ticking = false;
+let isHidden = false;
+
+// How many px the user must scroll in one direction before the navbar reacts.
+// Keeps the navbar stable against tiny accidental scrolls.
+const SCROLL_THRESHOLD = 8;
+let scrollDelta = 0;
 
 // Function to update navbar position
 const updateNavbar = () => {
   if (!navbar) return;
 
   const currentScrollY = window.scrollY;
+  const diff = currentScrollY - lastScrollY;
 
-  if (currentScrollY === 0) {
-    // User has scrolled to the top
+  if (currentScrollY <= 0) {
+    // At the very top: always show, reset all state
+    isHidden = false;
+    scrollDelta = 0;
     navbar.classList.remove('scrolled-up');
-    navbar.style.transform = 'translateY(0px)';
-  } else if (currentScrollY > lastScrollY) {
-    // User is scrolling down
-    navbar.style.transform = `translateY(-${Math.min(currentScrollY, 90)}px)`;
-    navbar.classList.remove('scrolled-up');
+    navbar.style.transform = 'translateY(0)';
+  } else if (diff > 0) {
+    // Scrolling down — accumulate delta, hide once threshold is crossed
+    scrollDelta = Math.max(0, scrollDelta) + diff;
+    if (!isHidden && scrollDelta > SCROLL_THRESHOLD) {
+      isHidden = true;
+      scrollDelta = 0;
+      navbar.classList.remove('scrolled-up');
+      navbar.style.transform = 'translateY(-100%)';
+    }
   } else {
-    // User is scrolling up
-    navbar.style.transform = `translateY(0px)`;
-    navbar.classList.add('scrolled-up');
+    // Scrolling up — accumulate delta, show once threshold is crossed
+    scrollDelta = Math.min(0, scrollDelta) + diff;
+    if (isHidden && scrollDelta < -SCROLL_THRESHOLD) {
+      isHidden = false;
+      scrollDelta = 0;
+      navbar.classList.add('scrolled-up');
+      navbar.style.transform = 'translateY(0)';
+    }
   }
 
   lastScrollY = currentScrollY;
