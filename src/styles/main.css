@@ -971,48 +971,33 @@ strong,
   transform: translateX(-2px) scaleX(-1);
 }
 
-/* Align the ::after gradient overlay to the right for arrow-left buttons,
-   since the label sits on the right side of the reversed flex layout */
-.btn-arrow-left::after {
-  justify-content: flex-end;
-}
-
 
 /*************** green button properties ************************/
 
-.btn-green {
-  color: var(--typography-green-light);
-  background-image: linear-gradient(to right, var(--typography-gradient-1), var(--typography-gradient-2));
-  background-clip: text;
-  -webkit-background-clip: text;
-  position: relative;
+@property --btn-green-g1 {
+  syntax: '<color>';
+  initial-value: #25D16A;
+  inherits: false;
 }
 
-.btn-green::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  display: inline-flex;
-  align-items: center;
-  overflow: hidden;
-  font: inherit;
-  background-image: linear-gradient(to right, var(--typography-gradient-2), var(--typography-gradient-1));
-  -webkit-background-clip: text;
-  background-clip: text;
+@property --btn-green-g2 {
+  syntax: '<color>';
+  initial-value: #9EE825;
+  inherits: false;
+}
+
+.btn-green {
   color: transparent;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
+  background-image: linear-gradient(to right, var(--btn-green-g1), var(--btn-green-g2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  transition: --btn-green-g1 0.6s ease, --btn-green-g2 0.6s ease;
 }
 
 .btn-green:hover {
   cursor: pointer;
-  color: transparent;
-}
-
-.btn-green:hover::after {
-  opacity: 1;
+  --btn-green-g1: #9EE825;
+  --btn-green-g2: #25D16A;
 }
 
 
@@ -1024,40 +1009,30 @@ strong,
 
 /*************** GRAY TEST button properties ************************/
 
-
-.btn-gray-test {
-  color: var(--typography-gray-200);
-  background-image: linear-gradient(to right, var(--typography-gradient-1), var(--typography-gradient-2));
-  background-clip: text;
-  -webkit-background-clip: text;
-  position: relative;
+@property --btn-gray-test-g1 {
+  syntax: '<color>';
+  initial-value: #25D16A;
+  inherits: false;
 }
 
-.btn-gray-test::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  display: inline-flex;
-  align-items: center;
-  overflow: hidden;
-  font: inherit;
-  background-image: linear-gradient(to right, var(--typography-gradient-2), var(--typography-gradient-1));
-  -webkit-background-clip: text;
-  background-clip: text;
+@property --btn-gray-test-g2 {
+  syntax: '<color>';
+  initial-value: #9EE825;
+  inherits: false;
+}
+
+.btn-gray-test {
   color: transparent;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
+  background-image: linear-gradient(to right, var(--btn-gray-test-g1), var(--btn-gray-test-g2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  transition: --btn-gray-test-g1 0.6s ease, --btn-gray-test-g2 0.6s ease;
 }
 
 .btn-gray-test:hover {
   cursor: pointer;
-  color: transparent;
-}
-
-.btn-gray-test:hover::after {
-  opacity: 1;
+  --btn-gray-test-g1: #9EE825;
+  --btn-gray-test-g2: #25D16A;
 }
 
 
