@@ -923,21 +923,19 @@ strong,
 
 .btn.body-large>.svg-button {
   /* Adjust position of the arrow when text is large */
-  margin-top: 4px;
   width: 24.96px;
   height: 14.4px;
 }
 
 .btn.body-medium>.svg-button {
   /* Adjust position of the arrow when text is medium */
-  margin-top: 2px;
+  margin-top: -1px;
   width: 22.88px;
   height: 13.2px;
 }
 
 .btn.body-small>.svg-button {
   /* Adjust position of the arrow when text is small */
-  margin-top: 2px;
   width: 20.8px;
   height: 12px;
 }
