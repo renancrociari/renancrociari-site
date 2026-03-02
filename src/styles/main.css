@@ -929,7 +929,6 @@ strong,
 
 .btn.body-medium>.svg-button {
   /* Adjust position of the arrow when text is medium */
-  margin-top: -1px;
   width: 22.88px;
   height: 13.2px;
 }
@@ -988,7 +987,7 @@ strong,
   background-image: linear-gradient(to right, var(--btn-green-g1), var(--btn-green-g2));
   background-clip: text;
   -webkit-background-clip: text;
-  transition: --btn-green-g1 0.6s ease, --btn-green-g2 0.6s ease;
+  transition: --btn-green-g1 0.4s ease, --btn-green-g2 0.4s ease;
 }
 
 .btn-green:hover {
@@ -1006,44 +1005,44 @@ strong,
 
 /*************** GRAY TEST button properties ************************/
 
-@property --btn-gray-test-g1 {
+@property --btn-gray-green-g1 {
   syntax: '<color>';
   initial-value: #25D16A;
   inherits: false;
 }
 
-@property --btn-gray-test-g2 {
+@property --btn-gray-green-g2 {
   syntax: '<color>';
   initial-value: #9EE825;
   inherits: false;
 }
 
-.btn-gray-test {
+.btn-gray-green {
   color: var(--typography-gray-200);
-  background-image: linear-gradient(to right, var(--btn-gray-test-g1), var(--btn-gray-test-g2));
+  background-image: linear-gradient(to right, var(--btn-gray-green-g1), var(--btn-gray-green-g2));
   background-clip: text;
   -webkit-background-clip: text;
-  transition: --btn-gray-test-g1 0.6s ease, --btn-gray-test-g2 0.6s ease, color 0.6s ease, ;
+  transition: --btn-gray-green-g1 0.6s ease, --btn-gray-green-g2 0.6s ease, color 0.6s ease;
 }
 
-.btn-gray-test>.svg-button {
+.btn-gray-green>.svg-button {
   transition: fill 0.2s ease;
 }
 
-.btn-gray-test:hover {
+.btn-gray-green:hover {
   cursor: pointer;
   color: transparent;
-  --btn-gray-test-g1: #9EE825;
-  --btn-gray-test-g2: #25D16A;
+  --btn-gray-green-g1: #9EE825;
+  --btn-gray-green-g2: #25D16A;
 }
 
 
-.btn-gray-test>.svg-button {
+.btn-gray-green>.svg-button {
   /* applies gray color to the arrow */
   fill: var(--typography-gray-200);
 }
 
-.btn-gray-test:hover>.svg-button {
+.btn-gray-green:hover>.svg-button {
   fill: var(--typography-green-dark);
   opacity: 1;
 }
