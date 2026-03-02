@@ -694,7 +694,7 @@ input[type="checkbox"]:disabled:checked {
 
 li::marker {
   color: var(--typography-green-light);
-  font-size: 1.2rem;
+  font-size: inherit;
 }
 
 
@@ -786,6 +786,27 @@ a:hover {
   cursor: pointer;
   background-clip: text;
   color: transparent;
+}
+
+sup {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.5em;
+  font-size: 75%;
+}
+
+sup a {
+  text-decoration: none;
+  display: unset;
+  color: var(--typography-gray-200);
+}
+
+i {
+  font-style: italic;
+}
+
+sup a:hover {
+  color: var(--typography-gray-200);
 }
 
 
@@ -2495,6 +2516,29 @@ details>div>div {
   padding: 0 var(--spacing-lg);
 }
 
+.featured-metrics-2 .metrics-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  gap: 64px;
+  row-gap: 128px;
+}
+
+.featured-metrics-2 .metrics-list .metric {
+  max-width: 250px;
+}
+
+.metrics-list-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  margin-top: var(--spacing-2xl);
+  padding: 0 var(--spacing-lg);
+}
+
 .metric {
   display: flex;
   flex-direction: column;
@@ -2514,6 +2558,11 @@ details>div>div {
 .metric-number-arrow,
 .metric-number-percentage {
   margin-bottom: 4px;
+}
+
+.footnotes {
+  max-width: 800px;
+  padding: 0 var(--spacing-lg);
 }
 
 
@@ -3153,74 +3202,78 @@ details>div>div {
     flex-direction: column;
   }
 
-  .metric {
-    max-width: 100%;
-  }
-
-  .metric-number {
-    align-items: normal;
-  }
-
-  /*********** FOOTER  480px - 767px ***********/
-
-  .footer-nav {
-    gap: 16px 32px;
-  }
-
-
-
-}
-
-/*********************** Small devices (portrait tablets and large phones, 0 - 480px) *******************************/
-
-@media only screen and (max-width: 479px) {
-
-  .featured-projects {
+  .featured-metrics-2 .metrics-list {
     grid-template-columns: 1fr;
+    gap: 48px;
+
+    .metric {
+      max-width: 100%;
+    }
+
+    .metric-number {
+      align-items: normal;
+    }
+
+    /*********** FOOTER  480px - 767px ***********/
+
+    .footer-nav {
+      gap: 16px 32px;
+    }
+
+
+
   }
 
-  /********** DIALOG 0 - 479px **********/
+  /*********************** Small devices (portrait tablets and large phones, 0 - 480px) *******************************/
 
-  .dialog-container {
-    margin-top: 18px;
+  @media only screen and (max-width: 479px) {
+
+    .featured-projects {
+      grid-template-columns: 1fr;
+    }
+
+    /********** DIALOG 0 - 479px **********/
+
+    .dialog-container {
+      margin-top: 18px;
+    }
+
+    .dialog-heading {
+      margin-top: 20vh;
+    }
+
+    /********** CONTENT 0 - 479px **********/
+
+    .content-header-border {
+      height: 50px;
+      margin-top: -50px;
+    }
+
+
+    .text-block {
+      padding: 0 16px;
+    }
+
+    .featured-metrics {
+      width: calc(100% - 32px);
+    }
+
+    .two-column-image {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+
+
+    /**************** BRANDS LIST ****************/
+
+    .brands-list {
+      padding: 0 var(--spacing-sm);
+    }
+
+    .brands-list-grid {
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 4px;
+    }
+
+
   }
-
-  .dialog-heading {
-    margin-top: 20vh;
-  }
-
-  /********** CONTENT 0 - 479px **********/
-
-  .content-header-border {
-    height: 50px;
-    margin-top: -50px;
-  }
-
-
-  .text-block {
-    padding: 0 16px;
-  }
-
-  .featured-metrics {
-    width: calc(100% - 32px);
-  }
-
-  .two-column-image {
-    margin-left: 16px;
-    margin-right: 16px;
-  }
-
-
-  /**************** BRANDS LIST ****************/
-
-  .brands-list {
-    padding: 0 var(--spacing-sm);
-  }
-
-  .brands-list-grid {
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 4px;
-  }
-
-
-}

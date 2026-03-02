@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   /* Fonts */
   --font-display: 'Degular', sans-serif;
