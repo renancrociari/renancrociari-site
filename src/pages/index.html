@@ -51,6 +51,7 @@
   <link rel="stylesheet" href="../styles/main.css" />
   <!-- Fonts -->
   <link rel="preload" href="../fonts/degular.woff2" as="font" type="font/woff2" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&text=renancrociari" rel="stylesheet">
   <!-- Prevent content flash when redirected from protected page -->
   <script>
     // Check if URL contains password-protected hash
@@ -98,6 +99,10 @@
       </a>
     </div>
 
+    <div>
+      <h1 class="logo-test t-ct" data-text="renancrociari">renancrociari</h1>
+    </div>
+
     <div class="home-hero">
       <div class="hero-content">
         <h1 class="hero">Great questions <br class="break-line-1" /> drive <br class="break-line-2" /> <b
@@ -110,20 +115,22 @@
           Currently <b>@Springer Nature</b>. Previously <b>@Farfetch</b>.
         </span>
         <nav class="home-nav mt-xl">
-          <a class="btn body-medium btn-green py-xs" href="about" aria-label="About">
+          <a class="btn body-medium btn-green py-xs" href="about" aria-label="About" data-text="About">
             About
           </a>
 
-          <a class="btn body-medium btn-green  py-xs" href="/public/downloads/renancrociari-cv.pdf" aria-label="Resumé">
+          <a class="btn body-medium btn-green  py-xs" href="/public/downloads/renancrociari-cv.pdf" aria-label="Resumé"
+            data-text="Resumé">
             Resumé
           </a>
           <a class="btn body-medium btn-green  py-xs" href="https://www.linkedin.com/in/renancrociari/"
-            aria-label="LinkedIn">
+            aria-label="LinkedIn" data-text="LinkedIn">
             LinkedIn
           </a>
           <include src="components/email-dialog.html"></include>
 
-          <button class="btn body-medium btn-green py-sm btn-show-email" aria-haspopup="dialog">Email</button>
+          <button class="btn body-medium btn-green py-sm btn-show-email" aria-haspopup="dialog"
+            data-text="Email">Email</button>
 
         </nav>
       </div>

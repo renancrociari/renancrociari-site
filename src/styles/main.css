@@ -962,18 +962,19 @@ strong,
 }
 
 
-/* these properties sets the arrow to the left */
-.btn-arrow-left {
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-}
-
+/* this property flips the arrow to the left */
 .btn-arrow-left>.svg-button {
   transform: scaleX(-1);
 }
 
 .btn-arrow-left:hover>.svg-button {
   transform: translateX(-2px) scaleX(-1);
+}
+
+/* Align the ::after gradient overlay to the right for arrow-left buttons,
+   since the label sits on the right side of the reversed flex layout */
+.btn-arrow-left::after {
+  justify-content: flex-end;
 }
 
 
@@ -984,30 +985,34 @@ strong,
   background-image: linear-gradient(to right, var(--typography-gradient-1), var(--typography-gradient-2));
   background-clip: text;
   -webkit-background-clip: text;
-  transition: color 0.6s ease, background 0.6s ease;
+  position: relative;
+}
+
+.btn-green::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  font: inherit;
+  background-image: linear-gradient(to right, var(--typography-gradient-2), var(--typography-gradient-1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
 }
 
 .btn-green:hover {
   cursor: pointer;
-  background-clip: text;
   color: transparent;
 }
 
-.btn-green::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: inherit;
-  transition: opacity 0.6s ease;
-  will-change: opacity;
-}
-
-.btn-green:hover::before {
-  opacity: 0;
+.btn-green:hover::after {
+  opacity: 1;
 }
 
 
@@ -1025,33 +1030,39 @@ strong,
   background-image: linear-gradient(to right, var(--typography-gradient-1), var(--typography-gradient-2));
   background-clip: text;
   -webkit-background-clip: text;
-  transition: color 0.6s ease, background 0.6s ease;
+  position: relative;
+}
+
+.btn-gray-test::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  font: inherit;
+  background-image: linear-gradient(to right, var(--typography-gradient-2), var(--typography-gradient-1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
 }
 
 .btn-gray-test:hover {
+  cursor: pointer;
   color: transparent;
 }
 
-.btn-gray-test::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: inherit;
-  transition: opacity 0.6s ease;
-  will-change: opacity;
-}
-
-.btn-gray-test:hover::before {
-  opacity: 0;
+.btn-gray-test:hover::after {
+  opacity: 1;
 }
 
 
 .btn-gray-test>.svg-button {
-  /* applies green color to the arrow */
+  /* applies gray color to the arrow */
   fill: var(--typography-gray-200);
 }
 
@@ -1140,6 +1151,39 @@ strong,
   justify-content: center;
   margin-top: 32px;
   height: 64px;
+}
+
+
+.logo-test {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.6px;
+  position: relative;
+  background-image: linear-gradient(to right, var(--typography-gradient-1), var(--typography-gradient-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.logo-test::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to right, var(--typography-gradient-2), var(--typography-gradient-1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.logo-test:hover::after {
+  opacity: 1;
+  cursor: pointer;
 }
 
 
