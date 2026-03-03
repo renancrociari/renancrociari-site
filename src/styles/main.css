@@ -1762,6 +1762,10 @@ body.journal-finder .content-hero h1 {
   animation: navbar-slide-out 250ms ease-in both;
 }
 
+.navbar.scrolled-up.hiding .navbar-wrapper {
+  transition: background-color 0.6s ease-out;
+}
+
 .navbar.scrolled-up {
   position: sticky;
   top: 16px;
@@ -1771,16 +1775,6 @@ body.journal-finder .content-hero h1 {
 .navbar.scrolled-up .navbar-wrapper {
   background-color: #121212cc;
   backdrop-filter: blur(8px);
-}
-
-
-.navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
-  color: var(--typography-green-light);
-}
-
-.navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
-  opacity: 1;
-  color: var(--typography-gray-200);
 }
 
 
@@ -1807,6 +1801,7 @@ body.journal-finder .content-hero h1 {
   flex-direction: row;
   gap: 48px;
 }
+
 
 .main-nav-a {
   color: var(--typography-gray-200);
@@ -2592,16 +2587,27 @@ details>div>div {
   .navbar {
     padding: 0;
     margin: 0;
+  }
 
+  .navbar.scrolled-up {
+    top: 0px;
+    backdrop-filter: blur(8px);
+    background-color: #121212cc;
   }
 
   .navbar-wrapper {
     max-width: 100%;
-    padding: 0;
+    padding: 8px 0;
     margin: 0 16px;
     background-color: transparent;
     border: 0;
     border-bottom: 0.2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .navbar.scrolled-up .navbar-wrapper {
+    backdrop-filter: unset;
+    background-color: transparent;
+    border-bottom: none;
   }
 
 
@@ -2742,7 +2748,7 @@ details>div>div {
 
   .navbar.scrolled-up .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
     /*Makes hamburger menu icon green when navbar is scrolled up*/
-    fill: var(--typography-green-light);
+    fill: var(--typography-gray-200);
   }
 
 
