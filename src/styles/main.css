@@ -1705,8 +1705,8 @@ body.farfetch .content-hero h1 {
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(9px);
+  background-color: var(--background-body);
+  transition: background-color 0.6s ease-out;
 }
 
 
@@ -1755,6 +1755,11 @@ body.farfetch .content-hero h1 {
   position: sticky;
   top: 16px;
   animation: navbar-slide-in 250ms ease-out both;
+}
+
+.navbar.scrolled-up .navbar-wrapper {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
 }
 
 
