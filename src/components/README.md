@@ -121,12 +121,12 @@ All dialog components follow the same structure:
 
 ## Navbar Components
 
-### navbar-white.html
+### navbar.html
 Navbar with **white logo** variant for dark backgrounds.
 
 **Usage:**
 ```html
-<include src="components/navbar-white.html"></include>
+<include src="components/navbar.html"></include>
 ```
 
 **Used by:**
