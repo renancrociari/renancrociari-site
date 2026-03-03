@@ -1171,7 +1171,6 @@ strong,
   align-items: center;
   height: 100%;
   color: var(--typography-gray-200);
-  transition: color 0.8s ease;
 }
 
 .navbar.open .nav-logo-link {
@@ -1662,15 +1661,10 @@ strong,
 /***************** CONTENT HEADER *********************/
 
 .content-header {
-  margin-top: -90px;
+  overflow: clip;
   background-color: var(--background-gray-medium);
 }
 
-.content-header-border {
-  height: 80px;
-  background-color: var(--background-body);
-  margin-top: -80px;
-}
 
 
 /** HEADERS OF THE CASES ****/
@@ -1688,101 +1682,32 @@ body.farfetch .content-hero h1 {
 
 /****************** GENERAL NAVBAR ****************/
 
-.navbar,
-.navbar-bg {
-  height: 90px;
-}
 
 .navbar {
-  height: 90px;
-  position: relative;
   /* scrolls naturally with the page by default */
-  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  margin: var(--spacing-md) auto 0;
   padding: 0 var(--spacing-lg);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  text-align: left;
-  transition: background-color 800ms ease-out, box-shadow 1000ms ease-out;
-  will-change: background-color, box-shadow;
-  z-index: 200;
+  display: inline-block;
+  text-align: center;
   /* Needs to be higher than the navbar-bg and lower than the dialog */
+  z-index: 200;
   box-sizing: border-box;
 }
 
-.navbar::before {
-  /* Defines margin-bottom of the navbar */
-  content: "";
-  position: absolute;
-  left: 32px;
-  bottom: 0;
-  right: 32px;
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
-  transition: opacity 250ms ease-out;
+.navbar-wrapper {
+  max-width: 670px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(9px);
 }
-
-
-@-moz-document url-prefix() {
-
-  /* Applies a border that avoids the navbar to break when sticky in Firefox */
-  .navbar {
-    border-top: 1px solid transparent;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-
-  .main-nav-list[data-visible="true"] {
-    box-shadow: 0px -1px 0px #95EC8D;
-  }
-}
-
-.main-nav-a {
-  cursor: pointer;
-  background-clip: unset;
-  transition: opacity 300ms ease-in;
-}
-
-.main-nav-a:hover {
-  opacity: 0.6;
-  transition: opacity 300ms ease-in;
-}
-
-
-/************** Default gray navbar ******************/
-
-body.gray .navbar .main-nav-a {
-  color: var(--typography-gray-200);
-}
-
-body.gray .navbar .main-nav-a,
-body.white .navbar .main-nav-a {
-  transition: color 1000ms ease-in, opacity 300ms ease-in;
-  will-change: color, opacity;
-}
-
-
-/************** Default white navbar ******************/
-
-body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a {
-  color: var(--typography-white);
-}
-
-body.white .main-nav-list[data-visible="true"] .main-nav-a {
-  color: var(--typography-gray-dark);
-}
-
-body.white .main-nav-list[data-visible="true"] .main-nav-a>img {
-  width: 50px;
-  height: 50px;
-}
-
-body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a:hover {
-  opacity: 0.6;
-}
-
-
 
 
 /************** Scrolled up navbar ******************/
@@ -1823,25 +1748,13 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 
 /* When hiding from the scrolled-up state, preserve the background and shadow */
 .navbar.scrolled-up.hiding {
-  background-color: var(--background-gray-medium);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   animation: navbar-slide-out 250ms ease-in both;
 }
 
 .navbar.scrolled-up {
   position: sticky;
-  top: 0;
-  background-color: var(--background-gray-medium);
-  transition: background-color 250ms ease-out, box-shadow 250ms ease-out;
-  will-change: background-color, box-shadow;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid transparent;
+  top: 16px;
   animation: navbar-slide-in 250ms ease-out both;
-}
-
-.navbar.scrolled-up::before {
-  /* Removes border-bottom of the navbar when scrolled up */
-  opacity: 0;
 }
 
 
@@ -2915,10 +2828,6 @@ details>div>div {
   }
 
   /************** GENERAL HEADER  - 480px - 767px **************/
-
-  .content-header {
-    margin-top: -70px;
-  }
 
   .content-hero {
     padding-top: 184px;
