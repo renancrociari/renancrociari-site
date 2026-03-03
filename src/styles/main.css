@@ -1176,6 +1176,7 @@ strong,
   align-items: center;
   height: 100%;
   color: var(--typography-gray-200);
+  transition: none;
 }
 
 .navbar.open .nav-logo-link {
@@ -1716,7 +1717,6 @@ body.journal-finder .content-hero h1 {
   justify-items: center;
   align-items: center;
   background-color: var(--background-body);
-  transition: background-color 0.6s ease-out;
   border: 0.2px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -1776,13 +1776,11 @@ body.journal-finder .content-hero h1 {
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
   color: var(--typography-green-light);
-  transition: color 0ms linear, opacity 0ms linear;
 }
 
 .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a:hover {
   opacity: 1;
   color: var(--typography-gray-200);
-  transition: color 300ms ease-in-out;
 }
 
 
@@ -1808,6 +1806,11 @@ body.journal-finder .content-hero h1 {
   display: flex;
   flex-direction: row;
   gap: 48px;
+}
+
+.main-nav-a {
+  color: var(--typography-gray-200);
+  transition: none;
 }
 
 .main-nav-list-items li:first-child {
@@ -2659,13 +2662,11 @@ details>div>div {
   .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a {
     /* Fade-out for inner elements when the navbar is closing */
     opacity: 0;
-    transition: opacity 100ms cubic-bezier(.17, .84, .44, 1);
   }
 
   .navbar .main-nav-list[data-visible="true"] .main-nav-a {
     /* Fade-in for inner elements when the navbar is opening */
     opacity: 1;
-    transition: opacity 250ms cubic-bezier(.17, .84, .44, 1) 350ms;
   }
 
   /* Animations for the navbar icons */
