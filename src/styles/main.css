@@ -1154,12 +1154,12 @@ strong,
 }
 
 
-.home-logo-link {
+.home-logo-link,
+.nav-logo-link {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  font-size: 18.4px;
   letter-spacing: 0.4px;
-  padding: 16px 8px;
+  padding: 16px 0px;
 }
 
 
@@ -1170,257 +1170,20 @@ strong,
   display: flex;
   align-items: center;
   height: 100%;
+  color: var(--typography-gray-200);
+  transition: color 0.8s ease;
 }
 
-.nav-logo-svg {
-  display: inline-block;
-  position: relative;
-  width: 140.44px;
-  height: 16px;
+.navbar.open .nav-logo-link {
+  color: var(--typography-gray-dark);
 }
 
-.nav-logo-svg>* {
-  background-size: contain;
+.navbar.closed .nav-logo-link:hover {
+  color: transparent;
+  background-image: linear-gradient(to right, #9EE825, #25D16A);
+  background-clip: text;
+  -webkit-background-clip: text;
 }
-
-.nav-logo-svg .color-default {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.6s ease-in-out;
-  background-image: url(../images/renan-crociari-default.svg);
-}
-
-.nav-logo-svg .color-hover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.6s ease-in-out;
-  background-image: url(../images/renan-crociari-hover.svg);
-}
-
-.nav-logo-svg .gray {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.6s ease-in-out;
-  background-image: url(../images/renan-crociari-gray.svg);
-}
-
-.nav-logo-svg .gray-2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.6s ease-in-out;
-  background-image: url(../images/renan-crociari-gray.svg);
-}
-
-
-.nav-logo-svg .white {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.6s ease-in-out;
-  background-image: url(../images/renan-crociari-white.svg);
-  opacity: 1;
-}
-
-/* Behavior of the COLORED logo */
-.nav-logo-link.color .color-default {
-  opacity: 1;
-}
-
-.nav-logo-link.color .color-hover,
-.nav-logo-link.color .gray,
-.nav-logo-link.color .white {
-  opacity: 0;
-}
-
-.nav-logo-link.color:hover .color-hover {
-  opacity: 1;
-}
-
-.nav-logo-link.color:hover .color-default,
-.nav-logo-link.color:hover .gray,
-.nav-logo-link.color:hover .white {
-  opacity: 0;
-}
-
-/* Behavior of the GRAY logo */
-
-.nav-logo-link.gray .gray {
-  opacity: 1;
-  transition: opacity 300ms ease-in;
-}
-
-.nav-logo-link.gray .color-default,
-.nav-logo-link.gray .color-hover,
-.nav-logo-link.gray .white {
-  opacity: 0;
-  transition: opacity 600ms ease-in;
-}
-
-.nav-logo-link.gray:hover .gray {
-  opacity: 0.6;
-  transition: opacity 300ms ease-in;
-}
-
-/* Behavior of the GRAY 2 logo */
-
-.nav-logo-link.gray .gray-2 {
-  opacity: 0;
-  transition: opacity 0s;
-}
-
-.nav-logo-link.white .gray-2 {
-  opacity: 0;
-  transition: opacity 600s ease-in-out;
-}
-
-
-
-
-
-/* Behavior of the WHITE logo */
-
-.nav-logo-link.white .white {
-  opacity: 1;
-  transition: opacity 300ms ease-in;
-}
-
-.nav-logo-link.white .color-default,
-.nav-logo-link.white .color-hover,
-.nav-logo-link.white .gray {
-  opacity: 0;
-}
-
-.nav-logo-link.white .gray,
-.nav-logo-link.white .gray-2 {
-  opacity: 0;
-  transition: opacity 400ms ease-in;
-}
-
-
-
-.nav-logo-link.white:hover .white {
-  opacity: 0.6;
-  transition: opacity 300ms ease-in;
-}
-
-/********** Behavior of the Scrolled up navbar **********/
-
-.navbar.scrolled-up .nav-logo-link.colored .gray,
-.navbar.scrolled-up .nav-logo-link.white .gray,
-.navbar.scrolled-up .nav-logo-link.gray .gray,
-.navbar.scrolled-up .nav-logo-link.colored .white,
-.navbar.scrolled-up .nav-logo-link.white .white,
-.navbar.scrolled-up .nav-logo-link.gray .white {
-  opacity: 0;
-  transition: opacity 0s;
-}
-
-.navbar.scrolled-up .nav-logo-link.colored .gray-2,
-.navbar.scrolled-up .nav-logo-link.white .gray-2,
-.navbar.scrolled-up .nav-logo-link.gray .gray-2 {
-  opacity: 0;
-  transition: opacity 600ms ease-in-out;
-}
-
-
-.navbar.scrolled-up .nav-logo-link.colored .color-default,
-.navbar.scrolled-up .nav-logo-link.white .color-default,
-.navbar.scrolled-up .nav-logo-link.gray .color-default {
-  opacity: 1;
-  transition: opacity 0ms ease-in-out;
-}
-
-/* Scrolled navbar - HOVERED **********/
-
-.navbar.scrolled-up .nav-logo-link.colored .color-hover,
-.navbar.scrolled-up .nav-logo-link.white .color-hover,
-.navbar.scrolled-up .nav-logo-link.gray .color-hover {
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-}
-
-.navbar.scrolled-up .nav-logo-link.colored:hover .color-default,
-.navbar.scrolled-up .nav-logo-link.white:hover .color-default,
-.navbar.scrolled-up .nav-logo-link.gray:hover .color-default {
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-}
-
-.navbar.scrolled-up .nav-logo-link.colored:hover .color-hover,
-.navbar.scrolled-up .nav-logo-link.white:hover .color-hover,
-.navbar.scrolled-up .nav-logo-link.gray:hover .color-hover {
-  opacity: 1;
-  transition: opacity 0.6s ease-in-out;
-}
-
-/*********** Behavior of the open navbar ***********/
-
-.navbar.open .nav-logo-link .color-default,
-.navbar.open .nav-logo-link .color-hover,
-.navbar.open .nav-logo-link .white {
-  opacity: 0;
-}
-
-
-
-.navbar.open .nav-logo-link .gray {
-  /* Make the logo always gray when the navbar is open */
-  opacity: 1;
-}
-
-
-
-
-
-
-.navbar.open .nav-logo-link .gray-2 {
-  /* Make the logo always gray when the navbar is open */
-  opacity: 1;
-  transition: opacity 600ms ease-in;
-}
-
-.navbar.open:not(.scrolled-up) .nav-logo-link.gray .gray-2 {
-  opacity: 0;
-}
-
-
-
-.navbar.scrolled-up.open .nav-logo-link .gray-2 {
-  /* Make the logo always gray when the navbar is open */
-  opacity: 1;
-  transition: opacity 600ms ease-in;
-}
-
-
-
-.nav-logo-link.white .gray-2 {
-  opacity: 0;
-  transition: opacity 600ms ease-in;
-  z-index: 1;
-}
-
-.navbar.open .nav-logo-link.white .gray {
-  opacity: 0;
-}
-
-
-
-/*******/
-
 
 
 
