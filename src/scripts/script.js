@@ -620,12 +620,13 @@ const mainNavList = document.querySelector('#main-nav-list');
 let lastScrollY = window.scrollY;
 let isListeningToScroll = true;
 let ticking = false;
-let isHidden = false;
 
-// How many px the user must scroll in one direction before the navbar reacts.
-// Keeps the navbar stable against tiny accidental scrolls.
+// Minimum scroll distance in one direction before the navbar reacts.
 const SCROLL_THRESHOLD = 8;
 let scrollDelta = 0;
+
+// Tracks the hide animation timeout so it can be cancelled on direction change.
+let hideTimeout = null;
 
 // Function to update navbar position
 const updateNavbar = () => {
@@ -633,30 +634,47 @@ const updateNavbar = () => {
 
   const currentScrollY = window.scrollY;
   const diff = currentScrollY - lastScrollY;
+  const isScrolledUp = navbar.classList.contains('scrolled-up');
+  const isHiding = navbar.classList.contains('hiding');
 
   if (currentScrollY <= 0) {
-    // At the very top: always show, reset all state
-    isHidden = false;
+    // Back at the very top: fade the navbar styling out before returning to natural state.
+    // scrolled-up sets transition: 0s, so we temporarily force the base transition via inline
+    // style. void offsetHeight forces a reflow so the browser commits the new transition
+    // property in its own frame — before the class change arrives.
     scrollDelta = 0;
-    navbar.classList.remove('scrolled-up');
-    navbar.style.transform = 'translateY(0)';
+    if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
+    navbar.style.transition = 'background-color 800ms ease-out, box-shadow 800ms ease-out';
+    void navbar.offsetHeight; // force reflow — separates the transition change from the class change
+    navbar.classList.remove('scrolled-up', 'hiding');
+    setTimeout(() => { navbar.style.transition = ''; }, 800);
+
   } else if (diff > 0) {
-    // Scrolling down — accumulate delta, hide once threshold is crossed
+    // Scrolling down — accumulate delta and reset if direction just changed
     scrollDelta = Math.max(0, scrollDelta) + diff;
-    if (!isHidden && scrollDelta > SCROLL_THRESHOLD) {
-      isHidden = true;
+
+    if (isScrolledUp && !isHiding && scrollDelta > SCROLL_THRESHOLD) {
+      // Navbar is sticky-visible at top; animate it out before releasing it
       scrollDelta = 0;
-      navbar.classList.remove('scrolled-up');
-      navbar.style.transform = 'translateY(-100%)';
+      navbar.classList.add('hiding');
+      hideTimeout = setTimeout(() => {
+        navbar.classList.remove('hiding', 'scrolled-up');
+        hideTimeout = null;
+      }, 250); // matches navbar-slide-out duration
     }
-  } else {
-    // Scrolling up — accumulate delta, show once threshold is crossed
+
+  } else if (diff < 0) {
+    // Scrolling up — accumulate delta and reset if direction just changed
     scrollDelta = Math.min(0, scrollDelta) + diff;
-    if (isHidden && scrollDelta < -SCROLL_THRESHOLD) {
-      isHidden = false;
+
+    // Only snap the navbar to top when we're far enough down the page that
+    // the navbar is naturally out of view (> its own height from the top).
+    if (!isScrolledUp && currentScrollY > navbar.offsetHeight && scrollDelta < -SCROLL_THRESHOLD) {
       scrollDelta = 0;
+      // Cancel any pending hide if the user reverses direction quickly
+      if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
+      navbar.classList.remove('hiding');
       navbar.classList.add('scrolled-up');
-      navbar.style.transform = 'translateY(0)';
     }
   }
 

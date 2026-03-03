@@ -1932,10 +1932,8 @@ body.farfetch .content-hero h1 {
 
 .navbar {
   height: 90px;
-  position: sticky;
-  top: 0;
-  right: 0;
-  left: 0;
+  position: relative;
+  /* scrolls naturally with the page by default */
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
   display: flex;
@@ -1943,8 +1941,8 @@ body.farfetch .content-hero h1 {
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  transition: transform 250ms ease-out, background-color 800ms ease-out, box-shadow 1000ms ease-out;
-  will-change: transform, background-color, box-shadow;
+  transition: background-color 800ms ease-out, box-shadow 1000ms ease-out;
+  will-change: background-color, box-shadow;
   z-index: 200;
   /* Needs to be higher than the navbar-bg and lower than the dialog */
   box-sizing: border-box;
@@ -1959,6 +1957,7 @@ body.farfetch .content-hero h1 {
   right: 32px;
   height: 1px;
   background-color: rgba(255, 255, 255, 0.1);
+  transition: opacity 250ms ease-out;
 }
 
 
@@ -2026,17 +2025,60 @@ body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-
 /************** Scrolled up navbar ******************/
 
 
-.navbar.scrolled-up {
+.navbar.hiding::before {
+  opacity: 0;
+}
+
+@keyframes navbar-slide-in {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes navbar-slide-out {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* Temporary class applied by JS during slide-out — keeps navbar sticky so
+   the animation is visible, then JS switches to .scrolled-past when done. */
+.navbar.hiding {
+  position: sticky;
+  top: 0;
+  transition: none;
+  animation: navbar-slide-out 250ms ease-in both;
+}
+
+/* When hiding from the scrolled-up state, preserve the background and shadow */
+.navbar.scrolled-up.hiding {
   background-color: var(--background-gray-medium);
-  transition: transform 250ms ease-out, background-color 0s, box-shadow 0s;
-  will-change: transform, background-color, box-shadow;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  animation: navbar-slide-out 250ms ease-in both;
+}
+
+.navbar.scrolled-up {
+  position: sticky;
+  top: 0;
+  background-color: var(--background-gray-medium);
+  transition: background-color 0s, box-shadow 0s;
+  will-change: background-color, box-shadow;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid transparent;
+  animation: navbar-slide-in 250ms ease-out both;
 }
 
 .navbar.scrolled-up::before {
   /* Removes border-bottom of the navbar when scrolled up */
-  background-color: transparent;
+  opacity: 0;
 }
 
 
