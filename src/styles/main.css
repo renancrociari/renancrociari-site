@@ -1711,6 +1711,7 @@ body.farfetch .content-hero h1 {
   align-items: center;
   background-color: var(--background-body);
   transition: background-color 0.6s ease-out;
+  border: 0.2px solid rgba(255, 255, 255, 0.08);
 }
 
 
@@ -1762,7 +1763,7 @@ body.farfetch .content-hero h1 {
 }
 
 .navbar.scrolled-up .navbar-wrapper {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #121212cc;
   backdrop-filter: blur(8px);
 }
 
