@@ -11,6 +11,11 @@ body {
   background-color: var(--background-body);
 }
 
+/* Adds gray-medium background when the content header is visible */
+body.gray-medium {
+  background-color: var(--background-gray-medium);
+}
+
 
 .wrapper {
   width: 100%;
@@ -1661,7 +1666,6 @@ strong,
 /***************** CONTENT HEADER *********************/
 
 .content-header {
-  overflow: clip;
   background-color: var(--background-gray-medium);
 }
 
