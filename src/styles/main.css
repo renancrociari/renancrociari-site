@@ -1154,10 +1154,6 @@ strong,
 }
 
 
-.nav-logo-link {
-  all: unset;
-}
-
 .home-logo-link,
 .nav-logo-link {
   font-family: 'Poppins', sans-serif;
@@ -1166,50 +1162,27 @@ strong,
   padding: 16px 0px;
 }
 
-/*** Home logo ***/
-
-
 
 /********** Nav logo **********/
 
 .nav-logo-link {
+  position: relative;
   display: flex;
   align-items: center;
+  height: 100%;
   color: var(--typography-gray-200);
+  transition: color 0.8s ease;
 }
 
 .navbar.open .nav-logo-link {
   color: var(--typography-gray-dark);
 }
 
-@property --nav-logo-g1 {
-  syntax: '<color>';
-  initial-value: #25D16A;
-  inherits: false;
-}
-
-@property --nav-logo-g2 {
-  syntax: '<color>';
-  initial-value: #9EE825;
-  inherits: false;
-}
-
-.navbar.closed .nav-logo-link {
-  background-image: linear-gradient(to right, var(--nav-logo-g1), var(--nav-logo-g2));
+.navbar.closed .nav-logo-link:hover {
+  color: transparent;
+  background-image: linear-gradient(to right, #9EE825, #25D16A);
   background-clip: text;
   -webkit-background-clip: text;
-}
-
-@media (hover: hover) {
-  .navbar.closed .nav-logo-link {
-    transition: --nav-logo-g1 0.6s ease, --nav-logo-g2 0.6s ease, color 0.6s ease;
-  }
-
-  .navbar.closed .nav-logo-link:hover {
-    color: transparent;
-    --nav-logo-g1: #9EE825;
-    --nav-logo-g2: #25D16A;
-  }
 }
 
 
@@ -2869,8 +2842,6 @@ details>div>div {
     color: var(--typography-gray-200);
     transition: opacity 100ms ease-in;
   }
-
-
 
 
 
