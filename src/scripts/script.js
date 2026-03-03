@@ -638,16 +638,10 @@ const updateNavbar = () => {
   const isHiding = navbar.classList.contains('hiding');
 
   if (currentScrollY <= 0) {
-    // Back at the very top: fade the navbar styling out before returning to natural state.
-    // scrolled-up sets transition: 0s, so we temporarily force the base transition via inline
-    // style. void offsetHeight forces a reflow so the browser commits the new transition
-    // property in its own frame — before the class change arrives.
+    // Back at the very top: reset to natural state (position: relative)
     scrollDelta = 0;
     if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
-    navbar.style.transition = 'background-color 800ms ease-out, box-shadow 800ms ease-out';
-    void navbar.offsetHeight; // force reflow — separates the transition change from the class change
     navbar.classList.remove('scrolled-up', 'hiding');
-    setTimeout(() => { navbar.style.transition = ''; }, 800);
 
   } else if (diff > 0) {
     // Scrolling down — accumulate delta and reset if direction just changed
