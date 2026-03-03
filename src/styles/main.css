@@ -1679,7 +1679,7 @@ body.about .content-hero h1 {
 }
 
 body.farfetch .content-hero h1 {
-  max-width: 710px;
+  max-width: 720px;
 }
 
 
@@ -2616,25 +2616,17 @@ details>div>div {
   /************** MOBILE NAVIGATION  - 480px - 767px **************/
 
   .navbar {
-    padding: 0 20px;
-    top: 0px;
-  }
-
-  .navbar::before {
-    /*Defines margin-bottom of the navbar */
-    left: 20px;
-    right: 20px;
+    padding: 0;
+    margin: 0;
 
   }
 
-  .navbar,
-  .navbar-bg {
-    height: 70px;
-  }
-
-  .navbar-bg {
-    left: 4px;
-    right: 4px;
+  .navbar-wrapper {
+    max-width: 100%;
+    padding: 0;
+    margin: 0 16px;
+    background-color: transparent;
+    border-bottom: 0.2px solid rgba(255, 255, 255, 0.2);
   }
 
 
@@ -2642,12 +2634,6 @@ details>div>div {
     z-index: 200;
   }
 
-  .general-logo-svg {
-    display: inline-block;
-    position: relative;
-    width: 123px;
-    height: 14px;
-  }
 
   .main-nav-list {
     z-index: 100;
@@ -2758,13 +2744,6 @@ details>div>div {
   }
 
 
-  /* Fix behavior of the nav links when the navbar is closing on mobile */
-  body.white .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a,
-  body.white .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a {
-    color: var(--typography-gray-200);
-    transition: opacity 100ms ease-in;
-  }
-
 
 
   /***************** Hamburger menu style ***************/
@@ -2787,15 +2766,11 @@ details>div>div {
 
 
   .hamburger-menu-svg {
-    fill: var(--typography-gray-dark);
+    fill: var(--typography-gray-200);
     width: 24px;
     height: 16px;
   }
 
-  body.white .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
-    /*Makes hamburger menu icon white in dark background*/
-    fill: var(--typography-gray-200);
-  }
 
   .navbar.scrolled-up .mobile-nav-toggle[aria-expanded="false"] .hamburger-menu-svg {
     /*Makes hamburger menu icon green when navbar is scrolled up*/
