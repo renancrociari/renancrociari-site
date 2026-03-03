@@ -1695,7 +1695,7 @@ body.farfetch .content-hero h1 {
   padding: 0 var(--spacing-lg);
   display: inline-block;
   text-align: center;
-  /* Needs to be higher than the navbar-bg and lower than the dialog */
+  /* Needs to be lower than the dialog */
   z-index: 200;
   box-sizing: border-box;
 }
@@ -1780,24 +1780,7 @@ body.farfetch .content-hero h1 {
 }
 
 
-.navbar-bg {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 16px;
-  /* Must follow body border width */
-  right: 16px;
-  /* Must follow body border width*/
-  background-color: rgba(255, 255, 255, 0);
-  z-index: 100;
-  /* Needs to be lower than the navbar-bg and lower than the dialog */
-  transition: background-color 0.3s ease-out;
-  will-change: background-color;
-}
-
-
-.mobile-nav-toggle,
-.main-nav-list[data-visible="false"] .navbar-icons {
+.mobile-nav-toggle {
   display: none;
 }
 
@@ -1810,25 +1793,6 @@ body.farfetch .content-hero h1 {
   height: 100%;
 }
 
-.general-logo-link {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.general-logo-svg {
-  display: inline-block;
-  position: relative;
-  width: 140.44px;
-  height: 16px;
-  opacity: 0.8;
-  transition: opacity 0.6s ease-in-out;
-  will-change: opacity;
-}
-
-.general-logo-link:hover .general-logo-svg {
-  opacity: 0.4;
-}
 
 
 /********** end general logo **********/
@@ -2669,10 +2633,6 @@ details>div>div {
     font-weight: bold;
   }
 
-  .navbar-icons {
-    gap: 32px;
-    margin-left: -8px;
-  }
 
   /***************** Animations that open and close the navbar and its inner elements ******************************/
 
@@ -2702,56 +2662,13 @@ details>div>div {
     transition: opacity 250ms cubic-bezier(.17, .84, .44, 1) 350ms;
   }
 
-  /* Animations for the navbar icons */
-
-  .main-nav-list[data-visible="false"] .navbar-icons {
-    opacity: 0;
-    display: none;
-    animation: FadeOut 250ms cubic-bezier(.17, .84, .44, 1);
-  }
-
-
-  .main-nav-list[data-visible="true"] .navbar-icons {
-    opacity: 1;
-    display: flex;
-    animation: FadeIn 450ms ease forwards;
-  }
-
-
-
-  @keyframes FadeIn {
-    0% {
-      opacity: 0;
-    }
-
-    83% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes FadeOut {
-    from {
-      display: flex;
-      opacity: 1;
-    }
-
-    to {
-      display: none;
-      opacity: 0;
-    }
-  }
 
 
 
 
   /***************** Hamburger menu style ***************/
 
-  .mobile-nav-toggle,
-  .mobile-nav-email {
+  .mobile-nav-toggle {
     display: block;
   }
 
