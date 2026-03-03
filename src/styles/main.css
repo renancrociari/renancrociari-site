@@ -829,7 +829,7 @@ h6 {
 h1,
 .display-xxl {
   font-size: var(--font-4xl);
-  line-height: 44px;
+  line-height: 48px;
   font-weight: 600;
 }
 
@@ -1675,14 +1675,20 @@ strong,
 
 /** About **/
 body.about .content-hero h1 {
-  max-width: 960px;
+  max-width: 1040px;
 }
 
 body.farfetch .content-hero h1 {
-  max-width: 720px;
+  max-width: 760px;
 }
 
+body.sl-mobile .content-hero h1 {
+  max-width: 600px;
+}
 
+body.journal-finder .content-hero h1 {
+  max-width: 540px;
+}
 
 /****************** GENERAL NAVBAR ****************/
 
@@ -2662,6 +2668,48 @@ details>div>div {
     transition: opacity 250ms cubic-bezier(.17, .84, .44, 1) 350ms;
   }
 
+  /* Animations for the navbar icons */
+
+  .main-nav-list[data-visible="false"] .navbar-icons {
+    opacity: 0;
+    display: none;
+    animation: FadeOut 250ms cubic-bezier(.17, .84, .44, 1);
+  }
+
+
+  .main-nav-list[data-visible="true"] .navbar-icons {
+    opacity: 1;
+    display: flex;
+    animation: FadeIn 450ms ease forwards;
+  }
+
+
+
+  @keyframes FadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    83% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes FadeOut {
+    from {
+      display: flex;
+      opacity: 1;
+    }
+
+    to {
+      display: none;
+      opacity: 0;
+    }
+  }
 
 
 
