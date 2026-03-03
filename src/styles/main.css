@@ -2627,6 +2627,7 @@ details>div>div {
     padding: 0;
     margin: 0 16px;
     background-color: transparent;
+    border: 0;
     border-bottom: 0.2px solid rgba(255, 255, 255, 0.2);
   }
 
@@ -2810,6 +2811,10 @@ details>div>div {
       x: -0.5px;
       y: 7.5px;
     }
+  }
+
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-menu-svg {
+    fill: var(--typography-gray-dark);
   }
 
   /************** GENERAL HEADER  - 480px - 767px **************/
