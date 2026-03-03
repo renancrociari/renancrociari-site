@@ -3247,75 +3247,76 @@ details>div>div {
   .featured-metrics-2 .metrics-list {
     grid-template-columns: 1fr;
     gap: 48px;
-
-    .metric {
-      max-width: 100%;
-    }
-
-    .metric-number {
-      align-items: normal;
-    }
-
-    /*********** FOOTER  480px - 767px ***********/
-
-    .footer-nav {
-      gap: 16px 32px;
-    }
-
-
-
   }
 
-  /*********************** Small devices (portrait tablets and large phones, 0 - 480px) *******************************/
-
-  @media only screen and (max-width: 479px) {
-
-    .featured-projects {
-      grid-template-columns: 1fr;
-    }
-
-    /********** DIALOG 0 - 479px **********/
-
-    .dialog-container {
-      margin-top: 18px;
-    }
-
-    .dialog-heading {
-      margin-top: 20vh;
-    }
-
-    /********** CONTENT 0 - 479px **********/
-
-    .content-header-border {
-      height: 50px;
-      margin-top: -50px;
-    }
-
-
-    .text-block {
-      padding: 0 16px;
-    }
-
-    .featured-metrics {
-      width: calc(100% - 32px);
-    }
-
-    .two-column-image {
-      margin-left: 16px;
-      margin-right: 16px;
-    }
-
-
-    /**************** BRANDS LIST ****************/
-
-    .brands-list {
-      padding: 0 var(--spacing-sm);
-    }
-
-    .brands-list-grid {
-      grid-template-columns: repeat(2, 1fr);
-      row-gap: 4px;
-    }
-
-
+  .metric {
+    max-width: 100%;
   }
+
+  .metric-number {
+    align-items: normal;
+  }
+
+  /*********** FOOTER  480px - 767px ***********/
+
+  .footer-nav {
+    gap: 16px 32px;
+  }
+
+
+
+}
+
+/*********************** Small devices (portrait tablets and large phones, 0 - 480px) *******************************/
+
+@media only screen and (max-width: 479px) {
+
+  .featured-projects {
+    grid-template-columns: 1fr;
+  }
+
+  /********** DIALOG 0 - 479px **********/
+
+  .dialog-container {
+    margin-top: 18px;
+  }
+
+  .dialog-heading {
+    margin-top: 20vh;
+  }
+
+  /********** CONTENT 0 - 479px **********/
+
+  .content-header-border {
+    height: 50px;
+    margin-top: -50px;
+  }
+
+
+  .text-block {
+    padding: 0 16px;
+  }
+
+  .featured-metrics {
+    width: calc(100% - 32px);
+  }
+
+  .two-column-image {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+
+  /**************** BRANDS LIST ****************/
+
+  .brands-list {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .brands-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 4px;
+  }
+
+
+}
