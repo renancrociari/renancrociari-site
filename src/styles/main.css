@@ -1040,6 +1040,18 @@ button {
   inherits: false;
 }
 
+@property --main-nav-a-g1 {
+  syntax: '<color>';
+  initial-value: #25D16A;
+  inherits: false;
+}
+
+@property --main-nav-a-g2 {
+  syntax: '<color>';
+  initial-value: #9EE825;
+  inherits: false;
+}
+
 .btn-gray-green {
   color: var(--typography-gray-200);
   background-image: linear-gradient(to right, var(--btn-gray-green-g1), var(--btn-gray-green-g2));
@@ -1802,7 +1814,26 @@ body.journal-finder .content-hero h1 {
 
 .main-nav-a {
   color: var(--typography-gray-200);
-  transition: none;
+  background-image: linear-gradient(to right, var(--main-nav-a-g1), var(--main-nav-a-g2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  transition: --main-nav-a-g1 0.6s ease, --main-nav-a-g2 0.6s ease, color 0.6s ease;
+}
+
+/* Prevent the color transition from firing on page load */
+@starting-style {
+  .main-nav-a {
+    color: var(--typography-gray-200);
+  }
+}
+
+@media (min-width: 768px) {
+  .main-nav-a:hover {
+    cursor: pointer;
+    color: transparent;
+    --main-nav-a-g1: #9EE825;
+    --main-nav-a-g2: #25D16A;
+  }
 }
 
 .main-nav-list-items li:first-child {
