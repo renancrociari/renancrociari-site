@@ -1702,7 +1702,7 @@ body.journal-finder .content-hero h1 {
 }
 
 .navbar-wrapper {
-  max-width: 670px;
+  max-width: 640px;
   margin: 0 auto;
   padding: 0 var(--spacing-md);
   display: flex;
@@ -1793,7 +1793,7 @@ body.journal-finder .content-hero h1 {
 .main-nav-list-items {
   display: flex;
   flex-direction: row;
-  gap: 48px;
+  gap: var(--spacing-lg);
 }
 
 
@@ -2670,7 +2670,13 @@ details>div>div {
   .navbar .main-nav-list[data-visible="true"] .main-nav-a {
     /* Fade-in for inner elements when the navbar is opening */
     opacity: 1;
+    color: var(--typography-gray-dark);
   }
+
+  .navbar .main-nav-list[data-visible="true"] li {
+    text-align: left;
+  }
+
 
   /* Animations for the navbar icons */
 
