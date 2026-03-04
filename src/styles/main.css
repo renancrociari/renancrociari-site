@@ -1026,7 +1026,7 @@ button {
 }
 
 
-/*************** GRAY TEST button properties ************************/
+/*************** GRAY GREEN button properties ************************/
 
 @property --btn-gray-green-g1 {
   syntax: '<color>';
@@ -2714,6 +2714,12 @@ details>div>div {
 
   .navbar .main-nav-list li {
     text-align: left;
+  }
+
+  /* Focus-visible override for elements inside the open mobile navbar (light background) */
+  .navbar.open a:focus-visible,
+  .navbar.open button:focus-visible {
+    outline-color: var(--typography-gray-dark);
   }
 
 
