@@ -783,14 +783,8 @@ a {
   text-decoration: none;
   cursor: pointer;
   color: var(--typography-green-light);
-  transition: color 0.3s ease;
-}
-
-
-a:hover {
   cursor: pointer;
-  background-clip: text;
-  color: transparent;
+  transition: color 0.3s ease;
 }
 
 sup {
