@@ -2709,6 +2709,8 @@ details>div>div {
     fill: var(--typography-gray-200);
     width: 24px;
     height: 16px;
+    /* Closing transition — delay so the fill changes after the panel collapses */
+    transition: fill 300ms ease 300ms;
   }
 
 
@@ -2753,6 +2755,8 @@ details>div>div {
 
   .mobile-nav-toggle[aria-expanded="true"] .hamburger-menu-svg {
     fill: var(--typography-gray-dark);
+    /* Opening transition — no delay, fill changes immediately as navbar opens */
+    transition: fill 600ms ease;
   }
 
   /************** GENERAL HEADER  - 480px - 767px **************/
