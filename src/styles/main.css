@@ -2621,6 +2621,8 @@ details>div>div {
   .navbar {
     padding: 0;
     margin: 0;
+    /* Transition for when scrolled-up is removed (returning to top) */
+    transition: background-color 500ms ease, backdrop-filter 500ms ease;
   }
 
   .navbar.scrolled-up {
