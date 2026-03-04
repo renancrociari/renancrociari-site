@@ -929,6 +929,10 @@ strong,
 
 /************** BUTTONS ****************/
 
+button {
+  cursor: pointer;
+}
+
 .btn {
   display: inline-flex;
   flex-direction: row;
@@ -959,15 +963,14 @@ strong,
   height: 12px;
 }
 
-
 .btn>.svg-button {
-  fill: var(--typography-green-light);
   /* default color of the button */
+  fill: var(--typography-green-light);
   display: flex;
   opacity: 1;
   transition: color 0.3s ease;
-  transform: translateX(0);
   /* Initial postion of the arrow */
+  transform: translateX(0);
   transition: transform 0.2s ease;
 }
 
