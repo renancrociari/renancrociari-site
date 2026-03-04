@@ -2007,7 +2007,7 @@ details>div>div {
 
 .tag {
   color: var(--typography-gray-dark);
-  background-color: var(--typography-green-lighter);
+  background-color: var(--typography-green-light);
   padding: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--font-2xs);
   line-height: 22px;
@@ -2590,7 +2590,7 @@ details>div>div {
     /* 0.01px instead of 0: Firefox resets scrollY when position:sticky;top:0 + 
        overflow:hidden on body coincide with the scroll origin. Sub-pixel value 
        is invisible but avoids the snap. */
-    top: 0.01px;
+    top: 0.1px;
     backdrop-filter: blur(8px);
     background-color: #121212cc;
   }
