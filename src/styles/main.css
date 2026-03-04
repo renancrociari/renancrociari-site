@@ -1180,6 +1180,7 @@ button {
 /********** Nav logo **********/
 
 .nav-logo-link {
+  font-size: 17px;
   position: relative;
   display: flex;
   align-items: center;
@@ -2587,6 +2588,7 @@ details>div>div {
   }
 
   .nav-logo-link {
+    font-size: 15px;
     transition: color 500ms cubic-bezier(.65, .05, .36, 1);
   }
 
