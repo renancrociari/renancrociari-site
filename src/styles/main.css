@@ -12,8 +12,8 @@ body {
 }
 
 /* Adds gray-medium background when the content header is visible */
-body.gray-medium {
-  background-color: var(--background-gray-medium);
+body:has(.content-hero) {
+  box-shadow: inset 0 100px 0 var(--background-gray-medium);
 }
 
 
@@ -2584,7 +2584,10 @@ details>div>div {
   }
 
   .navbar.scrolled-up {
-    top: 0px;
+    /* 0.01px instead of 0: Firefox resets scrollY when position:sticky;top:0 + 
+       overflow:hidden on body coincide with the scroll origin. Sub-pixel value 
+       is invisible but avoids the snap. */
+    top: 0.01px;
     backdrop-filter: blur(8px);
     background-color: #121212cc;
   }
