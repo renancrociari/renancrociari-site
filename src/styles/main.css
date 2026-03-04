@@ -2587,9 +2587,7 @@ details>div>div {
   }
 
   .navbar.scrolled-up {
-    /* 0.01px instead of 0: Firefox resets scrollY when position:sticky;top:0 + 
-       overflow:hidden on body coincide with the scroll origin. Sub-pixel value 
-       is invisible but avoids the snap. */
+    /* Top is set to 0.1px to fix a bug in Firefox that when navbar is sticky, it doesn't preserve its position when opened */
     top: 0.1px;
     backdrop-filter: blur(8px);
     background-color: #121212cc;
@@ -2666,64 +2664,22 @@ details>div>div {
 
   .navbar.scrolled-up .main-nav-list[data-visible="false"] .main-nav-a,
   .navbar:not(.scrolled-up) .main-nav-list[data-visible="false"] .main-nav-a {
-    /* Fade-out for inner elements when the navbar is closing */
+    /* Fade-out links when the navbar is closing */
     opacity: 0;
+    transition: opacity 200ms cubic-bezier(.65, .05, .36, 1);
   }
 
-  .navbar .main-nav-list[data-visible="true"] .main-nav-a {
-    /* Fade-in for inner elements when the navbar is opening */
+
+  .navbar .main-nav-list .main-nav-a {
     opacity: 1;
     color: var(--typography-gray-dark);
+    /* Fade-in for inner elements when the navbar is opening, delayed so the panel opens first */
+    transition: opacity 200ms cubic-bezier(.65, .05, .36, 1) 250ms;
   }
 
-  .navbar .main-nav-list[data-visible="true"] li {
+  .navbar .main-nav-list li {
     text-align: left;
   }
-
-
-  /* Animations for the navbar icons */
-
-  .main-nav-list[data-visible="false"] .navbar-icons {
-    opacity: 0;
-    display: none;
-    animation: FadeOut 250ms cubic-bezier(.17, .84, .44, 1);
-  }
-
-
-  .main-nav-list[data-visible="true"] .navbar-icons {
-    opacity: 1;
-    display: flex;
-    animation: FadeIn 450ms ease forwards;
-  }
-
-
-
-  @keyframes FadeIn {
-    0% {
-      opacity: 0;
-    }
-
-    83% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes FadeOut {
-    from {
-      display: flex;
-      opacity: 1;
-    }
-
-    to {
-      display: none;
-      opacity: 0;
-    }
-  }
-
 
 
 
