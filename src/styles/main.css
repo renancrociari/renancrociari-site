@@ -13,7 +13,7 @@ body {
 
 /* Adds gray-medium background when the content header is visible */
 body:has(.content-hero) {
-  box-shadow: inset 0 100px 0 var(--background-gray-medium);
+  box-shadow: inset 0 360px 0 var(--background-gray-medium);
 }
 
 
@@ -1844,7 +1844,6 @@ body.journal-finder .content-hero h1 {
 /********** CONTENT HERO **********/
 
 .content-hero {
-  padding-top: 234px;
   padding-bottom: 50%;
   position: relative;
 }
@@ -2801,10 +2800,6 @@ details>div>div {
   }
 
   /************** GENERAL HEADER  - 480px - 767px **************/
-
-  .content-hero {
-    padding-top: 184px;
-  }
 
   .featured-image {
     margin-top: 24px;
