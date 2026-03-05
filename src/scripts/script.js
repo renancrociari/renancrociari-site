@@ -2,6 +2,12 @@
 ///Função para controlar a dialog
 /////////////////////////////////////////////////////////////////
 
+// Always start at the top when navigating to any page
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+
 const modal = document.querySelector('.dialog-show-email');
 const openModal = document.querySelectorAll('.btn-show-email'); // Seleciona todos os botões que abrem a modal
 const closeModal = document.querySelector('.btn-close-email');
