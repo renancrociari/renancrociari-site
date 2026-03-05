@@ -1052,6 +1052,18 @@ button {
   inherits: false;
 }
 
+@property --nav-logo-g1 {
+  syntax: '<color>';
+  initial-value: #25D16A;
+  inherits: false;
+}
+
+@property --nav-logo-g2 {
+  syntax: '<color>';
+  initial-value: #9EE825;
+  inherits: false;
+}
+
 .btn-gray-green {
   color: var(--typography-gray-200);
   background-image: linear-gradient(to right, var(--btn-gray-green-g1), var(--btn-gray-green-g2));
@@ -1186,7 +1198,17 @@ button {
   align-items: center;
   height: 100%;
   color: var(--typography-gray-200);
-  transition: none;
+  background-image: linear-gradient(to right, var(--nav-logo-g1), var(--nav-logo-g2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  transition: --nav-logo-g1 0.6s ease, --nav-logo-g2 0.6s ease, color 0.6s ease;
+}
+
+/* Prevent the color transition from firing on page load */
+@starting-style {
+  .nav-logo-link {
+    color: var(--typography-gray-200);
+  }
 }
 
 .navbar.open .nav-logo-link {
@@ -1194,10 +1216,10 @@ button {
 }
 
 .navbar.closed .nav-logo-link:hover {
+  cursor: pointer;
   color: transparent;
-  background-image: linear-gradient(to right, #9EE825, #25D16A);
-  background-clip: text;
-  -webkit-background-clip: text;
+  --nav-logo-g1: #9EE825;
+  --nav-logo-g2: #25D16A;
 }
 
 
