@@ -2,10 +2,6 @@
 ///Função para controlar a dialog
 /////////////////////////////////////////////////////////////////
 
-// Always start at the top when navigating to any page
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
-}
 
 
 const modal = document.querySelector('.dialog-show-email');
