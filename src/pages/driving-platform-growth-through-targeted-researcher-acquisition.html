@@ -62,10 +62,10 @@
     import { isAuthenticated } from '../scripts/password-auth.js';
 
     // Check authentication immediately
-    if (!isAuthenticated('case-researcher-acquisition')) {
+    if (!isAuthenticated('case-subject-pages')) {
       // Not authenticated - redirect immediately before any content renders
       sessionStorage.setItem('rc_attempted_url', window.location.pathname);
-      window.location.href = '/#password-protected?content=case-researcher-acquisition';
+      window.location.href = '/#password-protected?content=case-subject-pages';
     }
     // If authenticated, page will continue loading normally
   </script>

@@ -23,7 +23,7 @@ export const PASSWORD_CONFIG = {
         hash: 'e4e2ff1a6fc2a6ce836b66c424aa2bdd4803d5b92d9750b0db4df4b1d1a8a597',
         redirectUrl: '/connecting-every-discovery-with-a-worthy-home'
     },
-    'case-researcher-acquisition': {
+    'case-subject-pages': {
         hash: 'e4e2ff1a6fc2a6ce836b66c424aa2bdd4803d5b92d9750b0db4df4b1d1a8a597',
         redirectUrl: '/driving-platform-growth-through-targeted-researcher-acquisition'
     }
