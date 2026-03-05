@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-P7FKT9N');</script>
+  <!-- End Google Tag Manager -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <title>Driving platform growth through targeted researcher acquisition · Renan Crociari</title>
+  <meta name="description"
+    content="At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work." />
+  <meta property="og:site_name" content="Renan Crociari" />
+  <meta name="author" content="Renan Crociari">
+  <meta property="og:type" content="website" />
+  <link rel="canonical"
+    href="https://www.renancrociari.com/driving-platform-growth-through-targeted-researcher-acquisition" />
+  <!-- Favicon -->
+  <link rel="icon" href="../../public/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../public/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../public/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../public/favicon-16x16.png">
+  <link rel="manifest" href="../../public/site.webmanifest">
+  <link rel="mask-icon" href="../../public/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#38C545">
+  <meta name="theme-color" content="#38C545">
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url"
+    content="https://www.renancrociari.com/driving-platform-growth-through-targeted-researcher-acquisition">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Driving platform growth through targeted researcher acquisition · Renan Crociari">
+  <meta property="og:description"
+    content="At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work.">
+  <meta property="og:image" content="https://www.renancrociari.com/images/jf-case-og-image.jpg">
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="renancrociari.com">
+  <meta property="twitter:url"
+    content="https://www.renancrociari.com/driving-platform-growth-through-targeted-researcher-acquisition">
+  <meta name="twitter:title" content="Driving platform growth through targeted researcher acquisition · Renan Crociari">
+  <meta name="twitter:description"
+    content="At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work.">
+  <meta name="twitter:image" content="https://www.renancrociari.com/images/jf-case-og-image.jpg">
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/global.css" />
+  <link rel="stylesheet" href="../styles/reset.css" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  <!-- Fonts -->
+  <link rel="preload" href="../fonts/degular.woff2" as="font" type="font/woff2" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&text=renancrociari" rel="stylesheet">
+  <link rel="preload" href="../fonts/source-serif-regular-300.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/source-serif-bold-600.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Immediate authentication check to prevent content flash -->
+  <script type="module">
+    import { isAuthenticated } from '../scripts/password-auth.js';
+
+    // Check authentication immediately
+    if (!isAuthenticated('case-researcher-acquisition')) {
+      // Not authenticated - redirect immediately before any content renders
+      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
+      window.location.href = '/#password-protected?content=case-researcher-acquisition';
+    }
+    // If authenticated, page will continue loading normally
+  </script>
+  <!-- Scripts -->
+  <script type="module" src="../scripts/script.js"></script>
+  <script src="https://unpkg.com/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+</head>
+
+<body class="journal-finder">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P7FKT9N" height="0" width="0"
+      style="display:none;visibility:hidden">
+    </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <include src="components/email-dialog.html"></include>
+  <include src="components/navbar.html"></include>
+
+
+  <header class="content-header mt-5xl">
+    <div class="wrapper">
+      <div class="content-hero">
+        <h1 class="t-gray-200">Connecting every discovery with a worthy home</h1>
+        <div class="tags body-small t-gray-300 mt-sm">
+          Product Strategy <span class="divider">/</span>
+          User Research <span class="divider">/</span>
+          Information Architecture <span class="divider">/</span>
+          UI Design <span class="divider">/</span>
+          Product Design <span class="divider">/</span>
+          Usability Testing
+        </div>
+        <figure class="featured-image mt-2xl">
+          <img src="../images/case-journal-finder/journal-finder-featured-detail.webp" class="featured-image-img"
+            alt="Photo of a coffee cup on a desk and an iPad with the Journal Finder interface" fetchpriority="high" />
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-content">
+    <div class="executive-summary">
+      <h2 class="mt-5xl">Executive summary</h2>
+      <div class="wrapper executive-summary-text mt-2xl mb-4xl">
+
+        <div>
+          <h3 class="body-small t-upper t-gray-300 t-semibold">The company</h3>
+          <p class="body-medium mt-sm">
+            Springer Nature is one of the world's largest publishers of scientific articles and books, publishing around
+            500k articles and 13k books annually. With 3k+ journals, the company leverages platforms that help
+            researchers uncover new ideas and share discoveries with the world.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="body-small t-upper t-gray-300 t-semibold">My role</h3>
+          <p class="body-medium mt-sm">
+            As the Senior Product Designer, I led the product's design strategy from discovery to delivery. I partnered
+            with a cross-functional team to build a journal discovery platform, reducing turnaround times and
+            improving acceptance rates.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="body-small t-upper t-gray-300 t-semibold">The problem</h3>
+          <p class="body-medium mt-sm">
+            A fragmented ecosystem made it difficult for researchers to find the right journal for
+            their work. This lack of a centralized way to browse the company's portfolio of journals led to scope
+            mismatches, submission delays, and users churning to competitors.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="body-small t-upper t-gray-300 t-semibold">Impact</h3>
+          <ul class="ul mt-sm no-bullet">
+            <li class="li body-large mt-xs"><strong class="t-green-light">↑ </strong> <strong>50.7% increase</strong>
+              in submission funnel completion rate</li>
+            <li class="li body-large mt-xs"><strong class="t-green-light">↑ </strong> <strong>35.7% new user acquisition
+                rate</strong>
+              via organic search</li>
+            <li class="li body-large mt-xs"><strong class="t-green-light">↑ </strong> <strong>8.6%
+                session-to-submission</strong>
+              conversion rate</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="text-block">
+      <h2 class="mt-5xl t-ct t-gray-300">The context: <br /> a fragmented legacy</h2>
+      <p class="mt-xl">
+        Springer Nature was established through the merger of important academic publishers, including Nature, Springer,
+        BioMedCentral, Apress, and Macmillan. While the merger created a massive library of information, it also
+        inherited a fragmented digital ecosystem. Researchers were forced to navigate a disjointed experience—managing
+        multiple accounts and different interfaces to access information across siloed websites.
+      </p>
+      <p class="mt-md">
+        In response to these issues, Springer Nature established a strategy to build a single, brand-agnostic platform,
+        transforming a collection of legacy websites into the reading platform of choice for hundreds of thousands of
+        researchers worldwide.
+      </p>
+    </div>
+
+    <figure class="wrapper medium-zoom-medium mt-4xl">
+      <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-legacy.webp"
+        style="width: 100%; height: auto;" alt="Image showing examples of the large number of legacy websites"
+        loading="lazy" id="">
+      <figcaption class="body-small  mt-xs t-ct">
+        Springer Nature inherited a fragmented ecosystem of legacy websites featuring more than 3,000 journals from
+        different brands.
+      </figcaption>
+    </figure>
+
+    <div class="text-block">
+      <h2 class="mt-5xl t-ct t-gray-300">
+        The problem <br />
+        A high cost of discovery
+      </h2>
+      <p class="p-high mt-3xl">
+        A critical phase of the researcher's journey is identifying the most suitable journal for their research. This
+        is a gateway decision: choosing the wrong journal can result in significant submission delays and higher risk
+        of rejection.</p>
+      <p class="mt-3xl">
+        The lack of a centralized, searchable portfolio of the company's 3,000+ journals created a significant barrier.
+        Without a unified way to browse the catalog, several critical issues emerged:
+      </p>
+      <ul class="ul">
+        <li class="p mt-md">
+          <strong>Scope Mismatch:</strong> A high volume of articles were rejected simply because they did not align
+          with a specific journal's scope, leading to researchers' frustration.
+        </li>
+        <li class="p mt-md">
+          <strong>Delayed Submissions:</strong> Submitting to the wrong journal often caused delays of several days in
+          the submission process.
+        </li>
+      </ul>
+      <details class="read-more mt-xl">
+        <summary class="read-more-toggle body-large">Read more...</summary>
+        <ul class="ul read-more-content">
+          <li class="p mt-md">
+            <strong>Funding Risks:</strong> For many authors, delays aren't just an inconvenience—they lead to a loss of
+            funding, forcing researchers to pay publication fees out of pocket.
+          </li>
+          <li class="p mt-md">
+            <strong>User Churn:</strong> When a journal rejects an article due to scope mismatch, researchers frequently
+            "churn" out of the Springer Nature ecosystem and publish with a competitor.
+          </li>
+          <li class="p mt-md">
+            <strong>Increased Workload:</strong> The internal editorial teams faced a massive backlog of "out-of-scope"
+            submissions, creating a heavy operational burden.
+          </li>
+          <li class="p mt-md">
+            <strong>Brand Weakening:</strong> The inability to see the full breadth of the portfolio prevented
+            researchers
+            from perceiving Springer Nature as a leader in academic publishing and as the first option when looking to
+            publish their work.
+          </li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="text-block">
+      <h2 class="mt-5xl t-ct t-gray-300">My approach</h2>
+      <p class="p-high mt-3xl">
+        As the Senior Product Designer, I led the design strategy and execution from discovery to delivery. My
+        responsibility was to ensure we designed a best-in-class product that helps researchers find the best home for
+        their research. I focused on making the journal discovery easy and effective, helping to reduce turnaround
+        times and improving acceptance rates.
+      </p>
+      <p class="p-high mt-xl">
+        I worked in a cross-functional team alongside a Product Manager, a Business Analyst, and a UX Researcher.
+        Together, we analyzed customer behavior and identified how product friction was hurting the business. My role
+        was to turn these insights into effective design solutions.
+      </p>
+      <p class="mt-3xl">
+        As a Senior Product Designer, I took the following actions:
+      </p>
+      <ul class="ul">
+        <li class="p mt-md">
+          <strong>Synthesized data from multiple sources,</strong> analyzing user feedback and product data to find the
+          biggest pain points in the journey. This helped us understand where the most critical issues and opportunities
+          were.
+        </li>
+        <li class="p mt-md">
+          <strong>Defined success metrics by collaborating closely with the Product team</strong> to set project goals
+          and establish clear ways to measure our success.
+        </li>
+      </ul>
+      <details class="read-more mt-xl">
+        <summary class="read-more-toggle body-large">Read more...</summary>
+        <ul class="ul">
+          <li class="p mt-md">
+            <strong>Partnered with SEO and Marketing teams</strong> to ensure the product served as an effective channel
+            for attracting new users. I focused on making the journal portfolio highly visible on search engines like
+            Google, helping to increase the number of researchers discovering Springer Nature.
+          </li>
+          <li class="p mt-md">
+            <strong>Conducted user research,</strong> interviewing researchers to learn what factors—such as speed,
+            prestige, topic, or publication fees—matter most when they are choosing a journal.
+          </li>
+          <li class="p mt-md">
+            <strong>Performed competitive benchmarking </strong>by analyzing other publishing platforms to identify
+            industry trends, helping me understand how competitors approached similar discovery problems and ensuring
+            our solution was modern and effective.
+          </li>
+          <li class="p mt-md">
+            <strong>Led iterative usability testing,</strong> running tests to refine user flows and ensuring that every
+            part of the experience felt consistent and worked seamlessly together.
+          </li>
+          <li class="p mt-md">
+            <strong>Designed a scalable information architecture </strong>to organize over 3,000 journals, creating a
+            navigation and filtering system that allowed researchers to browse by attributes that supported their
+            decision-making.
+          </li>
+          <li class="p mt-md">
+            <strong>Advocated for accessibility,</strong> ensuring all designs adhered to Springer Nature’s commitment
+            to
+            WCAG AA standards so that web content remained accessible to people with diverse disabilities.
+          </li>
+          <li class="p mt-md">
+            <strong>Worked closely with engineers </strong> during the implementation phase, providing detailed
+            documentation and collaborating with the dev team to ensure the final product met our high-quality
+            standards.
+          </li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="wrapper two-column-image mt-4xl">
+      <figure class="medium-zoom-small ">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-research.webp"
+          style="width: 100%; height: auto;" alt="Research report of the project" loading="lazy" id="">
+      </figure>
+
+
+      <figure class="medium-zoom-small">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-interview.webp"
+          style="width: 100%; height: auto;" alt="Example of an interview with a researcher" loading="lazy" id="">
+      </figure>
+    </div>
+
+    <div class="wrapper two-column-image mt-sm">
+      <figure class="medium-zoom-small ">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-prototyping.webp"
+          style="width: 100%; height: auto;" alt="Renan prototyping on paper" loading="lazy" id="">
+      </figure>
+
+
+      <figure class="medium-zoom-small">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-prototype.webp"
+          style="width: 100%; height: auto;" alt="Image of the Figma prototype used to test with users" loading="lazy"
+          id="">
+      </figure>
+
+    </div>
+    <figcaption class="body-small wrapper mt-xs t-ct">
+      Throughout this process, my team and I conducted extensive research and data analysis, interviewed researchers
+      from across the globe, and tested multiple prototypes to develop a robust design solution.
+    </figcaption>
+
+    <div class="text-block">
+      <h2 class="mt-5xl t-ct t-gray-300">The solution</h2>
+      <p class="p-high mt-3xl">
+        Our primary goal was to design a centralized and intuitive journal discovery experience. We aimed to empower
+        researchers to navigate Springer Nature's extensive portfolio of over 3,000 journals with confidence, ensuring
+        they could efficiently find the perfect home for their research.
+      </p>
+      <p class="mt-3xl">
+        Beyond improving the core discovery experience, we partnered with the SEO team to identify an opportunity
+        to index approximately 3,500 targeted landing pages — each tailored to specific subject areas and structured
+        to rank highly on Google, creating a scalable new channel for organic user acquisition.
+      </p>
+      <p class="mt-xl">
+        To ensure the platform's success, the final design was built upon the following core principles:
+      </p>
+      <ul class="ul">
+        <li class="p mt-md">
+          <strong>A Unified Ecosystem:</strong> Replacing a disjointed network of legacy websites with a single,
+          brand-agnostic destination for all Springer Nature journal discovery.
+        </li>
+        <li class="p mt-md">
+          <strong>Smart Taxonomy & Filtering:</strong> Allowing users to easily filter 3,000+ journals based on
+          attributes that matter most, such as scope, impact factor, acceptance rates, turnaround times, and publishing
+          model.
+        </li>
+      </ul>
+      <details class="read-more mt-xl">
+        <summary class="read-more-toggle body-large">Read more...</summary>
+        <ul class="ul">
+          <li class="p mt-md">
+            <strong>SEO-Driven Architecture:</strong> Identifying an opportunity to index approximately 3,500 targeted
+            landing pages, structured to capture long-tail organic search traffic and attract researchers at the
+            moment of journal discovery.
+          </li>
+          <li class="p mt-md">
+            <strong>Clear Conversion Paths:</strong> Providing researchers with direct, frictionless routes from
+            discovering a journal to initiating the submission process.
+          </li>
+          <li class="p mt-md">
+            <strong>Intelligent Search:</strong> Extensively testing and refining the search engine to ensure it
+            consistently surfaces the most relevant results for researchers across different scientific subjects.
+          </li>
+          <li class="p mt-md">
+            <strong>Accessible by Design:</strong> Ensuring the entire platform adheres to WCAG 2.1/2.2 Level AA
+            accessibility standards, making it accessible to everyone.
+          </li>
+        </ul>
+      </details>
+    </div>
+
+    <figure class="wrapper medium-zoom-large mt-4xl">
+      <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-home-desktop.webp"
+        style="width: 100%; height: auto;" alt="Journal Finder home page on desktop" loading="lazy" id="">
+    </figure>
+
+    <div class="wrapper two-column-image mt-sm">
+      <figure class="medium-zoom-small ">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-home-desktop-2.webp"
+          style="width: 100%; height: auto;" alt="Image featured journals in Life Sciences and Physical Sciences"
+          loading="lazy" id="">
+      </figure>
+
+
+      <figure class="medium-zoom-small">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-home-mobile.webp"
+          style="width: 100%; height: auto;" alt="Image of the journal finder home page on mobile" loading="lazy" id="">
+      </figure>
+    </div>
+
+    <div class="wrapper two-column-image mt-sm">
+      <figure class="medium-zoom-small ">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-listing-desktop.webp"
+          style="width: 100%; height: auto;" alt="Image of the journal finder listing page on desktop" loading="lazy"
+          id="">
+      </figure>
+
+
+      <figure class="medium-zoom-small">
+        <img class="medium-zoom-image" src="../images/case-journal-finder/jf-case-listing-mobile.webp"
+          style="width: 100%; height: auto;" alt="Image of the journal finder listing page on mobile" loading="lazy"
+          id="">
+      </figure>
+    </div>
+
+    <div class="skillset mt-3xl">
+      <div class="skillset-wrapper wrapper">
+        <h3 class="mt-3xl t-ct">Here are the Figma prototypes</h3>
+        <p class="mt-md body-medium t-ct">
+          Interact with the final high-fidelity desktop and mobile designs of the unified discovery experience we built
+          for researchers.
+        </p>
+        <div class="cv-btn mt-3xl">
+          <a href="https://www.figma.com/proto/GNIyRwxy20C3MsNKTrUYlD/-RC--Journal-Finder?page-id=728%3A9166&node-id=54652-44230&viewport=251%2C271%2C0.27&t=yocyGuVQG9rzuJBu-8&scaling=contain&content-scaling=responsive&starting-point-node-id=54652%3A44230&hide-ui=1"
+            target="_blank" aria-label="Figma Desktop prototype">
+            <img src="../images/icons/figma-icon.svg" alt="Figma Desktop prototype" loading="lazy" />
+            <span class="btn body-medium t-semibold btn-green">
+              Desktop
+              <div class="icon-arrow-new-tab">
+                <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M1.42252 1.14414C1.42252 0.788547 1.71107 0.5 2.06666 0.5H9.15606C9.51165 0.5 9.8002 0.788547 9.8002 1.14414V8.23353C9.8002 8.58913 9.51165 8.87767 9.15606 8.87767C8.79965 8.87767 8.51192 8.58904 8.51192 8.23353V2.69947L1.30012 9.91128C1.04849 10.1629 0.640548 10.1629 0.388918 9.91128C0.137288 9.65965 0.137288 9.25171 0.388918 9.00008L7.60072 1.78828H2.06666C1.71107 1.78828 1.42252 1.49973 1.42252 1.14414Z"
+                    fill="var(--typography-green-light)">
+                  </path>
+                </svg>
+              </div>
+            </span>
+          </a>
+          <a href="https://www.figma.com/proto/GNIyRwxy20C3MsNKTrUYlD/-RC--Journal-Finder?page-id=728%3A9166&node-id=55411-29024&viewport=47%2C391%2C0.27&t=KMhMmmBKSbzs3nXO-8&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=54895%3A2357&hide-ui=1"
+            target="_blank" aria-label="FigmaMobile prototype">
+            <img src="../images/icons/figma-icon.svg" alt="Figma Mobile prototype" loading="lazy" />
+            <span class="btn body-medium t-semibold btn-green">
+              Mobile
+              <div class="icon-arrow-new-tab">
+                <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M1.42252 1.14414C1.42252 0.788547 1.71107 0.5 2.06666 0.5H9.15606C9.51165 0.5 9.8002 0.788547 9.8002 1.14414V8.23353C9.8002 8.58913 9.51165 8.87767 9.15606 8.87767C8.79965 8.87767 8.51192 8.58904 8.51192 8.23353V2.69947L1.30012 9.91128C1.04849 10.1629 0.640548 10.1629 0.388918 9.91128C0.137288 9.65965 0.137288 9.25171 0.388918 9.00008L7.60072 1.78828H2.06666C1.71107 1.78828 1.42252 1.49973 1.42252 1.14414Z"
+                    fill="var(--typography-green-light)">
+                  </path>
+                </svg>
+              </div>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-block mt-4xl">
+      <h2 class="mt-5xl t-ct t-gray-300">Impact</h2>
+      <p class="p-high mt-3xl">
+        The solution proved highly effective in helping researchers confidently choose the right journal for their work,
+        with engagement and conversion metrics validating the product's impact at launch.</p>
+      <p class="p-high mt-xl">
+        Beyond the core discovery
+        experience, early data also signalled strong organic acquisition potential — with over 1 million sessions per
+        month and 35.7% of organic visitors being first-time users.
+      </p>
+
+    </div>
+
+
+    <div class="featured-metrics-2 mt-3xl">
+      <div class="wrapper">
+        <div class="metrics-list">
+
+          <div class="metric">
+            <span class="metric-number display-xxxl">
+              8.6
+              <span class="metric-number-percentage t-bold display-xl">%</span>
+            </span>
+            <span class="body-medium t-ct">
+              Session-to-submission conversion rate
+              <sup id="ref-1"><a href="#sup-1">1</a></sup>
+            </span>
+          </div>
+
+          <div class="metric">
+            <span class="metric-number display-xxxl">
+              25
+              <span class="metric-number-percentage t-bold display-xl">%</span>
+            </span>
+            <span class="body-medium t-ct">Search results engagement rate (sessions with at least one journal
+              click)</span>
+          </div>
+
+          <div class="metric">
+            <span class="metric-number display-xxxl">
+              <span class="metric-number-arrow t-bold display-xl t-green-light">↑</span>
+              50.7
+              <span class="metric-number-percentage t-bold display-xl">%</span>
+            </span>
+            <span class="body-medium t-ct">
+              increase in submission funnel completion rate
+              <sup id="ref-2"><a href="#sup-2">2</a></sup></span>
+          </div>
+
+          <div class="metric">
+            <span class="metric-number display-xxxl">
+              35.7
+              <span class="metric-number-percentage t-bold display-xl">%</span>
+            </span>
+            <span class="body-medium t-ct">
+              <i>New user</i> acquisition rate via organic search
+              <sup id="ref-3"><a href="#sup-3">3</a></sup></span>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footnotes mt-4xl" role="contentinfo">
+
+      <ol class="ol">
+        <li id="sup-1" class="body-small t-gray-300">
+          The share of website sessions that led to a researcher initiating a manuscript submission —
+          the platform's primary conversion event, equivalent to a purchase in e-commerce.
+        </li>
+        <li id="sup-2" class="body-small t-gray-300 mt-sm">
+          The increase in the share of users who started and successfully completed the end-to-end
+          submission flow — from opening the submission system to clicking "Submit manuscript."
+        </li>
+        <li id="sup-3" class="body-small t-gray-300 mt-sm">
+          The share of organic search visitors who had never previously accessed the platform,
+          indicating the website's effectiveness as a new user acquisition channel.
+        </li>
+      </ol>
+
+    </div>
+
+  </div>
+
+  <include src="components/password-dialog.html"></include>
+
+
+  <include src="components/footer.html"></include>
+
+
+</body>
+
+</html>
