@@ -1723,6 +1723,10 @@ body.journal-finder .content-hero h1 {
   max-width: 540px;
 }
 
+body.subject-pages .content-hero h1 {
+  max-width: 600px;
+}
+
 /****************** GENERAL NAVBAR ****************/
 
 
