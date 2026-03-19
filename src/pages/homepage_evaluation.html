@@ -17,6 +17,7 @@
     <title>Renan Crociari · Senior Product Designer</title>
     <meta name="description"
         content="15+ years of experience in ideating, crafting, and leading digital experiences for startups and well-established tech companies loved by millions of users." />
+    <meta name="robots" content="noindex">
     <meta property="og:site_name" content="Renan Crociari" />
     <meta name="author" content="Renan Crociari">
     <meta property="og:type" content="website" />
@@ -53,21 +54,8 @@
     <link rel="preload" href="../fonts/degular.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&text=renancrociari" rel="stylesheet">
     <!-- Prevent content flash when redirected from protected page -->
-    <script>
-        // Check if URL contains password-protected hash
-        if (window.location.hash.includes('#password-protected')) {
-            // Hide body immediately to prevent flash
-            document.documentElement.style.visibility = 'hidden';
-            // Show once DOM is ready and dialog opens
-            document.addEventListener('DOMContentLoaded', function () {
-                setTimeout(function () {
-                    document.documentElement.style.visibility = 'visible';
-                }, 100);
-            });
-        }
-    </script>
+
     <!-- Scripts -->
-    <script type="module" src="../scripts/script.js"></script>
     <script type="application/ld+json">
       {
         "@context" : "https://schema.org",
