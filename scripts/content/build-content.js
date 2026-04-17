@@ -12,8 +12,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const CONTENT_DIR = path.join(__dirname, '..', 'content');
-const OUTPUT_DIR = path.join(__dirname, '..', 'src', 'pages-generated');
+const CONTENT_DIR = path.join(__dirname, '..', '..', 'content');
+const OUTPUT_DIR = path.join(__dirname, '..', '..', 'src', 'pages-generated');
 
 const TEMPLATE_PAGE = `<!DOCTYPE html>
 <html lang="en">
@@ -143,6 +143,7 @@ function slugToHtml(content, slug, type) {
     const { data, content: mdxContent } = parseFrontmatter(content);
     
     const baseUrl = 'https://www.renancrociari.com';
+    const titleSuffix = (type === 'page' && slug === 'about') ? 'About Me · Renan Crociari' : `${data.title} · Renan Crociari`;
     const canonical = type === 'page' 
         ? `${baseUrl}/${slug === 'home' ? '' : slug}`
         : `${baseUrl}/${slug}`;
@@ -162,12 +163,12 @@ function slugToHtml(content, slug, type) {
     }
     
     return TEMPLATE_PAGE
-        .replace('{{TITLE}}', data.title + (type === 'page' && slug === 'about' ? ' · Renan Crociari' : ' · Renan Crociari'))
-        .replace('{{DESCRIPTION}}', data.description || '')
-        .replace('{{CANONICAL}}', canonical)
-        .replace('{{OG_IMAGE}}', data.og_image ? `${baseUrl}/${data.og_image.replace('../', '')}` : `${baseUrl}/images/renan-og-image.jpg`)
-        .replace('{{BODY_CLASS}}', bodyClass)
-        .replace('{{CONTENT}}', htmlContent);
+        .replaceAll('{{TITLE}}', data.title + ' · Renan Crociari')
+        .replaceAll('{{DESCRIPTION}}', data.description || '')
+        .replaceAll('{{CANONICAL}}', canonical)
+        .replaceAll('{{OG_IMAGE}}', data.og_image ? `${baseUrl}/${data.og_image.replace('../', '')}` : `${baseUrl}/images/renan-og-image.jpg`)
+        .replaceAll('{{BODY_CLASS}}', bodyClass)
+        .replaceAll('{{CONTENT}}', htmlContent);
 }
 
 function slugToBodyClass(slug) {
