@@ -12,3 +12,17 @@ RewriteRule ^([^\.]+)$ $1.html [NC,L]
 # Optional: Force remove .html extension from URL (redirect)
 # RewriteCond %{THE_REQUEST} \s/+(.+?)\.html(\s|\?) [NC]
 # RewriteRule ^ /%1 [R=301,L]
+
+# Redirect short slugs to pages-generated folder (MDX content)
+RewriteRule ^farfetch-performance(/)?$ /pages-generated/farfetch-performance.html [R=301,L]
+RewriteRule ^dating-platform(/)?$ /pages-generated/dating-platform.html [R=301,L]
+RewriteRule ^journal-finder(/)?$ /pages-generated/journal-finder.html [R=301,L]
+RewriteRule ^home(/)?$ /pages-generated/index.html [R=301,L]
+
+# Redirect old long URLs to new short slugs (then rewrites above handle final redirect)
+RewriteRule ^improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands(/)?$ /farfetch-performance [R=301,L]
+RewriteRule ^redesigning-the-mobile-experience-of-a-dating-platform(/)?$ /dating-platform [R=301,L]
+RewriteRule ^connecting-every-discovery-with-a-worthy-home(/)?$ /journal-finder [R=301,L]
+
+# 404 fallback - serve 404.html for non-existent routes
+ErrorDocument 404 /404.html

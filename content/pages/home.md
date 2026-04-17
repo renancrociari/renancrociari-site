@@ -3,6 +3,7 @@ title: "Home"
 slug: "home"
 type: "page"
 status: "published"
+published: true
 description: "15+ years of experience in ideating, crafting, and leading digital experiences for startups and well-established tech companies loved by millions of users."
 order: 0
 featured_image: "../images/img-renan.webp"

@@ -726,8 +726,142 @@ export function renderDocument(document, options = {}) {
     return renderBlocks(blocks, options);
   }
   
-  // Caso contrário, renderiza o content como texto
+  // Se temos conteúdo markdown, parseia e renderiza
+  if (content) {
+    try {
+      const html = parseMarkdown(content);
+      return `<div class="document-content">${html}</div>`;
+    } catch (e) {
+      console.warn('Failed to parse markdown:', e);
+    }
+  }
+  
+  // Fallback para conteúdo texto
   return `<div class="document-content">${content || ''}</div>`;
+}
+
+/**
+ * Simple markdown parser for editor preview
+ * Supports: headings, paragraphs, lists, bold, italic, links, images, blockquotes, horizontal rules
+ */
+function parseMarkdown(text) {
+  if (!text) return '';
+  
+  const lines = text.split('\n');
+  let html = '';
+  let inList = false;
+  let listType = null;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    
+    // Empty line - close lists
+    if (trimmed === '') {
+      if (inList) {
+        html += listType === 'ul' ? '</ul>' : '</ol>';
+        inList = false;
+        listType = null;
+      }
+      continue;
+    }
+    
+    // Horizontal rule
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+      if (inList) {
+        html += listType === 'ul' ? '</ul>' : '</ol>';
+        inList = false;
+      }
+      html += '<hr class="content-divider" />';
+      continue;
+    }
+    
+    // Blockquote
+    if (trimmed.startsWith('> ')) {
+      if (inList) {
+        html += listType === 'ul' ? '</ul>' : '</ol>';
+        inList = false;
+      }
+      html += `<blockquote class="content-quote"><p>${escapeHtml(trimmed.slice(2))}</p></blockquote>`;
+      continue;
+    }
+    
+    // Unordered list
+    if (/^[-*+] /.test(trimmed)) {
+      if (!inList || listType !== 'ul') {
+        if (inList) html += listType === 'ul' ? '</ul>' : '</ol>';
+        html += '<ul class="content-list">';
+        inList = true;
+        listType = 'ul';
+      }
+      html += `<li>${parseInline(trimmed.slice(2))}</li>`;
+      continue;
+    }
+    
+    // Ordered list
+    if (/^\d+\. /.test(trimmed)) {
+      if (!inList || listType !== 'ol') {
+        if (inList) html += listType === 'ul' ? '</ul>' : '</ol>';
+        html += '<ol class="content-list">';
+        inList = true;
+        listType = 'ol';
+      }
+      html += `<li>${parseInline(trimmed.replace(/^\d+\. /, ''))}</li>`;
+      continue;
+    }
+    
+    // Close list if we're at a non-list line
+    if (inList) {
+      html += listType === 'ul' ? '</ul>' : '</ol>';
+      inList = false;
+      listType = null;
+    }
+    
+    // Headings
+    const headingMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const text = headingMatch[2];
+      html += `<h${level} class="content-heading h${level}">${escapeHtml(text)}</h${level}>`;
+      continue;
+    }
+    
+    // Regular paragraph
+    html += `<p>${parseInline(trimmed)}</p>`;
+  }
+  
+  // Close any open list
+  if (inList) {
+    html += listType === 'ul' ? '</ul>' : '</ol>';
+  }
+  
+  return html;
+}
+
+/**
+ * Parse inline elements: bold, italic, links, images
+ */
+function parseInline(text) {
+  if (!text) return '';
+  
+  // Escape first, then process inline elements
+  let result = escapeHtml(text);
+  
+  // Images: ![alt](src)
+  result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<figure class="content-image"><img src="$2" alt="$1" loading="lazy" /></figure>');
+  
+  // Links: [text](url)
+  result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="content-link">$1</a>');
+  
+  // Bold: **text** or __text__
+  result = result.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  result = result.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+  
+  // Italic: *text* or _text_
+  result = result.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  result = result.replace(/_([^_]+)_/g, '<em>$1</em>');
+  
+  return result;
 }
 
 /**

@@ -3,6 +3,7 @@ title: "Connecting every discovery with a worthy home"
 slug: "journal-finder"
 type: "work"
 status: "protected"
+published: true
 description: "At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work."
 tags:
   - Product Strategy

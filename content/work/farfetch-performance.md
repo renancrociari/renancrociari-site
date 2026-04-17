@@ -3,6 +3,7 @@ title: "Improving the performance of Farfetch's top fashion eCommerce brands"
 slug: "farfetch-performance"
 type: "work"
 status: "published"
+published: true
 description: "At Farfetch, I led design efforts to optimize e-commerce performance and enhance user experience for boutiques on the Farfetch platform."
 tags:
   - Product Strategy

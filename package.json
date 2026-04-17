@@ -12,7 +12,11 @@
     "build:content:check": "node scripts/content/build-content.js --check",
     "build": "npm run build:content && parcel build src/pages/*.html src/pages-generated/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
     "build:legacy": "parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
-    "editor": "npm run dev:api"
+    "editor": "npm run dev:api",
+    "validate:content": "node scripts/content/validate-frontmatter.js",
+    "validate:content:check": "node scripts/content/validate-frontmatter.js --check",
+    "backup": "npm run build:legacy && cp -r dist dist-backup-$(date +%Y%m%d)",
+    "prebuild": "npm run validate:content:check"
   },
   "author": "",
   "license": "ISC",
@@ -25,8 +29,8 @@
   },
   "dependencies": {
     "medium-zoom": "^1.1.0",
-    "@portfolio-os/core": "file:../portfolio-main/packages/core",
-    "@portfolio-os/blocks": "file:../portfolio-main/packages/blocks",
-    "@portfolio-os/editor": "file:../portfolio-main/packages/editor"
+    "@portfolio-os/core": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/core",
+    "@portfolio-os/blocks": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/blocks",
+    "@portfolio-os/editor": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/editor"
   }
 }

@@ -386,12 +386,12 @@ Use Markdown syntax for formatting.
       docs.forEach(doc => {
         const li = document.createElement('li');
         li.className = `doc-item ${doc.published ? '' : 'unpublished'}`;
-        li.dataset.id = doc.documentId;
+        li.dataset.id = doc.id;
         li.innerHTML = `
           <div style="font-family: var(--font-display); color: var(--typography-gray-200);">${escapeHtml(doc.title)}</div>
           <div style="font-size: var(--font-2xs); color: var(--typography-gray-300);">${doc.slug}</div>
         `;
-        li.addEventListener('click', () => loadDocument(doc.documentId));
+        li.addEventListener('click', () => loadDocument(doc.id));
         docList.appendChild(li);
       });
     }
@@ -649,7 +649,7 @@ Use Markdown syntax for formatting.
       try {
         const result = await adapter.createDocument(title, slug || undefined);
         loadDocumentList();
-        loadDocument(result.entry.documentId);
+        loadDocument(result.entry.id);
       } catch (err) {
         alert('Error creating document: ' + err.message);
       }

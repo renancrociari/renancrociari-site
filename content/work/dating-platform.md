@@ -3,6 +3,7 @@ title: "Redesigning the mobile experience of a dating platform"
 slug: "dating-platform"
 type: "work"
 status: "published"
+published: true
 description: "I led the complete redesign of SL web app, a product used by millions of Brazilians every day. We dramatically simplified the user experience, focusing on core interactions, speed, and simplified navigation."
 tags:
   - User Research

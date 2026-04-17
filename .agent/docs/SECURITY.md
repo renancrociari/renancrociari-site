@@ -81,9 +81,18 @@ await validateFrontmatter(newContent)
 ### Build de segurança
 
 ```bash
-# Verifica que build funciona antes de commitar
-npm run build:content && npm run build:legacy && echo "Build OK"
+# Valida conteúdo e verifica build antes de commitar
+npm run validate:content:check && npm run build:legacy && echo "Build OK"
 ```
+
+### NPM scripts
+
+| Script | Descrição |
+|--------|----------|
+| `npm run validate:content` | Valida frontmatter de todos os arquivos |
+| `npm run validate:content:check` | Valida e retorna erro se falhar |
+| `npm run backup` | Criar backup antes de operação crítica |
+| `npm run prebuild` | Validar antes de cada build |
 
 ### Verificação pré-deploy
 
@@ -155,6 +164,37 @@ O editor é **apenas para edição**. O site publicado é HTML estático.
 - [x] Caminho de recuperação existe
 - [x] Site não depende do editor para publicar
 - [x] Gravações inválidas não quebram o repo
+
+---
+
+## Implementado
+
+### Scripts Criados
+
+| Script | Arquivo | Status |
+|--------|-------|--------|
+| validação frontmatter | `scripts/content/validate-frontmatter.js` | ✅ |
+
+### Testes Realizados
+
+```bash
+# Validação passa
+npm run validate:content:check
+✅ Validation passed
+
+# Build sem editor funciona
+npm run build:legacy
+✨ Built in 1.09s
+
+# Backup existe
+ls dist-backup-20260417/
+(Arquivos do site prontos)
+```
+
+### Files
+
+- `scripts/content/validate-frontmatter.js` - Valida frontmatter, slug, imagens
+- `package.json` - Scripts: validate:content, validate:content:check, backup, prebuild
 
 ---
 
