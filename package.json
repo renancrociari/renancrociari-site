@@ -4,8 +4,10 @@
   "description": "",
   "scripts": {
     "dev": "parcel src/pages/*.html",
+    "dev:api": "node scripts/dev-server.js",
     "start": "parcel src/pages/*.html --cert ./localhost+3.pem --key ./localhost+3-key.pem",
-    "build": "parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js"
+    "build": "parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
+    "editor": "npm run dev:api"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +19,9 @@
     "posthtml-include": "^2.0.1"
   },
   "dependencies": {
-    "medium-zoom": "^1.1.0"
+    "medium-zoom": "^1.1.0",
+    "@portfolio-os/core": "file:../portfolio-main/packages/core",
+    "@portfolio-os/blocks": "file:../portfolio-main/packages/blocks",
+    "@portfolio-os/editor": "file:../portfolio-main/packages/editor"
   }
 }

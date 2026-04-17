@@ -1,0 +1,138 @@
+---
+title: "About Me"
+slug: "about"
+type: "page"
+status: "published"
+description: "15+ years of experience in ideating, crafting, and leading digital experiences for startups and well-established tech companies loved by millions of users."
+order: 1
+featured_image: "../images/img-renan.webp"
+og_image: "../images/renan-og-image.jpg"
+created_at: "2024-01-01"
+updated_at: "2024-06-20"
+---
+
+# Who am I?
+
+With over 15 years of experience as an **end-to-end Product Designer**, I create impactful digital experiences that connect business strategy with user needs. Throughout my career, I have collaborated with a diverse range of **B2B and B2C** tech companies, from **early-stage startups to well-established enterprises**, across various industries and stages of maturity. Whether ideating and designing products in early phases or refining and scaling solutions for mature tech companies, this broad experience has given me a unique perspective on crafting solutions tailored to the specific needs and challenges of different business environments.
+
+Leveraging a **Master's degree in User-Centered Design**, along with additional training in **Product Management** and **Product Leadership**, I have evolved into an end-to-end designer who excels at every stage of the design process—from engaging with customers to uncover user needs and opportunities for innovation and growth, to exploring and crafting scalable solutions that meet customer needs and drive business goals.
+
+Currently, I serve as a Senior Product Designer at Springer Nature, the world's largest academic publisher with 20 million monthly users. In this role, I develop strategies to attract more researchers to the platform and expand Springer Nature's reach to a broader audience. I explore new solutions, channels, and opportunities to increase engagement with our scientific content, driving revenue growth and encouraging authors to publish their research in one of our 3,000 journals.
+
+---
+
+# Professional experience
+
+## Springer Nature
+
+**Senior Product Designer** · Jan 2021 - Present
+
+Develop strategies to attract more researchers to the platform and expand Springer Nature's reach to a broader audience. Explore new solutions, channels, and opportunities to increase engagement with our scientific content, driving revenue growth and encouraging authors to publish their research in one of our 3,000 journals.
+
+## Farfetch
+
+**Senior Product Designer** · Jul 2019 - Nov 2020 · 1 yr 5 mos
+
+Farfetch is the leading global technology platform for the luxury fashion industry. Farfetch Platform Solutions delivers a global, multi-channel eCommerce offering that enables over 1,000 of the world's best brands, boutiques and department stores, to seamlessly interact with their consumers, while also allowing them to focus on the creative aspects of their businesses.
+
+I worked directly with Farfetch highest selling fashion brands with the goal of driving sales, user engagement and improving the eCommerce performance for the websites and apps operated by Farfetch Platform Solutions.
+
+Activities:
+
+- Plan, manage and deliver design solutions that drive optimized eCommerce results for the websites and apps of our partners;
+- Lead design strategy and apply design tools like UX Research, Data Analysis, Benchmarking and Sketching to convert customer needs into high-value business solutions;
+- Work closely with business, engineering, production, commercial and marketing teams to prioritize, plan and guide solutions aligned with partners identities and strategies;
+- Leverage insights gathered through working with our partners to develop new solutions and improvements for Farfetch Platform Solutions.
+
+## eSapiens
+
+**Lead Product Designer** · Nov 2014 - Jan 2019 · 3 yrs 6 mos
+
+Activities:
+
+- Thoroughly understand the company's strategy and goals and how exactly my team contributes to the short, medium and long term vision of the business;
+- Prioritize challenges and solve as quickly as possible those who can help my team move forward in a more structured, fast and efficient way;
+- Make use of user-centered design techniques and tools to identify and convert customer needs into high-value business solutions.
+
+## Triata
+
+**UX Designer & Project Manager** · Mar 2011 - Nov 2014 · 3 yrs 9 mos
+
+Development and management of campaigns for web such as websites, e-commerce, email marketing, Google Advertising, webmarketing and web writing.
+
+Activities:
+
+- Creation and management of projects: websites, e-Commerce, landing pages, e-mail marketing, digital parts in general;
+- Management and conduction of simultaneous web projects;
+- Customer service;
+- Development and facilitation of briefings and brainstormings;
+- Budgeting, negotiation of deadlines and decision making with the client;
+- Management of the development team;
+- Coordination of e-commerces and online campaigns.
+
+---
+
+# Approach and Skillset
+
+Over the years, I incorporated business and product skills to my UX background, composing a hybrid profile that allows me to quickly adapt to different scenarios and wear multiple hats within a team or organization.
+
+## UX & Strategic Design
+
+- UX Research
+- UX Strategy
+- Service Design
+- Usability Testing
+- Data Analysis
+- Value Proposition Design
+- Quali & Quant Analysis
+- User Journey Mapping
+- Service Blueprint
+- Workshop Facilitation
+
+## Product Design
+
+- User experience (UX)
+- User Interface (UI)
+- Prototyping
+- Visual Design
+- Design Systems
+- Information Architecture
+- UX Writing
+- Wireframing
+- Interaction Design
+
+## Product & Strategy
+
+- Vision & Strategy
+- Stakeholder Management
+- Competitive Analysis
+- OKR's
+- Value Proposition
+
+---
+
+# What my teammates say about me
+
+**Sara Cruz** · Head of Product at Farfetch
+
+I had the pleasure of working with Renan for two years, during which time he played a pivotal role in setting up our UX optimization practice. He is dependable, always delivering work of the highest quality on time and with a keen eye for detail.
+
+Renan embodies all the critical traits of a great designer: he is both creative and pragmatic, ensuring that the solutions he proposes are not only innovative but also aligned with business goals. His customer-centric mindset, combined with a data-driven approach and awareness of industry best practices, allows him to deliver designs that are both user-friendly and impactful.
+
+He is also an excellent communicator, capable of explaining his design decisions clearly to both clients and internal teams. Whether he's presenting to stakeholders or collaborating with product, data, and development teams, Renan consistently shows himself to be a team player and a true partner in crime in every sense.
+
+**Leandro Kitamura** · CEO at eSapiens
+
+I had the privilege of working alongside Renan for 4 years at the company where I serve as CEO, and I can confidently say that he is an exceptional professional. He started his journey with us as a designer but quickly demonstrated the talent that led him to become the leader of our main product. His approach was always extremely proactive, seeking not only his personal growth but also the growth of the team and the company as a whole.
+
+As a product leader, Renan made significant contributions. He showed a keen eye for detail and a deep understanding of our users' needs. His ability to solve problems and guide the team towards our goals was instrumental in achieving important results.
+
+I highly recommend Renan for any opportunity that seeks a talented, dedicated professional with strong leadership skills and product vision.
+
+**Felipe Trevisan** · Senior Product Designer
+
+Renan is an excellent professional, very versatile, and works with motivation, which helps in the development of projects. I had the opportunity to work with him on several projects, where I could see significant professional growth and always a great determination to solve problems.
+
+**Cínthia Nakazato** · Product Owner
+
+Renan is an exceptional, dedicated, and inspirational professional who consistently delivers creative, user-friendly, and effective designs. I had the privilege of working with him on a social project where he naturally took on the role of lead designer. He strategically planned every aspect and mentored everyone involved. Renan excelled in translating insights from research into a cohesive product vision, providing a solid foundation for the product we envisioned.

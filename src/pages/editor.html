@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <title>Content Editor · Renan Crociari</title>
+  
+  <!-- CSS do site principal para preview fiel -->
+  <link rel="stylesheet" href="../styles/global.css" />
+  <link rel="stylesheet" href="../styles/reset.css" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  
+  <!-- CSS específico do editor -->
+  <style>
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .editor-sidebar {
+      background: var(--background-gray-medium);
+      border-right: 1px solid var(--background-gray-lighter);
+      overflow-y: auto;
+      padding: var(--spacing-md);
+    }
+    
+    .editor-main {
+      overflow-y: auto;
+      padding: var(--spacing-lg);
+      background: var(--background-body);
+    }
+    
+    .editor-preview {
+      overflow-y: auto;
+      background: var(--background-body);
+      border-left: 1px solid var(--background-gray-lighter);
+    }
+    
+    .editor-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .doc-list {
+      list-style: none;
+      padding: 0;
+      margin: var(--spacing-md) 0;
+    }
+    
+    .doc-item {
+      padding: var(--spacing-sm);
+      border-radius: var(--br-xxxs);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .doc-item:hover {
+      background: var(--background-gray-lighter);
+    }
+    
+    .doc-item.active {
+      background: var(--typography-green-dark);
+    }
+    
+    .doc-item.unpublished {
+      opacity: 0.6;
+    }
+    
+    .editor-toolbar {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--background-gray-lighter);
+    }
+    
+    .btn-editor {
+      background: var(--typography-green-light);
+      color: var(--background-body);
+      border: none;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--br-xxxs);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: var(--font-2xs);
+    }
+    
+    .btn-editor:hover {
+      background: var(--typography-green-lighter);
+    }
+    
+    .btn-editor.secondary {
+      background: var(--background-gray-lighter);
+      color: var(--typography-gray-200);
+    }
+    
+    .metadata-form {
+      display: grid;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .metadata-field {
+      display: grid;
+      gap: var(--spacing-2xs);
+    }
+    
+    .metadata-field label {
+      font-family: var(--font-display);
+      font-size: var(--font-2xs);
+      color: var(--typography-gray-300);
+    }
+    
+    .metadata-field input,
+    .metadata-field textarea,
+    .metadata-field select {
+      background: var(--background-gray-light);
+      border: 1px solid var(--background-gray-lighter);
+      color: var(--typography-gray-200);
+      padding: var(--spacing-xs);
+      border-radius: var(--br-xxxs);
+      font-family: var(--font-paragraph);
+    }
+    
+    .content-editor {
+      width: 100%;
+      min-height: 500px;
+      background: var(--background-gray-light);
+      border: 1px solid var(--background-gray-lighter);
+      color: var(--typography-gray-200);
+      padding: var(--spacing-md);
+      font-family: var(--font-paragraph);
+      font-size: var(--font-md);
+      line-height: 1.6;
+      resize: vertical;
+    }
+    
+    .collection-tabs {
+      display: flex;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .collection-tab {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: transparent;
+      border: none;
+      color: var(--typography-gray-300);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: var(--font-xs);
+    }
+    
+    .collection-tab.active {
+      color: var(--typography-green-light);
+      border-bottom: 2px solid var(--typography-green-light);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--spacing-3xl);
+      color: var(--typography-gray-300);
+    }
+    
+    @media (max-width: 1024px) {
+      .editor-layout {
+        grid-template-columns: 240px 1fr;
+      }
+      .editor-preview {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .editor-layout {
+        grid-template-columns: 1fr;
+      }
+      .editor-sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="editor-layout">
+    <!-- Sidebar: Document List -->
+    <aside class="editor-sidebar">
+      <div class="collection-tabs">
+        <button class="collection-tab active" data-collection="work">Work</button>
+        <button class="collection-tab" data-collection="pages">Pages</button>
+      </div>
+      
+      <button class="btn-editor" id="btn-new">+ New Document</button>
+      
+      <ul class="doc-list" id="doc-list">
+        <li class="empty-state">Loading...</li>
+      </ul>
+    </aside>
+    
+    <!-- Main: Editor -->
+    <main class="editor-main">
+      <div id="editor-container" style="display: none;">
+        <div class="editor-toolbar">
+          <button class="btn-editor" id="btn-save">Save</button>
+          <button class="btn-editor secondary" id="btn-preview">Refresh Preview</button>
+          <span id="save-status" style="margin-left: auto; color: var(--typography-gray-300); font-size: var(--font-2xs);"></span>
+        </div>
+        
+        <div class="metadata-form" id="metadata-form">
+          <div class="metadata-field">
+            <label>Title</label>
+            <input type="text" id="meta-title" placeholder="Document title" />
+          </div>
+          <div class="metadata-field">
+            <label>Slug</label>
+            <input type="text" id="meta-slug" placeholder="url-friendly-slug" />
+          </div>
+          <div class="metadata-field">
+            <label>Summary</label>
+            <textarea id="meta-summary" rows="2" placeholder="Brief summary..."></textarea>
+          </div>
+          <div class="metadata-field" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm);">
+            <div>
+              <label>Published</label>
+              <select id="meta-published">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div>
+              <label>Published Date</label>
+              <input type="date" id="meta-publishedAt" />
+            </div>
+          </div>
+        </div>
+        
+        <textarea class="content-editor" id="content-editor" placeholder="# Your content here...
+
+Use Markdown syntax for formatting.
+
+## Heading
+
+- List item
+- List item
+
+**Bold text** and *italic text*.
+
+[Link text](https://example.com)
+
+![Alt text](/path/to/image.jpg)"></textarea>
+      </div>
+      
+      <div id="empty-editor" class="empty-state">
+        <p>Select a document from the sidebar or create a new one.</p>
+      </div>
+    </main>
+    
+    <!-- Preview -->
+    <aside class="editor-preview">
+      <iframe id="preview-frame" src="about.html"></iframe>
+    </aside>
+  </div>
+
+  <script type="module">
+    // Import adapters
+    import { createLocalAdapterBundle } from '../portfolio-os-integration/adapters/filesystem-adapter.js';
+    import { renderDocument } from '../portfolio-os-integration/renderer/shared-renderer.js';
+    
+    const adapters = createLocalAdapterBundle();
+    let currentCollection = 'work';
+    let currentDocument = null;
+    let isDirty = false;
+    
+    // Elements
+    const docList = document.getElementById('doc-list');
+    const editorContainer = document.getElementById('editor-container');
+    const emptyEditor = document.getElementById('empty-editor');
+    const contentEditor = document.getElementById('content-editor');
+    const previewFrame = document.getElementById('preview-frame');
+    const saveStatus = document.getElementById('save-status');
+    
+    // Load document list
+    async function loadDocumentList() {
+      const adapter = adapters[currentCollection];
+      const docs = await adapter.listDocuments();
+      
+      docList.innerHTML = '';
+      
+      if (!docs || docs.length === 0) {
+        docList.innerHTML = '<li class="empty-state">No documents yet</li>';
+        return;
+      }
+      
+      docs.forEach(doc => {
+        const li = document.createElement('li');
+        li.className = `doc-item ${doc.published ? '' : 'unpublished'}`;
+        li.dataset.id = doc.documentId;
+        li.innerHTML = `
+          <div style="font-family: var(--font-display); color: var(--typography-gray-200);">${escapeHtml(doc.title)}</div>
+          <div style="font-size: var(--font-2xs); color: var(--typography-gray-300);">${doc.slug}</div>
+        `;
+        li.addEventListener('click', () => loadDocument(doc.documentId));
+        docList.appendChild(li);
+      });
+    }
+    
+    // Load single document
+    async function loadDocument(id) {
+      const adapter = adapters[currentCollection];
+      try {
+        const doc = await adapter.loadDocument(id);
+        currentDocument = doc;
+        
+        // Update UI
+        document.querySelectorAll('.doc-item').forEach(el => el.classList.remove('active'));
+        document.querySelector(`[data-id="${id}"]`)?.classList.add('active');
+        
+        // Fill form
+        document.getElementById('meta-title').value = doc.metadata.title || '';
+        document.getElementById('meta-slug').value = doc.slug || '';
+        document.getElementById('meta-summary').value = doc.metadata.summary || '';
+        document.getElementById('meta-published').value = doc.metadata.published === 'false' ? 'false' : 'true';
+        document.getElementById('meta-publishedAt').value = doc.metadata.publishedAt || '';
+        contentEditor.value = doc.content || '';
+        
+        // Show editor
+        emptyEditor.style.display = 'none';
+        editorContainer.style.display = 'block';
+        
+        // Update preview
+        updatePreview();
+        
+        isDirty = false;
+        saveStatus.textContent = '';
+      } catch (err) {
+        alert('Error loading document: ' + err.message);
+      }
+    }
+    
+    // Save document
+    async function saveDocument() {
+      if (!currentDocument) return;
+      
+      const adapter = adapters[currentCollection];
+      const metadata = {
+        ...currentDocument.metadata,
+        title: document.getElementById('meta-title').value,
+        summary: document.getElementById('meta-summary').value,
+        published: document.getElementById('meta-published').value,
+        publishedAt: document.getElementById('meta-publishedAt').value,
+      };
+      
+      try {
+        await adapter.saveDocument(currentDocument.id, metadata, contentEditor.value);
+        isDirty = false;
+        saveStatus.textContent = 'Saved!';
+        setTimeout(() => saveStatus.textContent = '', 2000);
+        loadDocumentList();
+        updatePreview();
+      } catch (err) {
+        saveStatus.textContent = 'Error: ' + err.message;
+      }
+    }
+    
+    // Update preview
+    function updatePreview() {
+      if (!currentDocument) return;
+      
+      // Simple preview: renderiza em um documento inline
+      const metadata = {
+        title: document.getElementById('meta-title').value,
+      };
+      const content = contentEditor.value;
+      
+      const doc = {
+        metadata,
+        content,
+        collection: currentCollection,
+      };
+      
+      const html = renderDocument(doc, { isPreview: true });
+      
+      // Atualiza iframe com preview estilizado
+      const previewDoc = previewFrame.contentDocument;
+      previewDoc.open();
+      previewDoc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <link rel="stylesheet" href="../styles/global.css" />
+          <link rel="stylesheet" href="../styles/reset.css" />
+          <link rel="stylesheet" href="../styles/main.css" />
+          <style>
+            body { padding: var(--spacing-lg); }
+            .preview-badge {
+              position: fixed;
+              top: var(--spacing-sm);
+              right: var(--spacing-sm);
+              background: var(--typography-green-light);
+              color: var(--background-body);
+              padding: var(--spacing-xs) var(--spacing-sm);
+              border-radius: var(--br-xxxs);
+              font-family: var(--font-display);
+              font-size: var(--font-2xs);
+              z-index: 1000;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="preview-badge">PREVIEW</div>
+          <div class="article-content wrapper">
+            ${html}
+          </div>
+        </body>
+        </html>
+      `);
+      previewDoc.close();
+    }
+    
+    // Create new document
+    async function createDocument() {
+      const title = prompt('Enter document title:');
+      if (!title) return;
+      
+      const slug = prompt('Enter slug (optional, will be auto-generated):');
+      
+      const adapter = adapters[currentCollection];
+      try {
+        const result = await adapter.createDocument(title, slug || undefined);
+        loadDocumentList();
+        loadDocument(result.entry.documentId);
+      } catch (err) {
+        alert('Error creating document: ' + err.message);
+      }
+    }
+    
+    // Utility
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // Event listeners
+    document.querySelectorAll('.collection-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.collection-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentCollection = tab.dataset.collection;
+        currentDocument = null;
+        editorContainer.style.display = 'none';
+        emptyEditor.style.display = 'block';
+        loadDocumentList();
+      });
+    });
+    
+    document.getElementById('btn-new').addEventListener('click', createDocument);
+    document.getElementById('btn-save').addEventListener('click', saveDocument);
+    document.getElementById('btn-preview').addEventListener('click', updatePreview);
+    
+    contentEditor.addEventListener('input', () => {
+      isDirty = true;
+      saveStatus.textContent = 'Unsaved changes';
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault();
+        saveDocument();
+      }
+    });
+    
+    // Init
+    loadDocumentList();
+  </script>
+</body>
+
+</html>

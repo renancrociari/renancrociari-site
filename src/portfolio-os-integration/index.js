@@ -1,0 +1,36 @@
+/**
+ * Portfolio-OS Integration for renancrociari-site
+ * 
+ * Entry point da integração. Exporta todos os módulos necessários
+ * para consumo pelo site e pelo editor.
+ */
+
+// Config
+export { siteConfig, getReservedSlugs, isReservedSlug, getSiteConfig } from './config/site-config.js';
+
+// Content Schema
+export { 
+  PageSchema, 
+  WorkSchema, 
+  PageTemplates, 
+  SupportedBlocks,
+  validateMetadata,
+  applyDefaults,
+  generateSlug,
+} from './content-schema.js';
+
+// Adapters
+export { 
+  createFilesystemAdapter, 
+  createLocalAdapterBundle,
+  pagesAdapter, 
+  workAdapter,
+} from './adapters/filesystem-adapter.js';
+
+// Renderer
+export {
+  renderBlocks,
+  renderDocument,
+  renderCaseStudy,
+  renderAboutPage,
+} from './renderer/shared-renderer.js';
