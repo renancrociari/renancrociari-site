@@ -4,9 +4,14 @@
   "description": "",
   "scripts": {
     "dev": "parcel src/pages/*.html",
+    "dev:generated": "parcel src/pages-generated/*.html",
+    "dev:all": "parcel src/pages/*.html src/pages-generated/*.html",
     "dev:api": "node scripts/dev-server.js",
     "start": "parcel src/pages/*.html --cert ./localhost+3.pem --key ./localhost+3-key.pem",
-    "build": "parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
+    "build:content": "node scripts/content/build-content.js",
+    "build:content:check": "node scripts/content/build-content.js --check",
+    "build": "npm run build:content && parcel build src/pages/*.html src/pages-generated/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
+    "build:legacy": "parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
     "editor": "npm run dev:api"
   },
   "author": "",

@@ -3,17 +3,18 @@ title: "Connecting every discovery with a worthy home"
 slug: "journal-finder"
 type: "work"
 status: "protected"
-description: "I worked on a platform that helps researchers find the right academic journals for their research papers, increasing submission quality and publisher revenue."
+description: "At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work."
 tags:
   - Product Strategy
-  - UX Research
-  - Data Analysis
+  - User Research
+  - Information Architecture
+  - UI Design
   - Product Design
-  - B2B
+  - Usability Testing
 order: 3
 featured_image: "../images/case-journal-finder/journal-finder-featured-detail.webp"
-og_image: "../images/journal-finder-og-image.jpg"
-protected_password: "$2b$10$EXAMPLEHASHHERE"  # Hash BCrypt - needs actual password
+og_image: "../images/jf-case-og-image.jpg"
+protected_password: "$2b$10$EXAMPLEHASHHERE"
 created_at: "2024-02-01"
 updated_at: "2024-06-10"
 ---
@@ -22,144 +23,123 @@ updated_at: "2024-06-10"
 
 ## The company
 
-Journal Finder is a B2B platform that helps academic researchers find the most suitable journals for submitting their research papers. The platform integrates with major academic publishers to match manuscript content with journal scope and requirements.
+Springer Nature is one of the world's largest publishers of scientific articles and books, publishing around 500k articles and 13k books annually. With 3k+ journals, the company leverages platforms that help researchers uncover new ideas and share discoveries with the world.
 
 ## My role
 
-I led the product design for a complete redesign of the Journal Finder experience, focusing on improving match accuracy and submission flow.
+As the Senior Product Designer, I led the product's design strategy from discovery to delivery. I partnered with a cross-functional team to build a journal discovery platform, reducing turnaround times and improving acceptance rates.
 
 ## The problem
 
-Researchers often struggled to find the right journal for their research, leading to:
-
-- Rejections due to scope mismatch
-- Multiple rejection cycles
-- Time wasted on inappropriate submissions
-- Publisher frustration with low-quality submissions
+A fragmented ecosystem made it difficult for researchers to find the right journal for their work. This lack of a centralized way to browse the company's portfolio of journals led to scope mismatches, submission delays, and users churning to competitors.
 
 ## Impact
 
-- **52% improvement** in match accuracy
-- **34% reduction** in rejection rate
-- **28% increase** in successful submissions
+- **↑ 50.7% increase** in submission funnel completion rate
+- **↑ 35.7% new user acquisition rate** via organic search
+- **↑ 8.6% session-to-submission** conversion rate
 
 ---
 
-# About Journal Finder
+# The context: a fragmented legacy
 
-Journal Finder solves a critical problem in academic publishing: matching the right research with the right journal. With over 30,000 academic journals globally, finding the perfect match is challenging.
+Springer Nature was established through the merger of important academic publishers, including Nature, Springer, BioMedCentral, Apress, and Macmillan. While the merger created a massive library of information, it also inherited a fragmented digital ecosystem. Researchers were forced to navigate a disjointed experience—managing multiple accounts and different interfaces to access information across siloed websites.
 
-The platform uses AI to analyze:
+In response to these issues, Springer Nature established a strategy to build a single, brand-agnostic platform, transforming a collection of legacy websites into the reading platform of choice for hundreds of thousands of researchers worldwide.
 
-- Paper abstract and keywords
-- Previous publication history
-- Citation patterns
-- Journal scope and requirements
+![Springer Nature inherited a fragmented ecosystem of legacy websites featuring more than 3,000 journals from different brands.](../images/case-journal-finder/jf-case-legacy.webp)
 
 ---
 
-# Discovery
+# The problem: A high cost of discovery
 
-## User research
+A critical phase of the researcher's journey is identifying the most suitable journal for their research. This is a gateway decision: choosing the wrong journal can result in significant submission delays and higher risk of rejection.
 
-I interviewed 25 researchers across different disciplines:
+The lack of a centralized, searchable portfolio of the company's 3,000+ journals created a significant barrier. Without a unified way to browse the catalog, several critical issues emerged:
 
-- Medical sciences: 8
-- Engineering: 7
-- Social sciences: 5
-- Humanities: 5
-
-Key findings:
-
-- 80% reported frustration with finding the right journal
-- 65% had at least one manuscript rejected for scope mismatch
-- Most used journal websites directly (not aware of finders)
-
-## Publisher interviews
-
-I also spoke with 5 journal editors:
-
-- Quality of submissions was inconsistent
-- Desk rejections consumed significant time
-- Wanted authors to better understand journal scope
+- **Scope Mismatch:** A high volume of articles were rejected simply because they did not align with a specific journal's scope, leading to researchers' frustration.
+- **Delayed Submissions:** Submitting to the wrong journal often caused delays of several days in the submission process.
+- **Funding Risks:** For many authors, delays aren't just an inconvenience—they lead to a loss of funding, forcing researchers to pay publication fees out of pocket.
+- **User Churn:** When a journal rejects an article due to scope mismatch, researchers frequently "churn" out of the Springer Nature ecosystem and publish with a competitor.
+- **Increased Workload:** The internal editorial teams faced a massive backlog of "out-of-scope" submissions, creating a heavy operational burden.
+- **Brand Weakening:** The inability to see the full breadth of the portfolio prevented researchers from perceiving Springer Nature as a leader in academic publishing and as the first option when looking to publish their work.
 
 ---
 
-# Design challenges
+# My approach
 
-## Challenge 1: Complex metadata
+As the Senior Product Designer, I led the design strategy and execution from discovery to delivery. My responsibility was to ensure we designed a best-in-class product that helps researchers find the best home for their research. I focused on making the journal discovery easy and effective, helping to reduce turnaround times and improving acceptance rates.
 
-The original system asked for too much information upfront:
+I worked in a cross-functional team alongside a Product Manager, a Business Analyst, and a UX Researcher. Together, we analyzed customer behavior and identified how product friction was hurting the business. My role was to turn these insights into effective design solutions.
 
-- 15+ fields in initial search
-- Required author information before matching
-- Complex keyword selection
+As a Senior Product Designer, I took the following actions:
 
-## Challenge 2: Black box matching
+- **Synthesized data from multiple sources,** analyzing user feedback and product data to find the biggest pain points in the journey. This helped us understand where the most critical issues and opportunities were.
+- **Defined success metrics by collaborating closely with the Product team** to set project goals and establish clear ways to measure our success.
+- **Partnered with SEO and Marketing teams** to ensure the product served as an effective channel for attracting new users. I focused on making the journal portfolio highly visible on search engines like Google, helping to increase the number of researchers discovering Springer Nature.
+- **Conducted user research,** interviewing researchers to learn what factors—such as speed, prestige, topic, or publication fees—matter most when they are choosing a journal.
+- **Performed competitive benchmarking** by analyzing other publishing platforms to identify industry trends, helping me understand how competitors approached similar discovery problems and ensuring our solution was modern and effective.
+- **Led iterative usability testing,** running tests to refine user flows and ensuring that every part of the experience felt consistent and worked seamlessly together.
+- **Designed a scalable information architecture** to organize over 3,000 journals, creating a navigation and filtering system that allowed researchers to browse by attributes that supported their decision-making.
+- **Advocated for accessibility,** ensuring all designs adhered to Springer's commitment to WCAG AA standards so that web content remained accessible to people with diverse disabilities.
+- **Worked closely with engineers** during the implementation phase, providing detailed documentation and collaborating with the dev team to ensure the final product met our high-quality standards.
 
-Users didn't understand how matches were generated:
+![Throughout this process, my team and I conducted extensive research and data analysis, interviewed researchers from across the globe, and tested multiple prototypes to develop a robust design solution.](../images/case-journal-finder/jf-case-research.webp)
 
-- No transparency in ranking
-- No explanation of scores
-- No way to refine understanding
+![Example of an interview with a researcher](../images/case-journal-finder/jf-case-interview.webp)
 
-## Challenge 3: Submission disconnect
+![Renan prototyping on paper](../images/case-journal-finder/jf-case-prototyping.webp)
 
-Finding journals was separate from submitting:
-
-- Had to navigate away to submit
-- Lost context of research
-- No connection between systems
-
----
-
-# Solution
-
-## Simplified discovery flow
-
-1. **Title + Abstract first**: Core content before details
-2. **Smart suggestions**: Based on content similarity
-3. **Transparent scoring**: Explain why matches were made
-
-![Legacy home page with complex search](../images/case-journal-finder/jf-case-legacy.webp)
-
-![New streamlined home page](../images/case-journal-finder/journal-finder-home.webp)
+![Image of the Figma prototype used to test with users](../images/case-journal-finder/jf-case-prototype.webp)
 
 ---
 
-## Matching explanation
+# The solution
 
-I designed a match rationale feature:
+Our primary goal was to design a centralized and intuitive journal discovery experience. We aimed to empower researchers to navigate Springer Nature's extensive portfolio of over 3,000 journals with confidence, ensuring they could efficiently find the perfect home for their research.
 
-- "This journal published similar research in the last 2 years"
-- "Your keywords align with this journal's focus areas"
-- "Impact factor is within your target range"
+Beyond improving the core discovery experience, we partnered with the SEO team to identify an opportunity to index approximately 3,500 targeted landing pages — each tailored to specific subject areas and structured to rank highly on Google, creating a scalable new channel for organic user acquisition.
 
-This increased trust in the system.
+To ensure the platform's success, the final design was built upon the following core principles:
+
+- **A Unified Ecosystem:** Replacing a disjointed network of legacy websites with a single, brand-agnostic destination for all Springer Nature journal discovery.
+- **Smart Taxonomy & Filtering:** Allowing users to easily filter 3,000+ journals based on attributes that matter most, such as scope, impact factor, acceptance rates, turnaround times, and publishing model.
+- **SEO-Driven Architecture:** Identifying an opportunity to index approximately 3,500 targeted landing pages, structured to capture long-tail organic search traffic and attract researchers at the moment of journal discovery.
+- **Clear Conversion Paths:** Providing researchers with direct, frictionless routes from discovering a journal to initiating the submission process.
+- **Intelligent Search:** Extensively testing and refining the search engine to ensure it consistently surfaces the most relevant results for researchers across different scientific subjects.
+- **Accessible by Design:** Ensuring the entire platform adheres to WCAG 2.1/2.2 Level AA accessibility standards, making it accessible to everyone.
+
+![Journal Finder home page on desktop](../images/case-journal-finder/jf-case-home-desktop.webp)
+
+![Image featured journals in Life Sciences and Physical Sciences](../images/case-journal-finder/jf-case-home-desktop-2.webp)
+
+![Image of the journal finder home page on mobile](../images/case-journal-finder/jf-case-home-mobile.webp)
+
+![Image of the journal finder listing page on desktop](../images/case-journal-finder/jf-case-listing-desktop.webp)
+
+![Image of the journal finder listing page on mobile](../images/case-journal-finder/jf-case-listing-mobile.webp)
 
 ---
 
 # Impact
 
-## Metrics after redesign
+The solution proved highly effective in helping researchers confidently choose the right journal for their work, with engagement and conversion metrics validating the product's impact at launch.
 
-- **52% improvement** in match accuracy (measured by acceptance post-acceptance rate)
-- **34% reduction** in rejection due to scope issues
-- **28% increase** in successful first submissions
-- User satisfaction improved from 2.8 to 4.0
-
-## Publisher feedback
-
-Journal editors reported:
-
-- Higher quality initial submissions
-- Less desk rejection work
-- More satisfied with the matching
+Beyond the core discovery experience, early data also signalled strong organic acquisition potential — with over 1 million sessions per month and 35.7% of organic visitors being first-time users.
 
 ---
 
-# Key learnings
+## Metrics
 
-- **Simplicity drives adoption**: The simpler the entry point, the more users engage
-- **Transparent AI builds trust**: Users need to understand how decisions are made
-- **Integration matters**: Connected workflows reduce drop-off
+- **8.6%** Session-to-submission conversion rate
+- **25%** Search results engagement rate (sessions with at least one journal click)
+- **↑ 50.7%** increase in submission funnel completion rate
+- **35.7%** _New user_ acquisition rate via organic search
+
+---
+
+## Footnotes
+
+1. The share of website sessions that led to a researcher initiating a manuscript submission — the platform's primary conversion event, equivalent to a purchase in e-commerce.
+2. The increase in the share of users who started and successfully completed the end-to-end submission flow — from opening the submission system to clicking "Submit manuscript."
+3. The share of organic search visitors who had never previously accessed the platform, indicating the website's effectiveness as a new user acquisition channel.

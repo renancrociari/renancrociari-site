@@ -34,15 +34,74 @@
     }
     
     .editor-preview {
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
       background: var(--background-body);
       border-left: 1px solid var(--background-gray-lighter);
+      overflow: hidden;
     }
-    
+
+    .preview-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--background-gray-medium);
+      border-bottom: 1px solid var(--background-gray-lighter);
+    }
+
+    .preview-label {
+      font-family: var(--font-display);
+      font-size: var(--font-xs);
+      color: var(--typography-gray-300);
+    }
+
+    .viewport-controls {
+      display: flex;
+      gap: var(--spacing-xs);
+    }
+
+    .viewport-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: 1px solid var(--background-gray-lighter);
+      border-radius: var(--br-xxxs);
+      color: var(--typography-gray-300);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .viewport-btn:hover {
+      background: var(--background-gray-lighter);
+      color: var(--typography-gray-200);
+    }
+
+    .viewport-btn.active {
+      background: var(--typography-green-dark);
+      border-color: var(--typography-green-light);
+      color: var(--typography-green-light);
+    }
+
+    .preview-frame-container {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      background: var(--background-gray-medium);
+      padding: var(--spacing-md);
+    }
+
     .editor-preview iframe {
       width: 100%;
       height: 100%;
       border: none;
+      background: var(--background-body);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: width 0.3s ease;
     }
     
     .doc-list {
@@ -262,7 +321,35 @@ Use Markdown syntax for formatting.
     
     <!-- Preview -->
     <aside class="editor-preview">
-      <iframe id="preview-frame" src="about.html"></iframe>
+      <div class="preview-toolbar">
+        <span class="preview-label">Preview</span>
+        <div class="viewport-controls">
+          <button class="viewport-btn active" data-width="100%" data-height="100%" title="Full">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+            </svg>
+          </button>
+          <button class="viewport-btn" data-width="375px" data-height="100%" title="Mobile">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="6" y="3" width="12" height="18" rx="2"/>
+            </svg>
+          </button>
+          <button class="viewport-btn" data-width="768px" data-height="100%" title="Tablet">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="3" width="16" height="18" rx="2"/>
+            </svg>
+          </button>
+          <button class="viewport-btn" data-width="1024px" data-height="100%" title="Desktop">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="14" rx="2"/>
+              <path d="M8 18h8M12 18v3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="preview-frame-container">
+        <iframe id="preview-frame" src="about.html" sandbox="allow-same-origin allow-scripts"></iframe>
+      </div>
     </aside>
   </div>
 
@@ -367,61 +454,190 @@ Use Markdown syntax for formatting.
       }
     }
     
-    // Update preview
-    function updatePreview() {
+    // Mapeamento de documentos para bodyClass do site real
+    const BODY_CLASS_MAP = {
+      // Pages
+      'pages/home': 'home',
+      'pages/about': 'about',
+      // Work - mapeado por slug
+      'work/farfetch-performance': 'farfetch',
+      'work/dating-platform': 'sl-mobile',
+      'work/journal-finder': 'journal-finder',
+    };
+
+    function getBodyClass(collection, slug) {
+      const key = `${collection}/${slug}`;
+      return BODY_CLASS_MAP[key] || (collection === 'pages' ? 'default-page' : 'case-study');
+    }
+
+    // Carrega componente HTML via fetch
+    async function loadComponent(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) return '';
+        return await response.text();
+      } catch (err) {
+        console.warn(`Failed to load component: ${url}`, err);
+        return '';
+      }
+    }
+
+    // Update preview - Preview fiel ao site real
+    async function updatePreview() {
       if (!currentDocument) return;
-      
-      // Simple preview: renderiza em um documento inline
+
+      const slug = document.getElementById('meta-slug').value || currentDocument.slug || '';
+      const bodyClass = getBodyClass(currentCollection, slug);
+
+      // Renderiza conteúdo usando o mesmo renderer do site
       const metadata = {
         title: document.getElementById('meta-title').value,
+        summary: document.getElementById('meta-summary').value,
       };
       const content = contentEditor.value;
-      
+
       const doc = {
         metadata,
         content,
         collection: currentCollection,
       };
-      
-      const html = renderDocument(doc, { isPreview: true });
-      
-      // Atualiza iframe com preview estilizado
+
+      const renderedContent = renderDocument(doc, { isPreview: true, baseUrl: '../' });
+
+      // Carrega componentes do site real (mesmos usados nas páginas reais)
+      const [navbar, footer, emailDialog, passwordDialog] = await Promise.all([
+        loadComponent('../components/navbar.html'),
+        loadComponent('../components/footer.html'),
+        loadComponent('../components/email-dialog.html'),
+        loadComponent('../components/password-dialog.html'),
+      ]);
+
+      // Monta HTML completo idêntico ao site real
+      const fullHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <title>${escapeHtml(metadata.title || 'Preview')} · Preview</title>
+  <!-- Mesmo CSS do site real -->
+  <link rel="stylesheet" href="../styles/global.css" />
+  <link rel="stylesheet" href="../styles/reset.css" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  <!-- Fonts -->
+  <link rel="preload" href="../fonts/degular.woff2" as="font" type="font/woff2" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&text=renancrociari" rel="stylesheet">
+  <!-- Preview badge style -->
+  <style>
+    .preview-badge {
+      position: fixed;
+      top: var(--spacing-sm);
+      right: var(--spacing-sm);
+      background: var(--typography-green-light);
+      color: var(--background-body);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--br-xxxs);
+      font-family: var(--font-display);
+      font-size: var(--font-2xs);
+      z-index: 10000;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="${bodyClass}">
+  <!-- Badge de preview -->
+  <div class="preview-badge">PREVIEW MODE</div>
+
+  <!-- Componentes do site real -->
+  ${emailDialog}
+  ${navbar}
+
+  <!-- Conteúdo renderizado -->
+  ${currentCollection === 'work' ? `
+  <!-- Case Study Layout -->
+  <header class="content-header mt-5xl">
+    <div class="wrapper">
+      <div class="content-hero">
+        <h1 class="t-gray-200">${escapeHtml(metadata.title || '')}</h1>
+        ${metadata.summary ? `<p class="hero-subtitle">${escapeHtml(metadata.summary)}</p>` : ''}
+      </div>
+    </div>
+  </header>
+  <div class="article-content">
+    ${renderedContent}
+  </div>
+  ` : `
+  <!-- Page Layout -->
+  <header class="content-header mt-5xl">
+    <div class="wrapper">
+      <div class="content-hero">
+        <h1 class="t-gray-200">${escapeHtml(metadata.title || '')}</h1>
+      </div>
+    </div>
+  </header>
+  <div class="article-content">
+    <div class="text-block">
+      ${renderedContent}
+    </div>
+  </div>
+  `}
+
+  ${passwordDialog}
+  ${footer}
+
+  <!-- Script mínimo para interatividade básica -->
+  <script type="module">
+    // Email dialog functionality
+    const emailDialog = document.querySelector('.dialog-show-email');
+    const showEmailBtns = document.querySelectorAll('.btn-show-email');
+    const closeEmailBtn = document.querySelector('.btn-close-email');
+    const copyEmailBtn = document.querySelector('.btn-copy-email');
+
+    showEmailBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (emailDialog) emailDialog.showModal();
+      });
+    });
+
+    if (closeEmailBtn && emailDialog) {
+      closeEmailBtn.addEventListener('click', () => {
+        emailDialog.close();
+      });
+    }
+
+    if (copyEmailBtn) {
+      copyEmailBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('me@renancrociari.com');
+          copyEmailBtn.textContent = 'Copied!';
+          setTimeout(() => copyEmailBtn.textContent = 'Copy', 2000);
+        } catch (err) {
+          copyEmailBtn.textContent = 'Error';
+        }
+      });
+    }
+
+    // Navbar mobile toggle
+    const navToggle = document.querySelector('.mobile-nav-toggle');
+    const mainNav = document.querySelector('.main-nav-list');
+
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', () => {
+        const isVisible = mainNav.getAttribute('data-visible') === 'true';
+        mainNav.setAttribute('data-visible', !isVisible);
+        navToggle.setAttribute('aria-expanded', !isVisible);
+      });
+    }
+  <\/script>
+</body>
+</html>`;
+
+      // Atualiza iframe com preview fiel
       const previewDoc = previewFrame.contentDocument;
       previewDoc.open();
-      previewDoc.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <link rel="stylesheet" href="../styles/global.css" />
-          <link rel="stylesheet" href="../styles/reset.css" />
-          <link rel="stylesheet" href="../styles/main.css" />
-          <style>
-            body { padding: var(--spacing-lg); }
-            .preview-badge {
-              position: fixed;
-              top: var(--spacing-sm);
-              right: var(--spacing-sm);
-              background: var(--typography-green-light);
-              color: var(--background-body);
-              padding: var(--spacing-xs) var(--spacing-sm);
-              border-radius: var(--br-xxxs);
-              font-family: var(--font-display);
-              font-size: var(--font-2xs);
-              z-index: 1000;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="preview-badge">PREVIEW</div>
-          <div class="article-content wrapper">
-            ${html}
-          </div>
-        </body>
-        </html>
-      `);
+      previewDoc.write(fullHtml);
       previewDoc.close();
     }
-    
+
     // Create new document
     async function createDocument() {
       const title = prompt('Enter document title:');
@@ -468,7 +684,25 @@ Use Markdown syntax for formatting.
       isDirty = true;
       saveStatus.textContent = 'Unsaved changes';
     });
-    
+
+    // Viewport controls para responsividade
+    document.querySelectorAll('.viewport-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.viewport-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const width = btn.dataset.width;
+        const height = btn.dataset.height;
+
+        previewFrame.style.width = width;
+        if (height !== '100%') {
+          previewFrame.style.height = height;
+        } else {
+          previewFrame.style.height = '100%';
+        }
+      });
+    });
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 's') {

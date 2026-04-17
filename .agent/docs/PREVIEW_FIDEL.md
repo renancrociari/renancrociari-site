@@ -186,9 +186,12 @@ Critérios de equivalência:
 
 ## Critérios de Aceite
 
-- [ ] Preview visualmente idêntico ao site publicado
-- [ ] Preview usa mesmo shell do site real
-- [ ] Alterações no editor aparecem no preview sem diferença estrutural
+- [x] Preview visualmente idêntico ao site publicado
+- [x] Preview usa mesmo shell do site real (navbar, footer, email-dialog, password-dialog)
+- [x] Alterações no editor aparecem no preview sem diferença estrutural
+- [x] Responsividade testável via controles de viewport (mobile, tablet, desktop)
+- [x] Mesmo CSS e fontes do site real carregados no preview
+- [x] Body class correta aplicada baseada no tipo de documento
 
 ---
 
