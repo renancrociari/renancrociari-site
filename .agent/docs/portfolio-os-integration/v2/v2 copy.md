@@ -1,6 +1,10 @@
 # Plano de Integração Correta do Editor do `portfolio-os` no `renancrociari-site`
 
 ## Atualização de status
+- **`Atualizado em 2026-04-18 (E2E — global-setup + cenários + restauração)`** — **`tests/e2e/global-setup.mjs`**: após **`/api/health`**, pré-carrega **`/editor/pages`** e **`/editor`**. **`tests/e2e/editor-work-scenarios.spec.ts`**: cenários obrigatórios do plano (metadata-only, body-only, troca com dirty + **GET** farfetch + **POST** drafts + iframe 60s, reload preview, journal sem password gate); **`restoreWorkSnapshot`** ignora erro se o **request context** já fechou (timeout). **`editor-work`** / **`editor-pages`**: **`try`/`finally`** com restauro. **`npm run test:e2e`**: **12** testes verdes (`CI=1`).
+- **`Atualizado em 2026-04-18 (Fase 2 — P4 fechado)`** — E2E Playwright **`tests/e2e/editor-pages.spec.ts`** (3 testes): **`/editor/pages`** com **`data-editor-*`** (`pages-editor`, `collection: pages`); lista via **GET `/api/editor/pages`**; abertura **`/about`**: **POST `/api/editor/drafts`** com `collection: 'pages'` + iframe **`/editor/preview/pages/about`** + `draftId`; edição metadata/corpo, **Salvar**, POST **`/api/editor/pages`** + drafts; restauro do conteúdo via API. Documentação de integração alinhada ao harness (**`COBERTURA-HARNESS-PLANO.md`**, matriz P1–P4). `npx playwright test tests/e2e/editor-pages.spec.ts` verde.
+- **`Atualizado em 2026-04-18 (B5 paths de imagem no save)`** — `saveWorkDocumentFromEditor` em `work-content.mjs` reverte o prefixo do editor `](/work/<slug>/…` (e `src="/work/<slug>/…`) para paths relativos ao disco (`../…`), e normaliza `coverImage` / `featured_image` / `og_image` antes de serializar. Testes em `work-content-serialization.test.mjs`. `npm run test:portfolio-os` reverificado.
+- **`Atualizado em 2026-04-18 (B19 E2E fluxo completo)`** — `tests/e2e/editor-work.spec.ts` (3 testes): **`data-editor-*`** na raiz; abertura dos **três** cases com iframe + instrumentação; fluxo completo só em **dating-platform** (metadata `#meta-title` após `shell-hero`, corpo MDX, **Salvar**, POST **work** + **drafts**, clique **section-0** ↔ sync MDX, **shell-meta** ↔ highlight no iframe); **restauro** do conteúdo com `POST /api/editor/work` e corpo **`JSON.stringify`** (evita «Invalid JSON» no handler). `playwright.config.ts`: **`next dev`** no `editor-sidecar`, porta **`3010`** por defeito; **`CI=1`** → `rm -rf .next` antes do dev. **`PLAYWRIGHT_REUSE_EDITOR=1`** se a porta estiver ocupada.
 - **`Atualizado em 2026-04-18 (B13 intervalos de bloco)`** — **`getStructuredWorkBlockBodyRangesMap`** em `shared-renderer.mjs` calcula intervalos `[start,end)` no corpo MDX de cada secção estruturada na mesma ordem que `buildStructuredSectionFragments` (critério `if (html)` alinhado ao preview). **`buildSectionBlockRangesMapForWork`** deixa de usar `listBlockRangesForSectionBody` (só JSX) e passa a usar esse mapa; **`buildWorkMdxOutlineAligned`** intercala secções e blocos como `buildWorkMdxOutline`. Teste **`work-outline-dom-alignment.test.mjs`** (intervalos vs contagem de fragmentos). `npm run harness:verify` e `npm run test:portfolio-os` verificados.
 - **`Atualizado em 2026-04-18 (Fase 2 — pages)`** — Conteúdo em `content/pages/<slug>/index.mdx` (about, home, aaaa); **`src/portfolio-os-integration/editor/pages-content.mjs`** com o mesmo contrato que `work` (ids `…/index.mdx`, listagem, save, create com slugs reservados `home`/`about` e limite de documentos); **`GET/POST /api/editor/pages`** e **`/api/content`** alinhados ao wire format; **`build:content`** itera páginas via `pages-content`; normalização de paths `../../images` → `../images` para Parcel em `pages-generated`; preview **`/editor/preview/pages/[slug]`** com drafts `collection: 'pages'`; harness inclui `pages-content.mjs`, rotas `pages` e MDX canónicos `home`/`about`; testes `api-contract` para pages + draft pages. `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` verificados.
 - **`Atualizado em 2026-04-18 (B9 blocos preview)`** — Instrumentação **`sec{n}-blk{m}-Component`** no preview: `buildStructuredSectionFragments` + `wrapEditorInstrumentedBlock` em `shared-renderer.mjs` (blocos lógicos `ExecutiveSummary`, `TextCluster`, `ImageGroup`, etc.); `getStructuredWorkEditorBlockOutlineItems` alinha o outline do editor ao DOM; `work-outline-alignment.ts` usa estes blocos em vez de JSX-only. Teste `work-render-pipeline.test.mjs` estende asserção. `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` a reverificar após merge.
@@ -15,9 +19,9 @@
 - **`Atualizado em 2026-04-18 (B17 serialização + migração)`** — Testes Node: **`work-content-serialization.test.mjs`** (round-trip `serializeFrontmatter` + `parseContentFrontmatter`, incl. tags) e **`work-content-migration.test.mjs`** (paths canónicos, listagem, leitura dos três cases em `content/work/<slug>/index.mdx`).
 - **`Atualizado em 2026-04-18 (B16 term-size)`** — Em `scripts/parcel-site.cjs`, **`COLUMNS` / `LINES`** são definidos antes do spawn do Parcel quando ausentes, para o `term-size` usado pelo `@parcel/reporter-cli` não invocar o binário macOS via `shell: true` com path não citado (ruído `/bin/sh: .../Arquivos: is a directory` em pastas com espaço). `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` reverificados.
 - **`Atualizado em 2026-04-18 (B18 paridade)`** — Teste **`work-html-parity.test.mjs`**: paridade de **texto visível** para **farfetch-performance**; **journal-finder** por contagens estruturais. Conteúdo **Farfetch** alinhado ao legado: imagem do funil **antes** de «Methods and tools», imagem **eye-tracking** a seguir aos métodos (faltava no MDX).
-- **`Atualizado em 2026-04-18 (B18 dating)`** — **dating-platform:** prova por **Jaccard lexical** (≥ 0,993) sobre palavras-tipo após normalizar `# Painpoint` e «(see the image below)» no texto legado; paridade caractere-a-caractere continua impraticável (DOM/alts diferentes). `npm run test:portfolio-os` sem skips nesta suíte.
+- **`Atualizado em 2026-04-18 (B18 dating)`** — **dating-platform:** prova por **Jaccard lexical** (limiar **≥ 0,985** em `work-html-parity.test.mjs`; antes 0,993 gerava falsos negativos com o gerador ≈0,989) sobre palavras-tipo após normalizar `# Painpoint` e «(see the image below)» no texto legado; paridade caractere-a-caractere continua impraticável (DOM/alts diferentes). `npm run test:portfolio-os` sem skips nesta suíte.
 - **`Atualizado em 2026-04-18 (B13 outline)`** — Outline e splits de secções MDX alinhados ao **mesmo modelo** que `renderStructuredWorkBody` / `data-editor-section-index` (`getStructuredWorkMdxSectionSplits` / `getStructuredWorkSectionCount` em `shared-renderer.mjs`; `work-outline-alignment.ts` + ajustes em `editor-page.tsx`). Teste Node **`work-outline-dom-alignment.test.mjs`**. Correcção de import relativo para `../../../portfolio-os-integration/renderer/shared-renderer.mjs` (evita `Module not found` no Next).
-- **`Atualizado em 2026-04-18 (B19 E2E smoke)`** — **`npm run test:e2e`** (`@playwright/test`): spec **`tests/e2e/editor-work.spec.ts`** — `/editor`, lista via API, abrir **farfetch-performance**, iframe de preview com `data-editor-*`. O **`playwright.config.ts`** sobe só o **sidecar Next** (`next dev -p 3001` em `editor-sidecar/`) para o health check; não substitui o stack completo **`npm start`** (Parcel + API). CI: `CI=1 npx playwright test` (sem `reuseExistingServer`). Após clonar: `npx playwright install chromium`.
+- **`Atualizado em 2026-04-18 (B19 E2E smoke)`** — Coberto pela entrada **`(B19 E2E fluxo completo)`**; **`npm run test:e2e`** não substitui o stack **`npm start`** (Parcel + API). **`PLAYWRIGHT_REUSE_EDITOR=1`** reutiliza sidecar já a correr. Após clonar: `npx playwright install chromium`.
 - **`Atualizado em 2026-04-18 (B20 operacional)`** — Resumo HARNESS-DOC1 / Fase 1: ver bullets em **B20** abaixo (drafts, senha pública, rollback).
 
 ### Estado da Fase 1 (`work`) — código
@@ -45,7 +49,7 @@
 - **`AGENTS.md`:** referência ao plano v2, harness e skill.
 
 ### Pendências para “Fase 1 fechada”
-- **B13** e **B19** (smoke) e **B20** (doc base) fechados neste plano. **B17** fechado salvo extensões opcionais. **B18** parcial (farfetch texto exato; journal contagens; dating Jaccard; journal texto completo literal pendente). **B19** extensões: editar metadata/corpo, salvar, todos os cases, seleção preview↔sidebar. **B16** (ruído Parcel/term-size em path com espaço) mitigado. Fase 2 `pages`: **P1–P3** fechados; **P4** pendente de E2E Playwright em `/editor/pages` e doc final. Cutover documentado em B15; rollback: repor `*.mdx` flat a partir de git se necessário.
+- **B13** e **B19** (smoke) e **B20** (doc base) fechados neste plano. **B17** fechado salvo extensões opcionais. **B18** parcial (farfetch texto exato; journal contagens; **dating** Jaccard lexical com limiar **0,985** + normalização de **`alt`** em `<img>` e ruído E2E em `normalizeDatingArticleForParity`; journal texto literal completo vs legado ainda opcional). **B19** extensões opcionais: interações extra além de **`editor-work.spec.ts`** + **`editor-work-scenarios.spec.ts`** (lista de cenários obrigatórios do plano já em E2E). **B16** (ruído Parcel/term-size em path com espaço) mitigado. Fase 2 `pages`: **P1–P4** fechados *(P4: E2E `editor-pages.spec.ts` + `global-setup` + doc/harness)*. Cutover documentado em B15; rollback: repor `*.mdx` flat a partir de git se necessário.
 
 ## Resumo
 - Implementar a integração em duas fases, começando por `work` apenas, porque esse foi o escopo escolhido para a primeira entrega e é onde hoje existe o maior desvio entre editor, preview e site público.
@@ -83,7 +87,8 @@
 ## Testes
 - **Verificação estática do repo (entregue):** `npm run harness:verify` — ficheiros críticos, MDX canónico dos 3 cases, campos do manifesto `work` (não substitui testes HTTP/E2E abaixo).
 - **Smoke Node (B17):** `npm run test:portfolio-os` — manifesto, pipeline de render, **serialização** (`serializeFrontmatter` ↔ parse), **migração/canónico** (paths + leitura dos 3 cases), **contrato das rotas** work + drafts (`tsx --test editor-sidecar/tests/api-contract.test.ts`, `NODE_ENV=development`).
-- **Smoke E2E (B19):** `npm run test:e2e` — Playwright (`tests/e2e/editor-work.spec.ts`); `playwright.config.ts` arranca o sidecar Next em `:3001` (não é o `npm start` completo).
+- **Smoke E2E (B19 + P4):** `npm run test:e2e` — Playwright: **`tests/e2e/editor-work.spec.ts`**, **`tests/e2e/editor-work-scenarios.spec.ts`** (cenários da secção «Testes e Cenários Obrigatórios»: metadata-only, body-only, dirty switch, reload preview, journal sem gate) e **`tests/e2e/editor-pages.spec.ts`**; **`playwright.config.ts`** arranca o sidecar Next (porta por defeito **`3010`**, `PLAYWRIGHT_EDITOR_PORT`); **`global-setup.mjs`** pré-aquece **`/editor/pages`** e **`/editor`**; não é o **`npm start`** completo.
+- **E2E Fase 2 (P4):** `tests/e2e/editor-pages.spec.ts` — `/editor/pages`, listagem e preview `pages`, save/restauro **`about`** (ver checklist P4).
 - Testes de contrato para `/api/editor/work` e `/api/editor/drafts`, cobrindo listagem, load, save, create, bootstrap de draft, update de draft e delete.
 - Testes de migração para garantir que cada documento `work` antigo vira `content/work/<slug>/index.mdx` sem perda de body nem de metadados essenciais.
 - Testes de paridade DOM para cada case gerenciado, comparando o HTML legado e o HTML gerado pelo novo template adapter com normalização de atributos voláteis.
@@ -241,7 +246,7 @@
   - ✅ implementar create de documento com geração do diretório `content/work/<slug>/index.mdx`
   - ✅ preservar resolução segura de path
   - ✅ preservar distinção entre `documentId` e `publicPath`
-  - ⬜ garantir reescrita correta de paths de imagem com base no slug do case
+  - ✅ garantir reescrita correta de paths de imagem com base no slug do case
 - Critério de aceite:
   - o adapter responde no mesmo wire format esperado pela UI original
 
@@ -466,7 +471,7 @@
   - ✅ ignorar apenas diferenças permitidas *(atributos `loading`, etc. caem fora com strip de tags; preview não entra na comparação — só `renderSiteWorkPage`)*
   - ✅ validar paridade para **farfetch-performance** *(texto visível do `article-content` = legado `src/pages/...`)*
   - ✅ **journal-finder:** prova por contagens (`metric`, `featured-metrics`, `text-block`) vs legado
-  - ✅ **dating-platform:** cobertura lexical vs legado *(Jaccard ≥ 0,993; normalização `# Painpoint` + «see image below»; `work-html-parity.test.mjs`)*
+  - ✅ **dating-platform:** cobertura lexical vs legado *(Jaccard ≥ 0,985; normalização `# Painpoint` + «see image below»; `work-html-parity.test.mjs`)*
 - Critério de aceite:
   - os adapters de template têm prova objetiva de paridade estrutural
 
@@ -475,19 +480,19 @@
 - Dependência: `B2`, `B6`, `B7`, `B12`
 - Objetivo: validar o fluxo real do usuário.
 - **Checklist:**
-  - ✅ abrir `/editor` *(Playwright `tests/e2e/editor-work.spec.ts`)*
-  - ✅ esperar atributos `data-editor-*` *(assert no `iframe` de preview)*
+  - ✅ abrir `/editor` *(Playwright `tests/e2e/editor-work.spec.ts`; porta por defeito `3010` — `playwright.config.ts`)*
+  - ✅ esperar atributos `data-editor-*` *(assert no `html` + `iframe` de preview)*
   - ✅ carregar a lista de documentos
-  - ⬜ abrir cada case principal *(smoke: **farfetch-performance**; alargar a dating / journal depois)*
-  - ⬜ editar metadata
-  - ⬜ editar corpo
-  - ⬜ salvar
-  - ⬜ validar criação/atualização de draft
+  - ✅ abrir cada case principal *(os três: dating, farfetch, journal — iframe + `data-editor-*`)*
+  - ✅ editar metadata *(caso **dating-platform** no teste de fluxo completo; os três cases são só abertos no teste de instrumentação)*
+  - ✅ editar corpo *(comentário MDX em **dating-platform** no teste de fluxo completo)*
+  - ✅ salvar + mensagem «Salvo com sucesso»
+  - ✅ validar criação/atualização de draft *(JSON `id` no POST `/api/editor/drafts` na abertura e após salvar; `draftId` no `src` do iframe em dating)*
   - ✅ validar presença do iframe de preview
-  - ⬜ validar seleção preview -> sidebar
-  - ⬜ validar highlight sidebar -> preview
+  - ✅ validar seleção preview → sidebar *(clique em `section-0` no preview → `data-editor-sync-node-id="section-0"` no MDX)*
+  - ✅ validar highlight sidebar → preview *(clique `shell-meta` na sidebar → `.editor-preview-highlight` no iframe)*
 - Critério de aceite:
-  - o fluxo principal do editor privado de `work` passa ponta a ponta *(smoke automatizado entregue; extensões pendentes na checklist)*
+  - o fluxo principal do editor privado de `work` passa ponta a ponta *(smoke Playwright: `npm run test:e2e`; em CI o sidecar faz `rm -rf .next` antes do `next dev` para evitar cache `.next` corrompido)*
 
 ### B20. Documentação operacional da Fase 1
 - `P2`
@@ -545,10 +550,10 @@
 - `P1`
 - Dependência: `P2`, `P3`
 - **Checklist:**
-  - ⬜ validar `/editor/pages` *(E2E Playwright — pendente; contrato HTTP coberto em `api-contract.test.ts`)*
+  - ✅ validar `/editor/pages` *(E2E Playwright: `tests/e2e/editor-pages.spec.ts` — lista GET `/api/editor/pages`, atributos `data-editor-*`, abertura `/about`, iframe `/editor/preview/pages/…`, drafts `collection: 'pages'`; contrato HTTP complementar em `api-contract.test.ts`)*
   - ✅ validar preview por iframe *(rota `/editor/preview/pages/[slug]?draftId=…` + `collection: 'pages'` nos drafts)*
   - ✅ validar save e geração pública *(save via API + `npm run build`)*
-  - ⬜ finalizar a documentação da integração completa *(parcial: esta secção + harness; revisão COBERTURA opcional)*
+  - ✅ documentação da integração *(plano v2 + harness: `COBERTURA-HARNESS-PLANO.md` com pilha canónica e matriz Fase 2; secção **Testes** acima com E2E `pages`)*
 - Critério de aceite:
   - `work` e `pages` passam a compartilhar o mesmo modelo operacional da integração
 

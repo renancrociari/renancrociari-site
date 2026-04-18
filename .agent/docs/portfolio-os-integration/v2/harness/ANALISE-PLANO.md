@@ -34,4 +34,4 @@ Nenhum harness substitui revisão humana de **paridade estética fina**; o plano
 
 1. [`EXECUCAO.md`](./EXECUCAO.md) — ordem de execução.
 2. `npm run harness:verify` — baseline estático.
-3. Preencher testes em aberto na matriz (coluna **T** / **E**) até todos os itens P0 da Fase 1 estarem cobertos.
+3. Preencher testes em aberto na matriz (coluna **T** / **E**) até todos os itens **P0 e P1** da Fase 1 estarem cobertos (incluindo B13, B17, B18, B19 — ver legenda de prioridades em `v2 copy.md`).

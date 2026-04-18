@@ -4,7 +4,7 @@ Este diretório é o **harness operacional** para implementar e validar a integr
 
 ## Objetivo
 
-Garantir que nenhuma entrega da Fase 1 (`work`) seja considerada “fechada” sem:
+Garantir que nenhuma entrega da Fase 1 (`work`) seja considerada “fechada” sem cumprir os itens **P0 e P1** do backlog nessa fase (no plano-fonte: B13, B17, B18, B19 são **P1**; B20 é **P2**), e sem:
 
 1. **Rastreabilidade** — cada item do backlog mapeia para evidência (código, teste ou checklist manual).
 2. **Contratos** — wire format de APIs, frontmatter e manifesto alinhados ao editor original.
@@ -27,7 +27,7 @@ Sem isto, a entrega está **incompleta** do ponto de vista do harness (critério
 | Artefato | Função |
 |----------|--------|
 | [`ANALISE-PLANO.md`](./ANALISE-PLANO.md) | Leitura crítica do plano v2 e relação com o harness. |
-| [`COBERTURA-HARNESS-PLANO.md`](./COBERTURA-HARNESS-PLANO.md) | O harness cobre 100% do plano? (matriz honesta). |
+| [`COBERTURA-HARNESS-PLANO.md`](./COBERTURA-HARNESS-PLANO.md) | Definição de cobertura 100% (rastreabilidade + pilha canónica); mapa plano v2 → provas. |
 | [`EXECUCAO.md`](./EXECUCAO.md) | Ordem recomendada de verificação (estático → build → runtime → E2E). |
 | [`MATRIZ-VERIFICACAO.md`](./MATRIZ-VERIFICACAO.md) | Backlog B0–B20 + Fase 2: método de prova por item. |
 | [`CRITERIOS-ACEITE-CANONICOS.md`](./CRITERIOS-ACEITE-CANONICOS.md) | IDs estáveis (`HARNESS-*`) para PRs e commits. |

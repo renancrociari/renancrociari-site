@@ -3,9 +3,9 @@ name: portfolio-os-v2-integration
 description: >-
   Implementa e valida a integração Portfolio-OS no renancrociari-site conforme o plano v2
   (.agent/docs/portfolio-os-integration/v2), sidecar Next, contratos de work, templates fiéis,
-  build Parcel e testes obrigatórios. Usar quando o utilizador trabalha nesta integração,
-  no editor-sidecar, em content/work, routing-manifest, build-content, ou pede continuidade
-  até fechar a Fase 1 (work) ou Fase 2 (pages).
+  build Parcel e testes obrigatórios (prioridades P0 e P1 do backlog). Usar quando o utilizador
+  trabalha nesta integração, no editor-sidecar, em content/work ou content/pages, routing-manifest,
+  build-content, ou pede continuidade até fechar a Fase 1 (work) ou Fase 2 (pages).
 ---
 
 # Integração Portfolio-OS — plano v2 (execução até pronto)
@@ -27,7 +27,9 @@ description: >-
 - Para alterações que toquem APIs ou contratos: existirem testes automatizados alinhados ao plano (secção “Testes” e backlog B17–B19) **ou** o agente tiver implementado esses testes nesta sessão e estiverem a passar.
 - O plano **`.agent/docs/portfolio-os-integration/v2/v2 copy.md`** não tiver sido **atualizado** após a entrega: secção **«Atualização de status»** + checklists do backlog com **`[x]`** nos itens feitos (**HARNESS-DOC1**).
 
-Se o utilizador pedir “continua até acabar”, iterar: **implementar próximo item P0 do backlog** → **correr harness + build** → **correr/adicionar testes** → **atualizar `v2 copy.md`** → repetir até não haver P0 aberto para o escopo acordado (Fase 1 `work` ou Fase 2 `pages`).
+**Prioridades no plano-fonte (`v2 copy.md`):** na Fase 1 (`work`), a maior parte dos blocos B0–B16 é **P0**; **B13, B17, B18, B19** são **P1** (não dispensáveis para “Fase 1 fechada” salvo adiamento explícito no plano). **B20** é **P2** (documentação operacional). Na Fase 2 (`pages`), as secções **P1–P4** do backlog usam o marcador de prioridade **P1** no plano (nomes P1–P4 = entregas; não confundir com a legenda P0/P1/P2 dos blocos B*).
+
+Se o utilizador pedir “continua até acabar”, iterar: **implementar próximo item pendente do backlog (P0 e P1 do âmbito)** → **correr harness + build** → **correr/adicionar testes** → **atualizar `v2 copy.md`** → repetir até não haver **P0 nem P1** abertos para o escopo acordado (Fase 1 `work` completa com B13/B17/B18/B19 verificados; Fase 2 `pages` conforme matriz **P1–P4**).
 
 ## Escopo por fase
 

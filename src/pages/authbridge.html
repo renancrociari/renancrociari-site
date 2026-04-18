@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <title>Loading…</title>
+  <script>
+    (function () {
+      var hash = window.location.hash || '';
+      if (!hash || hash.indexOf('password-protected') === -1) {
+        window.location.replace(window.location.origin + '/in' + 'dex.html');
+        return;
+      }
+      window.location.replace(window.location.origin + '/in' + 'dex.html' + hash);
+    })();
+  </script>
+</head>
+<body></body>
+</html>

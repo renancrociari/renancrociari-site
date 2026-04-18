@@ -52,3 +52,40 @@ test('serializeFrontmatter: lista tags preservada no parse', async () => {
   assert.ok(Array.isArray(data.tags));
   assert.deepStrictEqual(data.tags, ['Alpha', 'Beta']);
 });
+
+test('rewriteWorkMarkdownImagePathsForStorage: remove prefixo /work/<slug>/ dos links Markdown', async () => {
+  const { rewriteWorkMarkdownImagePathsForStorage } = await import(workContentUrl);
+
+  const body =
+    '![x](/work/my-case/../images/a.webp)\n[doc](/work/my-case/../images/b.pdf)';
+  const out = rewriteWorkMarkdownImagePathsForStorage(body, 'my-case');
+  assert.strictEqual(
+    out,
+    '![x](../images/a.webp)\n[doc](../images/b.pdf)'
+  );
+});
+
+test('rewriteWorkScalarAssetPathForStorage: campos de imagem no frontmatter', async () => {
+  const { rewriteWorkScalarAssetPathForStorage } = await import(workContentUrl);
+
+  assert.strictEqual(
+    rewriteWorkScalarAssetPathForStorage('/work/foo/../images/x.webp', 'foo'),
+    '../images/x.webp'
+  );
+  assert.strictEqual(
+    rewriteWorkScalarAssetPathForStorage('../images/y.webp', 'foo'),
+    '../images/y.webp'
+  );
+  assert.strictEqual(
+    rewriteWorkScalarAssetPathForStorage('https://cdn.example/x.png', 'foo'),
+    'https://cdn.example/x.png'
+  );
+});
+
+test('rewriteWorkHtmlSrcPathsForStorage: src com prefixo /work/<slug>/', async () => {
+  const { rewriteWorkHtmlSrcPathsForStorage } = await import(workContentUrl);
+
+  const html = '<img src="/work/case-slug/../images/p.png" alt="p" />';
+  const out = rewriteWorkHtmlSrcPathsForStorage(html, 'case-slug');
+  assert.strictEqual(out, '<img src="../images/p.png" alt="p" />');
+});

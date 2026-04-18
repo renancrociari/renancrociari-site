@@ -19,7 +19,10 @@ export function initProtectedPage(contentId) {
         sessionStorage.setItem('rc_attempted_url', window.location.pathname);
 
         // Redirect to home page with hash to open password dialog
-        window.location.href = `/#password-protected?content=${contentId}`;
+        var u = new URL(window.location.href);
+        u.pathname = '/authbridge.html';
+        u.hash = '#password-protected?content=' + contentId;
+        window.location.replace(u.href);
     } else {
         // User is authenticated, show the page content
         document.body.style.visibility = 'visible';

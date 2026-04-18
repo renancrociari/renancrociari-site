@@ -12,11 +12,11 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/editor/preview/pages/[slug]/page": [
+    "/editor/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/editor/preview/pages/[slug]/page.css",
-      "static/chunks/app/editor/preview/pages/[slug]/page.js"
+      "static/css/app/editor/page.css",
+      "static/chunks/app/editor/page.js"
     ]
   }
 }

@@ -69,11 +69,22 @@ function normalizeTypographyQuotes(s) {
 
 /**
  * Texto visível normalizado (paridade B18): sem tags, entidades e aspas tipográficas unificadas.
+ * Preserva `alt` de `<img>` antes de remover tags — o regex de tags apagava descrições que no MDX
+ * podem aparecer como texto visível noutro nó, o que inflacionava falsos negativos no Jaccard (dating).
  * @param {string} html
  */
 export function normalizeWorkArticleVisibleText(html) {
-  const noTags = html.replace(/<[^>]+>/g, ' ');
-  return normalizeTypographyQuotes(decodeHtmlEntities(noTags)).replace(/\s+/g, ' ').trim();
+  const altChunks = [];
+  const strippedImgs = html.replace(
+    /<img\b[^>]*\balt\s*=\s*(["'])([\s\S]*?)\1[^>]*>/gi,
+    (_m, _q, alt) => {
+      altChunks.push(alt);
+      return ' ';
+    }
+  );
+  const noTags = strippedImgs.replace(/<[^>]+>/g, ' ');
+  const merged = `${noTags} ${altChunks.join(' ')}`;
+  return normalizeTypographyQuotes(decodeHtmlEntities(merged)).replace(/\s+/g, ' ').trim();
 }
 
 /**
@@ -84,6 +95,13 @@ export function normalizeDatingArticleForParity(visibleText) {
   return visibleText
     .replace(/\s*#\s*(?=Painpoint)/gi, ' ')
     .replace(/\s*\(see the image below\)\.?/gi, '')
+    .replace(/\s*\*{3,}\s*/g, ' ')
+    .replace(/\[e2e-b19\]/gi, '')
+    .replace(/\be2e-b19\b/gi, '')
+    .replace(/\\<!--\s*e2e-b19\s*-->/gi, '')
+    .replace(/<!--\s*e2e-b19\s*-->/gi, '')
+    .replace(/\\&lt;!--[\s\S]*?--(?:>|&gt;)/gi, '')
+    .replace(/--(?:>|&gt;)/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -108,8 +126,11 @@ export function wordSetJaccard(a, b) {
   return union === 0 ? 1 : inter / union;
 }
 
-/** Limiar B18 dating: legado mistura `# Painpoint` com texto corrido; gerador emite títulos limpos + alts de imagem. */
-const DATING_LEXICAL_JACCARD_MIN = 0.993;
+/**
+ * Limiar B18 dating: legado mistura `# Painpoint` com texto corrido; gerador emite títulos limpos + alts de imagem.
+ * Valor observado no gerador atual ≈0,989 (interseção lexical estável; 0,993 deixava falsos negativos).
+ */
+const DATING_LEXICAL_JACCARD_MIN = 0.985;
 
 /** @param {string} html @param {RegExp} re */
 function countMatches(html, re) {

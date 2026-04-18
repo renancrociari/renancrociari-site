@@ -156,7 +156,11 @@ if (passwordModal && openPasswordModal.length > 0) {
       errorMessage.style.display = 'none';
     }
 
-    history.pushState({ page: 'password-protected' }, 'password-protected', '#password-protected');
+    const hashForHistory =
+      window.location.hash && window.location.hash.includes('password-protected')
+        ? window.location.hash
+        : '#password-protected';
+    history.pushState({ page: 'password-protected' }, 'password-protected', hashForHistory);
   }
 
   // Função para fechar a password dialog

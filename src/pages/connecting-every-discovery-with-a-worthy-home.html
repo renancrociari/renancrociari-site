@@ -54,17 +54,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&text=renancrociari" rel="stylesheet">
   <link rel="preload" href="../fonts/source-serif-regular-300.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../fonts/source-serif-bold-600.woff2" as="font" type="font/woff2" crossorigin>
-  <!-- Immediate authentication check to prevent content flash -->
-  <script type="module">
-    import { isAuthenticated } from '../scripts/password-auth.js';
-
-    // Check authentication immediately
-    if (!isAuthenticated('case-journal-finder')) {
-      // Not authenticated - redirect immediately before any content renders
+  <!-- Immediate authentication check to prevent content flash (script clássico: Parcel colapsa redirects em type=module). -->
+  <script>
+    (function () {
+      var contentId = 'case-journal-finder';
+      var AUTH_KEY = 'rc_auth_tokens';
+      function isAuthenticated(id) {
+        try {
+          var raw = sessionStorage.getItem(AUTH_KEY);
+          var tokens = raw ? JSON.parse(raw) : {};
+          return !!tokens[id];
+        } catch (e) {
+          return false;
+        }
+      }
+      if (isAuthenticated(contentId)) return;
       sessionStorage.setItem('rc_attempted_url', window.location.pathname);
-      window.location.href = '/#password-protected?content=case-journal-finder';
-    }
-    // If authenticated, page will continue loading normally
+      var u = new URL(window.location.href);
+      u.pathname = '/authbridge.html';
+      u.hash = '#password-protected?content=' + encodeURIComponent(contentId);
+      window.location.replace(u.href);
+    })();
   </script>
   <!-- Scripts -->
   <script type="module" src="../scripts/script.js"></script>

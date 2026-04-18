@@ -155,23 +155,28 @@ export function createFilesystemAdapter(collection) {
         // Server-side: ler diretamente do FS
         return null; // Implementado no build step
       }
-      
-      const API_BASE = await getApiContentBase();
-      const res = await fetch(`${API_BASE}?collection=${collection}&action=list`);
-      if (!res.ok) return null;
-      
-      const data = await res.json();
-      return (data.entries || []).map((e) => {
-        const id = e.id ?? e.slug;
-        return {
-          id,
-          documentId: id,
-          collection,
-          slug: e.slug ?? id,
-          title: e.title,
-          published: e.published,
-        };
-      });
+
+      try {
+        const API_BASE = await getApiContentBase();
+        const res = await fetch(`${API_BASE}?collection=${collection}&action=list`);
+        if (!res.ok) return null;
+
+        const data = await res.json();
+        return (data.entries || []).map((e) => {
+          const id = e.id ?? e.slug;
+          return {
+            id,
+            documentId: id,
+            collection,
+            slug: e.slug ?? id,
+            title: e.title,
+            published: e.published,
+          };
+        });
+      } catch (err) {
+        console.warn('[portfolio-os] listDocuments failed:', err);
+        return null;
+      }
     },
 
     /**

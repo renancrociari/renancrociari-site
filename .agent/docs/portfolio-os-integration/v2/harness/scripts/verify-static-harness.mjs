@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Verificações estáticas do harness Portfolio-OS (Fase 1 — work).
- * Não substitui testes HTTP/E2E; falha cedo se estrutura ou manifesto estiverem incorretos.
+ * Verificações estáticas do harness Portfolio-OS.
+ * Cobre ficheiros críticos de `work` (Fase 1) e paths canónicos mínimos de `pages` (Fase 2),
+ * alinhado às prioridades P0/P1 do plano (`v2 copy.md`). Não substitui testes HTTP/E2E (B17–B19, P4).
  */
 
 import fs from 'fs';

@@ -121,6 +121,69 @@ export function toCanonicalWorkDocumentId(slug) {
   return `${String(slug || '').trim()}/index.mdx`;
 }
 
+function escapeForRegex(str) {
+  return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Inverte o prefixo do editor `](/work/<slug>/…` para paths relativos ao ficheiro em `content/work/<slug>/`.
+ * @param {string} content
+ * @param {string} storageSlug — pasta sob `content/work/` (igual ao segmento do `documentId`).
+ * @returns {string}
+ */
+export function rewriteWorkMarkdownImagePathsForStorage(content, storageSlug) {
+  const slug = String(storageSlug || '').trim();
+  if (!slug) return String(content ?? '');
+  const re = new RegExp(`\\]\\(/work/${escapeForRegex(slug)}/`, 'g');
+  return String(content ?? '').replace(re, '](');
+}
+
+/**
+ * Normaliza `src="/work/<slug>/…` em HTML embutido no MDX.
+ * @param {string} content
+ * @param {string} storageSlug
+ * @returns {string}
+ */
+export function rewriteWorkHtmlSrcPathsForStorage(content, storageSlug) {
+  const slug = String(storageSlug || '').trim();
+  if (!slug) return String(content ?? '');
+  const re = new RegExp(`(src\\s*=\\s*)(["'])/work/${escapeForRegex(slug)}/`, 'gi');
+  return String(content ?? '').replace(re, '$1$2');
+}
+
+/**
+ * @param {string} value
+ * @param {string} storageSlug
+ * @returns {string}
+ */
+export function rewriteWorkScalarAssetPathForStorage(value, storageSlug) {
+  const slug = String(storageSlug || '').trim();
+  if (!slug) return String(value ?? '').trim();
+  const s = String(value ?? '').trim();
+  if (!s || /^https?:\/\//i.test(s)) return s;
+  const prefix = `/work/${slug}/`;
+  if (s.startsWith(prefix)) {
+    return s.slice(prefix.length);
+  }
+  return s;
+}
+
+/**
+ * @param {Record<string, unknown>} metadata
+ * @param {string} storageSlug
+ * @returns {Record<string, unknown>}
+ */
+export function rewriteWorkMetadataImagePathsForStorage(metadata, storageSlug) {
+  if (!metadata || !storageSlug) return metadata || {};
+  const out = { ...metadata };
+  for (const key of ['coverImage', 'featured_image', 'og_image']) {
+    if (typeof out[key] === 'string') {
+      out[key] = rewriteWorkScalarAssetPathForStorage(out[key], storageSlug);
+    }
+  }
+  return out;
+}
+
 function slugFromDocumentId(documentId) {
   const raw = String(documentId || '').replace(/\\/g, '/').trim();
   if (!raw) return '';
@@ -407,11 +470,14 @@ export function saveWorkDocumentFromEditor(documentId, metadata, content) {
     ? parseFrontmatterFile(existing).metadata
     : {};
   const nextMetadata = normalizeWorkMetadataForStorage(metadata, previousRawMetadata);
+  const diskMetadata = rewriteWorkMetadataImagePathsForStorage(nextMetadata, slug);
+  let diskContent = rewriteWorkMarkdownImagePathsForStorage(content ?? '', slug);
+  diskContent = rewriteWorkHtmlSrcPathsForStorage(diskContent, slug);
 
   const targetDir = path.join(WORK_CONTENT_DIR, slug);
   const targetFile = path.join(targetDir, 'index.mdx');
   fs.mkdirSync(targetDir, { recursive: true });
-  fs.writeFileSync(targetFile, serializeFrontmatter(nextMetadata, content), 'utf8');
+  fs.writeFileSync(targetFile, serializeFrontmatter(diskMetadata, diskContent), 'utf8');
 
   return {
     id: toCanonicalWorkDocumentId(slug),

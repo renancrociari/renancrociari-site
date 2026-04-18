@@ -27,8 +27,9 @@ const journalFinderRoute = resolveSiteRoute({
 
 export const PASSWORD_CONFIG = {
     [journalFinderRoute.authId]: {
-        hash: 'e4e2ff1a6fc2a6ce836b66c424aa2bdd4803d5b92d9750b0db4df4b1d1a8a597',
-        redirectUrl: journalFinderRoute.publicPath
+        hash: 'd3ad9315b7be5dd53b31a273b3b3aba5defe700808305aa16a3062b76658a791',
+        // Caminho com ficheiro .html: servidores estáticos não resolvem `publicPath` sem extensão.
+        redirectUrl: `/${String(journalFinderRoute.outputFile || '').replace(/^\//, '')}`,
     }
 };
 

@@ -173,13 +173,27 @@ function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
         });
         if (data.status === 'protected' && data.protected_password) {
             const contentAuthId = route.authId;
-            headExtra = `<script type="module">
-    import { isAuthenticated } from '../scripts/password-auth.js';
-    if (!isAuthenticated('${contentAuthId}')) {
-      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
-      window.location.href = '/#password-protected?content=${contentAuthId}';
+            headExtra = `<script>
+(function () {
+  var contentId = '${contentAuthId}';
+  var AUTH_KEY = 'rc_auth_tokens';
+  function isAuthenticated(id) {
+    try {
+      var raw = sessionStorage.getItem(AUTH_KEY);
+      var tokens = raw ? JSON.parse(raw) : {};
+      return !!tokens[id];
+    } catch (e) {
+      return false;
     }
-  </script>`;
+  }
+  if (isAuthenticated(contentId)) return;
+  sessionStorage.setItem('rc_attempted_url', window.location.pathname);
+  var u = new URL(window.location.href);
+  u.pathname = '/authbridge.html';
+  u.hash = '#password-protected?content=' + encodeURIComponent(contentId);
+  window.location.replace(u.href);
+})();
+</script>`;
         }
     }
     

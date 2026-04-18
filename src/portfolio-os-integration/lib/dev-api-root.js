@@ -19,9 +19,29 @@ export async function resolveDevApiRoot() {
     return '';
   }
 
+  // Sidecar Next (`/editor/*`): a API vive no mesmo origin. Sem isto, o port-scan
+  // (3001…) pode ganhar a corrida e o Playwright/E2E em :3010 nunca vê GET /api/editor/*.
+  const path = typeof window.location?.pathname === 'string' ? window.location.pathname : '';
+  if (path.startsWith('/editor')) {
+    const origin = window.location.origin;
+    sessionStorage.setItem(PORTFOLIO_OS_API_ROOT_STORAGE_KEY, origin);
+    return origin;
+  }
+
   const cached = sessionStorage.getItem(PORTFOLIO_OS_API_ROOT_STORAGE_KEY);
   if (cached) {
-    return cached;
+    const base = cached.replace(/\/$/, '');
+    try {
+      const res = await fetch(`${base}/api/health`, {
+        signal: AbortSignal.timeout(800),
+      });
+      if (res.ok) {
+        return cached;
+      }
+    } catch {
+      // cache obsoleto (porta antiga / sidecar mudou)
+    }
+    sessionStorage.removeItem(PORTFOLIO_OS_API_ROOT_STORAGE_KEY);
   }
 
   const ports = Array.from({ length: 60 }, (_, i) => 3001 + i);

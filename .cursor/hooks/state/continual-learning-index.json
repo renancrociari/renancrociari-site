@@ -1,12 +1,95 @@
 {
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/11980d66-b989-4cc8-8f6d-265f09ad3a8e/11980d66-b989-4cc8-8f6d-265f09ad3a8e.jsonl": { "mtimeMs": 1776529214000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/a833913a-f6c9-40bc-8008-e3357a7bd3da/a833913a-f6c9-40bc-8008-e3357a7bd3da.jsonl": { "mtimeMs": 1776528956000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/acf8a579-6229-4135-9f9c-c83b79fd423d/acf8a579-6229-4135-9f9c-c83b79fd423d.jsonl": { "mtimeMs": 1776527517000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/045c8e6e-6517-406e-a406-55496a113306/045c8e6e-6517-406e-a406-55496a113306.jsonl": { "mtimeMs": 1776486872000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/b2952472-fd56-4595-bd91-ed469865780d/b2952472-fd56-4595-bd91-ed469865780d.jsonl": { "mtimeMs": 1776483534000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/ac1063da-2e8a-4212-b519-4aec311dae01/ac1063da-2e8a-4212-b519-4aec311dae01.jsonl": { "mtimeMs": 1776483201000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/045c8e6e-6517-406e-a406-55496a113306/subagents/0d250465-0ad6-45ed-bff6-e30fd34c8ec6.jsonl": { "mtimeMs": 1776483178000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/17e7e02a-fda7-4015-b401-f9581fd49370/17e7e02a-fda7-4015-b401-f9581fd49370.jsonl": { "mtimeMs": 1776480420000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/4bf998b4-b8a7-4d3a-9426-44e61c01ad76/4bf998b4-b8a7-4d3a-9426-44e61c01ad76.jsonl": { "mtimeMs": 1776459557000 },
-  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/bec56dec-da97-4fce-b3b8-d688e0b1a108/bec56dec-da97-4fce-b3b8-d688e0b1a108.jsonl": { "mtimeMs": 1776458126000 }
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/045c8e6e-6517-406e-a406-55496a113306/045c8e6e-6517-406e-a406-55496a113306.jsonl": {
+    "mtimeMs": 1776486872527
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/11980d66-b989-4cc8-8f6d-265f09ad3a8e/11980d66-b989-4cc8-8f6d-265f09ad3a8e.jsonl": {
+    "mtimeMs": 1776530359985
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/16db0090-5f44-46ea-8f55-d5242b72e2d4/16db0090-5f44-46ea-8f55-d5242b72e2d4.jsonl": {
+    "mtimeMs": 1776532620959
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/17e7e02a-fda7-4015-b401-f9581fd49370/17e7e02a-fda7-4015-b401-f9581fd49370.jsonl": {
+    "mtimeMs": 1776480420614
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/189ab78c-ae64-4b73-b635-0a7fae52b0f6/189ab78c-ae64-4b73-b635-0a7fae52b0f6.jsonl": {
+    "mtimeMs": 1776536565800
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/1bfcb641-5efe-479d-86a5-3ef50f25af47/1bfcb641-5efe-479d-86a5-3ef50f25af47.jsonl": {
+    "mtimeMs": 1776531316894
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/1e17b4d8-5dca-43ec-9123-ee0d7490fac8/1e17b4d8-5dca-43ec-9123-ee0d7490fac8.jsonl": {
+    "mtimeMs": 1776531423349
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/29b48b53-c7fe-4437-b429-bf0ca6cb1696/29b48b53-c7fe-4437-b429-bf0ca6cb1696.jsonl": {
+    "mtimeMs": 1776531068441
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/2e05466c-a050-4c61-a02f-ce0d0b5523f4/2e05466c-a050-4c61-a02f-ce0d0b5523f4.jsonl": {
+    "mtimeMs": 1776530165366
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/2e8dc901-b420-40f8-96c6-c8835a7550aa/2e8dc901-b420-40f8-96c6-c8835a7550aa.jsonl": {
+    "mtimeMs": 1776536560635
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/3148b833-fe64-4e86-a3d5-f19169001479/3148b833-fe64-4e86-a3d5-f19169001479.jsonl": {
+    "mtimeMs": 1776531300478
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/37d7a450-b8a7-4b14-bcc0-5d2f422b971a/37d7a450-b8a7-4b14-bcc0-5d2f422b971a.jsonl": {
+    "mtimeMs": 1776530492607
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/3d036c6d-2406-43df-908f-27105119cc36/3d036c6d-2406-43df-908f-27105119cc36.jsonl": {
+    "mtimeMs": 1776531373331
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/48bbe644-2e74-42d8-b1fb-892a594bdc78/48bbe644-2e74-42d8-b1fb-892a594bdc78.jsonl": {
+    "mtimeMs": 1776532110016
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/49d6a40b-298e-4142-9d15-8e726d8ac0b8/49d6a40b-298e-4142-9d15-8e726d8ac0b8.jsonl": {
+    "mtimeMs": 1776535953117
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/4a68953e-e6c4-4496-8141-948902dce70d/4a68953e-e6c4-4496-8141-948902dce70d.jsonl": {
+    "mtimeMs": 1776535685870
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/4bf998b4-b8a7-4d3a-9426-44e61c01ad76/4bf998b4-b8a7-4d3a-9426-44e61c01ad76.jsonl": {
+    "mtimeMs": 1776459557324
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/570daa83-0f62-4139-9223-411e9e02237e/570daa83-0f62-4139-9223-411e9e02237e.jsonl": {
+    "mtimeMs": 1776532962506
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/68f1c427-fdab-43bb-8618-efa26266da18/68f1c427-fdab-43bb-8618-efa26266da18.jsonl": {
+    "mtimeMs": 1776530240830
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/908eefc5-cf0d-4fd4-a903-f62cc6884a71/908eefc5-cf0d-4fd4-a903-f62cc6884a71.jsonl": {
+    "mtimeMs": 1776532574178
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/a41f2fea-bd7d-4c5b-8727-20197755f403/a41f2fea-bd7d-4c5b-8727-20197755f403.jsonl": {
+    "mtimeMs": 1776531050238
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/a833913a-f6c9-40bc-8008-e3357a7bd3da/a833913a-f6c9-40bc-8008-e3357a7bd3da.jsonl": {
+    "mtimeMs": 1776528956321
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/a9a43419-9822-41a3-8593-40d651b476fe/a9a43419-9822-41a3-8593-40d651b476fe.jsonl": {
+    "mtimeMs": 1776532725267
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/aabc79d2-9195-4039-ba9f-f7a96414d91c/aabc79d2-9195-4039-ba9f-f7a96414d91c.jsonl": {
+    "mtimeMs": 1776534833894
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/ac1063da-2e8a-4212-b519-4aec311dae01/ac1063da-2e8a-4212-b519-4aec311dae01.jsonl": {
+    "mtimeMs": 1776483201491
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/acf8a579-6229-4135-9f9c-c83b79fd423d/acf8a579-6229-4135-9f9c-c83b79fd423d.jsonl": {
+    "mtimeMs": 1776527517512
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/af5bd564-6cee-40f2-92e8-8f77a7dd5a9b/af5bd564-6cee-40f2-92e8-8f77a7dd5a9b.jsonl": {
+    "mtimeMs": 1776535199347
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/b2952472-fd56-4595-bd91-ed469865780d/b2952472-fd56-4595-bd91-ed469865780d.jsonl": {
+    "mtimeMs": 1776483534199
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/bec56dec-da97-4fce-b3b8-d688e0b1a108/bec56dec-da97-4fce-b3b8-d688e0b1a108.jsonl": {
+    "mtimeMs": 1776458126366
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/c361d996-6911-4f00-ae19-16348f262ef3/c361d996-6911-4f00-ae19-16348f262ef3.jsonl": {
+    "mtimeMs": 1776531629688
+  },
+  "/Users/andre/.cursor/projects/Users-andre-Arquivos-Locais-Portfolio-renancrociari-site-portfolio-os-integration-renancrociari-site/agent-transcripts/fef3b8a7-ee09-42b3-a1d1-03d2d70aaa22/fef3b8a7-ee09-42b3-a1d1-03d2d70aaa22.jsonl": {
+    "mtimeMs": 1776531525213
+  }
 }

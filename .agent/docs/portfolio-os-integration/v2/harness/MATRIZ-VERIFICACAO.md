@@ -10,6 +10,8 @@ Legenda:
 
 Cada linha referencia o backlog em `v2 copy.md`.
 
+**Prioridades (marcador `P0` / `P1` / `P2` por bloco no plano):** na Fase 1, **B13, B17, B18, B19** são **P1**; **B20** é **P2**; o restante B0–B16 é em geral **P0**. Na Fase 2, as secções nomeadas P1–P4 na matriz correspondem às entregas `pages`; no `v2 copy.md` essas checklists usam prioridade **P1** (não confundir o nome da secção “P2. API…” com a legenda P0/P1 do backlog).
+
 ## Baseline e runtime
 
 | ID | Item | Prova principal | Notas |
@@ -58,7 +60,7 @@ Cada linha referencia o backlog em `v2 copy.md`.
 | P1 | `content/pages/<slug>/index.mdx` | S + T |
 | P2 | `/api/editor/pages` | T |
 | P3 | Templates fiéis (about, home opcional) | T + B18 |
-| P4 | E2E + cutover | E + B |
+| P4 | E2E + cutover `pages` (`tests/e2e/editor-pages.spec.ts`) | E + B |
 
 ## Dependências entre provas
 

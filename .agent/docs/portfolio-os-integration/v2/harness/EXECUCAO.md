@@ -32,7 +32,7 @@ Validar manualmente (ou via E2E quando existir):
 - Sidecar Next na porta da API (padrão **3001**).
 - [`CRITERIOS-ACEITE-CANONICOS.md`](./CRITERIOS-ACEITE-CANONICOS.md) — seção *Cenários obrigatórios do plano*.
 
-## 4. Testes automatizados (quando implementados)
+## 4. Testes automatizados (P1 no plano — B17, B18; obrigatórios para Fase 1 “fechada”)
 
 Conforme [`MATRIZ-VERIFICACAO.md`](./MATRIZ-VERIFICACAO.md):
 
@@ -40,9 +40,11 @@ Conforme [`MATRIZ-VERIFICACAO.md`](./MATRIZ-VERIFICACAO.md):
 - Migração de conteúdo e serialização de frontmatter.
 - Paridade DOM (HTML legado vs gerado), com normalização documentada.
 
-## 5. E2E do editor `work`
+Estes itens são **P1** em `v2 copy.md`; não confundir com as secções **P1–P4** da Fase 2 (`pages`) na matriz.
 
-Fluxo ponta a ponta: lista → abrir documento → metadata/corpo → salvar → preview/draft → seleção preview ↔ sidebar.
+## 5. E2E do editor `work` (P1 — B19)
+
+Fluxo ponta a ponta: lista → abrir documento → metadata/corpo → salvar → preview/draft → seleção preview ↔ sidebar. **B13** (outline/DOM) reforça a prova com testes/E2E alinhados ao preview.
 
 Registrar falhas com ID `HARNESS-*` de [`CRITERIOS-ACEITE-CANONICOS.md`](./CRITERIOS-ACEITE-CANONICOS.md).
 
@@ -51,7 +53,11 @@ Registrar falhas com ID `HARNESS-*` de [`CRITERIOS-ACEITE-CANONICOS.md`](./CRITE
 Antes de remover formato flat ou heurísticas de fallback:
 
 - Atualizar o plano principal com o estado real.
-- Preencher pendências explícitas para Fase 2 (`pages`).
+- Preencher pendências explícitas para Fase 2 (`pages`), seguindo a matriz **P1–P4** quando o escopo incluir `pages` (prioridade **P1** nas checklists do plano-fonte para essa fase).
+
+## 6b. Fase 2 — `pages` (quando aplicável)
+
+Depois de **HARNESS-F2-1** e Fase 1 com **P0+P1** verificados: repetir o mesmo rigor para migração canónica, API `/api/editor/pages`, templates fiéis e E2E/cutover — ver secção “Fase 2” em [`MATRIZ-VERIFICACAO.md`](./MATRIZ-VERIFICACAO.md).
 
 ## 7. Atualização obrigatória do plano (`v2 copy.md`) — agentes de IA
 
