@@ -11,7 +11,7 @@
  * - PARCEL_PORT: porta fixa do Parcel (falha se estiver ocupada)
  */
 
-const { spawn } = require('child_process');
+const { execFileSync, spawn } = require('child_process');
 const http = require('http');
 const net = require('net');
 const path = require('path');
@@ -19,6 +19,7 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const { parseContentFrontmatter } = require('./lib/parse-frontmatter.cjs');
 const { slugify } = require('./lib/slugify.cjs');
+const { getSiteEntryFiles } = require('./lib/site-entrypoints.cjs');
 
 const CONTENT_DIR = path.join(__dirname, '..', 'content');
 
@@ -385,19 +386,19 @@ function startApiServer(port) {
 }
 
 // Start Parcel
-function startParcel(port) {
+async function startParcel(port) {
+  const entryFiles = await getSiteEntryFiles();
   const parcel = spawn(
     'npx',
     [
       'parcel',
-      'src/pages/*.html',
-      'src/pages-generated/*.html',
+      ...entryFiles,
       '--port',
       String(port),
     ],
     {
       stdio: 'inherit',
-      shell: true,
+      shell: false,
     }
   );
 
@@ -409,8 +410,23 @@ function startParcel(port) {
   return parcel;
 }
 
+function buildGeneratedContent() {
+  console.log('🔄 Refreshing generated content...\n');
+  execFileSync(process.execPath, [path.join(__dirname, 'content', 'build-content.js')], {
+    stdio: 'inherit',
+  });
+}
+
 async function main() {
   console.log('🚀 Starting Portfolio-OS dev environment...\n');
+
+  try {
+    buildGeneratedContent();
+  } catch (err) {
+    console.error('Falha ao gerar pages-managed antes do dev server:', err.message || err);
+    process.exit(1);
+    return;
+  }
 
   let apiPort;
   let parcelPort;
@@ -437,7 +453,7 @@ async function main() {
     return;
   }
 
-  parcel = startParcel(parcelPort);
+  parcel = await startParcel(parcelPort);
 
   console.log(`\n🌐 Site: http://localhost:${parcelPort}`);
   console.log(`📝 Editor: http://localhost:${parcelPort}/editor.html`);

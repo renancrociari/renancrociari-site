@@ -1,0 +1,443 @@
+<!DOCTYPE html><html lang=en><meta charset=utf-8><meta name=viewport content="initial-scale=1, width=device-width"><title>Content Editor · Renan Crociari</title><link rel=stylesheet href=/buttons.d947b563.css><link rel=stylesheet href=/buttons.0d890c5f.css><link rel=stylesheet href=/buttons.9ac1c8fe.css><style>.editor-layout{grid-template-columns:280px 1fr 1fr;height:100vh;display:grid;overflow:hidden}.editor-sidebar{background:var(--background-gray-medium);border-right:1px solid var(--background-gray-lighter);padding:var(--spacing-md);overflow-y:auto}.editor-main{padding:var(--spacing-lg);background:var(--background-body);overflow-y:auto}.editor-preview{background:var(--background-body);border-left:1px solid var(--background-gray-lighter);flex-direction:column;display:flex;overflow:hidden}.preview-toolbar{padding:var(--spacing-sm) var(--spacing-md);background:var(--background-gray-medium);border-bottom:1px solid var(--background-gray-lighter);justify-content:space-between;align-items:center;display:flex}.preview-label{font-family:var(--font-display);font-size:var(--font-xs);color:var(--typography-gray-300)}.viewport-controls{gap:var(--spacing-xs);display:flex}.viewport-btn{border:1px solid var(--background-gray-lighter);border-radius:var(--br-xxxs);width:32px;height:32px;color:var(--typography-gray-300);cursor:pointer;background:0 0;justify-content:center;align-items:center;transition:all .2s;display:flex}.viewport-btn:hover{background:var(--background-gray-lighter);color:var(--typography-gray-200)}.viewport-btn.active{background:var(--typography-green-dark);border-color:var(--typography-green-light);color:var(--typography-green-light)}.preview-frame-container{background:var(--background-gray-medium);padding:var(--spacing-md);flex:1;justify-content:center;display:flex;overflow:auto}.editor-preview iframe{background:var(--background-body);border:none;width:100%;height:100%;transition:width .3s;box-shadow:0 4px 20px #0000004d}.doc-list{margin:var(--spacing-md) 0;padding:0;list-style:none}.doc-item{padding:var(--spacing-sm);border-radius:var(--br-xxxs);cursor:pointer;transition:background .2s}.doc-item:hover{background:var(--background-gray-lighter)}.doc-item.active{background:var(--typography-green-dark)}.doc-item.unpublished{opacity:.6}.editor-toolbar{gap:var(--spacing-sm);margin-bottom:var(--spacing-md);padding-bottom:var(--spacing-md);border-bottom:1px solid var(--background-gray-lighter);display:flex}.btn-editor{background:var(--typography-green-light);color:var(--background-body);padding:var(--spacing-xs) var(--spacing-sm);border-radius:var(--br-xxxs);cursor:pointer;font-family:var(--font-display);font-size:var(--font-2xs);border:none}.btn-editor:hover{background:var(--typography-green-lighter)}.btn-editor.secondary{background:var(--background-gray-lighter);color:var(--typography-gray-200)}.metadata-form{gap:var(--spacing-sm);margin-bottom:var(--spacing-lg);display:grid}.metadata-field{gap:var(--spacing-2xs);display:grid}.metadata-field label{font-family:var(--font-display);font-size:var(--font-2xs);color:var(--typography-gray-300)}.metadata-field input,.metadata-field textarea,.metadata-field select{background:var(--background-gray-light);border:1px solid var(--background-gray-lighter);color:var(--typography-gray-200);padding:var(--spacing-xs);border-radius:var(--br-xxxs);font-family:var(--font-paragraph)}.metadata-extra{gap:var(--spacing-sm);margin-top:var(--spacing-md);padding-top:var(--spacing-md);border-top:1px solid var(--background-gray-lighter);display:grid}.content-editor{background:var(--background-gray-light);border:1px solid var(--background-gray-lighter);width:100%;min-height:500px;color:var(--typography-gray-200);padding:var(--spacing-md);font-family:var(--font-paragraph);font-size:var(--font-md);resize:vertical;line-height:1.6}.collection-tabs{gap:var(--spacing-xs);margin-bottom:var(--spacing-md);display:flex}.collection-tab{padding:var(--spacing-xs) var(--spacing-sm);color:var(--typography-gray-300);cursor:pointer;font-family:var(--font-display);font-size:var(--font-xs);background:0 0;border:none}.collection-tab.active{color:var(--typography-green-light);border-bottom:2px solid var(--typography-green-light)}.empty-state{text-align:center;padding:var(--spacing-3xl);color:var(--typography-gray-300)}.block-catalog-summary{cursor:pointer;font-family:var(--font-display);font-size:var(--font-xs);color:var(--typography-green-light);-webkit-user-select:none;user-select:none}.block-catalog-list{max-height:280px;margin-top:var(--spacing-sm);gap:var(--spacing-sm);flex-direction:column;display:flex;overflow-y:auto}.block-catalog-item{border:1px solid var(--background-gray-lighter);border-radius:var(--br-xxxs);padding:var(--spacing-sm);background:var(--background-gray-medium)}.block-catalog-item h4{margin:0 0 var(--spacing-2xs) 0;font-family:var(--font-display);font-size:var(--font-2xs);color:var(--typography-gray-200)}.block-catalog-item .meta{font-size:var(--font-2xs);color:var(--typography-gray-300);margin-bottom:var(--spacing-2xs)}.block-catalog-item p{margin:0 0 var(--spacing-xs) 0;font-size:var(--font-2xs);color:var(--typography-gray-300);line-height:1.4}.btn-insert-snippet{font-size:var(--font-2xs);padding:var(--spacing-2xs) var(--spacing-xs);background:var(--background-gray-lighter);color:var(--typography-gray-200);border:1px solid var(--background-gray-lighter);border-radius:var(--br-xxxs);cursor:pointer;font-family:var(--font-display)}.btn-insert-snippet:hover{border-color:var(--typography-green-light);color:var(--typography-green-light)}.btn-insert-snippet:disabled{opacity:.45;cursor:not-allowed}@media (width<=1024px){.editor-layout{grid-template-columns:240px 1fr}.editor-preview{display:none}}@media (width<=768px){.editor-layout{grid-template-columns:1fr}.editor-sidebar{display:none}}</style><body>
+  <div class=editor-layout>
+    
+    <aside class=editor-sidebar>
+      <div class=collection-tabs>
+        <button class="active collection-tab" data-collection=work>Work</button>
+        <button class=collection-tab data-collection=pages>Pages</button>
+      </div>
+      
+      <button class=btn-editor id=btn-new>+ New Document</button>
+      
+      <ul class=doc-list id=doc-list>
+        <li class=empty-state>Loading...</li>
+      </ul>
+    </aside>
+    
+    
+    <main class=editor-main>
+      <div id=editor-container style=display:none>
+        <div class=editor-toolbar>
+          <button class=btn-editor id=btn-save>Save</button>
+          <button class="btn-editor secondary" id=btn-preview>Refresh Preview</button>
+          <span id=save-status style=color:var(--typography-gray-300);font-size:var(--font-2xs);margin-left:auto></span>
+        </div>
+        
+        <div class=metadata-form id=metadata-form>
+          <div class=metadata-field>
+            <label>Title</label>
+            <input id=meta-title placeholder="Document title">
+          </div>
+          <div class=metadata-field>
+            <label>Slug</label>
+            <input id=meta-slug placeholder=url-friendly-slug>
+          </div>
+          <div class=metadata-field>
+            <label>Summary</label>
+            <textarea id=meta-summary placeholder="Brief summary..."></textarea>
+          </div>
+          <div class=metadata-field style="gap:var(--spacing-sm);grid-template-columns:1fr 1fr;display:grid">
+            <div>
+              <label>Published</label>
+              <select id=meta-published>
+                <option value=true>Yes</option>
+                <option value=false>No</option>
+              </select>
+            </div>
+            <div>
+              <label>Published Date</label>
+              <input type=date id=meta-publishedAt>
+            </div>
+          </div>
+
+          <div id=meta-group-work class=metadata-extra style=display:none>
+            <div class=metadata-field>
+              <label>Description (SEO / intro)</label>
+              <textarea id=meta-w-description rows=3 placeholder="Resumo curto do case…"></textarea>
+            </div>
+            <div class=metadata-field>
+              <label>Featured image (path)</label>
+              <input id=meta-w-featured-image placeholder=../images/case-…/featured.webp>
+            </div>
+            <div class=metadata-field>
+              <label>Tags (separadas por vírgula)</label>
+              <input id=meta-w-tags placeholder="Product Design, User Research">
+            </div>
+            <div class=metadata-field>
+              <label>OG image (path)</label>
+              <input id=meta-w-og-image placeholder=../images/case-og.jpg>
+            </div>
+            <div class=metadata-field>
+              <label>Status</label>
+              <select id=meta-w-status>
+                <option value=published>published</option>
+                <option value=draft>draft</option>
+                <option value=protected>protected</option>
+              </select>
+            </div>
+            <div id=meta-w-protected-wrap class=metadata-field style=display:none>
+              <label>protected_password (hash bcrypt)</label>
+              <input id=meta-w-protected-password placeholder="$2b$10$… ou vazio" autocomplete=off>
+            </div>
+          </div>
+
+          <div id=meta-group-about class=metadata-extra style=display:none>
+            <div class=metadata-field>
+              <label>Descrição (hero + SEO)</label>
+              <textarea id=meta-a-description rows=3 placeholder="Texto do H1 hero / meta description…"></textarea>
+            </div>
+            <div class=metadata-field>
+              <label>Featured image (path)</label>
+              <input id=meta-a-featured-image placeholder=../images/img-renan.webp>
+            </div>
+            <div class=metadata-field>
+              <label>OG image (path)</label>
+              <input id=meta-a-og-image placeholder=../images/renan-og-image.jpg>
+            </div>
+          </div>
+        </div>
+        
+        <textarea class=content-editor id=content-editor placeholder="# Your content here...
+
+Use Markdown syntax for formatting.
+
+## Heading
+
+- List item
+- List item
+
+**Bold text** and *italic text*.
+
+[Link text](https://example.com)
+
+![Alt text](/path/to/image.jpg)"></textarea>
+
+        <details class=block-catalog id=block-catalog-wrap style=margin-top:var(--spacing-lg);display:none>
+          <summary class=block-catalog-summary>Blocos @portfolio-os/blocks (work-body)</summary>
+          <p class="block-catalog-hint body-small" style="color:var(--typography-gray-300);margin:var(--spacing-xs) 0">
+            Inserir snippet MDX no cursor. O preview em Markdown ignora JSX até o pipeline MDX estar ativo.
+          </p>
+          <div class=block-catalog-list id=block-catalog-list></div>
+        </details>
+      </div>
+      
+      <div id=empty-editor class=empty-state>
+        <p>Select a document from the sidebar or create a new one.</p>
+      </div>
+    </main>
+    
+    
+    <aside class=editor-preview>
+      <div class=preview-toolbar>
+        <div style=gap:var(--spacing-2xs);flex-direction:column;align-items:flex-start;display:flex>
+          <span class=preview-label>Preview</span>
+          <label class=preview-label style=align-items:center;gap:var(--spacing-xs);cursor:pointer;font-size:var(--font-2xs);max-width:220px;display:flex>
+            <input type=checkbox id=opt-rewrite-md-images>
+            <span>Prefixar imagens Markdown (<code>../</code>) via portfolio-os/core</span>
+          </label>
+        </div>
+        <div class=viewport-controls>
+          <button class="active viewport-btn" data-width=100% data-height=100% title=Full>
+            <svg width=16 height=16 fill=none stroke=currentColor stroke-width=2 viewBox="0 0 24 24"><rect width=18 height=18 x=3 y=3 rx=2 /></svg>
+          </button>
+          <button class=viewport-btn data-width=375px data-height=100% title=Mobile>
+            <svg width=16 height=16 fill=none stroke=currentColor stroke-width=2 viewBox="0 0 24 24"><rect width=12 height=18 x=6 y=3 rx=2 /></svg>
+          </button>
+          <button class=viewport-btn data-width=768px data-height=100% title=Tablet>
+            <svg width=16 height=16 fill=none stroke=currentColor stroke-width=2 viewBox="0 0 24 24"><rect width=16 height=18 x=4 y=3 rx=2 /></svg>
+          </button>
+          <button class=viewport-btn data-width=1024px data-height=100% title=Desktop>
+            <svg width=16 height=16 fill=none stroke=currentColor stroke-width=2 viewBox="0 0 24 24"><rect width=20 height=14 x=2 y=4 rx=2 /><path d="M8 18h8m-4 0v3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class=preview-frame-container>
+        <iframe id=preview-frame src=/pages/about.html sandbox="allow-same-origin allow-scripts"></iframe>
+      </div>
+    </aside>
+  </div>
+
+  <script type=module>function e(e,t,a,i){Object.defineProperty(e,t,{get:a,set:i,enumerable:!0,configurable:!0})}var t=globalThis,a={},i={},l=t.parcelRequire0291;null==l&&((l=function(e){if(e in a)return a[e].exports;if(e in i){var t=i[e];delete i[e];var l={id:e,exports:{}};return a[e]=l,t.call(l.exports,l,l.exports),l.exports}var n=Error("Cannot find module '"+e+"'");throw n.code="MODULE_NOT_FOUND",n}).register=function(e,t){i[e]=t},t.parcelRequire0291=l),(0,l.register)("iChGM",function(t,a){e(t.exports,"resolveSiteRoute",()=>r),e(t.exports,"resolveSiteRouteFromPath",()=>s);let i="https://www.renancrociari.com",l={pages:{home:{publicPath:"/",outputFile:"index.html",bodyClass:"home",legacySourcePage:"index.html",metaTitle:"Renan Crociari · Senior Product Designer"},about:{publicPath:"/about",outputFile:"about.html",bodyClass:"about",legacySourcePage:"about.html"}},work:{"farfetch-performance":{publicPath:"/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands",outputFile:"improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html",bodyClass:"farfetch",legacySourcePage:"improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html"},"dating-platform":{publicPath:"/redesigning-the-mobile-experience-of-a-dating-platform",outputFile:"redesigning-the-mobile-experience-of-a-dating-platform.html",bodyClass:"sl-mobile",legacySourcePage:"redesigning-the-mobile-experience-of-a-dating-platform.html"},"journal-finder":{publicPath:"/connecting-every-discovery-with-a-worthy-home",outputFile:"connecting-every-discovery-with-a-worthy-home.html",bodyClass:"journal-finder",legacySourcePage:"connecting-every-discovery-with-a-worthy-home.html",authId:"case-journal-finder",isProtected:!0}}};function n(e){let t=String(e||"").trim();if(!t||"/"===t)return"/";let a=t;return/^https?:\/\//i.test(a)&&(a=new URL(a).pathname||"/"),(a=(a=(a=(a=(a=a.replace(/\\/g,"/")).replace(/^[.]+\/+/,"/")).replace(/\/index\.html$/i,"/")).replace(/\.html$/i,"")).replace(/\/+/g,"/")).startsWith("/")||(a=`/${a}`),a.length>1&&a.endsWith("/")&&(a=a.slice(0,-1)),a||"/"}function r({collection:e,documentSlug:t,metadata:a={}}){let r,s="page"===e?"pages":e,o=n(function(e,t,a={}){let i=String(a.slug||t||"").trim();return"pages"===e&&"home"===i?"/":`/${i}`}(s,t,a)),c=(r=l[s])&&r[String(t||"").trim()]||null||{},m=n(c.publicPath||o),d=c.outputFile||("/"===m?"index.html":`${m.slice(1)}.html`),u=c.authId||("work"===s?`case-${String(t||"").trim()}`:null);return{collection:s,documentSlug:String(t||"").trim(),publicPath:m,outputFile:d,bodyClass:c.bodyClass||("pages"===s?"home"===t?"home":"about":"default"),authId:u,isProtected:!0===c.isProtected||"protected"===String(a.status||""),canonicalUrl:"/"===m?i:`${i}${m}`,legacySourcePage:c.legacySourcePage||null,metaTitle:c.metaTitle||null}}function s(e){let t=n(e);for(let e of Object.keys(l))for(let[a,i]of Object.entries(l[e])){let l=r({collection:e,documentSlug:a});if(new Set([l.publicPath,n(a),n(i.outputFile),n(i.legacySourcePage)]).has(t))return l}return null}});let n="portfolio-os-api-root";async function r(){if("u"<typeof window)return"http://localhost:3001";let e=window.location.hostname;if("localhost"!==e&&"127.0.0.1"!==e)return"";let t=sessionStorage.getItem(n);if(t)return t;let a=Array.from({length:60},(e,t)=>3001+t);for(let t=0;t<a.length;t+=10){let i=a.slice(t,t+10);try{let t=await Promise.any(i.map(async t=>{let a=`http://${e}:${t}`;if(!(await fetch(`${a}/api/health`,{signal:AbortSignal.timeout(400)})).ok)throw Error("bad");return a}));return sessionStorage.setItem(n,t),t}catch{}}return`http://${e}:3001`}let s="u">typeof window,o=null;function c(){var e;return s?"localhost"!==(e=window.location.hostname)&&"127.0.0.1"!==e?Promise.resolve("/api/content"):(o||(o=(async()=>{let e=await r();return`${e}/api/content`})()),o):Promise.resolve("http://localhost:3001/api/content")}function m(e){return{collection:e,async listDocuments(){if(!s)return null;let t=await c(),a=await fetch(`${t}?collection=${e}&action=list`);return a.ok?((await a.json()).entries||[]).map(t=>{let a=t.id??t.slug;return{id:a,documentId:a,collection:e,slug:t.slug??a,title:t.title,published:t.published}}):null},async loadDocument(t){let a=await c(),i=await fetch(`${a}?collection=${e}&id=${encodeURIComponent(t)}&action=load`);if(!i.ok)throw Error(await i.text());return await i.json()},async saveDocument(t,a,i){let l=await c(),n=await fetch(l,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({collection:e,id:t,metadata:a,content:i,action:"save"})});if(!n.ok)throw Error(await n.text())},async createDocument(t,a){let i=await c(),l=await fetch(i,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({collection:e,action:"create",title:t,slug:a?.trim()||void 0})});if(!l.ok)throw Error(await l.text());return await l.json()}}}m("pages"),m("work");var d=l("iChGM");function u(e,t){let a=e??"";if(!t)return a;let i=function(e,t){if(!t)return e;let a=t.endsWith("/")?t:`${t}/`;return e.replace(/\]\((?!\/|https?:\/\/)([^)]+)\)/g,(e,t)=>`](${a}${t})`)}(a,t),l=String(t).replace(/\/$/,"");return(".."===l||"."===l)&&(i=i.replace(/\]\(\.\.\/\.\.\//g,"](../")),i}function p(e){return e?e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"):""}function g(e){if(!e)return"";let t=p(String(e));return(t=(t=(t=(t=t.replace(/&lt;br\s*\/?&gt;/gi,"<br />")).replace(/\[([^\]]+)\]\(([^)]+)\)/g,(e,t,a)=>`<a href="${p(a)}">${p(t)}</a>`)).replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>")).replace(/(^|[^\w])_([^_]+)_/g,"$1<i>$2</i>")).replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g,"$1<i>$2</i>")}function h(e){let t=String(e||"").trim().match(/^(#{1,3})\s+(.+)$/);return t?{level:t[1].length,text:t[2].trim()}:null}function f(e){let t=String(e||"").trim();return/^#{1,3}\s+/.test(t)||"---"===t||t.startsWith("![")||/^[-*]\s+/.test(t)||/^\d+\.\s+/.test(t)}function y(e,t,a){let i=a?/^\d+\.\s+(.+)$/:/^[-*]\s+(.+)$/,l=[],n="",r=t;for(;r<e.length;){let t=String(e[r]||"").trim();if(!t){let t=String(e[r+1]||"").trim();if(i.test(t)){n&&(l.push(n.trim()),n=""),r+=1;continue}if(n&&t&&!f(t)){n+=" ",r+=1;continue}break}let a=t.match(i);if(a){n&&l.push(n.trim()),n=a[1].trim(),r+=1;continue}if(f(t))break;n=n?`${n} ${t}`:t,r+=1}return n&&l.push(n.trim()),{items:l,nextIndex:r}}function v(e,{wrapper:t="wrapper",zoomClass:a="medium-zoom-medium",marginClass:i="mt-2xl"}={}){let l=[t,a,i].filter(Boolean).join(" ");return`
+<figure class="${l}">
+  <img class="medium-zoom-image" src="${e.src}" style="width: 100%; height: auto;" alt="${p(e.alt)}" loading="lazy" />
+</figure>`}function b(e,{marginClass:t="mt-3xl"}={}){let a=e.map((e,t)=>`
+  <figure class="medium-zoom-small${0===t?" ":""}">
+    <img class="medium-zoom-image" src="${e.src}" style="width: 100%; height: auto;" alt="${p(e.alt)}" loading="lazy" />
+  </figure>`).join("\n");return`
+<div class="wrapper two-column-image ${t}">
+${a}
+</div>`}function w(e){let t=e.blocks.filter(e=>"image"===e.type).map(e=>`        <img class="brands-list-image" src="${e.src}" alt="${p(e.alt)}" loading="lazy">`).join("\n");return`
+<div class="brands-list mt-4xl">
+  <h3>${p(e.title||"")}</h3>
+  <div class="brands-list-grid mt-xl">
+${t}
+  </div>
+</div>`}function $(e,{centered:t=!1,extraClass:a="featured-metrics",title:i=e.title}={}){let l,n,r=e.blocks.find(e=>"list"===e.type);if(!r)return"";let s=r.items.map(e=>{let a,i,l,n,r;return function(e,{centered:t=!1}={}){let a=String(e.value||"").replace(/%$/,"").trim(),i=e.arrow?`<span class="metric-number-arrow t-bold display-xl t-green-light">${e.arrow}</span>`:"",l=e.percent?'<span class="metric-number-percentage t-bold display-xl">%</span>':"";return`
+          <div class="metric">
+            <span class="metric-number display-xxxl">
+              ${i}
+              ${p(a)}
+              ${l}
+            </span>
+            <span class="${t?"body-medium t-ct":"body-medium"}">${g(e.label)}</span>
+          </div>`}((a=String(e||"").trim(),i="",l="",n=a,(r=a.match(/^\*\*([↑↓])\s*([\d.]+)%\*\*\s*(.+)$/))?(i=r[1],{arrow:i,value:l=r[2],percent:!0,label:n=r[3]}):(r=a.match(/^\*\*([\d.]+)%\*\*\s*(.+)$/))?{arrow:i,value:l=r[1],percent:!0,label:n=r[2]}:((r=a.match(/^\*\*([↑↓])\s*([^*]+)\*\*\s*(.+)$/))?(i=r[1],l=r[2].trim(),n=r[3]):(r=a.match(/^\*\*([^*]+)\*\*\s*(.+)$/))&&(l=r[1].trim(),n=r[2]),{arrow:i,value:l,percent:/%$/.test(l),label:n})),{centered:t})}).join("\n"),o=i?`        <h3 class="display-xl">${(n=(l=String(i||"").trim()).match(/^Achievements of the improved (.+)$/))?`Achievements of the improved <br /> ${p(n[1])}`:p(l)}</h3>
+`:"";return`
+<div class="${a} mt-3xl">
+  <div class="wrapper">
+${o}        <div class="metrics-list">
+${s}
+        </div>
+  </div>
+</div>`}function x(e,t={}){let a=u(e,t.rewriteMarkdownImageBase).split("\n"),i="",l=!1,n=!1;for(let e=0;e<a.length;e++){let t=a[e],r=a[e+1];if(t.startsWith("# ")||t.startsWith("## ")){l&&(i+="</ul>\n",l=!1);let e=t.startsWith("# ")?"mt-5xl":"mt-3xl",a=t.replace(/^#+\s*/,"").replace(/\*\*/g,"");i+=`<h2 class="${e}">${a}</h2>
+`;continue}if(t.startsWith("### ")){l&&(i+="</ul>\n",l=!1);let e=t.replace(/^#+\s*/,"").replace(/\*\*/g,"");i+=`<h3 class="mt-2xl">${e}</h3>
+`;continue}if(t.startsWith("**")&&t.endsWith("**")){let e=t.replace(/\*\*/g,"");if(e.includes("↑")){let[,t]=e.split("↑");i+=`<span class="metric-number display-xxxl"><span class="metric-number-arrow t-bold display-xl t-green-light">\u{2191}</span>${t}<span class="metric-number-percentage t-bold display-xl"></span></span>
+`}else if(e.includes("↓")){let[,t]=e.split("↓");i+=`<span class="metric-number display-xxxl"><span class="metric-number-arrow t-bold display-xl t-green-light">\u{2193}</span>${t}<span class="metric-number-percentage t-bold display-xl"></span></span>
+`}continue}if(t.startsWith("- ")||t.startsWith("* ")){l||(n&&(i+="</ol>\n",n=!1),i+='<ul class="ul">\n',l=!0);let e=t.replace(/^[-*]\s+/,"");i+=`<li class="li mt-sm">${g(e)}</li>
+`;continue}if(/^\d+\.\s+/.test(t.trim())){n||(l&&(i+="</ul>\n",l=!1),i+='<ol class="ol mt-md" type="1">\n',n=!0);let e=t.trim().replace(/^\d+\.\s+/,"");i+=`<li class="p">${g(e)}</li>
+`;continue}if(t.startsWith("![")){let a=t.match(/!\[([^\]]*)\]\(([^)]+)\)/);if(a){let[,t,l]=a;i+=`<figure class="wrapper medium-zoom-medium mt-2xl">
+  <img class="medium-zoom-image" src="${l}" style="width: 100%; height: auto;" alt="${p(t)}" loading="lazy" />
+</figure>
+`,r&&!r.startsWith("![")&&!r.startsWith("#")&&!r.startsWith("-")&&r.trim()&&(i+=`<figcaption class="body-small mt-xs t-ct">${g(r)}</figcaption>
+`,e++)}continue}if(""===t.trim()){l&&(i+="</ul>\n",l=!1),n&&(i+="</ol>\n",n=!1);continue}let s=g(t);i+=`<p class="mt-md">${s}</p>
+`}return l&&(i+="</ul>\n"),n&&(i+="</ol>\n"),i}let E=["work-body","projects-body"],k=[{componentName:"CaseHero",authorable:!1,surfaces:["work-shell"],editorMode:"generic",category:"narrative",description:"Shell component derived from frontmatter for work hero.",snippet:"",fields:[]},{componentName:"MetadataPanel",authorable:!1,surfaces:["work-shell"],editorMode:"generic",category:"evidence",description:"Shell component derived from frontmatter for metadata rows.",snippet:"",fields:[]},{componentName:"ProcessTimeline",authorable:!0,surfaces:E,editorMode:"custom",category:"process",description:"Step-by-step timeline for case study process narratives.",snippet:`<ProcessTimeline
+  title="Process timeline"
+  items='[{"title":"Discovery","period":"Week 1","description":"Mapped the problem space and aligned the team on the core hypothesis."},{"title":"Exploration","period":"Week 2","description":"Explored solution directions and narrowed the strongest interaction model."},{"title":"Validation","period":"Week 3","description":"Tested the concept and refined the narrative before handoff."}]'
+/>`,fields:[{name:"title",type:"string"},{name:"items",type:"string",required:!0,helpText:"JSON array string of timeline items."}]},{componentName:"ImpactResults",aliases:["Stats"],authorable:!0,surfaces:E,editorMode:"scalar",category:"evidence",description:"Impact summary with up to three metrics. Scalar-only in v1 by contract.",snippet:`<ImpactResults
+  title="Impact"
+  summary="What changed after the redesign shipped."
+  metricOneLabel="Support tickets"
+  metricOneValue="-39%"
+  metricOneNote="Within two months"
+  metricTwoLabel="Activation rate"
+  metricTwoValue="+56%"
+  metricTwoNote="Lead to trial conversion"
+  metricThreeLabel="Confidence"
+  metricThreeValue="Higher"
+  metricThreeNote="Qualitative user feedback"
+/>`,fields:[{name:"title",type:"string"},{name:"summary",type:"string"},{name:"metricOneLabel",type:"string"},{name:"metricOneValue",type:"string"},{name:"metricOneNote",type:"string"},{name:"metricTwoLabel",type:"string"},{name:"metricTwoValue",type:"string"},{name:"metricTwoNote",type:"string"},{name:"metricThreeLabel",type:"string"},{name:"metricThreeValue",type:"string"},{name:"metricThreeNote",type:"string"}]},{componentName:"GalleryGrid",aliases:["ImageGrid"],authorable:!0,surfaces:E,editorMode:"custom",category:"media",description:"Responsive image gallery for process artifacts and screens.",snippet:`<GalleryGrid
+  columns="2"
+  items='[{"src":"/work/01/images/example-1.png","alt":"Discovery board","caption":"Early discovery synthesis"},{"src":"/work/01/images/example-2.png","alt":"High fidelity screens","caption":"Final proposal screens"}]'
+/>`,fields:[{name:"columns",type:"number"},{name:"items",type:"string",required:!0,helpText:"JSON array string of gallery items."}]},{componentName:"PullQuote",authorable:!0,surfaces:E,editorMode:"scalar",category:"narrative",description:"Editorial quote or testimonial callout.",snippet:`<PullQuote
+  quote="The prototype made the system logic much easier to understand."
+  author="Stakeholder name"
+  role="Product Manager"
+  company="Company name"
+/>`,fields:[{name:"quote",type:"string",required:!0},{name:"author",type:"string"},{name:"role",type:"string"},{name:"company",type:"string"}]},{componentName:"FigmaEmbed",authorable:!0,surfaces:["work-body","projects-body","future-blog-body"],editorMode:"scalar",category:"media",description:"Specialized Figma embed with legacy URL normalization and open-in-Figma fallback.",snippet:`<FigmaEmbed
+  url="https://www.figma.com/design/FILE_KEY/File-Name?node-id=1-2"
+  title="Figma design file"
+  height={640}
+  caption="Open the full flow in Figma."
+/>`,fields:[{name:"url",type:"string",required:!0},{name:"title",type:"string"},{name:"height",type:"number"},{name:"caption",type:"string"}]},{componentName:"Callout",authorable:!0,surfaces:E,editorMode:"scalar",category:"narrative",description:"Narrative note, insight, or warning block.",snippet:`<Callout title="Key insight" variant="insight">
+  This block highlights the central takeaway without introducing a new top-level section.
+</Callout>`,fields:[{name:"title",type:"string"},{name:"variant",type:"string"}]},{componentName:"Figure",authorable:!0,surfaces:E,editorMode:"scalar",category:"media",description:"Single image with caption.",snippet:`<Figure
+  src="/work/01/images/example.png"
+  alt="Annotated interface"
+  caption="Annotated view of the final solution."
+/>`,fields:[{name:"src",type:"string",required:!0},{name:"alt",type:"string",required:!0},{name:"caption",type:"string"},{name:"fullWidth",type:"expression"}]},{componentName:"VideoEmbed",authorable:!0,surfaces:E,editorMode:"scalar",category:"media",description:"Embeds a supported video URL with fallback link.",snippet:`<VideoEmbed
+  url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  title="Prototype walkthrough"
+/>`,fields:[{name:"url",type:"string",required:!0},{name:"title",type:"string"}]},{componentName:"TOC",authorable:!0,surfaces:E,editorMode:"generic",category:"narrative",description:"Manual table of contents block.",snippet:`<TOC
+  title="On this page"
+  items='[{"id":"context","label":"Context"},{"id":"outcome","label":"Outcome"}]'
+/>`,fields:[{name:"title",type:"string"},{name:"items",type:"string",required:!0}]},{componentName:"BeforeAfter",authorable:!1,surfaces:E,editorMode:"generic",category:"media",description:"Legacy before/after comparison block kept for runtime compatibility.",snippet:"",fields:[]},{componentName:"Confidential",authorable:!1,surfaces:E,editorMode:"generic",category:"narrative",description:"Legacy confidential-content block kept for runtime compatibility.",snippet:"",fields:[]}];var d=l("iChGM");let I={pages:m("pages"),work:m("work")},B="work",C=null,S=document.getElementById("doc-list"),T=document.getElementById("editor-container"),L=document.getElementById("empty-editor"),j=document.getElementById("content-editor"),P=document.getElementById("preview-frame"),N=document.getElementById("save-status"),M=document.getElementById("block-catalog-wrap"),_=document.getElementById("block-catalog-list"),W=k.filter(e=>e.authorable&&e.surfaces.includes("work-body")).map(e=>({componentName:e.componentName,category:e.category,description:e.description,snippet:e.snippet||""})),A=W.map(e=>e.snippet||"");function F(){let e=document.getElementById("meta-w-protected-wrap"),t=document.getElementById("meta-w-status");e&&t&&(e.style.display="protected"===t.value?"grid":"none")}function q(){let e=document.getElementById("meta-slug"),t=e?e.value.trim():"",a=document.getElementById("meta-group-work"),i=document.getElementById("meta-group-about");a&&i&&("work"===B?(a.style.display="grid",i.style.display="none",F()):"pages"===B&&"about"===t?(i.style.display="grid",a.style.display="none"):(a.style.display="none",i.style.display="none"))}async function z(){let e=I[B],t=await e.listDocuments();if(S.innerHTML="",!t||0===t.length){S.innerHTML='<li class="empty-state">No documents yet</li>';return}t.forEach(e=>{let t=document.createElement("li");t.className=`doc-item ${e.published?"":"unpublished"}`,t.dataset.id=e.id,t.innerHTML=`
+          <div style="font-family: var(--font-display); color: var(--typography-gray-200);">${H(e.title)}</div>
+          <div style="font-size: var(--font-2xs); color: var(--typography-gray-300);">${e.slug}</div>
+        `,t.addEventListener("click",()=>O(e.id)),S.appendChild(t)})}async function O(e){let t=I[B];try{let a=await t.loadDocument(e);if(C=a,document.querySelectorAll(".doc-item").forEach(e=>e.classList.remove("active")),document.querySelector(`[data-id="${e}"]`)?.classList.add("active"),document.getElementById("meta-title").value=a.metadata.title||"",document.getElementById("meta-slug").value=a.slug||"",document.getElementById("meta-summary").value=a.metadata.summary||"",document.getElementById("meta-published").value=!1===a.metadata.published||"false"===a.metadata.published?"false":"true",document.getElementById("meta-publishedAt").value=a.metadata.publishedAt||"",j.value=a.content||"",["meta-w-description","meta-w-featured-image","meta-w-tags","meta-w-og-image","meta-w-protected-password","meta-a-description","meta-a-featured-image","meta-a-og-image"].forEach(e=>{let t=document.getElementById(e);t&&(t.value="")}),q(),"work"===B){document.getElementById("meta-w-description").value=a.metadata.description||"",document.getElementById("meta-w-featured-image").value=a.metadata.featured_image||"";let e=a.metadata.tags;document.getElementById("meta-w-tags").value=Array.isArray(e)?e.join(", "):e||"",document.getElementById("meta-w-og-image").value=a.metadata.og_image||"";let t=a.metadata.status||"published";document.getElementById("meta-w-status").value="draft"===t||"protected"===t||"published"===t?t:"published",document.getElementById("meta-w-protected-password").value=a.metadata.protected_password&&"null"!==a.metadata.protected_password?String(a.metadata.protected_password):"",F()}else"pages"===B&&"about"===a.slug&&(document.getElementById("meta-a-description").value=a.metadata.description||"",document.getElementById("meta-a-featured-image").value=a.metadata.featured_image||"",document.getElementById("meta-a-og-image").value=a.metadata.og_image||"");L.style.display="none",T.style.display="block",G(),V(),N.textContent=""}catch(e){alert("Error loading document: "+e.message)}}async function D(){if(!C)return;let e=I[B],t={...C.metadata,title:document.getElementById("meta-title").value,summary:document.getElementById("meta-summary").value,published:document.getElementById("meta-published").value,publishedAt:document.getElementById("meta-publishedAt").value};if("work"===B){t.description=document.getElementById("meta-w-description").value.trim(),t.featured_image=document.getElementById("meta-w-featured-image").value.trim();let e=document.getElementById("meta-w-tags").value.split(",").map(e=>e.trim()).filter(Boolean);e.length?t.tags=e:delete t.tags;let a=document.getElementById("meta-w-og-image").value.trim();if(a?t.og_image=a:delete t.og_image,t.status=document.getElementById("meta-w-status").value,"protected"!==t.status)delete t.protected_password;else{let e=document.getElementById("meta-w-protected-password").value.trim();e?t.protected_password=e:delete t.protected_password}}else if("pages"===B&&"about"===document.getElementById("meta-slug").value.trim()){t.description=document.getElementById("meta-a-description").value.trim(),t.featured_image=document.getElementById("meta-a-featured-image").value.trim();let e=document.getElementById("meta-a-og-image").value.trim();e?t.og_image=e:delete t.og_image}try{await e.saveDocument(C.id,t,j.value),N.textContent="Saved!",setTimeout(()=>N.textContent="",2e3),z(),V()}catch(e){N.textContent="Error: "+e.message}}async function R(e){try{let t=await fetch(e);if(!t.ok)return"";return await t.text()}catch(t){return console.warn(`Failed to load component: ${e}`,t),""}}async function V(){if(!C)return;let e=document.getElementById("meta-slug").value||C.slug||"",t={...C.metadata,title:document.getElementById("meta-title").value,summary:document.getElementById("meta-summary").value,published:document.getElementById("meta-published").value,publishedAt:document.getElementById("meta-publishedAt").value};if("work"===B){t.description=document.getElementById("meta-w-description").value.trim(),t.featured_image=document.getElementById("meta-w-featured-image").value.trim();let e=document.getElementById("meta-w-tags").value.split(",").map(e=>e.trim()).filter(Boolean);e.length?t.tags=e:delete t.tags,t.og_image=document.getElementById("meta-w-og-image").value.trim(),t.status=document.getElementById("meta-w-status").value;let a=document.getElementById("meta-w-protected-password").value.trim();a?t.protected_password=a:delete t.protected_password}else"pages"===B&&"about"===document.getElementById("meta-slug").value.trim()&&(t.description=document.getElementById("meta-a-description").value.trim(),t.featured_image=document.getElementById("meta-a-featured-image").value.trim(),t.og_image=document.getElementById("meta-a-og-image").value.trim());let a=j.value,i=document.getElementById("opt-rewrite-md-images"),l=i&&i.checked?"../":void 0,n=(0,d.resolveSiteRoute)({collection:B,documentSlug:e,metadata:t}),r=n.bodyClass,s=function({collection:e,slug:t,metadata:a,markdownBody:i,rewriteMarkdownImageBase:l}){let n=l?{rewriteMarkdownImageBase:l}:{};return"pages"===e&&"home"===t?function(e){let t=e.split("\n"),a="";a+='<header class="home-header wrapper">\n  <div class="home-logo-container">\n    <a class="home-logo-link btn btn-green body-small" href="/" aria-label="Renan Crociari logo">renancrociari</a>\n  </div>\n  <div class="home-hero">\n    <div class="hero-content">\n';let i=[];for(let e of t){if("---"===e.trim()||e.startsWith("# Featured Projects"))break;i.push(e)}for(;i.length>0&&""===i[0].trim();)i.shift();let l="",n=[];for(let e=0;e<i.length;e++){let t=i[e];t.startsWith("# ")&&!l?l=t.substring(2).trim():n.push(t)}!l&&i.length>0&&(l=i[0],n.length=0,i.slice(1).forEach(e=>n.push(e)));let r=n.map(e=>""===e.trim()?"<br>":e).join(" ").replace(/<br>\s*<br>/g,"<br>").trim();a+=`      <h1 class="hero">${l}</h1>
+`,r&&(a+=`      <span class="body-medium mt-xl">${r}</span>
+`),a+='    </div>\n  </div>\n</header>\n<section class="featured-projects wrapper">\n';let s=function(e){let t=e.split("\n"),a=[],i=null,l=!1;for(let e of t){if(e.startsWith("# Featured Projects")){l=!0;continue}if(l){if(e.startsWith("## "))i&&a.push(i),i={title:e.substring(3).trim(),description:[],link:null};else if(i)if(e.startsWith("[")&&e.includes("](")){let t=e.match(/\[([^\]]+)\]\(([^)]+)\)/);t&&(i.link={text:t[1],url:t[2]})}else""===e.trim()||e.startsWith("---")||i.description.push(e.trim())}}return i&&a.push(i),a}(e),o=["card-4","card-1","card-2","card-3"];return s.forEach((e,t)=>{let i,l,n,r,s,c=o[t]||"card-1";a+=(i=e.link?(0,d.resolveSiteRouteFromPath)(e.link.url):null,l=e.link?.text||"View case study",n=i?.publicPath||e.link?.url||"",r=`          ${l}
+          <div class="svg-button">
+            <svg viewBox="0 0 24.96 14.4" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5512 1.092C17.4649 1.18378 17.3963 1.29296 17.3496 1.41326C17.3028 1.53356 17.2787 1.6626 17.2787 1.79292C17.2787 1.92324 17.3028 2.05228 17.3496 2.17258C17.3963 2.29288 17.4649 2.40206 17.5512 2.49384L21.7897 7.03499H0.921394C0.677025 7.03499 0.442665 7.139 0.26987 7.32414C0.0970752 7.50928 0 7.76038 0 8.0222C0 8.28403 0.0970752 8.53513 0.26987 8.72026C0.677025 8.9054 0.677025 9.00941 0.921394 9.00941H21.7712L17.5512 13.521C17.3796 13.7059 17.2833 13.9561 17.2833 14.2169C17.2833 14.4777 17.3796 14.7279 17.5512 14.9129C17.7239 15.0968 17.9574 15.2 18.2008 15.2C18.4442 15.2 18.6778 15.0968 18.8504 14.9129L24.7105 8.63427C24.7893 8.55319 24.8521 8.45586 24.895 8.34814C24.9378 8.24041 24.9599 8.12451 24.9599 8.00739C24.9599 7.89028 24.9378 7.77438 24.895 7.66665C24.8521 7.55892 24.7893 7.4616 24.7105 7.38052L18.8596 1.092C18.774 0.999473 18.6721 0.92603 18.5598 0.875911C18.4475 0.825792 18.3271 0.799988 18.2054 0.799988C18.0838 0.799988 17.9634 0.825792 17.8511 0.875911C17.7388 0.92603 17.6369 0.999473 17.5512 1.092Z" />
+            </svg>
+          </div>`,s=`    <article class="project-card ${c}">
+      <div class="project-card-content">
+        <h2 class="t-white display-lg">${e.title}</h2>
+`,e.link&&(i?.isProtected&&i.authId?s+=`        <button class="btn body-medium btn-white btn-show-password" data-content-id="${i.authId}" aria-haspopup="dialog">
+${r}
+        </button>
+`:s+=`        <a class="btn body-medium btn-white" href="${n}">
+${r}
+        </a>
+`),s+="      </div>\n    </article>\n")}),a+="</section>\n"}(i):"pages"===e&&"about"===t?function(e,t,a={}){let i='<header class="content-header mt-5xl">\n';return i+='  <div class="wrapper">\n',i+='    <div class="content-hero">\n',i+=`      <h1 class="t-gray-200">${e.description}</h1>
+`,e.featured_image&&(i+='      <figure class="featured-image mt-2xl">\n',i+=`        <img src="${e.featured_image}" class="featured-image-img" alt="Picture of Renan Crociari" fetchpriority="high" />
+`,i+="      </figure>\n"),i+="    </div>\n",i+="  </div>\n",i+="</header>\n",i+='<div class="article-content">\n',i+=x(t,a),i+="</div>\n"}(a,i,n):"pages"===e?function(e,t,a={}){let i=p(String(e.title||""));return`<header class="content-header mt-5xl">
+  <div class="wrapper">
+    <div class="content-hero">
+      <h1 class="t-gray-200">${i}</h1>
+    </div>
+  </div>
+</header>
+<div class="article-content">
+${x(t,a)}
+</div>`}(a,i,n):function(e,t,a={}){let i="",l=String(e.slug||""),n=new Set(["farfetch-performance","dating-platform","journal-finder"]).has(l),r="journal-finder"===l?"t-gray-200":"t-white";return i+='<header class="content-header mt-5xl">\n',i+='  <div class="wrapper">\n',i+='    <div class="content-hero">\n',i+=`      <h1 class="${r}">${e.title}</h1>
+`,e.tags&&e.tags.length&&(i+='      <div class="tags body-small t-gray-300 mt-sm">\n',i+=`      ${e.tags.join(' <span class="divider">/</span> ')}
+`,i+="      </div>\n"),e.featured_image&&(i+='      <figure class="featured-image mt-2xl">\n',i+=`        <img src="${e.featured_image}" class="featured-image-img" alt="${e.title}" fetchpriority="high" />
+`,i+="      </figure>\n"),i+="    </div>\n",i+="  </div>\n",i+="</header>\n",i+='<div class="article-content">\n',i+=n?function(e,t,a={}){let i=u(t,a.rewriteMarkdownImageBase),l=String(e?.slug||"");return(function(e,t){if("dating-platform"!==t)return e;let a=[];for(let t of e){let e=a[a.length-1];if(2===t.titleLevel&&e&&1===e.titleLevel&&!String(e.title||"").startsWith("Achievements of")){e.blocks.push({type:"subheading",level:t.titleLevel,text:t.title}),e.blocks.push(...t.blocks);continue}a.push({...t,blocks:[...t.blocks]})}return a})(String(i||"").split(/\n---\n/g).map(e=>(function(e){let t=String(e||"").split("\n").map(e=>e.replace(/\r/g,""));for(;t.length&&!t[0].trim();)t.shift();for(;t.length&&!t[t.length-1].trim();)t.pop();if(!t.length)return null;let a=null,i=0,l=h(t[0]);l&&(a=l.text,i=l.level,t.shift());let n=[];for(let e=0;e<t.length;){let a=t[e].trim();if(!a){e+=1;continue}let i=h(a);if(i){n.push({type:"subheading",level:i.level,text:i.text}),e+=1;continue}let l=function(e){let t=String(e||"").match(/^!\[([^\]]*)\]\(([^)]+)\)$/);return t?{alt:t[1].trim(),src:t[2].trim()}:null}(a);if(l){n.push({type:"image",...l}),e+=1;continue}if(/^[-*]\s+/.test(a)){let{items:a,nextIndex:i}=y(t,e,!1);n.push({type:"list",ordered:!1,items:a}),e=i;continue}if(/^\d+\.\s+/.test(a)){let{items:a,nextIndex:i}=y(t,e,!0);n.push({type:"list",ordered:!0,items:a}),e=i;continue}let r=[a];for(e+=1;e<t.length&&t[e].trim()&&!f(t[e]);)r.push(t[e].trim()),e+=1;n.push({type:"paragraph",text:r.join(" ")})}return{title:a,titleLevel:i,blocks:n}})(e)).filter(Boolean),l).map((e,t)=>(function(e,t){if(!e?.blocks?.length&&!e?.title)return"";if("Executive summary"===e.title){let t=[],a=null;for(let i of e.blocks){if("subheading"===i.type){a={title:i.text,blocks:[]},t.push(a);continue}a&&a.blocks.push(i)}let i=t.map(e=>{let t=e.blocks.map(e=>{if("paragraph"===e.type)return`<p class="body-medium mt-sm">${g(e.text)}</p>`;if("list"===e.type){let t=e.items.map((e,t)=>`<li class="li body-large mt-xs">${g(e)}</li>`).join("\n");return`<ul class="ul mt-sm no-bullet">
+${t}
+</ul>`}return""}).join("\n");return`
+        <div>
+          <h3 class="body-small t-upper t-gray-300 t-semibold">${p(e.title)}</h3>
+          ${t}
+        </div>`}).join("\n");return`
+<div class="executive-summary">
+  <h2 class="mt-5xl">${p(e.title||"Executive summary")}</h2>
+  <div class="wrapper executive-summary-text mt-2xl mb-4xl">
+${i}
+  </div>
+</div>`}if("journal-finder"===t.slug&&"Metrics"===e.title)return $(e,{centered:!0,extraClass:"featured-metrics-2",title:""});if("journal-finder"===t.slug&&"Footnotes"===e.title){let t=e.blocks.find(e=>"list"===e.type&&e.ordered);if(!t)return"";let a=t.items.map((e,t)=>`    <li class="body-small t-gray-300">${g(e)}</li>`).join("\n");return`
+<div class="footnotes mt-4xl" role="contentinfo">
+  <ol class="ol">
+${a}
+  </ol>
+</div>`}if(String(e.title||"").startsWith("Achievements of"))return $(e);if(e.blocks.length>0&&e.blocks.every(e=>"image"===e.type)&&"Brands I collaborated with at Farfetch"===e.title)return w(e);let a="",i=!1,l=[],n=[],r=0,s=()=>{l.length&&(a+=function(e,t,{title:a="",sectionTitle:i="",titleLevel:l=1,clusterIndex:n=0}={}){if(!e.length)return"";let r="journal-finder"===t.slug&&"Impact"===a?"text-block mt-4xl":"text-block",s=function(e,{title:t="",sectionTitle:a="",titleLevel:i=1}={}){if("journal-finder"===e.slug)return{tag:"h2",className:"mt-5xl t-ct t-gray-300"};if("dating-platform"===e.slug)return i>=3?{tag:"h4",className:"mt-xl"}:2===i?/^Painpoint \d+:/i.test(t)?{tag:"h3",className:"mt-3xl"}:/metrics$/i.test(t)?{tag:"h4",className:"mt-xl"}:{tag:"h3",className:"mt-xl"}:{tag:"h3",className:0===e.sectionIndex?"mt-5xl":"mt-3xl"};return"farfetch-performance"===e.slug&&i>=2?{tag:"h3",className:String(a||"").startsWith("Case study")?"mt-2xl":"mt-xl"}:{tag:"h3",className:"mt-3xl"}}(t,{title:a,sectionTitle:i,titleLevel:l}),o=`
+<div class="${r}">
+`;a&&(o+=`  <${s.tag} class="${s.className}">${function(e,t){if(!e)return"";if("journal-finder"===t.slug){let t=e.match(/^(The context|The problem):\s*(.+)$/);if(t)return`${p(t[1])} <br /> ${p(t[2])}`}return g(e)}(a,t)}</${s.tag}>
+`);let c=0,m=0;for(let a of e){if("subheading"===a.type){let e=function(e,t,{sectionTitle:a="",subheadingIndex:i=0}={}){return"dating-platform"===t.slug?"Defining business KPI's"===a?{tag:"h4",className:"mt-xl"}:("Understanding the problem"===a&&/^Painpoint \d+:/i.test(e.text),{tag:"h3",className:0===i?"mt-3xl":"mt-xl"}):"farfetch-performance"===t.slug?{tag:e.level>=3?"h4":"h3",className:String(a||"").startsWith("Case study")&&0===i?"mt-2xl":"mt-3xl"}:{tag:e.level>=3?"h4":"h3",className:"mt-3xl"}}(a,t,{sectionTitle:i,subheadingIndex:c});o+=`  <${e.tag} class="${e.className}">${g(a.text)}</${e.tag}>
+`,c+=1,m=0;continue}if("paragraph"===a.type){let e="mt-md";"journal-finder"===t.slug&&(e=0===m?"p-high mt-3xl":"mt-xl"),o+=`  <p class="${e}">${g(a.text)}</p>
+`,m+=1;continue}"list"===a.type&&(o+=`${function(e,t,a){let i=e.items||[];if(!e.ordered&&"journal-finder"===t.slug&&("The problem: A high cost of discovery"===a||"My approach"===a)&&i.length>2){let e=i.slice(0,2).map(e=>`  <li class="p mt-md">${g(e)}</li>`).join("\n"),t=i.slice(2).map(e=>`    <li class="p mt-md">${g(e)}</li>`).join("\n");return`<ul class="ul">
+${e}
+</ul>
+<details class="read-more mt-xl">
+  <summary class="read-more-toggle body-large">Read more...</summary>
+  <ul class="ul read-more-content">
+${t}
+  </ul>
+</details>`}if(e.ordered){let e=i.map((e,t)=>`  <li class="${0===t?"p":"p mt-sm"}">${g(e)}</li>`).join("\n");return`<ol class="ol mt-md" type="1">
+${e}
+</ol>`}if("dating-platform"===t.slug&&"Defining business KPI's"===a){let e=i.map((e,t)=>`  <li class="${0===t?"p":"p mt-sm"}">${g(e)}</li>`).join("\n");return`<ul class="ul mt-md">
+${e}
+</ul>`}let l=(t.slug,"p mt-md"),n=i.map(e=>`  <li class="${l}">${g(e)}</li>`).join("\n");return`<ul class="ul">
+${n}
+</ul>`}(a,t,i)}
+`)}return o+"</div>\n"}(l,t,{title:i?"":e.title,sectionTitle:e.title,titleLevel:e.titleLevel||1,clusterIndex:+!!i}),l=[],i=!0)},o=()=>{n.length&&(a+=function(e,t,a,i){if(!e.length)return"";if("dating-platform"===t.slug&&1===e.length&&/menu-hamburger-poster\.webp$/i.test(e[0].src))return`${function(e,{marginClass:t="mt-2xl"}={}){let a=e.src.replace(/-poster\.webp$/i,"-compressed.mp4");return`
+<figure class="medium-zoom-medium ${t}">
+  <video poster="${e.src}" style="width: 100%; height: auto; display: block;" autoplay loop muted playsinline>
+    <source src="${a}" type="video/mp4">
+  </video>
+  <figcaption class="body-small" style="text-align: center; margin-top: 8px;">
+    ${g(e.alt)}
+  </figcaption>
+</figure>`}(e[0])}
+`;if(12===e.length&&"Brands I collaborated with at Farfetch"===a)return w({title:a,blocks:e.map(e=>({type:"image",...e}))});if("journal-finder"===t.slug&&"My approach"===a&&4===e.length){let t=e[0].alt;return`${b(e.slice(0,2),{marginClass:"mt-4xl"})}
+${b(e.slice(2),{marginClass:"mt-sm"})}
+<figcaption class="body-small wrapper mt-xs t-ct">${g(t)}</figcaption>
+`}if("journal-finder"===t.slug&&"The solution"===a&&5===e.length)return`${v(e[0],{wrapper:"wrapper",zoomClass:"medium-zoom-large",marginClass:"mt-4xl"})}
+${b(e.slice(1,3),{marginClass:"mt-sm"})}
+${b(e.slice(3),{marginClass:"mt-sm"})}
+`;if(2===e.length){let a="journal-finder"===t.slug&&i>0?"mt-sm":"mt-3xl";return`${b(e,{marginClass:a})}
+`}if(1===e.length){let i=e[0],l="medium-zoom-medium",n="mt-2xl";"journal-finder"===t.slug&&"The context: a fragmented legacy"===a&&(n="mt-4xl"),"dating-platform"===t.slug&&/explore-page\.webp$|profile-page\.webp$/i.test(i.src)&&(l="medium-zoom-large",n="mt-3xl");let r=v(i,{wrapper:"wrapper",zoomClass:l,marginClass:n}),s=i.alt?`<figcaption class="body-small${"journal-finder"===t.slug?"  mt-xs t-ct":" mt-xs t-ct"}">${g(i.alt)}</figcaption>
+`:"";return`${r}
+${s}`}return e.map(e=>v(e,{wrapper:"wrapper",zoomClass:"medium-zoom-medium",marginClass:0===i?"mt-2xl":"mt-sm"})).join("\n")}(n,t,e.title,r),n=[],r+=1)};for(let t of e.blocks){if("image"===t.type){s(),n.push(t);continue}o(),l.push(t)}return s(),o(),a})(e,{slug:l,sectionIndex:t})).join("")}(e,t,a):x(t,a),i+="</div>\n"}(a,i,n)}({collection:B,slug:e,metadata:t,markdownBody:a,rewriteMarkdownImageBase:l}),[o,c,m,E]=await Promise.all([R("../components/navbar.html"),R("../components/footer.html"),R("../components/email-dialog.html"),R("../components/password-dialog.html")]),k="work"===B&&"protected"===String(t.status)&&t.protected_password?`<script type="module">
+    import { isAuthenticated } from '../scripts/password-auth.js';
+    if (!isAuthenticated('${n.authId}')) {
+      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
+      window.location.href = '/#password-protected?content=${n.authId}';
+    }
+  </\script>`:"",I=t.og_image?String(t.og_image).trim():"",S=I?`<meta property="og:image" content="${H(I)}" />
+  `:"",T=n.canonicalUrl?`<link rel="canonical" href="${H(n.canonicalUrl)}" />
+  `:"",L=`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <title>${H(n.metaTitle||t.title||"Preview")} \xb7 Preview</title>
+  ${T}${S}${k}
+  <\!-- Mesmo CSS do site real -->
+  <link rel="stylesheet" href="../styles/global.css" />
+  <link rel="stylesheet" href="../styles/reset.css" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  <\!-- Fonts -->
+  <link rel="preload" href="../fonts/degular.woff2" as="font" type="font/woff2" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&text=renancrociari" rel="stylesheet">
+  <\!-- Preview badge style -->
+  <style>
+    .preview-badge {
+      position: fixed;
+      top: var(--spacing-sm);
+      right: var(--spacing-sm);
+      background: var(--typography-green-light);
+      color: var(--background-body);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--br-xxxs);
+      font-family: var(--font-display);
+      font-size: var(--font-2xs);
+      z-index: 10000;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="${r}">
+  <\!-- Badge de preview -->
+  <div class="preview-badge">PREVIEW MODE</div>
+
+  <\!-- Componentes do site real -->
+  ${m}
+  ${o}
+
+  <\!-- Conte\xfado renderizado (mesmo HTML que build: home / about / work / p\xe1gina gen\xe9rica) -->
+  ${s}
+
+  ${E}
+  ${c}
+
+  <\!-- Script m\xednimo para interatividade b\xe1sica -->
+  <script type="module">
+    // Email dialog functionality
+    const emailDialog = document.querySelector('.dialog-show-email');
+    const showEmailBtns = document.querySelectorAll('.btn-show-email');
+    const closeEmailBtn = document.querySelector('.btn-close-email');
+    const copyEmailBtn = document.querySelector('.btn-copy-email');
+
+    showEmailBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (emailDialog) emailDialog.showModal();
+      });
+    });
+
+    if (closeEmailBtn && emailDialog) {
+      closeEmailBtn.addEventListener('click', () => {
+        emailDialog.close();
+      });
+    }
+
+    if (copyEmailBtn) {
+      copyEmailBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('me@renancrociari.com');
+          copyEmailBtn.textContent = 'Copied!';
+          setTimeout(() => copyEmailBtn.textContent = 'Copy', 2000);
+        } catch (err) {
+          copyEmailBtn.textContent = 'Error';
+        }
+      });
+    }
+
+    // Navbar mobile toggle
+    const navToggle = document.querySelector('.mobile-nav-toggle');
+    const mainNav = document.querySelector('.main-nav-list');
+
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', () => {
+        const isVisible = mainNav.getAttribute('data-visible') === 'true';
+        mainNav.setAttribute('data-visible', !isVisible);
+        navToggle.setAttribute('aria-expanded', !isVisible);
+      });
+    }
+  </\script>
+</body>
+</html>`,N=P.contentDocument;N.open(),N.write(L),N.close()}async function U(){let e=prompt("Enter document title:");if(!e)return;let t=prompt("Enter slug (optional, will be auto-generated):"),a=I[B];try{let i=await a.createDocument(e,t||void 0);z(),O(i.entry.id)}catch(e){alert("Error creating document: "+e.message)}}function H(e){if(!e)return"";let t=document.createElement("div");return t.textContent=e,t.innerHTML}function G(){if(!M)return;let e="work"===B&&"none"!==T.style.display;M.style.display=e?"block":"none"}function K(e){let t=e.target.id;C&&t&&t.startsWith("meta-")&&("meta-slug"===t&&q(),"meta-w-status"===t&&F(),V())}document.querySelectorAll(".collection-tab").forEach(e=>{e.addEventListener("click",()=>{document.querySelectorAll(".collection-tab").forEach(e=>e.classList.remove("active")),e.classList.add("active"),B=e.dataset.collection,C=null,T.style.display="none",L.style.display="block",q(),G(),z()})}),document.getElementById("btn-new").addEventListener("click",U),document.getElementById("btn-save").addEventListener("click",D),document.getElementById("btn-preview").addEventListener("click",V),document.getElementById("metadata-form").addEventListener("input",K),document.getElementById("metadata-form").addEventListener("change",K),document.getElementById("opt-rewrite-md-images")?.addEventListener("change",()=>{C&&V()}),j.addEventListener("input",()=>{N.textContent="Unsaved changes"}),document.querySelectorAll(".viewport-btn").forEach(e=>{e.addEventListener("click",()=>{document.querySelectorAll(".viewport-btn").forEach(e=>e.classList.remove("active")),e.classList.add("active");let t=e.dataset.width,a=e.dataset.height;P.style.width=t,"100%"!==a?P.style.height=a:P.style.height="100%"})}),document.addEventListener("keydown",e=>{(e.metaKey||e.ctrlKey)&&"s"===e.key&&(e.preventDefault(),D())}),_.innerHTML=W.map((e,t)=>`
+        <div class="block-catalog-item">
+          <h4>${H(e.componentName)}</h4>
+          <div class="meta">${H(e.category)}</div>
+          <p>${H(e.description)}</p>
+          <button type="button" class="btn-insert-snippet" data-snippet-idx="${t}" ${e.snippet?"":"disabled"}>
+            Inserir snippet
+          </button>
+        </div>`).join(""),_.addEventListener("click",e=>{var t,a;let i,l,n,r,s,o=e.target.closest(".btn-insert-snippet");if(!o||o.disabled)return;let c=A[parseInt(o.getAttribute("data-snippet-idx"),10)];c&&(t=j,a=c,i=`
+
+${a.trim()}
+
+`,l=t.selectionStart??t.value.length,n=t.selectionEnd??t.value.length,r=t.value.slice(0,l),s=t.value.slice(n),t.value=r+i+s,t.selectionStart=t.selectionEnd=l+i.length,t.focus(),N.textContent="Unsaved changes",V())}),G(),z();</script>
+
+
+

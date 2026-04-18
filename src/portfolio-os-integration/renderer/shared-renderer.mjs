@@ -9,6 +9,7 @@
  */
 
 import { rewriteRelativeImagePaths } from '@portfolio-os/core/content-utils';
+import { resolveSiteRouteFromPath } from '../config/routing-manifest.mjs';
 
 /**
  * @typedef {Object} RenderOptions
@@ -733,12 +734,717 @@ function escapeHtml(text) {
     .replace(/'/g, '&#039;');
 }
 
-function openingFeaturedMetrics() {
-  return '<div class="featured-metrics mt-3xl"><div class="wrapper"><h3 class="display-xl">Achievements</h3><div class="metrics-list">';
+function renderInlineMarkdown(text) {
+  if (!text) return '';
+  let out = escapeHtml(String(text));
+  out = out.replace(/&lt;br\s*\/?&gt;/gi, '<br />');
+  out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
+    return `<a href="${escapeHtml(url)}">${escapeHtml(label)}</a>`;
+  });
+  out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/(^|[^\w])_([^_]+)_/g, '$1<i>$2</i>');
+  out = out.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<i>$2</i>');
+  return out;
 }
 
-function closingFeaturedMetrics() {
-  return '</div></div></div>';
+function parseMarkdownImageLine(line) {
+  const match = String(line || '').match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+  if (!match) return null;
+  return {
+    alt: match[1].trim(),
+    src: match[2].trim(),
+  };
+}
+
+function parseMarkdownHeading(line) {
+  const match = String(line || '').trim().match(/^(#{1,3})\s+(.+)$/);
+  if (!match) return null;
+  return {
+    level: match[1].length,
+    text: match[2].trim(),
+  };
+}
+
+function isMarkdownSpecialLine(line) {
+  const value = String(line || '').trim();
+  return (
+    /^#{1,3}\s+/.test(value) ||
+    value === '---' ||
+    value.startsWith('![') ||
+    /^[-*]\s+/.test(value) ||
+    /^\d+\.\s+/.test(value)
+  );
+}
+
+function parseMarkdownList(lines, startIndex, ordered) {
+  const itemRegex = ordered ? /^\d+\.\s+(.+)$/ : /^[-*]\s+(.+)$/;
+  const items = [];
+  let currentItem = '';
+  let i = startIndex;
+
+  while (i < lines.length) {
+    const trimmed = String(lines[i] || '').trim();
+
+    if (!trimmed) {
+      const nextTrimmed = String(lines[i + 1] || '').trim();
+
+      if (itemRegex.test(nextTrimmed)) {
+        if (currentItem) {
+          items.push(currentItem.trim());
+          currentItem = '';
+        }
+        i += 1;
+        continue;
+      }
+
+      if (currentItem && nextTrimmed && !isMarkdownSpecialLine(nextTrimmed)) {
+        currentItem += ' ';
+        i += 1;
+        continue;
+      }
+
+      break;
+    }
+
+    const itemMatch = trimmed.match(itemRegex);
+    if (itemMatch) {
+      if (currentItem) {
+        items.push(currentItem.trim());
+      }
+      currentItem = itemMatch[1].trim();
+      i += 1;
+      continue;
+    }
+
+    if (isMarkdownSpecialLine(trimmed)) {
+      break;
+    }
+
+    currentItem = currentItem ? `${currentItem} ${trimmed}` : trimmed;
+    i += 1;
+  }
+
+  if (currentItem) {
+    items.push(currentItem.trim());
+  }
+
+  return {
+    items,
+    nextIndex: i,
+  };
+}
+
+function parseMarkdownSection(rawSection) {
+  const lines = String(rawSection || '')
+    .split('\n')
+    .map((line) => line.replace(/\r/g, ''));
+  while (lines.length && !lines[0].trim()) lines.shift();
+  while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+  if (!lines.length) return null;
+
+  let title = null;
+  let titleLevel = 0;
+  const initialHeading = parseMarkdownHeading(lines[0]);
+  if (initialHeading) {
+    title = initialHeading.text;
+    titleLevel = initialHeading.level;
+    lines.shift();
+  }
+
+  const blocks = [];
+  for (let i = 0; i < lines.length; ) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      i += 1;
+      continue;
+    }
+
+    const heading = parseMarkdownHeading(trimmed);
+    if (heading) {
+      blocks.push({ type: 'subheading', level: heading.level, text: heading.text });
+      i += 1;
+      continue;
+    }
+
+    const image = parseMarkdownImageLine(trimmed);
+    if (image) {
+      blocks.push({ type: 'image', ...image });
+      i += 1;
+      continue;
+    }
+
+    if (/^[-*]\s+/.test(trimmed)) {
+      const { items, nextIndex } = parseMarkdownList(lines, i, false);
+      blocks.push({ type: 'list', ordered: false, items });
+      i = nextIndex;
+      continue;
+    }
+
+    if (/^\d+\.\s+/.test(trimmed)) {
+      const { items, nextIndex } = parseMarkdownList(lines, i, true);
+      blocks.push({ type: 'list', ordered: true, items });
+      i = nextIndex;
+      continue;
+    }
+
+    const paragraphLines = [trimmed];
+    i += 1;
+    while (i < lines.length && lines[i].trim() && !isMarkdownSpecialLine(lines[i])) {
+      paragraphLines.push(lines[i].trim());
+      i += 1;
+    }
+    blocks.push({ type: 'paragraph', text: paragraphLines.join(' ') });
+  }
+
+  return {
+    title,
+    titleLevel,
+    blocks,
+  };
+}
+
+function parseMarkdownSections(raw) {
+  return String(raw || '')
+    .split(/\n---\n/g)
+    .map((section) => parseMarkdownSection(section))
+    .filter(Boolean);
+}
+
+function mergeStructuredSubsections(sections, slug) {
+  if (slug !== 'dating-platform') {
+    return sections;
+  }
+
+  const merged = [];
+
+  for (const section of sections) {
+    const parent = merged[merged.length - 1];
+    const canMerge =
+      section.titleLevel === 2 &&
+      parent &&
+      parent.titleLevel === 1 &&
+      !String(parent.title || '').startsWith('Achievements of');
+
+    if (canMerge) {
+      parent.blocks.push({ type: 'subheading', level: section.titleLevel, text: section.title });
+      parent.blocks.push(...section.blocks);
+      continue;
+    }
+
+    merged.push({
+      ...section,
+      blocks: [...section.blocks],
+    });
+  }
+
+  return merged;
+}
+
+function renderMetricTitle(title) {
+  const raw = String(title || '').trim();
+  const match = raw.match(/^Achievements of the improved (.+)$/);
+  if (match) {
+    return `Achievements of the improved <br /> ${escapeHtml(match[1])}`;
+  }
+  return escapeHtml(raw);
+}
+
+function parseMetricItem(item) {
+  const raw = String(item || '').trim();
+  let arrow = '';
+  let value = '';
+  let label = raw;
+
+  let match = raw.match(/^\*\*([↑↓])\s*([\d.]+)%\*\*\s*(.+)$/);
+  if (match) {
+    arrow = match[1];
+    value = match[2];
+    label = match[3];
+    return { arrow, value, percent: true, label };
+  }
+
+  match = raw.match(/^\*\*([\d.]+)%\*\*\s*(.+)$/);
+  if (match) {
+    value = match[1];
+    label = match[2];
+    return { arrow, value, percent: true, label };
+  }
+
+  match = raw.match(/^\*\*([↑↓])\s*([^*]+)\*\*\s*(.+)$/);
+  if (match) {
+    arrow = match[1];
+    value = match[2].trim();
+    label = match[3];
+    return { arrow, value, percent: /%$/.test(value), label };
+  }
+
+  match = raw.match(/^\*\*([^*]+)\*\*\s*(.+)$/);
+  if (match) {
+    value = match[1].trim();
+    label = match[2];
+  }
+
+  return {
+    arrow,
+    value,
+    percent: /%$/.test(value),
+    label,
+  };
+}
+
+function renderMetricBlock(metric, { centered = false } = {}) {
+  const value = String(metric.value || '').replace(/%$/, '').trim();
+  const bodyClass = centered ? 'body-medium t-ct' : 'body-medium';
+  const arrowHtml = metric.arrow
+    ? `<span class="metric-number-arrow t-bold display-xl t-green-light">${metric.arrow}</span>`
+    : '';
+  const percentHtml = metric.percent
+    ? '<span class="metric-number-percentage t-bold display-xl">%</span>'
+    : '';
+
+  return `
+          <div class="metric">
+            <span class="metric-number display-xxxl">
+              ${arrowHtml}
+              ${escapeHtml(value)}
+              ${percentHtml}
+            </span>
+            <span class="${bodyClass}">${renderInlineMarkdown(metric.label)}</span>
+          </div>`;
+}
+
+function renderZoomImage(image, { wrapper = 'wrapper', zoomClass = 'medium-zoom-medium', marginClass = 'mt-2xl' } = {}) {
+  const className = [wrapper, zoomClass, marginClass].filter(Boolean).join(' ');
+  return `
+<figure class="${className}">
+  <img class="medium-zoom-image" src="${image.src}" style="width: 100%; height: auto;" alt="${escapeHtml(image.alt)}" loading="lazy" />
+</figure>`;
+}
+
+function renderZoomVideoFromPoster(image, { marginClass = 'mt-2xl' } = {}) {
+  const mp4 = image.src.replace(/-poster\.webp$/i, '-compressed.mp4');
+  return `
+<figure class="medium-zoom-medium ${marginClass}">
+  <video poster="${image.src}" style="width: 100%; height: auto; display: block;" autoplay loop muted playsinline>
+    <source src="${mp4}" type="video/mp4">
+  </video>
+  <figcaption class="body-small" style="text-align: center; margin-top: 8px;">
+    ${renderInlineMarkdown(image.alt)}
+  </figcaption>
+</figure>`;
+}
+
+function renderTwoColumnImages(images, { marginClass = 'mt-3xl' } = {}) {
+  const figures = images
+    .map(
+      (image, index) => `
+  <figure class="medium-zoom-small${index === 0 ? ' ' : ''}">
+    <img class="medium-zoom-image" src="${image.src}" style="width: 100%; height: auto;" alt="${escapeHtml(image.alt)}" loading="lazy" />
+  </figure>`
+    )
+    .join('\n');
+  return `
+<div class="wrapper two-column-image ${marginClass}">
+${figures}
+</div>`;
+}
+
+function renderBrandsGrid(section) {
+  const images = section.blocks.filter((block) => block.type === 'image');
+  const itemsHtml = images
+    .map(
+      (image) =>
+        `        <img class="brands-list-image" src="${image.src}" alt="${escapeHtml(image.alt)}" loading="lazy">`
+    )
+    .join('\n');
+  return `
+<div class="brands-list mt-4xl">
+  <h3>${escapeHtml(section.title || '')}</h3>
+  <div class="brands-list-grid mt-xl">
+${itemsHtml}
+  </div>
+</div>`;
+}
+
+function renderExecutiveSummarySection(section) {
+  const groups = [];
+  let current = null;
+
+  for (const block of section.blocks) {
+    if (block.type === 'subheading') {
+      current = { title: block.text, blocks: [] };
+      groups.push(current);
+      continue;
+    }
+    if (current) {
+      current.blocks.push(block);
+    }
+  }
+
+  const groupsHtml = groups
+    .map((group) => {
+      const bodyHtml = group.blocks
+        .map((block) => {
+          if (block.type === 'paragraph') {
+            return `<p class="body-medium mt-sm">${renderInlineMarkdown(block.text)}</p>`;
+          }
+          if (block.type === 'list') {
+            const items = block.items
+              .map((item, index) => `<li class="li body-large ${index === 0 ? 'mt-xs' : 'mt-xs'}">${renderInlineMarkdown(item)}</li>`)
+              .join('\n');
+            return `<ul class="ul mt-sm no-bullet">\n${items}\n</ul>`;
+          }
+          return '';
+        })
+        .join('\n');
+
+      return `
+        <div>
+          <h3 class="body-small t-upper t-gray-300 t-semibold">${escapeHtml(group.title)}</h3>
+          ${bodyHtml}
+        </div>`;
+    })
+    .join('\n');
+
+  return `
+<div class="executive-summary">
+  <h2 class="mt-5xl">${escapeHtml(section.title || 'Executive summary')}</h2>
+  <div class="wrapper executive-summary-text mt-2xl mb-4xl">
+${groupsHtml}
+  </div>
+</div>`;
+}
+
+function renderFeaturedMetricsSection(section, { centered = false, extraClass = 'featured-metrics', title = section.title } = {}) {
+  const listBlock = section.blocks.find((block) => block.type === 'list');
+  if (!listBlock) return '';
+  const metricsHtml = listBlock.items
+    .map((item) => renderMetricBlock(parseMetricItem(item), { centered }))
+    .join('\n');
+  const titleHtml = title ? `        <h3 class="display-xl">${renderMetricTitle(title)}</h3>\n` : '';
+
+  return `
+<div class="${extraClass} mt-3xl">
+  <div class="wrapper">
+${titleHtml}        <div class="metrics-list">
+${metricsHtml}
+        </div>
+  </div>
+</div>`;
+}
+
+function renderFootnotesSection(section) {
+  const listBlock = section.blocks.find((block) => block.type === 'list' && block.ordered);
+  if (!listBlock) return '';
+  const items = listBlock.items
+    .map((item, index) => `    <li class="body-small t-gray-300">${renderInlineMarkdown(item)}</li>`)
+    .join('\n');
+  return `
+<div class="footnotes mt-4xl" role="contentinfo">
+  <ol class="ol">
+${items}
+  </ol>
+</div>`;
+}
+
+function renderWorkListBlock(block, ctx, sectionTitle) {
+  const items = block.items || [];
+
+  if (!block.ordered && ctx.slug === 'journal-finder' && (sectionTitle === 'The problem: A high cost of discovery' || sectionTitle === 'My approach') && items.length > 2) {
+    const visible = items.slice(0, 2)
+      .map((item) => `  <li class="p mt-md">${renderInlineMarkdown(item)}</li>`)
+      .join('\n');
+    const hidden = items.slice(2)
+      .map((item) => `    <li class="p mt-md">${renderInlineMarkdown(item)}</li>`)
+      .join('\n');
+
+    return `<ul class="ul">\n${visible}\n</ul>
+<details class="read-more mt-xl">
+  <summary class="read-more-toggle body-large">Read more...</summary>
+  <ul class="ul read-more-content">
+${hidden}
+  </ul>
+</details>`;
+  }
+
+  if (block.ordered) {
+    const itemsHtml = items
+      .map((item, index) => `  <li class="${index === 0 ? 'p' : 'p mt-sm'}">${renderInlineMarkdown(item)}</li>`)
+      .join('\n');
+    return `<ol class="ol mt-md" type="1">\n${itemsHtml}\n</ol>`;
+  }
+
+  if (ctx.slug === 'dating-platform' && sectionTitle === "Defining business KPI's") {
+    const itemsHtml = items
+      .map((item, index) => `  <li class="${index === 0 ? 'p' : 'p mt-sm'}">${renderInlineMarkdown(item)}</li>`)
+      .join('\n');
+    return `<ul class="ul mt-md">\n${itemsHtml}\n</ul>`;
+  }
+
+  const listItemClass = ctx.slug === 'farfetch-performance' ? 'p mt-md' : 'p mt-md';
+  const itemsHtml = items
+    .map((item) => `  <li class="${listItemClass}">${renderInlineMarkdown(item)}</li>`)
+    .join('\n');
+  return `<ul class="ul">\n${itemsHtml}\n</ul>`;
+}
+
+function getSectionTitleHtml(title, ctx) {
+  if (!title) return '';
+  if (ctx.slug === 'journal-finder') {
+    const match = title.match(/^(The context|The problem):\s*(.+)$/);
+    if (match) {
+      return `${escapeHtml(match[1])} <br /> ${escapeHtml(match[2])}`;
+    }
+  }
+  return renderInlineMarkdown(title);
+}
+
+function getSectionTitleMeta(ctx, { title = '', sectionTitle = '', titleLevel = 1 } = {}) {
+  if (ctx.slug === 'journal-finder') {
+    return { tag: 'h2', className: 'mt-5xl t-ct t-gray-300' };
+  }
+
+  if (ctx.slug === 'dating-platform') {
+    if (titleLevel >= 3) {
+      return { tag: 'h4', className: 'mt-xl' };
+    }
+
+    if (titleLevel === 2) {
+      if (/^Painpoint \d+:/i.test(title)) {
+        return { tag: 'h3', className: 'mt-3xl' };
+      }
+      if (/metrics$/i.test(title)) {
+        return { tag: 'h4', className: 'mt-xl' };
+      }
+      return { tag: 'h3', className: 'mt-xl' };
+    }
+
+    return {
+      tag: 'h3',
+      className: ctx.sectionIndex === 0 ? 'mt-5xl' : 'mt-3xl',
+    };
+  }
+
+  if (ctx.slug === 'farfetch-performance') {
+    if (titleLevel >= 2) {
+      return {
+        tag: 'h3',
+        className: String(sectionTitle || '').startsWith('Case study') ? 'mt-2xl' : 'mt-xl',
+      };
+    }
+    return { tag: 'h3', className: 'mt-3xl' };
+  }
+
+  return { tag: 'h3', className: 'mt-3xl' };
+}
+
+function getSubheadingMeta(block, ctx, { sectionTitle = '', subheadingIndex = 0 } = {}) {
+  if (ctx.slug === 'dating-platform') {
+    if (sectionTitle === "Defining business KPI's") {
+      return { tag: 'h4', className: 'mt-xl' };
+    }
+
+    if (sectionTitle === 'Understanding the problem' && /^Painpoint \d+:/i.test(block.text)) {
+      return { tag: 'h3', className: subheadingIndex === 0 ? 'mt-3xl' : 'mt-xl' };
+    }
+
+    return { tag: 'h3', className: subheadingIndex === 0 ? 'mt-3xl' : 'mt-xl' };
+  }
+
+  if (ctx.slug === 'farfetch-performance') {
+    return {
+      tag: block.level >= 3 ? 'h4' : 'h3',
+      className: String(sectionTitle || '').startsWith('Case study') && subheadingIndex === 0 ? 'mt-2xl' : 'mt-3xl',
+    };
+  }
+
+  return {
+    tag: block.level >= 3 ? 'h4' : 'h3',
+    className: 'mt-3xl',
+  };
+}
+
+function renderTextCluster(blocks, ctx, { title = '', sectionTitle = '', titleLevel = 1, clusterIndex = 0 } = {}) {
+  if (!blocks.length) return '';
+  const wrapperClass =
+    ctx.slug === 'journal-finder' && title === 'Impact'
+      ? 'text-block mt-4xl'
+      : 'text-block';
+  const titleMeta = getSectionTitleMeta(ctx, { title, sectionTitle, titleLevel });
+
+  let html = `\n<div class="${wrapperClass}">\n`;
+  if (title) {
+    html += `  <${titleMeta.tag} class="${titleMeta.className}">${getSectionTitleHtml(title, ctx)}</${titleMeta.tag}>\n`;
+  }
+
+  let subheadingIndex = 0;
+  let paragraphIndex = 0;
+  for (const block of blocks) {
+    if (block.type === 'subheading') {
+      const subheadingMeta = getSubheadingMeta(block, ctx, { sectionTitle, subheadingIndex });
+      html += `  <${subheadingMeta.tag} class="${subheadingMeta.className}">${renderInlineMarkdown(block.text)}</${subheadingMeta.tag}>\n`;
+      subheadingIndex += 1;
+      paragraphIndex = 0;
+      continue;
+    }
+
+    if (block.type === 'paragraph') {
+      let paragraphClass = 'mt-md';
+      if (ctx.slug === 'journal-finder') {
+        paragraphClass = paragraphIndex === 0 ? 'p-high mt-3xl' : 'mt-xl';
+      }
+      html += `  <p class="${paragraphClass}">${renderInlineMarkdown(block.text)}</p>\n`;
+      paragraphIndex += 1;
+      continue;
+    }
+
+    if (block.type === 'list') {
+      html += `${renderWorkListBlock(block, ctx, sectionTitle)}\n`;
+    }
+  }
+
+  html += '</div>\n';
+  return html;
+}
+
+function renderImageGroup(images, ctx, sectionTitle, groupIndex) {
+  if (!images.length) return '';
+
+  if (ctx.slug === 'dating-platform' && images.length === 1 && /menu-hamburger-poster\.webp$/i.test(images[0].src)) {
+    return `${renderZoomVideoFromPoster(images[0])}\n`;
+  }
+
+  if (images.length === 12 && sectionTitle === 'Brands I collaborated with at Farfetch') {
+    return renderBrandsGrid({ title: sectionTitle, blocks: images.map((image) => ({ type: 'image', ...image })) });
+  }
+
+  if (ctx.slug === 'journal-finder' && sectionTitle === 'My approach' && images.length === 4) {
+    const captionText = images[0].alt;
+    return `${renderTwoColumnImages(images.slice(0, 2), { marginClass: 'mt-4xl' })}
+${renderTwoColumnImages(images.slice(2), { marginClass: 'mt-sm' })}
+<figcaption class="body-small wrapper mt-xs t-ct">${renderInlineMarkdown(captionText)}</figcaption>\n`;
+  }
+
+  if (ctx.slug === 'journal-finder' && sectionTitle === 'The solution' && images.length === 5) {
+    return `${renderZoomImage(images[0], { wrapper: 'wrapper', zoomClass: 'medium-zoom-large', marginClass: 'mt-4xl' })}
+${renderTwoColumnImages(images.slice(1, 3), { marginClass: 'mt-sm' })}
+${renderTwoColumnImages(images.slice(3), { marginClass: 'mt-sm' })}\n`;
+  }
+
+  if (images.length === 2) {
+    const marginClass = ctx.slug === 'journal-finder' && groupIndex > 0 ? 'mt-sm' : 'mt-3xl';
+    return `${renderTwoColumnImages(images, { marginClass })}\n`;
+  }
+
+  if (images.length === 1) {
+    const image = images[0];
+    let zoomClass = 'medium-zoom-medium';
+    let marginClass = 'mt-2xl';
+    let wrapper = 'wrapper';
+
+    if (ctx.slug === 'journal-finder' && sectionTitle === 'The context: a fragmented legacy') {
+      marginClass = 'mt-4xl';
+    }
+    if (ctx.slug === 'dating-platform' && /explore-page\.webp$|profile-page\.webp$/i.test(image.src)) {
+      zoomClass = 'medium-zoom-large';
+      marginClass = 'mt-3xl';
+    }
+
+    const figure = renderZoomImage(image, { wrapper, zoomClass, marginClass });
+    const captionHtml = image.alt
+      ? `<figcaption class="body-small${ctx.slug === 'journal-finder' ? '  mt-xs t-ct' : ' mt-xs t-ct'}">${renderInlineMarkdown(image.alt)}</figcaption>\n`
+      : '';
+    return `${figure}
+${captionHtml}`;
+  }
+
+  return images
+    .map((image) => renderZoomImage(image, { wrapper: 'wrapper', zoomClass: 'medium-zoom-medium', marginClass: groupIndex === 0 ? 'mt-2xl' : 'mt-sm' }))
+    .join('\n');
+}
+
+function renderStructuredWorkSection(section, ctx) {
+  if (!section?.blocks?.length && !section?.title) return '';
+
+  if (section.title === 'Executive summary') {
+    return renderExecutiveSummarySection(section);
+  }
+
+  if (ctx.slug === 'journal-finder' && section.title === 'Metrics') {
+    return renderFeaturedMetricsSection(section, {
+      centered: true,
+      extraClass: 'featured-metrics-2',
+      title: '',
+    });
+  }
+
+  if (ctx.slug === 'journal-finder' && section.title === 'Footnotes') {
+    return renderFootnotesSection(section);
+  }
+
+  if (String(section.title || '').startsWith('Achievements of')) {
+    return renderFeaturedMetricsSection(section);
+  }
+
+  const imagesOnly = section.blocks.length > 0 && section.blocks.every((block) => block.type === 'image');
+  if (imagesOnly && section.title === 'Brands I collaborated with at Farfetch') {
+    return renderBrandsGrid(section);
+  }
+
+  let html = '';
+  let titleConsumed = false;
+  let textBlocks = [];
+  let imageGroup = [];
+  let imageGroupIndex = 0;
+
+  const flushTextBlocks = () => {
+    if (!textBlocks.length) return;
+    html += renderTextCluster(textBlocks, ctx, {
+      title: titleConsumed ? '' : section.title,
+      sectionTitle: section.title,
+      titleLevel: section.titleLevel || 1,
+      clusterIndex: titleConsumed ? 1 : 0,
+    });
+    textBlocks = [];
+    titleConsumed = true;
+  };
+
+  const flushImageGroup = () => {
+    if (!imageGroup.length) return;
+    html += renderImageGroup(imageGroup, ctx, section.title, imageGroupIndex);
+    imageGroup = [];
+    imageGroupIndex += 1;
+  };
+
+  for (const block of section.blocks) {
+    if (block.type === 'image') {
+      flushTextBlocks();
+      imageGroup.push(block);
+      continue;
+    }
+    flushImageGroup();
+    textBlocks.push(block);
+  }
+
+  flushTextBlocks();
+  flushImageGroup();
+  return html;
+}
+
+function renderStructuredWorkBody(metadata, mdx, renderOpts = {}) {
+  const raw = applyRewriteRelativeImagePaths(mdx, renderOpts.rewriteMarkdownImageBase);
+  const slug = String(metadata?.slug || '');
+  const sections = mergeStructuredSubsections(parseMarkdownSections(raw), slug);
+  return sections
+    .map((section, sectionIndex) =>
+      renderStructuredWorkSection(section, {
+        slug,
+        sectionIndex,
+      })
+    )
+    .join('');
 }
 
 /**
@@ -753,8 +1459,7 @@ export function renderSiteMarkdownBody(mdx, renderOpts = {}) {
   const lines = raw.split('\n');
   let html = '';
   let inList = false;
-  let inTextBlock = false;
-  let inFeaturedMetrics = false;
+  let inOrderedList = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -762,8 +1467,6 @@ export function renderSiteMarkdownBody(mdx, renderOpts = {}) {
 
     if (line.startsWith('# ') || line.startsWith('## ')) {
       if (inList) { html += '</ul>\n'; inList = false; }
-      if (inTextBlock) { html += '</div>\n'; inTextBlock = false; }
-      if (inFeaturedMetrics) { html += closingFeaturedMetrics(); inFeaturedMetrics = false; }
 
       const level = line.startsWith('# ') ? 'mt-5xl' : 'mt-3xl';
       const title = line.replace(/^#+\s*/, '').replace(/\*\*/g, '');
@@ -773,7 +1476,6 @@ export function renderSiteMarkdownBody(mdx, renderOpts = {}) {
 
     if (line.startsWith('### ')) {
       if (inList) { html += '</ul>\n'; inList = false; }
-      if (inFeaturedMetrics) { html += closingFeaturedMetrics(); inFeaturedMetrics = false; }
 
       const title = line.replace(/^#+\s*/, '').replace(/\*\*/g, '');
       html += `<h3 class="mt-2xl">${title}</h3>\n`;
@@ -794,11 +1496,23 @@ export function renderSiteMarkdownBody(mdx, renderOpts = {}) {
 
     if (line.startsWith('- ') || line.startsWith('* ')) {
       if (!inList) {
+        if (inOrderedList) { html += '</ol>\n'; inOrderedList = false; }
         html += '<ul class="ul">\n';
         inList = true;
       }
-      const item = line.replace(/^-\s|\*\s/, '').replace(/\*\*/g, '<strong>').replace(/\*\*/g, '</strong>');
-      html += `<li class="li mt-sm">${item}</li>\n`;
+      const item = line.replace(/^[-*]\s+/, '');
+      html += `<li class="li mt-sm">${renderInlineMarkdown(item)}</li>\n`;
+      continue;
+    }
+
+    if (/^\d+\.\s+/.test(line.trim())) {
+      if (!inOrderedList) {
+        if (inList) { html += '</ul>\n'; inList = false; }
+        html += '<ol class="ol mt-md" type="1">\n';
+        inOrderedList = true;
+      }
+      const item = line.trim().replace(/^\d+\.\s+/, '');
+      html += `<li class="p">${renderInlineMarkdown(item)}</li>\n`;
       continue;
     }
 
@@ -807,10 +1521,10 @@ export function renderSiteMarkdownBody(mdx, renderOpts = {}) {
       if (match) {
         const [, alt, src] = match;
         html += '<figure class="wrapper medium-zoom-medium mt-2xl">\n';
-        html += `  <img class="medium-zoom-image" src="${src}" style="width: 100%; height: auto;" alt="${alt}" loading="lazy" />\n`;
+        html += `  <img class="medium-zoom-image" src="${src}" style="width: 100%; height: auto;" alt="${escapeHtml(alt)}" loading="lazy" />\n`;
         html += '</figure>\n';
         if (nextLine && !nextLine.startsWith('![') && !nextLine.startsWith('#') && !nextLine.startsWith('-') && nextLine.trim()) {
-          html += `<figcaption class="body-small mt-xs t-ct">${nextLine}</figcaption>\n`;
+          html += `<figcaption class="body-small mt-xs t-ct">${renderInlineMarkdown(nextLine)}</figcaption>\n`;
           i++;
         }
       }
@@ -819,16 +1533,16 @@ export function renderSiteMarkdownBody(mdx, renderOpts = {}) {
 
     if (line.trim() === '') {
       if (inList) { html += '</ul>\n'; inList = false; }
+      if (inOrderedList) { html += '</ol>\n'; inOrderedList = false; }
       continue;
     }
 
-    let p = line.replace(/\*\*/g, '<strong>').replace(/\*\*/g, '</strong>');
+    let p = renderInlineMarkdown(line);
     html += `<p class="mt-md">${p}</p>\n`;
   }
 
   if (inList) html += '</ul>\n';
-  if (inTextBlock) html += '</div>\n';
-  if (inFeaturedMetrics) html += closingFeaturedMetrics();
+  if (inOrderedList) html += '</ol>\n';
 
   return html;
 }
@@ -883,19 +1597,29 @@ export function parseFeaturedProjects(content) {
 }
 
 export function renderProjectCard(project, cardClass, index) {
+  const resolvedRoute = project.link ? resolveSiteRouteFromPath(project.link.url) : null;
+  const linkLabel = project.link?.text || 'View case study';
+  const linkUrl = resolvedRoute?.publicPath || project.link?.url || '';
+  const buttonContent = `          ${linkLabel}
+          <div class="svg-button">
+            <svg viewBox="0 0 24.96 14.4" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5512 1.092C17.4649 1.18378 17.3963 1.29296 17.3496 1.41326C17.3028 1.53356 17.2787 1.6626 17.2787 1.79292C17.2787 1.92324 17.3028 2.05228 17.3496 2.17258C17.3963 2.29288 17.4649 2.40206 17.5512 2.49384L21.7897 7.03499H0.921394C0.677025 7.03499 0.442665 7.139 0.26987 7.32414C0.0970752 7.50928 0 7.76038 0 8.0222C0 8.28403 0.0970752 8.53513 0.26987 8.72026C0.677025 8.9054 0.677025 9.00941 0.921394 9.00941H21.7712L17.5512 13.521C17.3796 13.7059 17.2833 13.9561 17.2833 14.2169C17.2833 14.4777 17.3796 14.7279 17.5512 14.9129C17.7239 15.0968 17.9574 15.2 18.2008 15.2C18.4442 15.2 18.6778 15.0968 18.8504 14.9129L24.7105 8.63427C24.7893 8.55319 24.8521 8.45586 24.895 8.34814C24.9378 8.24041 24.9599 8.12451 24.9599 8.00739C24.9599 7.89028 24.9378 7.77438 24.895 7.66665C24.8521 7.55892 24.7893 7.4616 24.7105 7.38052L18.8596 1.092C18.774 0.999473 18.6721 0.92603 18.5598 0.875911C18.4475 0.825792 18.3271 0.799988 18.2054 0.799988C18.0838 0.799988 17.9634 0.825792 17.8511 0.875911C17.7388 0.92603 17.6369 0.999473 17.5512 1.092Z" />
+            </svg>
+          </div>`;
   let html = `    <article class="project-card ${cardClass}">\n`;
   html += '      <div class="project-card-content">\n';
   html += `        <h2 class="t-white display-lg">${project.title}</h2>\n`;
 
   if (project.link) {
-    html += `        <a class="btn body-medium btn-white" href="${project.link.url}">\n`;
-    html += `          ${project.link.text}\n`;
-    html += '          <div class="svg-button">\n';
-    html += '            <svg viewBox="0 0 24.96 14.4" width="100%" xmlns="http://www.w3.org/2000/svg">\n';
-    html += '              <path d="M17.5512 1.092C17.4649 1.18378 17.3963 1.29296 17.3496 1.41326C17.3028 1.53356 17.2787 1.6626 17.2787 1.79292C17.2787 1.92324 17.3028 2.05228 17.3496 2.17258C17.3963 2.29288 17.4649 2.40206 17.5512 2.49384L21.7897 7.03499H0.921394C0.677025 7.03499 0.442665 7.139 0.26987 7.32414C0.0970752 7.50928 0 7.76038 0 8.0222C0 8.28403 0.0970752 8.53513 0.26987 8.72026C0.677025 8.9054 0.677025 9.00941 0.921394 9.00941H21.7712L17.5512 13.521C17.3796 13.7059 17.2833 13.9561 17.2833 14.2169C17.2833 14.4777 17.3796 14.7279 17.5512 14.9129C17.7239 15.0968 17.9574 15.2 18.2008 15.2C18.4442 15.2 18.6778 15.0968 18.8504 14.9129L24.7105 8.63427C24.7893 8.55319 24.8521 8.45586 24.895 8.34814C24.9378 8.24041 24.9599 8.12451 24.9599 8.00739C24.9599 7.89028 24.9378 7.77438 24.895 7.66665C24.8521 7.55892 24.7893 7.4616 24.7105 7.38052L18.8596 1.092C18.774 0.999473 18.6721 0.92603 18.5598 0.875911C18.4475 0.825792 18.3271 0.799988 18.2054 0.799988C18.0838 0.799988 17.9634 0.825792 17.8511 0.875911C17.7388 0.92603 17.6369 0.999473 17.5512 1.092Z" />\n';
-    html += '            </svg>\n';
-    html += '          </div>\n';
-    html += '        </a>\n';
+    if (resolvedRoute?.isProtected && resolvedRoute.authId) {
+      html += `        <button class="btn body-medium btn-white btn-show-password" data-content-id="${resolvedRoute.authId}" aria-haspopup="dialog">\n`;
+      html += `${buttonContent}\n`;
+      html += '        </button>\n';
+    } else {
+      html += `        <a class="btn body-medium btn-white" href="${linkUrl}">\n`;
+      html += `${buttonContent}\n`;
+      html += '        </a>\n';
+    }
   }
 
   html += '      </div>\n';
@@ -1013,11 +1737,18 @@ export function renderSiteAboutPage(metadata, mdx, renderOpts = {}) {
  */
 export function renderSiteWorkPage(metadata, mdx, renderOpts = {}) {
   let html = '';
+  const workSlug = String(metadata.slug || '');
+  const isStructuredWork = new Set([
+    'farfetch-performance',
+    'dating-platform',
+    'journal-finder',
+  ]).has(workSlug);
+  const heroTitleClass = workSlug === 'journal-finder' ? 't-gray-200' : 't-white';
 
   html += '<header class="content-header mt-5xl">\n';
   html += '  <div class="wrapper">\n';
   html += '    <div class="content-hero">\n';
-  html += `      <h1 class="t-white">${metadata.title}</h1>\n`;
+  html += `      <h1 class="${heroTitleClass}">${metadata.title}</h1>\n`;
 
   if (metadata.tags && metadata.tags.length) {
     html += '      <div class="tags body-small t-gray-300 mt-sm">\n';
@@ -1035,7 +1766,9 @@ export function renderSiteWorkPage(metadata, mdx, renderOpts = {}) {
   html += '</header>\n';
 
   html += '<div class="article-content">\n';
-  html += renderSiteMarkdownBody(mdx, renderOpts);
+  html += isStructuredWork
+    ? renderStructuredWorkBody(metadata, mdx, renderOpts)
+    : renderSiteMarkdownBody(mdx, renderOpts);
   html += '</div>\n';
 
   return html;

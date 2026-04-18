@@ -20,6 +20,7 @@ import { resolveDevApiRoot } from '../lib/dev-api-root.js';
 
 /**
  * @typedef {Object} EditorDocumentListItem
+ * @property {string} id - mesmo valor que `documentId` (slug ficheiro); usado pelo editor HTML
  * @property {string} documentId
  * @property {'pages' | 'work'} collection
  * @property {string} slug
@@ -160,13 +161,17 @@ export function createFilesystemAdapter(collection) {
       if (!res.ok) return null;
       
       const data = await res.json();
-      return (data.entries || []).map(e => ({
-        documentId: e.id,
-        collection,
-        slug: e.slug,
-        title: e.title,
-        published: e.published,
-      }));
+      return (data.entries || []).map((e) => {
+        const id = e.id ?? e.slug;
+        return {
+          id,
+          documentId: id,
+          collection,
+          slug: e.slug ?? id,
+          title: e.title,
+          published: e.published,
+        };
+      });
     },
 
     /**

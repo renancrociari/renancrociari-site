@@ -100,6 +100,45 @@ O objetivo é preservar a estrutura visual e o deploy atual do site, enquanto o 
 - O repo original continua sendo o host final do site publicado.
 - O `portfolio-os` entra como workspace local para desenvolvimento, edição e renderização compartilhada, não como substituto do site.
 
+## Atualização recente do repositório
+
+Última atualização refletida neste documento: `2026-04-18`.
+
+Mudanças implementadas nesta rodada:
+- **Manifesto canônico de rotas**
+  - Adicionado `src/portfolio-os-integration/config/routing-manifest.mjs` para centralizar:
+    - `publicPath`
+    - `outputFile`
+    - `canonicalUrl`
+    - `bodyClass`
+    - `authId` de conteúdo protegido
+- **Build e preview alinhados à mesma política de rota**
+  - `scripts/content/build-content.js`, `src/pages/editor.html` e `src/scripts/password-config.js` passaram a consumir o manifesto de rotas.
+  - `shared-renderer` foi renomeado para `src/portfolio-os-integration/renderer/shared-renderer.mjs` e segue sendo usado por build e preview.
+- **Entry points do Parcel filtrados**
+  - Adicionados `scripts/lib/site-entrypoints.cjs` e `scripts/parcel-site.cjs`.
+  - `package.json` e `scripts/dev-server.js` passaram a usar essa seleção dinâmica de entradas para evitar conflito entre páginas legacy em `src/pages/` e páginas geradas em `src/pages-generated/`.
+- **Regeneração automática antes do dev**
+  - `npm start`, `npm run dev`, `npm run dev:generated`, `npm run dev:all` e `npm run start:https` agora regeneram a árvore editorial antes de iniciar o Parcel.
+- **Renderer menos destrutivo para os case studies**
+  - `src/portfolio-os-integration/renderer/shared-renderer.mjs` passou a:
+    - reconhecer seções iniciadas por `#`, `##` e `###`
+    - preservar subseções que antes eram descartadas quando começavam direto com `##`
+    - manter imagens intermediárias e pares de imagens em `farfetch-performance`
+    - recompor o fluxo de `dating-platform` com pain points, tarefas, resultados e grupos de KPI
+    - unir listas ordenadas que vinham quebradas em múltiplos `<ol>`
+- **Validação executada**
+  - `npm run validate:content:check`
+  - `npm run build:content`
+  - `npm run build`
+  - build Parcel completo para diretório temporário usando os novos entry points
+
+Limites ainda abertos após esta rodada:
+- o renderer perdeu menos estrutura e já recompõe melhor `dating-platform`, `farfetch-performance` e `journal-finder`, mas ainda não reutiliza as páginas históricas como fonte estrutural;
+- o preview e o build agora compartilham melhor a política de rota/canonical/auth e um parser mais capaz, mas ainda não garantem fidelidade estrutural completa;
+- a árvore `src/pages-generated/` continua coexistindo com páginas legacy e segue ignorada por `.gitignore`.
+- o `build` completo ainda emite um ruído operacional de shell relacionado ao path com espaço do workspace (`/Users/andre/Arquivos Locais/...`), embora finalize com sucesso.
+
 # Tasks
 
 Abaixo está o backlog técnico priorizado para implementar o plano no `renancrociari-site`, usando `portfolio-os` como workspace local.
@@ -121,22 +160,22 @@ Revisão com base no código e na pasta `.agent/docs/` (ex.: `SITE_INVENTORY.md`
 
 | Task | Estado | Evidências no repo |
 |------|--------|-------------------|
-| 1 Workspace local | ✅ | `package.json`: dependências `file:../portfolio-main/packages/{core,blocks,editor}`, alias Parcel para `content-utils`; `npm install` / `npm start` / `npm run build` não exigem pacote publicado. |
+| 1 Workspace local | ✅ | `package.json`: dependências `file:../portfolio-main/packages/{core,blocks,editor}`, alias Parcel para `content-utils`; `npm install` / `npm start` / `npm run build` não exigem pacote publicado. `scripts/dev-server.js` e `scripts/parcel-site.cjs` mantêm o ciclo local sem publicação de pacote. |
 | 2 Inventário do site | ✅ | `.agent/docs/SITE_INVENTORY.md` + páginas/componentes em `src/pages/`, `src/components/`, estilos em `src/styles/`. |
 | 3 Contrato de conteúdo | ✅ | `content/pages/*`, `content/work/*`; `src/portfolio-os-integration/content-schema.js`; `scripts/validate-frontmatter.js`; `.agent/docs/CONTENT_CONTRACT.md`. |
-| 4 Compatibilidade de blocos | ✅ | `src/portfolio-os-integration/renderer/shared-renderer.js` (registry + fallbacks); `renderer/BLOCK_CATALOG.md`; `blocks/authorable-blocks-catalog.js`; `.agent/docs/BLOCKS_COMPATIBILITY.md`. |
+| 4 Compatibilidade de blocos | ✅ | `src/portfolio-os-integration/renderer/shared-renderer.mjs` (registry + fallbacks); `renderer/BLOCK_CATALOG.md`; `blocks/authorable-blocks-catalog.js`; `.agent/docs/BLOCKS_COMPATIBILITY.md`. |
 | 5 Migração de conteúdo | 🟡 | Conteúdo editorial em `content/` (ex.: `home`, `about`, casos em `work/`); build gera `src/pages-generated/*.html`. Coexistência com HTML em `src/pages/*.html` e mistura `.md`/`.mdx` — migrar/retirar legacy conforme decisão de produto. |
-| 6 Renderer compartilhado | ✅ | `shared-renderer.js` exporta `renderSite*`, `renderEditorPreviewMainHtml`, etc.; `scripts/content/build-content.js` importa o mesmo módulo para o build. |
+| 6 Renderer compartilhado | 🟡 | `src/portfolio-os-integration/renderer/shared-renderer.mjs` exporta `renderSite*`, `renderEditorPreviewMainHtml`, etc.; `scripts/content/build-content.js` e `src/pages/editor.html` importam o mesmo módulo. Nesta rodada o parser passou a preservar blocos `##`, imagens intermediárias e listas ordenadas longas, recuperando boa parte do corpo de `dating-platform` e `farfetch-performance`. Ainda assim, a saída HTML não reutiliza a estrutura real das páginas legacy. |
 | 7 Shell visual preservado | ✅ | Template em `build-content.js` (includes `navbar`, `footer`, CSS global); `editor.html` liga `global.css` / `reset.css` / `main.css` para preview. |
 | 8 Adapter de leitura | ✅ | `adapters/filesystem-adapter.js` (`listDocuments`, `loadDocument`); API em `scripts/dev-server.js` (`GET /api/content` list/load). |
 | 9 Adapter de escrita | ✅ | `saveDocument`, `createDocument` no adapter; `POST /api/content` com `save`/`create` no `dev-server.js`; serialização YAML robusta no servidor. |
 | 10 Integração do editor | ✅ | `src/pages/editor.html` (UI + preview + persistência via API); bundle local em `src/portfolio-os-integration/index.js`. |
-| 11 Preview fiel | ✅ | Preview usa CSS do site + `renderEditorPreviewMainHtml` / mesma família de funções que o build (ver `PREVIEW_FIDEL.md`). |
-| 12 Build e geração | ✅ | `npm run build:content` → `scripts/content/build-content.js`; `npm run build` encadeia conteúdo + Parcel + cópia de `public/`; `prebuild` valida frontmatter. |
-| 13 Rotas e navegação | 🟡 | `.agent/docs/ROUTING.md` documenta slugs novos (URLs de work encurtadas vs paths antigos longos); páginas geradas em `pages-generated`. Redirecionamentos 1:1 para URLs antigas não verificados como código dedicado. |
-| 14 Validação visual e funcional | 🟡 | `.agent/docs/VALIDATION.md` define checklist; não há suite automatizada de regressão visual no repo — validação manual/documentada. |
+| 11 Preview fiel | 🟡 | `src/pages/editor.html` usa o mesmo `shared-renderer.mjs`, o mesmo CSS e agora a mesma política de `canonical`/`bodyClass`/`authId` via `routing-manifest.mjs`. Como o renderer recuperou mais estrutura editorial, o preview ficou mais próximo dos cases públicos principais, mas ainda não garante equivalência estrutural completa com as páginas reais. |
+| 12 Build e geração | 🟡 | `npm run build:content` → `scripts/content/build-content.js`; `npm run build` usa `scripts/parcel-site.cjs`; `scripts/dev-server.js` regenera conteúdo antes do Parcel. O pipeline está mais consistente, o build completo passou após a rodada de renderer e evita colisões de entry point, mas ainda publica uma árvore gerada paralela em `src/pages-generated/`, ignorada por Git, e mantém um ruído de shell por causa do path com espaço do workspace. |
+| 13 Rotas e navegação | 🟡 | `src/portfolio-os-integration/config/routing-manifest.mjs` centraliza `publicPath`, `outputFile`, `canonicalUrl`, `bodyClass` e `authId`; `build-content.js`, `editor.html` e `password-config.js` consomem essa mesma fonte. O mapeamento principal foi unificado, mas ainda não há estratégia completa de redirecionamento/404/legado fora desse manifesto. |
+| 14 Validação visual e funcional | 🟡 | `.agent/docs/VALIDATION.md` define checklist; nesta rodada foram executados `npm run validate:content:check`, `npm run build:content`, `npm run build` e build Parcel com os novos entry points. Ainda não há suite automatizada de regressão visual/fidelidade. |
 | 15 Segurança operacional e rollback | 🟡 | `npm run backup`, `npm run rollback` (`scripts/rollback.js`); validação de conteúdo; conteúdo protegido com hash (`bcryptjs`, `/api/verify-password`). “Backup antes de migrar” e recuperação dependem de disciplina de uso + Git. |
-| 16 Documentação operacional | ✅ | `src/portfolio-os-integration/README.md`; `.agent/docs/OPERATIONAL.md`, `BUILD.md`, `MIGRATION.md`, `ADAPTERS.md`, `EDITOR_INTEGRATION.md`, `IMPLEMENTATION_SUMMARY.md`. |
+| 16 Documentação operacional | ✅ | `src/portfolio-os-integration/README.md`; `.agent/docs/OPERATIONAL.md`, `BUILD.md`, `MIGRATION.md`, `ADAPTERS.md`, `EDITOR_INTEGRATION.md`, `IMPLEMENTATION_SUMMARY.md`; este documento passou a registrar também a rodada de centralização de rotas/entry points de `2026-04-18`. |
 
 **1. Workspace local do `portfolio-os`**
 - Prioridade: `P0`

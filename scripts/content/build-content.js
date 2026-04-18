@@ -100,17 +100,30 @@ function parseFrontmatter(content) {
     return parseContentFrontmatter(content);
 }
 
-function slugToHtml(content, slug, type, renderer) {
+function cleanOutputDir() {
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+        return;
+    }
+
+    for (const file of fs.readdirSync(OUTPUT_DIR)) {
+        if (file.endsWith('.html')) {
+            fs.unlinkSync(path.join(OUTPUT_DIR, file));
+        }
+    }
+}
+
+function slugToHtml(content, slug, type, renderer, routing) {
     const { data, content: mdxContent } = parseFrontmatter(content);
-    
-    const baseUrl = 'https://www.renancrociari.com';
-    const canonical = type === 'page' 
-        ? `${baseUrl}/${slug === 'home' ? '' : slug}`
-        : `${baseUrl}/${slug}`;
-    
-    const bodyClass = type === 'page' 
-        ? (slug === 'home' ? 'home' : 'about')
-        : slugToBodyClass(slug);
+    const collection = type === 'page' ? 'pages' : 'work';
+    const route = routing.resolveSiteRoute({
+        collection,
+        documentSlug: slug,
+        metadata: data,
+    });
+    const baseUrl = routing.SITE_BASE_URL;
+    const canonical = route.canonicalUrl;
+    const bodyClass = route.bodyClass;
     
     let htmlContent = '';
     let headExtra = '';
@@ -124,7 +137,7 @@ function slugToHtml(content, slug, type, renderer) {
     } else {
         htmlContent = renderer.renderSiteWorkPage(data, mdxContent);
         if (data.status === 'protected' && data.protected_password) {
-            const contentAuthId = `case-${slug}`;
+            const contentAuthId = route.authId;
             headExtra = `<script type="module">
     import { isAuthenticated } from '../scripts/password-auth.js';
     if (!isAuthenticated('${contentAuthId}')) {
@@ -135,34 +148,30 @@ function slugToHtml(content, slug, type, renderer) {
         }
     }
     
-    return TEMPLATE_PAGE
-        .replaceAll('{{TITLE}}', data.title + ' · Renan Crociari')
+    const pageTitle = route.metaTitle || (data.title + ' · Renan Crociari');
+
+    return {
+        outputFile: route.outputFile,
+        html: TEMPLATE_PAGE
+        .replaceAll('{{TITLE}}', pageTitle)
         .replaceAll('{{DESCRIPTION}}', data.description || '')
         .replaceAll('{{CANONICAL}}', canonical)
         .replaceAll('{{OG_IMAGE}}', data.og_image ? `${baseUrl}/${data.og_image.replace('../', '')}` : `${baseUrl}/images/renan-og-image.jpg`)
         .replaceAll('{{BODY_CLASS}}', bodyClass)
         .replaceAll('{{HEAD_EXTRA}}', headExtra)
-        .replaceAll('{{CONTENT}}', htmlContent);
-}
-
-function slugToBodyClass(slug) {
-    const map = {
-        'farfetch-performance': 'farfetch',
-        'dating-platform': 'sl-mobile',
-        'journal-finder': 'journal-finder',
+        .replaceAll('{{CONTENT}}', htmlContent),
     };
-    return map[slug] || 'default';
 }
 
 async function buildContent() {
     console.log('🔨 Building content...\n');
 
-    const sharedPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'renderer', 'shared-renderer.js');
+    const sharedPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'renderer', 'shared-renderer.mjs');
+    const routingPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'config', 'routing-manifest.mjs');
     const renderer = await import(pathToFileURL(sharedPath).href);
-    
-    if (!fs.existsSync(OUTPUT_DIR)) {
-        fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    }
+    const routing = await import(pathToFileURL(routingPath).href);
+
+    cleanOutputDir();
     
     const pagesDir = path.join(CONTENT_DIR, 'pages');
     const workDir = path.join(CONTENT_DIR, 'work');
@@ -176,8 +185,7 @@ async function buildContent() {
         for (const page of pages) {
             const content = fs.readFileSync(path.join(pagesDir, page), 'utf-8');
             const slug = page.replace(/\.(md|mdx)$/i, '');
-            const html = slugToHtml(content, slug, 'page', renderer);
-            const outputFile = slug === 'home' ? 'index.html' : `${slug}.html`;
+            const { outputFile, html } = slugToHtml(content, slug, 'page', renderer, routing);
             fs.writeFileSync(path.join(OUTPUT_DIR, outputFile), html);
             console.log(`  ✓ ${outputFile}`);
         }
@@ -192,9 +200,9 @@ async function buildContent() {
         for (const work of works) {
             const content = fs.readFileSync(path.join(workDir, work), 'utf-8');
             const slug = work.replace(/\.(md|mdx)$/i, '');
-            const html = slugToHtml(content, slug, 'work', renderer);
-            fs.writeFileSync(path.join(OUTPUT_DIR, `${slug}.html`), html);
-            console.log(`  ✓ ${slug}.html`);
+            const { outputFile, html } = slugToHtml(content, slug, 'work', renderer, routing);
+            fs.writeFileSync(path.join(OUTPUT_DIR, outputFile), html);
+            console.log(`  ✓ ${outputFile}`);
         }
     }
     

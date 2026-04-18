@@ -1,0 +1,391 @@
+<!DOCTYPE html><html lang=en><script>!function(e,t,a,n,r){e[n]=e[n]||[],e[n].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var g=t.getElementsByTagName(a)[0],m=t.createElement(a);m.async=!0,m.src="https://www.googletagmanager.com/gtm.js?id="+r+("dataLayer"!=n?"&l="+n:""),g.parentNode.insertBefore(m,g)}(window,document,"script","dataLayer","GTM-P7FKT9N");</script><meta charset=utf-8><meta name=viewport content="initial-scale=1, width=device-width"><title>Connecting every discovery with a worthy home · Renan Crociari</title><meta name=description content="At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work."><meta property=og:site_name content="Renan Crociari"><meta name=author content="Renan Crociari"><meta property=og:type content=website><link rel=canonical href=https://www.renancrociari.com/connecting-every-discovery-with-a-worthy-home><link rel=icon href=/favicon.5e3e1e7f.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.8fcf4a54.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.1b52bcc0.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.4312addd.png><link rel=manifest href=/up_/public/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.a594ebf5.svg color=#5bbad5><meta name=msapplication-TileColor content=#38C545><meta name=theme-color content=#38C545><meta property=og:url content=https://www.renancrociari.com/connecting-every-discovery-with-a-worthy-home><meta property=og:type content=website><meta property=og:title content="Connecting every discovery with a worthy home · Renan Crociari"><meta property=og:description content="At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work."><meta property=og:image content=https://www.renancrociari.com/images/jf-case-og-image.jpg><meta name=twitter:card content=summary_large_image><meta property=twitter:domain content=renancrociari.com><meta property=twitter:url content=https://www.renancrociari.com/connecting-every-discovery-with-a-worthy-home><meta name=twitter:title content="Connecting every discovery with a worthy home · Renan Crociari"><meta name=twitter:description content="At Springer Nature, I led the design of a journal discovery platform that helped millions of researchers to find the right home for their work."><meta name=twitter:image content=https://www.renancrociari.com/images/jf-case-og-image.jpg><link rel=stylesheet href=/buttons.d947b563.css><link rel=stylesheet href=/buttons.0d890c5f.css><link rel=stylesheet href=/buttons.9ac1c8fe.css><link rel=preload href=/degular.933e70d4.woff2 as=font type=font/woff2 crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&amp;text=renancrociari" rel=stylesheet><link rel=preload href=/source-serif-regular-300.51bbc30f.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/source-serif-bold-600.a522b9e8.woff2 as=font type=font/woff2 crossorigin><script type=module>function e(e,t,r,o){Object.defineProperty(e,t,{get:r,set:o,enumerable:!0,configurable:!0})}var t=globalThis,r={},o={},n=t.parcelRequire0291;null==n&&((n=function(e){if(e in r)return r[e].exports;if(e in o){var t=o[e];delete o[e];var n={id:e,exports:{}};return r[e]=n,t.call(n.exports,n,n.exports),n.exports}var a=Error("Cannot find module '"+e+"'");throw a.code="MODULE_NOT_FOUND",a}).register=function(e,t){o[e]=t},t.parcelRequire0291=n);var a=n.register;a("3TjmV",function(t,r){e(t.exports,"validatePassword",()=>i),e(t.exports,"storeAuthToken",()=>l),e(t.exports,"isAuthenticated",()=>c),e(t.exports,"getRedirectUrl",()=>s);var o=n("2lAcX");async function a(e){let t=new TextEncoder().encode(e);return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",t))).map(e=>e.toString(16).padStart(2,"0")).join("")}async function i(e,t){let r=o.PASSWORD_CONFIG[e];return r?await a(t)===r.hash:(console.error(`No password configuration found for content ID: ${e}`),!1)}function l(e){let t=u();t[e]=Date.now(),sessionStorage.setItem(o.AUTH_KEY,JSON.stringify(t))}function c(e){return!!u()[e]}function u(){let e=sessionStorage.getItem(o.AUTH_KEY);return e?JSON.parse(e):{}}function s(e){let t=o.PASSWORD_CONFIG[e];return t?t.redirectUrl:null}}),a("2lAcX",function(t,r){e(t.exports,"PASSWORD_CONFIG",()=>a),e(t.exports,"AUTH_KEY",()=>i);let o=(0,n("iChGM").resolveSiteRoute)({collection:"work",documentSlug:"journal-finder"}),a={[o.authId]:{hash:"e4e2ff1a6fc2a6ce836b66c424aa2bdd4803d5b92d9750b0db4df4b1d1a8a597",redirectUrl:o.publicPath}},i="rc_auth_tokens"}),a("iChGM",function(t,r){e(t.exports,"resolveSiteRoute",()=>i),e(t.exports,"resolveSiteRouteFromPath",()=>l);let o="https://www.renancrociari.com",n={pages:{home:{publicPath:"/",outputFile:"index.html",bodyClass:"home",legacySourcePage:"index.html",metaTitle:"Renan Crociari · Senior Product Designer"},about:{publicPath:"/about",outputFile:"about.html",bodyClass:"about",legacySourcePage:"about.html"}},work:{"farfetch-performance":{publicPath:"/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands",outputFile:"improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html",bodyClass:"farfetch",legacySourcePage:"improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html"},"dating-platform":{publicPath:"/redesigning-the-mobile-experience-of-a-dating-platform",outputFile:"redesigning-the-mobile-experience-of-a-dating-platform.html",bodyClass:"sl-mobile",legacySourcePage:"redesigning-the-mobile-experience-of-a-dating-platform.html"},"journal-finder":{publicPath:"/connecting-every-discovery-with-a-worthy-home",outputFile:"connecting-every-discovery-with-a-worthy-home.html",bodyClass:"journal-finder",legacySourcePage:"connecting-every-discovery-with-a-worthy-home.html",authId:"case-journal-finder",isProtected:!0}}};function a(e){let t=String(e||"").trim();if(!t||"/"===t)return"/";let r=t;return/^https?:\/\//i.test(r)&&(r=new URL(r).pathname||"/"),(r=(r=(r=(r=(r=r.replace(/\\/g,"/")).replace(/^[.]+\/+/,"/")).replace(/\/index\.html$/i,"/")).replace(/\.html$/i,"")).replace(/\/+/g,"/")).startsWith("/")||(r=`/${r}`),r.length>1&&r.endsWith("/")&&(r=r.slice(0,-1)),r||"/"}function i({collection:e,documentSlug:t,metadata:r={}}){let i,l="page"===e?"pages":e,c=a(function(e,t,r={}){let o=String(r.slug||t||"").trim();return"pages"===e&&"home"===o?"/":`/${o}`}(l,t,r)),u=(i=n[l])&&i[String(t||"").trim()]||null||{},s=a(u.publicPath||c),d=u.outputFile||("/"===s?"index.html":`${s.slice(1)}.html`),h=u.authId||("work"===l?`case-${String(t||"").trim()}`:null);return{collection:l,documentSlug:String(t||"").trim(),publicPath:s,outputFile:d,bodyClass:u.bodyClass||("pages"===l?"home"===t?"home":"about":"default"),authId:h,isProtected:!0===u.isProtected||"protected"===String(r.status||""),canonicalUrl:"/"===s?o:`${o}${s}`,legacySourcePage:u.legacySourcePage||null,metaTitle:u.metaTitle||null}}function l(e){let t=a(e);for(let e of Object.keys(n))for(let[r,o]of Object.entries(n[e])){let n=i({collection:e,documentSlug:r});if(new Set([n.publicPath,a(r),a(o.outputFile),a(o.legacySourcePage)]).has(t))return n}return null}}),(0,n("3TjmV").isAuthenticated)("case-journal-finder")||(sessionStorage.setItem("rc_attempted_url",window.location.pathname),window.location.href="/#password-protected?content=case-journal-finder");</script><script type=module src=/design-system.d06e58ad.js></script><body class=journal-finder>
+  
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P7FKT9N" height="0" width="0" style="display:none;visibility:hidden">
+    </iframe>
+  </noscript>
+  
+  <dialog class="dialog dialog-show-email">
+  <div class="dialog-container wrapper">
+    <button class="body-medium btn btn-arrow-left btn-close-email btn-gray-green" autofocus>
+      <div class=svg-button>
+        <svg xmlns:xmlns=http://www.w3.org/2000/svg viewBox="0 0 24.96 14.4"><path d="M17.551 1.092a1 1 0 0 0-.202.321 1.05 1.05 0 0 0 .202 1.08l4.239 4.542H.922a.9.9 0 0 0-.652.29c-.173.184-.27.435-.27.697s.097.513.27.698.407.29.651.29h20.85l-4.22 4.511a1.02 1.02 0 0 0-.268.696c0 .26.097.51.268.696a.9.9 0 0 0 .65.287.9.9 0 0 0 .65-.287l5.86-6.279a.9.9 0 0 0 .184-.286.92.92 0 0 0 0-.681.9.9 0 0 0-.184-.286L18.86 1.092a.9.9 0 0 0-.3-.216.87.87 0 0 0-.709 0 .9.9 0 0 0-.3.216"/></svg>
+      </div>
+      Back to website
+    </button>
+    <div class=dialog-heading>
+      <picture>
+        <img class=image-show-email src=/copy-email.4f667fbe.svg>
+      </picture>
+      <h2>Here's my email</h2>
+    </div>
+    <div class=dialog-box-copy-email>
+      <div class="body-medium email-to-copy">me@renancrociari.com</div>
+      <button class="body-medium btn btn-copy-email btn-green">Copy</button>
+    </div>
+    <div class=feedback-message>
+      <div class="body-small success-message t-white">Copied to clipboard</div>
+      <div class="body-small error-message t-white">Error copying to clipboard</div>
+    </div>
+  </div>
+</dialog>
+  <nav class="closed navbar">
+    <div class=navbar-wrapper>
+        <div class=general-logo-container>
+            <a class=nav-logo-link href=/ aria-label="Renan Crociari logo">
+                renancrociari
+            </a>
+        </div>
+
+        <button class=mobile-nav-toggle aria-controls=main-nav-list aria-expanded=false>
+            <span class=visually-hidden>Menu</span>
+            <svg xmlns:xmlns=http://www.w3.org/2000/svg class=hamburger-menu-svg viewBox="0 0 24 16"><rect width=20 height=2 x=4 class=top rx=1 ry=1 /><rect width=24 height=2 y=7 class=middle rx=1 ry=1 /><rect width=20 height=2 x=4 y=14 class=bottom rx=1 ry=1 /></svg>
+        </button>
+
+        <div id=main-nav-list data-visible=false class=main-nav-list>
+            <ul class=main-nav-list-items>
+                <li>
+                    <a class="body-small main-nav-a" href=/>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a class="body-small main-nav-a" href=about>
+                        About
+                    </a>
+                </li>
+                <li>
+                    <a class="body-small main-nav-a" href=/up_/public/downloads/renancrociari-cv.pdf target=_blank rel="noopener noreferrer">
+                        Resumé
+                    </a>
+                </li>
+                <li class=linkedin>
+                    <a class="body-small main-nav-a" href=https://www.linkedin.com/in/renancrociari/ target=_blank rel="noopener noreferrer">
+                        LinkedIn
+                    </a>
+                </li>
+                <li>
+                    <button class="body-small btn-show-email main-nav-a" aria-haspopup=dialog>Email</button>
+                </li>
+            </ul>
+
+            <ul style=display:none class="mt-lg navbar-icons">
+                <li>
+                    <a class=main-nav-a href=https://www.linkedin.com/in/renancrociari/ target=_blank aria-label=LinkedIn rel="noopener noreferrer">
+                        <img src=/linkedin-icon-dark.75b6a303.svg class=navbar-icons-svg alt="LinkedIn Logo">
+                        <span class=visually-hidden>Renan Crociari LinkedIn</span>
+                    </a>
+                </li>
+                <li>
+                    <a class=main-nav-a href=https://medium.com/@renancrociari target=_blank aria-label=Medium>
+                        <img src=/medium-icon.3486fe48.svg class=navbar-icons-svg alt="Medium Logo">
+                        <span class=visually-hidden>Renan Crociari Medium</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class=main-nav-a href=https://dribbble.com/renancrociari target=_blank aria-label=Dribbble>
+                        <img src=/dribbble-icon.3dd6f507.svg class=navbar-icons-svg alt="Dribbble Logo">
+                        <span class=visually-hidden>Renan Crociari Dribbble</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+  
+  
+  <header class="content-header mt-5xl">
+  <div class=wrapper>
+    <div class=content-hero>
+      <h1 class=t-gray-200>Connecting every discovery with a worthy home</h1>
+      <div class="body-small mt-sm t-gray-300 tags">
+      Product Strategy <span class=divider>/</span> User Research <span class=divider>/</span> Information Architecture <span class=divider>/</span> UI Design <span class=divider>/</span> Product Design <span class=divider>/</span> Usability Testing
+      </div>
+      <figure class="featured-image mt-2xl">
+        <img src=/journal-finder-featured-detail.06ee5ce8.webp class=featured-image-img alt="Connecting every discovery with a worthy home" fetchpriority=high>
+      </figure>
+    </div>
+  </div>
+</header>
+<div class=article-content>
+
+<div class=executive-summary>
+  <h2 class=mt-5xl>Executive summary</h2>
+  <div class="executive-summary-text mb-4xl mt-2xl wrapper">
+
+        <div>
+          <h3 class="body-small t-gray-300 t-semibold t-upper">The company</h3>
+          <p class="body-medium mt-sm">Springer Nature is one of the world's largest publishers of scientific articles and books, publishing around 500k articles and 13k books annually. With 3k+ journals, the company leverages platforms that help researchers uncover new ideas and share discoveries with the world.</p>
+        </div>
+
+        <div>
+          <h3 class="body-small t-gray-300 t-semibold t-upper">My role</h3>
+          <p class="body-medium mt-sm">As the Senior Product Designer, I led the product's design strategy from discovery to delivery. I partnered with a cross-functional team to build a journal discovery platform, reducing turnaround times and improving acceptance rates.</p>
+        </div>
+
+        <div>
+          <h3 class="body-small t-gray-300 t-semibold t-upper">The problem</h3>
+          <p class="body-medium mt-sm">A fragmented ecosystem made it difficult for researchers to find the right journal for their work. This lack of a centralized way to browse the company's portfolio of journals led to scope mismatches, submission delays, and users churning to competitors.</p>
+        </div>
+
+        <div>
+          <h3 class="body-small t-gray-300 t-semibold t-upper">Impact</h3>
+          <ul class="mt-sm no-bullet ul">
+<li class="body-large li mt-xs"><strong>↑ 50.7% increase</strong> in submission funnel completion rate</li>
+<li class="body-large li mt-xs"><strong>↑ 35.7% new user acquisition rate</strong> via organic search</li>
+<li class="body-large li mt-xs"><strong>↑ 8.6% session-to-submission</strong> conversion rate</li>
+</ul>
+        </div>
+  </div>
+</div>
+<div class=text-block>
+  <h2 class="mt-5xl t-ct t-gray-300">The context <br> a fragmented legacy</h2>
+  <p class="mt-3xl p-high">Springer Nature was established through the merger of important academic publishers, including Nature, Springer, BioMedCentral, Apress, and Macmillan. While the merger created a massive library of information, it also inherited a fragmented digital ecosystem. Researchers were forced to navigate a disjointed experience—managing multiple accounts and different interfaces to access information across siloed websites.</p>
+  <p class=mt-xl>In response to these issues, Springer Nature established a strategy to build a single, brand-agnostic platform, transforming a collection of legacy websites into the reading platform of choice for hundreds of thousands of researchers worldwide.</p>
+</div>
+
+<figure class="medium-zoom-medium mt-4xl wrapper">
+  <img class=medium-zoom-image src=/jf-case-legacy.e8cac38b.webp style=width:100%;height:auto alt="Springer Nature inherited a fragmented ecosystem of legacy websites featuring more than 3,000 journals from different brands." loading=lazy>
+</figure>
+<figcaption class="body-small mt-xs t-ct">Springer Nature inherited a fragmented ecosystem of legacy websites featuring more than 3,000 journals from different brands.</figcaption>
+
+<div class=text-block>
+  <h2 class="mt-5xl t-ct t-gray-300">The problem <br> A high cost of discovery</h2>
+  <p class="mt-3xl p-high">A critical phase of the researcher's journey is identifying the most suitable journal for their research. This is a gateway decision: choosing the wrong journal can result in significant submission delays and higher risk of rejection.</p>
+  <p class=mt-xl>The lack of a centralized, searchable portfolio of the company's 3,000+ journals created a significant barrier. Without a unified way to browse the catalog, several critical issues emerged:</p>
+<ul class=ul>
+  <li class="mt-md p"><strong>Scope Mismatch:</strong> A high volume of articles were rejected simply because they did not align with a specific journal's scope, leading to researchers' frustration.</li>
+  <li class="mt-md p"><strong>Delayed Submissions:</strong> Submitting to the wrong journal often caused delays of several days in the submission process.</li>
+</ul>
+<details class="mt-xl read-more">
+  <summary class="body-large read-more-toggle">Read more...</summary>
+  <ul class="read-more-content ul">
+    <li class="mt-md p"><strong>Funding Risks:</strong> For many authors, delays aren't just an inconvenience—they lead to a loss of funding, forcing researchers to pay publication fees out of pocket.</li>
+    <li class="mt-md p"><strong>User Churn:</strong> When a journal rejects an article due to scope mismatch, researchers frequently "churn" out of the Springer Nature ecosystem and publish with a competitor.</li>
+    <li class="mt-md p"><strong>Increased Workload:</strong> The internal editorial teams faced a massive backlog of "out-of-scope" submissions, creating a heavy operational burden.</li>
+    <li class="mt-md p"><strong>Brand Weakening:</strong> The inability to see the full breadth of the portfolio prevented researchers from perceiving Springer Nature as a leader in academic publishing and as the first option when looking to publish their work.</li>
+  </ul>
+</details>
+</div>
+
+<div class=text-block>
+  <h2 class="mt-5xl t-ct t-gray-300">My approach</h2>
+  <p class="mt-3xl p-high">As the Senior Product Designer, I led the design strategy and execution from discovery to delivery. My responsibility was to ensure we designed a best-in-class product that helps researchers find the best home for their research. I focused on making the journal discovery easy and effective, helping to reduce turnaround times and improving acceptance rates.</p>
+  <p class=mt-xl>I worked in a cross-functional team alongside a Product Manager, a Business Analyst, and a UX Researcher. Together, we analyzed customer behavior and identified how product friction was hurting the business. My role was to turn these insights into effective design solutions.</p>
+  <p class=mt-xl>As a Senior Product Designer, I took the following actions:</p>
+<ul class=ul>
+  <li class="mt-md p"><strong>Synthesized data from multiple sources,</strong> analyzing user feedback and product data to find the biggest pain points in the journey. This helped us understand where the most critical issues and opportunities were.</li>
+  <li class="mt-md p"><strong>Defined success metrics by collaborating closely with the Product team</strong> to set project goals and establish clear ways to measure our success.</li>
+</ul>
+<details class="mt-xl read-more">
+  <summary class="body-large read-more-toggle">Read more...</summary>
+  <ul class="read-more-content ul">
+    <li class="mt-md p"><strong>Partnered with SEO and Marketing teams</strong> to ensure the product served as an effective channel for attracting new users. I focused on making the journal portfolio highly visible on search engines like Google, helping to increase the number of researchers discovering Springer Nature.</li>
+    <li class="mt-md p"><strong>Conducted user research,</strong> interviewing researchers to learn what factors—such as speed, prestige, topic, or publication fees—matter most when they are choosing a journal.</li>
+    <li class="mt-md p"><strong>Performed competitive benchmarking</strong> by analyzing other publishing platforms to identify industry trends, helping me understand how competitors approached similar discovery problems and ensuring our solution was modern and effective.</li>
+    <li class="mt-md p"><strong>Led iterative usability testing,</strong> running tests to refine user flows and ensuring that every part of the experience felt consistent and worked seamlessly together.</li>
+    <li class="mt-md p"><strong>Designed a scalable information architecture</strong> to organize over 3,000 journals, creating a navigation and filtering system that allowed researchers to browse by attributes that supported their decision-making.</li>
+    <li class="mt-md p"><strong>Advocated for accessibility,</strong> ensuring all designs adhered to Springer's commitment to WCAG AA standards so that web content remained accessible to people with diverse disabilities.</li>
+    <li class="mt-md p"><strong>Worked closely with engineers</strong> during the implementation phase, providing detailed documentation and collaborating with the dev team to ensure the final product met our high-quality standards.</li>
+  </ul>
+</details>
+</div>
+
+<div class="mt-4xl two-column-image wrapper">
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-research.c62f04df.webp style=width:100%;height:auto alt="Throughout this process, my team and I conducted extensive research and data analysis, interviewed researchers from across the globe, and tested multiple prototypes to develop a robust design solution." loading=lazy>
+  </figure>
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-interview.7f1130ea.webp style=width:100%;height:auto alt="Example of an interview with a researcher" loading=lazy>
+  </figure>
+</div>
+
+<div class="mt-sm two-column-image wrapper">
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-prototyping.932bbc0c.webp style=width:100%;height:auto alt="Renan prototyping on paper" loading=lazy>
+  </figure>
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-prototype.e7faaec7.webp style=width:100%;height:auto alt="Image of the Figma prototype used to test with users" loading=lazy>
+  </figure>
+</div>
+<figcaption class="body-small mt-xs t-ct wrapper">Throughout this process, my team and I conducted extensive research and data analysis, interviewed researchers from across the globe, and tested multiple prototypes to develop a robust design solution.</figcaption>
+
+<div class=text-block>
+  <h2 class="mt-5xl t-ct t-gray-300">The solution</h2>
+  <p class="mt-3xl p-high">Our primary goal was to design a centralized and intuitive journal discovery experience. We aimed to empower researchers to navigate Springer Nature's extensive portfolio of over 3,000 journals with confidence, ensuring they could efficiently find the perfect home for their research.</p>
+  <p class=mt-xl>Beyond improving the core discovery experience, we partnered with the SEO team to identify an opportunity to index approximately 3,500 targeted landing pages — each tailored to specific subject areas and structured to rank highly on Google, creating a scalable new channel for organic user acquisition.</p>
+  <p class=mt-xl>To ensure the platform's success, the final design was built upon the following core principles:</p>
+<ul class=ul>
+  <li class="mt-md p"><strong>A Unified Ecosystem:</strong> Replacing a disjointed network of legacy websites with a single, brand-agnostic destination for all Springer Nature journal discovery.</li>
+  <li class="mt-md p"><strong>Smart Taxonomy &amp; Filtering:</strong> Allowing users to easily filter 3,000+ journals based on attributes that matter most, such as scope, impact factor, acceptance rates, turnaround times, and publishing model.</li>
+  <li class="mt-md p"><strong>SEO-Driven Architecture:</strong> Identifying an opportunity to index approximately 3,500 targeted landing pages, structured to capture long-tail organic search traffic and attract researchers at the moment of journal discovery.</li>
+  <li class="mt-md p"><strong>Clear Conversion Paths:</strong> Providing researchers with direct, frictionless routes from discovering a journal to initiating the submission process.</li>
+  <li class="mt-md p"><strong>Intelligent Search:</strong> Extensively testing and refining the search engine to ensure it consistently surfaces the most relevant results for researchers across different scientific subjects.</li>
+  <li class="mt-md p"><strong>Accessible by Design:</strong> Ensuring the entire platform adheres to WCAG 2.1/2.2 Level AA accessibility standards, making it accessible to everyone.</li>
+</ul>
+</div>
+
+<figure class="medium-zoom-large mt-4xl wrapper">
+  <img class=medium-zoom-image src=/jf-case-home-desktop.997ee90a.webp style=width:100%;height:auto alt="Journal Finder home page on desktop" loading=lazy>
+</figure>
+
+<div class="mt-sm two-column-image wrapper">
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-home-desktop-2.b3eb603d.webp style=width:100%;height:auto alt="Image featured journals in Life Sciences and Physical Sciences" loading=lazy>
+  </figure>
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-home-mobile.e500afc0.webp style=width:100%;height:auto alt="Image of the journal finder home page on mobile" loading=lazy>
+  </figure>
+</div>
+
+<div class="mt-sm two-column-image wrapper">
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-listing-desktop.55edc351.webp style=width:100%;height:auto alt="Image of the journal finder listing page on desktop" loading=lazy>
+  </figure>
+
+  <figure class=medium-zoom-small>
+    <img class=medium-zoom-image src=/jf-case-listing-mobile.e0be669a.webp style=width:100%;height:auto alt="Image of the journal finder listing page on mobile" loading=lazy>
+  </figure>
+</div>
+
+<div class="mt-4xl text-block">
+  <h2 class="mt-5xl t-ct t-gray-300">Impact</h2>
+  <p class="mt-3xl p-high">The solution proved highly effective in helping researchers confidently choose the right journal for their work, with engagement and conversion metrics validating the product's impact at launch.</p>
+  <p class=mt-xl>Beyond the core discovery experience, early data also signalled strong organic acquisition potential — with over 1 million sessions per month and 35.7% of organic visitors being first-time users.</p>
+</div>
+
+<div class="featured-metrics-2 mt-3xl">
+  <div class=wrapper>
+        <div class=metrics-list>
+
+          <div class=metric>
+            <span class="display-xxxl metric-number">
+              
+              8.6
+              <span class="display-xl metric-number-percentage t-bold">%</span>
+            </span>
+            <span class="body-medium t-ct">Session-to-submission conversion rate</span>
+          </div>
+
+          <div class=metric>
+            <span class="display-xxxl metric-number">
+              
+              25
+              <span class="display-xl metric-number-percentage t-bold">%</span>
+            </span>
+            <span class="body-medium t-ct">Search results engagement rate (sessions with at least one journal click)</span>
+          </div>
+
+          <div class=metric>
+            <span class="display-xxxl metric-number">
+              <span class="display-xl metric-number-arrow t-bold t-green-light">↑</span>
+              50.7
+              <span class="display-xl metric-number-percentage t-bold">%</span>
+            </span>
+            <span class="body-medium t-ct">increase in submission funnel completion rate</span>
+          </div>
+
+          <div class=metric>
+            <span class="display-xxxl metric-number">
+              
+              35.7
+              <span class="display-xl metric-number-percentage t-bold">%</span>
+            </span>
+            <span class="body-medium t-ct"><i>New user</i> acquisition rate via organic search</span>
+          </div>
+        </div>
+  </div>
+</div>
+<div class="footnotes mt-4xl" role=contentinfo>
+  <ol class=ol>
+    <li class="body-small t-gray-300">The share of website sessions that led to a researcher initiating a manuscript submission — the platform's primary conversion event, equivalent to a purchase in e-commerce.</li>
+    <li class="body-small t-gray-300">The increase in the share of users who started and successfully completed the end-to-end submission flow — from opening the submission system to clicking "Submit manuscript."</li>
+    <li class="body-small t-gray-300">The share of organic search visitors who had never previously accessed the platform, indicating the website's effectiveness as a new user acquisition channel.</li>
+  </ol>
+</div></div>
+
+  
+  
+  <dialog class="dialog dialog-content-protected dialog-show-password">
+    <div class="dialog-container wrapper">
+        <button class="body-medium btn btn-arrow-left btn-close-email btn-gray-green" autofocus>
+            <div class=svg-button>
+                <svg xmlns:xmlns=http://www.w3.org/2000/svg viewBox="0 0 24.96 14.4"><path d="M17.551 1.092a1 1 0 0 0-.202.321 1.05 1.05 0 0 0 .202 1.08l4.239 4.542H.922a.9.9 0 0 0-.652.29c-.173.184-.27.435-.27.697s.097.513.27.698.407.29.651.29h20.85l-4.22 4.511a1.02 1.02 0 0 0-.268.696c0 .26.097.51.268.696a.9.9 0 0 0 .65.287.9.9 0 0 0 .65-.287l5.86-6.279a.9.9 0 0 0 .184-.286.92.92 0 0 0 0-.681.9.9 0 0 0-.184-.286L18.86 1.092a.9.9 0 0 0-.3-.216.87.87 0 0 0-.709 0 .9.9 0 0 0-.3.216"/></svg>
+            </div>
+            Back to website
+        </button>
+        <div class=dialog-heading>
+            <picture>
+                <img class=image-content-protected src=/content-protected.72b8423b.svg>
+            </picture>
+            <h2>This content is protected</h2>
+            <p class=body-medium>To view, please enter password</p>
+        </div>
+        <div class=input-password>
+            <input class="body-medium t-gray-200" type=password placeholder="Enter password" aria-label=Password aria-describedby=password-error autocomplete=off>
+            <button class="body-medium btn btn-gray-200 btn-submit" aria-label="Submit password">
+                <div class=svg-button>
+                    <svg xmlns:xmlns=http://www.w3.org/2000/svg viewBox="0 0 24.96 14.4"><path d="M17.551 1.092a1 1 0 0 0-.202.321 1.05 1.05 0 0 0 .202 1.08l4.239 4.542H.922a.9.9 0 0 0-.652.29c-.173.184-.27.435-.27.697s.097.513.27.698.407.29.651.29h20.85l-4.22 4.511a1.02 1.02 0 0 0-.268.696c0 .26.097.51.268.696a.9.9 0 0 0 .65.287.9.9 0 0 0 .65-.287l5.86-6.279a.9.9 0 0 0 .184-.286.92.92 0 0 0 0-.681.9.9 0 0 0-.184-.286L18.86 1.092a.9.9 0 0 0-.3-.216.87.87 0 0 0-.709 0 .9.9 0 0 0-.3.216"/></svg>
+                </div>
+            </button>
+
+        </div>
+        <div class=feedback-message>
+            <div id=password-error class="body-small error-message t-white" role=alert>Password incorrect</div>
+        </div>
+        <button type=button class="btn-toggle-password mt-sm" role=switch aria-checked=false aria-label="Show password">
+            <span class=visual-checkbox aria-hidden=true></span>
+            <span class="body-small toggle-password-text">Show password</span>
+        </button>
+    </div>
+</dialog>
+  <footer class=footer>
+  <div class=wrapper>
+    <div class=footer-content>
+      <h2 class="display-xl t-green-light">Let's connect</h2>
+      <h3 class=display-xl>I'm always open for collabs<br>or a coffee chat</h3>
+      <nav style=display:none class="footer-icons mt-lg">
+
+        <a class=social-item href=https://medium.com/@renancrociari target=_blank aria-label=Medium rel="noopener noreferrer">
+          <i class="medium-icon social-icon" aria-label=Medium></i>
+        </a>
+
+        <a class=social-item href=https://www.linkedin.com/in/renancrociari/ target=_blank aria-label=LinkedIn rel="noopener noreferrer">
+          <i class="linkedin-icon social-icon" aria-label=LinkedIn></i>
+        </a>
+
+        <a class=social-item href=https://dribbble.com/renancrociari target=_blank aria-label=Dribbble>
+          <i class="dribbble-icon social-icon" aria-label=Dribbble></i>
+        </a>
+
+      </nav>
+
+      <nav class="footer-nav mt-xl">
+        <a class="body-medium btn btn-gray-green" href=/ aria-label=Homepage>
+          Home
+        </a>
+        <a class="body-medium btn btn-gray-green" href=about aria-label=About>
+          About
+        </a>
+        <a class="body-medium btn btn-gray-green" href=/up_/public/downloads/renancrociari-cv.pdf aria-label=Resumé target=_blank rel="noopener noreferrer">
+          Resumé
+        </a>
+        <a class="body-medium btn btn-gray-green" href=https://www.linkedin.com/in/renancrociari/ target=_blank aria-label=LinkedIn rel="noopener noreferrer">
+          LinkedIn
+        </a>
+        <button class="body-medium btn btn-gray-green btn-show-email" aria-haspopup=dialog>Email</button>
+      </nav>
+
+    </div>
+  </div>
+</footer>
+
+

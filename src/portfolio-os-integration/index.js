@@ -7,6 +7,13 @@
 
 // Config
 export { siteConfig, getReservedSlugs, isReservedSlug, getSiteConfig } from './config/site-config.js';
+export {
+  MANAGED_ROUTE_MANIFEST,
+  SITE_BASE_URL,
+  resolveSiteRoute,
+  resolveSiteRouteFromPath,
+  listManagedLegacySourcePages,
+} from './config/routing-manifest.mjs';
 
 // Content Schema
 export { 
@@ -46,4 +53,4 @@ export {
   renderSiteGenericPage,
   renderEditorPreviewMainHtml,
   parseFeaturedProjects,
-} from './renderer/shared-renderer.js';
+} from './renderer/shared-renderer.mjs';
