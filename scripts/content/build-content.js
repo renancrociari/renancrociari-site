@@ -229,8 +229,9 @@ function renderHomePage(data, content) {
 }
 
 function renderAboutPage(data, content) {
-    const { data: metadata, content: mdx } = parseFrontmatter(content);
-    
+    const metadata = data;
+    const mdx = content;
+
     let html = '<header class="content-header mt-5xl">\n';
     html += '  <div class="wrapper">\n';
     html += '    <div class="content-hero">\n';
@@ -252,8 +253,9 @@ function renderAboutPage(data, content) {
 }
 
 function renderWorkPage(data, content) {
-    const { data: metadata, content: mdx } = parseFrontmatter(content);
-    
+    const metadata = data;
+    const mdx = content;
+
     let html = '<header class="content-header mt-5xl">\n';
     html += '  <div class="wrapper">\n';
     html += '    <div class="content-hero">\n';
