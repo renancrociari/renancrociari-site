@@ -712,6 +712,350 @@ function escapeHtml(text) {
     .replace(/'/g, '&#039;');
 }
 
+function openingFeaturedMetrics() {
+  return '<div class="featured-metrics mt-3xl"><div class="wrapper"><h3 class="display-xl">Achievements</h3><div class="metrics-list">';
+}
+
+function closingFeaturedMetrics() {
+  return '</div></div></div>';
+}
+
+/**
+ * Markdown do corpo editorial com as mesmas classes/CSS do site publicado
+ * (antes só existia em scripts/content/build-content.js).
+ * @param {string} mdx
+ * @returns {string}
+ */
+export function renderSiteMarkdownBody(mdx) {
+  const lines = mdx.split('\n');
+  let html = '';
+  let inList = false;
+  let inTextBlock = false;
+  let inFeaturedMetrics = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const nextLine = lines[i + 1];
+
+    if (line.startsWith('# ') || line.startsWith('## ')) {
+      if (inList) { html += '</ul>\n'; inList = false; }
+      if (inTextBlock) { html += '</div>\n'; inTextBlock = false; }
+      if (inFeaturedMetrics) { html += closingFeaturedMetrics(); inFeaturedMetrics = false; }
+
+      const level = line.startsWith('# ') ? 'mt-5xl' : 'mt-3xl';
+      const title = line.replace(/^#+\s*/, '').replace(/\*\*/g, '');
+      html += `<h2 class="${level}">${title}</h2>\n`;
+      continue;
+    }
+
+    if (line.startsWith('### ')) {
+      if (inList) { html += '</ul>\n'; inList = false; }
+      if (inFeaturedMetrics) { html += closingFeaturedMetrics(); inFeaturedMetrics = false; }
+
+      const title = line.replace(/^#+\s*/, '').replace(/\*\*/g, '');
+      html += `<h3 class="mt-2xl">${title}</h3>\n`;
+      continue;
+    }
+
+    if (line.startsWith('**') && line.endsWith('**')) {
+      const metric = line.replace(/\*\*/g, '');
+      if (metric.includes('↑')) {
+        const [, value] = metric.split('↑');
+        html += `<span class="metric-number display-xxxl"><span class="metric-number-arrow t-bold display-xl t-green-light">↑</span>${value}<span class="metric-number-percentage t-bold display-xl"></span></span>\n`;
+      } else if (metric.includes('↓')) {
+        const [, value] = metric.split('↓');
+        html += `<span class="metric-number display-xxxl"><span class="metric-number-arrow t-bold display-xl t-green-light">↓</span>${value}<span class="metric-number-percentage t-bold display-xl"></span></span>\n`;
+      }
+      continue;
+    }
+
+    if (line.startsWith('- ') || line.startsWith('* ')) {
+      if (!inList) {
+        html += '<ul class="ul">\n';
+        inList = true;
+      }
+      const item = line.replace(/^-\s|\*\s/, '').replace(/\*\*/g, '<strong>').replace(/\*\*/g, '</strong>');
+      html += `<li class="li mt-sm">${item}</li>\n`;
+      continue;
+    }
+
+    if (line.startsWith('![')) {
+      const match = line.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+      if (match) {
+        const [, alt, src] = match;
+        html += '<figure class="wrapper medium-zoom-medium mt-2xl">\n';
+        html += `  <img class="medium-zoom-image" src="${src}" style="width: 100%; height: auto;" alt="${alt}" loading="lazy" />\n`;
+        html += '</figure>\n';
+        if (nextLine && !nextLine.startsWith('![') && !nextLine.startsWith('#') && !nextLine.startsWith('-') && nextLine.trim()) {
+          html += `<figcaption class="body-small mt-xs t-ct">${nextLine}</figcaption>\n`;
+          i++;
+        }
+      }
+      continue;
+    }
+
+    if (line.trim() === '') {
+      if (inList) { html += '</ul>\n'; inList = false; }
+      continue;
+    }
+
+    let p = line.replace(/\*\*/g, '<strong>').replace(/\*\*/g, '</strong>');
+    html += `<p class="mt-md">${p}</p>\n`;
+  }
+
+  if (inList) html += '</ul>\n';
+  if (inTextBlock) html += '</div>\n';
+  if (inFeaturedMetrics) html += closingFeaturedMetrics();
+
+  return html;
+}
+
+/**
+ * @param {string} content
+ * @returns {Array<{ title: string, description: string[], link: { text: string, url: string } | null }>}
+ */
+export function parseFeaturedProjects(content) {
+  const lines = content.split('\n');
+  const projects = [];
+  let currentProject = null;
+  let inFeaturedProjects = false;
+
+  for (const line of lines) {
+    if (line.startsWith('# Featured Projects')) {
+      inFeaturedProjects = true;
+      continue;
+    }
+
+    if (inFeaturedProjects) {
+      if (line.startsWith('## ')) {
+        if (currentProject) {
+          projects.push(currentProject);
+        }
+        currentProject = {
+          title: line.substring(3).trim(),
+          description: [],
+          link: null,
+        };
+      } else if (currentProject) {
+        if (line.startsWith('[') && line.includes('](')) {
+          const match = line.match(/\[([^\]]+)\]\(([^)]+)\)/);
+          if (match) {
+            currentProject.link = {
+              text: match[1],
+              url: match[2],
+            };
+          }
+        } else if (line.trim() !== '' && !line.startsWith('---')) {
+          currentProject.description.push(line.trim());
+        }
+      }
+    }
+  }
+
+  if (currentProject) {
+    projects.push(currentProject);
+  }
+
+  return projects;
+}
+
+export function renderProjectCard(project, cardClass, index) {
+  let html = `    <article class="project-card ${cardClass}">\n`;
+  html += '      <div class="project-card-content">\n';
+  html += `        <h2 class="t-white display-lg">${project.title}</h2>\n`;
+
+  if (project.link) {
+    html += `        <a class="btn body-medium btn-white" href="${project.link.url}">\n`;
+    html += `          ${project.link.text}\n`;
+    html += '          <div class="svg-button">\n';
+    html += '            <svg viewBox="0 0 24.96 14.4" width="100%" xmlns="http://www.w3.org/2000/svg">\n';
+    html += '              <path d="M17.5512 1.092C17.4649 1.18378 17.3963 1.29296 17.3496 1.41326C17.3028 1.53356 17.2787 1.6626 17.2787 1.79292C17.2787 1.92324 17.3028 2.05228 17.3496 2.17258C17.3963 2.29288 17.4649 2.40206 17.5512 2.49384L21.7897 7.03499H0.921394C0.677025 7.03499 0.442665 7.139 0.26987 7.32414C0.0970752 7.50928 0 7.76038 0 8.0222C0 8.28403 0.0970752 8.53513 0.26987 8.72026C0.677025 8.9054 0.677025 9.00941 0.921394 9.00941H21.7712L17.5512 13.521C17.3796 13.7059 17.2833 13.9561 17.2833 14.2169C17.2833 14.4777 17.3796 14.7279 17.5512 14.9129C17.7239 15.0968 17.9574 15.2 18.2008 15.2C18.4442 15.2 18.6778 15.0968 18.8504 14.9129L24.7105 8.63427C24.7893 8.55319 24.8521 8.45586 24.895 8.34814C24.9378 8.24041 24.9599 8.12451 24.9599 8.00739C24.9599 7.89028 24.9378 7.77438 24.895 7.66665C24.8521 7.55892 24.7893 7.4616 24.7105 7.38052L18.8596 1.092C18.774 0.999473 18.6721 0.92603 18.5598 0.875911C18.4475 0.825792 18.3271 0.799988 18.2054 0.799988C18.0838 0.799988 17.9634 0.825792 17.8511 0.875911C17.7388 0.92603 17.6369 0.999473 17.5512 1.092Z" />\n';
+    html += '            </svg>\n';
+    html += '          </div>\n';
+    html += '        </a>\n';
+  }
+
+  html += '      </div>\n';
+  html += '    </article>\n';
+
+  return html;
+}
+
+/**
+ * Home: hero + featured projects (igual ao HTML gerado pelo build).
+ */
+export function renderSiteHomePage(data, content) {
+  const lines = content.split('\n');
+  let html = '';
+  html += '<header class="home-header wrapper">\n';
+  html += '  <div class="home-logo-container">\n';
+  html += '    <a class="home-logo-link btn btn-green body-small" href="/" aria-label="Renan Crociari logo">renancrociari</a>\n';
+  html += '  </div>\n';
+  html += '  <div class="home-hero">\n';
+  html += '    <div class="hero-content">\n';
+
+  const heroContent = [];
+  let inHero = true;
+
+  for (const line of lines) {
+    if (line.trim() === '---') {
+      break;
+    }
+    if (line.startsWith('# Featured Projects')) {
+      break;
+    }
+    if (inHero) {
+      heroContent.push(line);
+    }
+  }
+
+  while (heroContent.length > 0 && heroContent[0].trim() === '') {
+    heroContent.shift();
+  }
+
+  let heroTitle = '';
+  const heroBody = [];
+
+  for (let i = 0; i < heroContent.length; i++) {
+    const line = heroContent[i];
+    if (line.startsWith('# ') && !heroTitle) {
+      heroTitle = line.substring(2).trim();
+    } else {
+      heroBody.push(line);
+    }
+  }
+
+  if (!heroTitle && heroContent.length > 0) {
+    heroTitle = heroContent[0];
+    heroBody.length = 0;
+    heroContent.slice(1).forEach((l) => heroBody.push(l));
+  }
+
+  const heroBodyHtml = heroBody
+    .map(l => (l.trim() === '' ? '<br>' : l))
+    .join(' ')
+    .replace(/<br>\s*<br>/g, '<br>')
+    .trim();
+
+  html += `      <h1 class="hero">${heroTitle}</h1>\n`;
+  if (heroBodyHtml) {
+    html += `      <span class="body-medium mt-xl">${heroBodyHtml}</span>\n`;
+  }
+
+  html += '    </div>\n';
+  html += '  </div>\n';
+  html += '</header>\n';
+
+  html += '<section class="featured-projects wrapper">\n';
+
+  const projects = parseFeaturedProjects(content);
+  const cardClasses = ['card-4', 'card-1', 'card-2', 'card-3'];
+
+  projects.forEach((project, index) => {
+    const cardClass = cardClasses[index] || 'card-1';
+    html += renderProjectCard(project, cardClass, index);
+  });
+
+  html += '</section>\n';
+
+  return html;
+}
+
+/**
+ * About: hero + artigo (igual ao build).
+ */
+export function renderSiteAboutPage(metadata, mdx) {
+  let html = '<header class="content-header mt-5xl">\n';
+  html += '  <div class="wrapper">\n';
+  html += '    <div class="content-hero">\n';
+  html += `      <h1 class="t-gray-200">${metadata.description}</h1>\n`;
+  if (metadata.featured_image) {
+    html += '      <figure class="featured-image mt-2xl">\n';
+    html += `        <img src="${metadata.featured_image}" class="featured-image-img" alt="Picture of Renan Crociari" fetchpriority="high" />\n`;
+    html += '      </figure>\n';
+  }
+  html += '    </div>\n';
+  html += '  </div>\n';
+  html += '</header>\n';
+
+  html += '<div class="article-content">\n';
+  html += renderSiteMarkdownBody(mdx);
+  html += '</div>\n';
+
+  return html;
+}
+
+/**
+ * Case study: hero + corpo (igual ao build).
+ */
+export function renderSiteWorkPage(metadata, mdx) {
+  let html = '';
+
+  html += '<header class="content-header mt-5xl">\n';
+  html += '  <div class="wrapper">\n';
+  html += '    <div class="content-hero">\n';
+  html += `      <h1 class="t-white">${metadata.title}</h1>\n`;
+
+  if (metadata.tags && metadata.tags.length) {
+    html += '      <div class="tags body-small t-gray-300 mt-sm">\n';
+    html += `      ${metadata.tags.join(' <span class="divider">/</span> ')}\n`;
+    html += '      </div>\n';
+  }
+
+  if (metadata.featured_image) {
+    html += '      <figure class="featured-image mt-2xl">\n';
+    html += `        <img src="${metadata.featured_image}" class="featured-image-img" alt="${metadata.title}" fetchpriority="high" />\n`;
+    html += '      </figure>\n';
+  }
+  html += '    </div>\n';
+  html += '  </div>\n';
+  html += '</header>\n';
+
+  html += '<div class="article-content">\n';
+  html += renderSiteMarkdownBody(mdx);
+  html += '</div>\n';
+
+  return html;
+}
+
+/**
+ * Página editorial simples (slug em pages que não é home/about).
+ * @param {Record<string, unknown>} metadata
+ * @param {string} markdownBody
+ * @returns {string}
+ */
+export function renderSiteGenericPage(metadata, markdownBody) {
+  const title = escapeHtml(String(metadata.title || ''));
+  return `<header class="content-header mt-5xl">
+  <div class="wrapper">
+    <div class="content-hero">
+      <h1 class="t-gray-200">${title}</h1>
+    </div>
+  </div>
+</header>
+<div class="article-content">
+${renderSiteMarkdownBody(markdownBody)}
+</div>`;
+}
+
+/**
+ * HTML principal do preview do editor (entre navbar e footer), alinhado ao build.
+ * @param {{ collection: string, slug: string, metadata: Record<string, unknown>, markdownBody: string }} input
+ * @returns {string}
+ */
+export function renderEditorPreviewMainHtml({ collection, slug, metadata, markdownBody }) {
+  if (collection === 'pages' && slug === 'home') {
+    return renderSiteHomePage(metadata, markdownBody);
+  }
+  if (collection === 'pages' && slug === 'about') {
+    return renderSiteAboutPage(metadata, markdownBody);
+  }
+  if (collection === 'pages') {
+    return renderSiteGenericPage(metadata, markdownBody);
+  }
+  return renderSiteWorkPage(metadata, markdownBody);
+}
+
 /**
  * Renderiza um documento completo
  * @param {Object} document
@@ -720,148 +1064,24 @@ function escapeHtml(text) {
  */
 export function renderDocument(document, options = {}) {
   const { metadata, content, blocks } = document;
-  
+
   // Se temos blocos pré-parseados, usa eles
   if (blocks && Array.isArray(blocks)) {
     return renderBlocks(blocks, options);
   }
-  
-  // Se temos conteúdo markdown, parseia e renderiza
+
+  // Markdown editorial: mesmo HTML que o build publica
   if (content) {
     try {
-      const html = parseMarkdown(content);
+      const html = renderSiteMarkdownBody(content);
       return `<div class="document-content">${html}</div>`;
     } catch (e) {
-      console.warn('Failed to parse markdown:', e);
+      console.warn('Failed to render markdown:', e);
     }
   }
-  
+
   // Fallback para conteúdo texto
   return `<div class="document-content">${content || ''}</div>`;
-}
-
-/**
- * Simple markdown parser for editor preview
- * Supports: headings, paragraphs, lists, bold, italic, links, images, blockquotes, horizontal rules
- */
-function parseMarkdown(text) {
-  if (!text) return '';
-  
-  const lines = text.split('\n');
-  let html = '';
-  let inList = false;
-  let listType = null;
-  
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
-    
-    // Empty line - close lists
-    if (trimmed === '') {
-      if (inList) {
-        html += listType === 'ul' ? '</ul>' : '</ol>';
-        inList = false;
-        listType = null;
-      }
-      continue;
-    }
-    
-    // Horizontal rule
-    if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
-      if (inList) {
-        html += listType === 'ul' ? '</ul>' : '</ol>';
-        inList = false;
-      }
-      html += '<hr class="content-divider" />';
-      continue;
-    }
-    
-    // Blockquote
-    if (trimmed.startsWith('> ')) {
-      if (inList) {
-        html += listType === 'ul' ? '</ul>' : '</ol>';
-        inList = false;
-      }
-      html += `<blockquote class="content-quote"><p>${escapeHtml(trimmed.slice(2))}</p></blockquote>`;
-      continue;
-    }
-    
-    // Unordered list
-    if (/^[-*+] /.test(trimmed)) {
-      if (!inList || listType !== 'ul') {
-        if (inList) html += listType === 'ul' ? '</ul>' : '</ol>';
-        html += '<ul class="content-list">';
-        inList = true;
-        listType = 'ul';
-      }
-      html += `<li>${parseInline(trimmed.slice(2))}</li>`;
-      continue;
-    }
-    
-    // Ordered list
-    if (/^\d+\. /.test(trimmed)) {
-      if (!inList || listType !== 'ol') {
-        if (inList) html += listType === 'ul' ? '</ul>' : '</ol>';
-        html += '<ol class="content-list">';
-        inList = true;
-        listType = 'ol';
-      }
-      html += `<li>${parseInline(trimmed.replace(/^\d+\. /, ''))}</li>`;
-      continue;
-    }
-    
-    // Close list if we're at a non-list line
-    if (inList) {
-      html += listType === 'ul' ? '</ul>' : '</ol>';
-      inList = false;
-      listType = null;
-    }
-    
-    // Headings
-    const headingMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
-    if (headingMatch) {
-      const level = headingMatch[1].length;
-      const text = headingMatch[2];
-      html += `<h${level} class="content-heading h${level}">${escapeHtml(text)}</h${level}>`;
-      continue;
-    }
-    
-    // Regular paragraph
-    html += `<p>${parseInline(trimmed)}</p>`;
-  }
-  
-  // Close any open list
-  if (inList) {
-    html += listType === 'ul' ? '</ul>' : '</ol>';
-  }
-  
-  return html;
-}
-
-/**
- * Parse inline elements: bold, italic, links, images
- */
-function parseInline(text) {
-  if (!text) return '';
-  
-  // Escape first, then process inline elements
-  let result = escapeHtml(text);
-  
-  // Images: ![alt](src)
-  result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<figure class="content-image"><img src="$2" alt="$1" loading="lazy" /></figure>');
-  
-  // Links: [text](url)
-  result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="content-link">$1</a>');
-  
-  // Bold: **text** or __text__
-  result = result.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  result = result.replace(/__([^_]+)__/g, '<strong>$1</strong>');
-  
-  // Italic: *text* or _text_
-  result = result.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  result = result.replace(/_([^_]+)_/g, '<em>$1</em>');
-  
-  return result;
 }
 
 /**
@@ -888,26 +1108,13 @@ export function renderCaseStudy(caseStudy, options = {}) {
 }
 
 /**
- * Renderiza a página about
- * @param {Object} page
+ * Renderiza a página about (mesmo markup que o build).
+ * @param {Object} page — { metadata, content } ou campos no topo
  * @param {RenderOptions} options
  * @returns {string}
  */
-export function renderAboutPage(page, options = {}) {
-  const { metadata, content } = page;
-  
-  return `
-    <header class="content-header mt-5xl">
-      <div class="wrapper">
-        <div class="content-hero">
-          <h1 class="t-gray-200">${escapeHtml(metadata.title || 'About')}</h1>
-        </div>
-      </div>
-    </header>
-    <div class="article-content">
-      <div class="text-block">
-        ${content || ''}
-      </div>
-    </div>
-  `;
+export function renderAboutPage(page, _options = {}) {
+  const metadata = page.metadata || page;
+  const content = page.content ?? '';
+  return renderSiteAboutPage(metadata, content);
 }

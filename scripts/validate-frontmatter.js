@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { parseContentFrontmatter } = require('./lib/parse-frontmatter.cjs');
 
 const CONTENT_DIR = path.join(__dirname, '..', 'content');
 
@@ -28,62 +29,12 @@ const SCHEMAS = {
   }
 };
 
-function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return { data: null, content };
-
-  const data = {};
-  const lines = match[1].split('\n');
-  let currentKey = null;
-  let currentArray = null;
-
-  for (const line of lines) {
-    if (line.includes(':')) {
-      const [key, ...valueParts] = line.split(':');
-      const value = valueParts.join(':').trim();
-
-      if (currentArray) {
-        data[currentKey] = currentArray;
-        currentArray = null;
-      }
-
-      if (value.startsWith('"') || value.startsWith("'")) {
-        data[key.trim()] = value.slice(1, -1);
-      } else if (value === 'null') {
-        data[key.trim()] = null;
-      } else if (!isNaN(value) && value !== '') {
-        data[key.trim()] = Number(value);
-      } else if (value === 'true') {
-        data[key.trim()] = true;
-      } else if (value === 'false') {
-        data[key.trim()] = false;
-      } else {
-        data[key.trim()] = value;
-      }
-      currentKey = key.trim();
-    } else if (line.startsWith('  -')) {
-      const value = line.replace('  -', '').trim();
-      if (!currentArray) {
-        currentArray = [];
-        data[currentKey] = currentArray;
-      }
-      if (value.startsWith('"') || value.startsWith("'")) {
-        currentArray.push(value.slice(1, -1));
-      } else {
-        currentArray.push(value);
-      }
-    }
-  }
-
-  return { data, content: match[2] };
-}
-
 function validateFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
-  const { data } = parseFrontmatter(content);
+  const { data } = parseContentFrontmatter(content);
 
-  if (!data) {
-    return { valid: false, errors: ['No frontmatter found'] };
+  if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+    return { valid: false, errors: ['No frontmatter found or empty'] };
   }
 
   const errors = [];
@@ -124,7 +75,7 @@ function validateCollection(collection) {
     return { files: [], errors: 0 };
   }
 
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.md'));
+  const files = fs.readdirSync(dir).filter(f => f.endsWith('.md') || f.endsWith('.mdx'));
   let totalErrors = 0;
   const results = [];
 

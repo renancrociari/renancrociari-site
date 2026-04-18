@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "parcel src/pages/*.html",
-    "dev:generated": "parcel src/pages-generated/*.html",
-    "dev:all": "parcel src/pages/*.html src/pages-generated/*.html",
+    "dev": "parcel 'src/pages/*.html'",
+    "dev:generated": "parcel 'src/pages-generated/*.html'",
+    "dev:all": "parcel 'src/pages/*.html' 'src/pages-generated/*.html'",
     "dev:api": "node scripts/dev-server.js",
-    "start": "parcel src/pages/*.html --cert ./localhost+3.pem --key ./localhost+3-key.pem",
+    "start": "parcel 'src/pages/*.html' --cert ./localhost+3.pem --key ./localhost+3-key.pem",
     "build:content": "node scripts/content/build-content.js",
     "build:content:check": "node scripts/content/build-content.js --check",
-    "build": "npm run build:content && parcel build src/pages/*.html src/pages-generated/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
-    "build:legacy": "parcel build src/pages/*.html --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
+    "build": "npm run build:content && parcel build 'src/pages/*.html' 'src/pages-generated/*.html' --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
+    "build:legacy": "parcel build 'src/pages/*.html' --dist-dir ./dist --public-url ./ && cp -r public/downloads dist/downloads && cp -r public/images dist/images && cp public/.htaccess dist/.htaccess && node scripts/fix-paths.js",
     "editor": "npm run dev:api",
     "setup:ssl": "./scripts/setup-ssl.sh",
     "validate:content": "node scripts/validate-frontmatter.js",
@@ -31,9 +31,9 @@
     "posthtml-include": "^2.0.1"
   },
   "dependencies": {
-    "@portfolio-os/blocks": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/blocks",
-    "@portfolio-os/core": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/core",
-    "@portfolio-os/editor": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/editor",
+    "@portfolio-os/blocks": "file:../portfolio-main/packages/blocks",
+    "@portfolio-os/core": "file:../portfolio-main/packages/core",
+    "@portfolio-os/editor": "file:../portfolio-main/packages/editor",
     "bcryptjs": "^3.0.3",
     "medium-zoom": "^1.1.0"
   }

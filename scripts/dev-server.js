@@ -12,67 +12,56 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
+const { parseContentFrontmatter } = require('./lib/parse-frontmatter.cjs');
 
 const CONTENT_DIR = path.join(__dirname, '..', 'content');
 const API_PORT = 3001;
 const PARCEL_PORT = 1234;
 
-// Utils para frontmatter
+/** @returns {{ metadata: Record<string, unknown>, content: string }} */
 function parseFrontmatter(raw) {
-  const lines = raw.split('\n');
-  let inFrontmatter = false;
-  let frontmatterStart = -1;
-  let frontmatterEnd = -1;
-  
-  for (let i = 0; i < lines.length; i++) {
-    if (lines[i].trim() === '---') {
-      if (!inFrontmatter) {
-        inFrontmatter = true;
-        frontmatterStart = i;
-      } else {
-        frontmatterEnd = i;
-        break;
-      }
-    }
+  const { data, content } = parseContentFrontmatter(raw);
+  return { metadata: data, content };
+}
+
+function yamlScalarLine(key, value) {
+  if (typeof value === 'boolean') {
+    return `${key}: ${value ? 'true' : 'false'}`;
   }
-  
-  if (frontmatterStart === -1 || frontmatterEnd === -1) {
-    return { metadata: {}, content: raw };
+  if (typeof value === 'number' && !Number.isNaN(value)) {
+    return `${key}: ${value}`;
   }
-  
-  const frontmatterLines = lines.slice(frontmatterStart + 1, frontmatterEnd);
-  const content = lines.slice(frontmatterEnd + 1).join('\n').trim();
-  
-  const metadata = {};
-  for (const line of frontmatterLines) {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex > 0) {
-      const key = line.slice(0, colonIndex).trim();
-      let value = line.slice(colonIndex + 1).trim();
-      if ((value.startsWith('"') && value.endsWith('"')) ||
-          (value.startsWith("'") && value.endsWith("'"))) {
-        value = value.slice(1, -1);
-      }
-      metadata[key] = value;
-    }
+  const strValue = String(value);
+  const needsQuotes =
+    strValue.includes(':') ||
+    strValue.includes('#') ||
+    strValue.includes('"') ||
+    strValue.includes('\n') ||
+    strValue.includes('[') ||
+    strValue.includes(']') ||
+    strValue === '' ||
+    strValue === 'true' ||
+    strValue === 'false';
+  if (needsQuotes) {
+    return `${key}: "${strValue.replace(/"/g, '\\"')}"`;
   }
-  
-  return { metadata, content };
+  return `${key}: ${strValue}`;
 }
 
 function serializeFrontmatter(metadata, content) {
   const lines = ['---'];
   for (const [key, value] of Object.entries(metadata)) {
     if (value === undefined || value === null) continue;
-    const strValue = String(value);
-    const needsQuotes = strValue.includes(':') || strValue.includes('#') || 
-                       strValue.includes('"') || strValue.includes('\n') ||
-                       strValue.includes('[') || strValue.includes(']');
-    if (needsQuotes) {
-      lines.push(`${key}: "${strValue.replace(/"/g, '\\"')}"`);
-    } else {
-      lines.push(`${key}: ${strValue}`);
+    if (Array.isArray(value)) {
+      lines.push(`${key}:`);
+      for (const item of value) {
+        const s = String(item);
+        const q = s.includes(':') || /[\s"#]/.test(s);
+        lines.push(q ? `  - "${s.replace(/"/g, '\\"')}"` : `  - ${s}`);
+      }
+      continue;
     }
+    lines.push(yamlScalarLine(key, value));
   }
   lines.push('---');
   lines.push('');
@@ -101,7 +90,7 @@ function listDocuments(collection) {
       id: slug,
       slug,
       title: metadata.title || slug,
-      published: metadata.published !== 'false',
+      published: metadata.published !== 'false' && metadata.published !== false,
       order: parseInt(metadata.order) || 0,
     };
   }).sort((a, b) => a.order - b.order);
@@ -157,8 +146,10 @@ function createDocument(collection, title, slug) {
   const metadata = {
     title,
     slug: finalSlug,
+    type: collection === 'work' ? 'work' : 'page',
     publishedAt: new Date().toISOString().split('T')[0],
     published: 'false',
+    ...(collection === 'work' ? { description: 'Em breve' } : { description: 'Rascunho' }),
   };
   
   const content = `# ${title}\n\nEm breve...`;

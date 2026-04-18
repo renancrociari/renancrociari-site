@@ -19,6 +19,12 @@ export {
   generateSlug,
 } from './content-schema.js';
 
+// Blocos portfolio-os (catálogo authorable)
+export {
+  getAuthorableBlocksForWorkBody,
+  getBlockCatalogEntriesForEditor,
+} from './blocks/authorable-blocks-catalog.js';
+
 // Adapters
 export { 
   createFilesystemAdapter, 
@@ -33,4 +39,11 @@ export {
   renderDocument,
   renderCaseStudy,
   renderAboutPage,
+  renderSiteMarkdownBody,
+  renderSiteHomePage,
+  renderSiteAboutPage,
+  renderSiteWorkPage,
+  renderSiteGenericPage,
+  renderEditorPreviewMainHtml,
+  parseFeaturedProjects,
 } from './renderer/shared-renderer.js';

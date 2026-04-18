@@ -224,6 +224,71 @@
       padding: var(--spacing-3xl);
       color: var(--typography-gray-300);
     }
+
+    .block-catalog-summary {
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: var(--font-xs);
+      color: var(--typography-green-light);
+      user-select: none;
+    }
+
+    .block-catalog-list {
+      max-height: 280px;
+      overflow-y: auto;
+      margin-top: var(--spacing-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .block-catalog-item {
+      border: 1px solid var(--background-gray-lighter);
+      border-radius: var(--br-xxxs);
+      padding: var(--spacing-sm);
+      background: var(--background-gray-medium);
+    }
+
+    .block-catalog-item h4 {
+      margin: 0 0 var(--spacing-2xs) 0;
+      font-family: var(--font-display);
+      font-size: var(--font-2xs);
+      color: var(--typography-gray-200);
+    }
+
+    .block-catalog-item .meta {
+      font-size: var(--font-2xs);
+      color: var(--typography-gray-300);
+      margin-bottom: var(--spacing-2xs);
+    }
+
+    .block-catalog-item p {
+      margin: 0 0 var(--spacing-xs) 0;
+      font-size: var(--font-2xs);
+      color: var(--typography-gray-300);
+      line-height: 1.4;
+    }
+
+    .btn-insert-snippet {
+      font-size: var(--font-2xs);
+      padding: var(--spacing-2xs) var(--spacing-xs);
+      background: var(--background-gray-lighter);
+      color: var(--typography-gray-200);
+      border: 1px solid var(--background-gray-lighter);
+      border-radius: var(--br-xxxs);
+      cursor: pointer;
+      font-family: var(--font-display);
+    }
+
+    .btn-insert-snippet:hover {
+      border-color: var(--typography-green-light);
+      color: var(--typography-green-light);
+    }
+
+    .btn-insert-snippet:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
     
     @media (max-width: 1024px) {
       .editor-layout {
@@ -312,6 +377,14 @@ Use Markdown syntax for formatting.
 [Link text](https://example.com)
 
 ![Alt text](/path/to/image.jpg)"></textarea>
+
+        <details class="block-catalog" id="block-catalog-wrap" style="display: none; margin-top: var(--spacing-lg);">
+          <summary class="block-catalog-summary">Blocos @portfolio-os/blocks (work-body)</summary>
+          <p class="block-catalog-hint body-small" style="color: var(--typography-gray-300); margin: var(--spacing-xs) 0;">
+            Inserir snippet MDX no cursor. O preview em Markdown ignora JSX até o pipeline MDX estar ativo.
+          </p>
+          <div class="block-catalog-list" id="block-catalog-list"></div>
+        </details>
       </div>
       
       <div id="empty-editor" class="empty-state">
@@ -356,7 +429,8 @@ Use Markdown syntax for formatting.
   <script type="module">
     // Import adapters
     import { createLocalAdapterBundle } from '../portfolio-os-integration/adapters/filesystem-adapter.js';
-    import { renderDocument } from '../portfolio-os-integration/renderer/shared-renderer.js';
+    import { renderEditorPreviewMainHtml } from '../portfolio-os-integration/renderer/shared-renderer.js';
+    import { getBlockCatalogEntriesForEditor } from '../portfolio-os-integration/blocks/authorable-blocks-catalog.js';
     
     const adapters = createLocalAdapterBundle();
     let currentCollection = 'work';
@@ -370,6 +444,11 @@ Use Markdown syntax for formatting.
     const contentEditor = document.getElementById('content-editor');
     const previewFrame = document.getElementById('preview-frame');
     const saveStatus = document.getElementById('save-status');
+    const blockCatalogWrap = document.getElementById('block-catalog-wrap');
+    const blockCatalogList = document.getElementById('block-catalog-list');
+
+    const blockCatalogEntries = getBlockCatalogEntriesForEditor();
+    const blockCatalogSnippets = blockCatalogEntries.map((e) => e.snippet || '');
     
     // Load document list
     async function loadDocumentList() {
@@ -411,13 +490,15 @@ Use Markdown syntax for formatting.
         document.getElementById('meta-title').value = doc.metadata.title || '';
         document.getElementById('meta-slug').value = doc.slug || '';
         document.getElementById('meta-summary').value = doc.metadata.summary || '';
-        document.getElementById('meta-published').value = doc.metadata.published === 'false' ? 'false' : 'true';
+        document.getElementById('meta-published').value =
+          doc.metadata.published === false || doc.metadata.published === 'false' ? 'false' : 'true';
         document.getElementById('meta-publishedAt').value = doc.metadata.publishedAt || '';
         contentEditor.value = doc.content || '';
         
         // Show editor
         emptyEditor.style.display = 'none';
         editorContainer.style.display = 'block';
+        syncBlockCatalogPanel();
         
         // Update preview
         updatePreview();
@@ -489,20 +570,21 @@ Use Markdown syntax for formatting.
       const slug = document.getElementById('meta-slug').value || currentDocument.slug || '';
       const bodyClass = getBodyClass(currentCollection, slug);
 
-      // Renderiza conteúdo usando o mesmo renderer do site
-      const metadata = {
+      const mergedMetadata = {
+        ...currentDocument.metadata,
         title: document.getElementById('meta-title').value,
         summary: document.getElementById('meta-summary').value,
+        published: document.getElementById('meta-published').value,
+        publishedAt: document.getElementById('meta-publishedAt').value,
       };
       const content = contentEditor.value;
 
-      const doc = {
-        metadata,
-        content,
+      const mainContent = renderEditorPreviewMainHtml({
         collection: currentCollection,
-      };
-
-      const renderedContent = renderDocument(doc, { isPreview: true, baseUrl: '../' });
+        slug,
+        metadata: mergedMetadata,
+        markdownBody: content,
+      });
 
       // Carrega componentes do site real (mesmos usados nas páginas reais)
       const [navbar, footer, emailDialog, passwordDialog] = await Promise.all([
@@ -518,7 +600,7 @@ Use Markdown syntax for formatting.
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, width=device-width" />
-  <title>${escapeHtml(metadata.title || 'Preview')} · Preview</title>
+  <title>${escapeHtml(mergedMetadata.title || 'Preview')} · Preview</title>
   <!-- Mesmo CSS do site real -->
   <link rel="stylesheet" href="../styles/global.css" />
   <link rel="stylesheet" href="../styles/reset.css" />
@@ -551,35 +633,8 @@ Use Markdown syntax for formatting.
   ${emailDialog}
   ${navbar}
 
-  <!-- Conteúdo renderizado -->
-  ${currentCollection === 'work' ? `
-  <!-- Case Study Layout -->
-  <header class="content-header mt-5xl">
-    <div class="wrapper">
-      <div class="content-hero">
-        <h1 class="t-gray-200">${escapeHtml(metadata.title || '')}</h1>
-        ${metadata.summary ? `<p class="hero-subtitle">${escapeHtml(metadata.summary)}</p>` : ''}
-      </div>
-    </div>
-  </header>
-  <div class="article-content">
-    ${renderedContent}
-  </div>
-  ` : `
-  <!-- Page Layout -->
-  <header class="content-header mt-5xl">
-    <div class="wrapper">
-      <div class="content-hero">
-        <h1 class="t-gray-200">${escapeHtml(metadata.title || '')}</h1>
-      </div>
-    </div>
-  </header>
-  <div class="article-content">
-    <div class="text-block">
-      ${renderedContent}
-    </div>
-  </div>
-  `}
+  <!-- Conteúdo renderizado (mesmo HTML que build: home / about / work / página genérica) -->
+  ${mainContent}
 
   ${passwordDialog}
   ${footer}
@@ -662,6 +717,52 @@ Use Markdown syntax for formatting.
       div.textContent = text;
       return div.innerHTML;
     }
+
+    function initBlockCatalog() {
+      blockCatalogList.innerHTML = blockCatalogEntries
+        .map(
+          (e, idx) => `
+        <div class="block-catalog-item">
+          <h4>${escapeHtml(e.componentName)}</h4>
+          <div class="meta">${escapeHtml(e.category)}</div>
+          <p>${escapeHtml(e.description)}</p>
+          <button type="button" class="btn-insert-snippet" data-snippet-idx="${idx}" ${e.snippet ? '' : 'disabled'}>
+            Inserir snippet
+          </button>
+        </div>`
+        )
+        .join('');
+
+      blockCatalogList.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('.btn-insert-snippet');
+        if (!btn || btn.disabled) return;
+        const idx = parseInt(btn.getAttribute('data-snippet-idx'), 10);
+        const snippet = blockCatalogSnippets[idx];
+        if (!snippet) return;
+        insertSnippetAtCursor(contentEditor, snippet);
+        isDirty = true;
+        saveStatus.textContent = 'Unsaved changes';
+        updatePreview();
+      });
+    }
+
+    function insertSnippetAtCursor(textarea, snippet) {
+      const ins = `\n\n${snippet.trim()}\n\n`;
+      const start = textarea.selectionStart ?? textarea.value.length;
+      const end = textarea.selectionEnd ?? textarea.value.length;
+      const before = textarea.value.slice(0, start);
+      const after = textarea.value.slice(end);
+      textarea.value = before + ins + after;
+      const pos = start + ins.length;
+      textarea.selectionStart = textarea.selectionEnd = pos;
+      textarea.focus();
+    }
+
+    function syncBlockCatalogPanel() {
+      if (!blockCatalogWrap) return;
+      const show = currentCollection === 'work' && editorContainer.style.display !== 'none';
+      blockCatalogWrap.style.display = show ? 'block' : 'none';
+    }
     
     // Event listeners
     document.querySelectorAll('.collection-tab').forEach(tab => {
@@ -672,6 +773,7 @@ Use Markdown syntax for formatting.
         currentDocument = null;
         editorContainer.style.display = 'none';
         emptyEditor.style.display = 'block';
+        syncBlockCatalogPanel();
         loadDocumentList();
       });
     });
@@ -712,6 +814,8 @@ Use Markdown syntax for formatting.
     });
     
     // Init
+    initBlockCatalog();
+    syncBlockCatalogPanel();
     loadDocumentList();
   </script>
 </body>

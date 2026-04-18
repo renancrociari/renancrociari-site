@@ -52,6 +52,13 @@
   <link rel="preload" href="../fonts/source-serif-regular-300.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../fonts/source-serif-bold-600.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Scripts -->
+  <script type="module">
+    import { isAuthenticated } from '../scripts/password-auth.js';
+    if (!isAuthenticated('case-journal-finder')) {
+      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
+      window.location.href = '/#password-protected?content=case-journal-finder';
+    }
+  </script>
   <script type="module" src="../scripts/script.js"></script>
 </head>
 
@@ -67,14 +74,12 @@
   <include src="components/navbar.html"></include>
   
   <!-- CONTENT_START -->
-  <meta name="protected-password" content="$2b$10$sR0m98R9a3TaL1Qd7PbU3OAbX.mi67eyZG.NaxnOsKdozt.PzRaku">
-<script src="../scripts/password-gate.js"></script>
-<header class="content-header mt-5xl">
+  <header class="content-header mt-5xl">
   <div class="wrapper">
     <div class="content-hero">
       <h1 class="t-white">Connecting every discovery with a worthy home</h1>
       <div class="tags body-small t-gray-300 mt-sm">
-Product Strategy <span class="divider">/</span> User Research <span class="divider">/</span> Information Architecture <span class="divider">/</span> UI Design <span class="divider">/</span> Product Design <span class="divider">/</span> Usability Testing
+      Product Strategy <span class="divider">/</span> User Research <span class="divider">/</span> Information Architecture <span class="divider">/</span> UI Design <span class="divider">/</span> Product Design <span class="divider">/</span> Usability Testing
       </div>
       <figure class="featured-image mt-2xl">
         <img src="../images/case-journal-finder/journal-finder-featured-detail.webp" class="featured-image-img" alt="Connecting every discovery with a worthy home" fetchpriority="high" />
