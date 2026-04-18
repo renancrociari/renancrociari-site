@@ -3,20 +3,109 @@
  * Dev Server com API para Portfolio-OS
  * 
  * Este script roda:
- * 1. Parcel dev server na porta 1234
- * 2. API server na porta 3001 para leitura/escrita de conteúdo MDX
+ * 1. Parcel dev server (porta padrão 1234, ou PARCEL_PORT / próxima livre)
+ * 2. API server (porta padrão 3001, ou API_PORT / próxima livre) para MDX
+ *
+ * Variáveis de ambiente opcionais:
+ * - API_PORT: porta fixa da API (falha se estiver ocupada)
+ * - PARCEL_PORT: porta fixa do Parcel (falha se estiver ocupada)
  */
 
 const { spawn } = require('child_process');
 const http = require('http');
+const net = require('net');
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const { parseContentFrontmatter } = require('./lib/parse-frontmatter.cjs');
+const { slugify } = require('./lib/slugify.cjs');
 
 const CONTENT_DIR = path.join(__dirname, '..', 'content');
-const API_PORT = 3001;
-const PARCEL_PORT = 1234;
+
+const DEFAULT_API_PORT = 3001;
+const DEFAULT_PARCEL_PORT = 1234;
+const API_PORT_SCAN_END = 3060;
+const PARCEL_PORT_SCAN_END = 1290;
+
+/**
+ * @param {string} name
+ * @returns {number | null}
+ */
+function readFixedPort(name) {
+  const raw = process.env[name];
+  if (raw === undefined || raw === '') {
+    return null;
+  }
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 1 || n > 65535) {
+    console.warn(`Ignorando ${name}="${raw}" (porta inválida).`);
+    return null;
+  }
+  return n;
+}
+
+/**
+ * @param {number} startPort
+ * @param {number} endPortInclusive
+ * @returns {Promise<number>}
+ */
+function findFreePort(startPort, endPortInclusive) {
+  return new Promise((resolve, reject) => {
+    const tryListen = (port) => {
+      if (port > endPortInclusive) {
+        reject(
+          new Error(
+            `Nenhuma porta livre entre ${startPort} e ${endPortInclusive}. ` +
+              'Encerre o processo que usa a porta ou defina API_PORT / PARCEL_PORT.'
+          )
+        );
+        return;
+      }
+      const s = net.createServer();
+      s.once('error', () => {
+        s.close();
+        tryListen(port + 1);
+      });
+      s.listen(port, () => {
+        s.close(() => resolve(port));
+      });
+    };
+    tryListen(startPort);
+  });
+}
+
+/**
+ * @param {'API_PORT' | 'PARCEL_PORT'} envName
+ * @param {number} preferredStart
+ * @param {number} scanEndInclusive
+ */
+async function resolveListeningPort(envName, preferredStart, scanEndInclusive) {
+  const fixed = readFixedPort(envName);
+  if (fixed !== null) {
+    try {
+      return await findFreePort(fixed, fixed);
+    } catch (e) {
+      throw new Error(
+        `Porta ${envName}=${fixed} está em uso. Libere a porta ou escolha outro valor.`
+      );
+    }
+  }
+  return findFreePort(preferredStart, scanEndInclusive);
+}
+
+function applyDevCors(req, res) {
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const origin = req.headers.origin;
+  if (
+    origin &&
+    (/^http:\/\/localhost:\d+$/.test(origin) ||
+      /^http:\/\/127\.0\.0\.1:\d+$/.test(origin))
+  ) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+}
 
 /** @returns {{ metadata: Record<string, unknown>, content: string }} */
 function parseFrontmatter(raw) {
@@ -135,13 +224,8 @@ function saveDocument(collection, id, metadata, content) {
 }
 
 function createDocument(collection, title, slug) {
-  const finalSlug = slug || title
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .substring(0, 100);
+  const base = slug && String(slug).trim() ? slugify(String(slug).trim()) : slugify(title);
+  const finalSlug = (base || 'untitled').substring(0, 100);
   
   const metadata = {
     title,
@@ -176,21 +260,24 @@ function createDocument(collection, title, slug) {
 
 // API Request Handler
 function handleApiRequest(req, res) {
-  const url = new URL(req.url, `http://localhost:${API_PORT}`);
+  applyDevCors(req, res);
+  const url = new URL(req.url, 'http://127.0.0.1');
   const pathname = url.pathname;
-  
+
   res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Access-Control-Allow-Origin', `http://localhost:${PARCEL_PORT}`);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  
+
   if (req.method === 'OPTIONS') {
     res.statusCode = 200;
     res.end();
     return;
   }
-  
+
+  if (pathname === '/api/health' && req.method === 'GET') {
+    res.statusCode = 200;
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
   // /api/content
   if (pathname === '/api/content') {
     const action = url.searchParams.get('action') || 'list';
@@ -285,50 +372,99 @@ function handleApiRequest(req, res) {
 }
 
 // Start API Server
-function startApiServer() {
+function startApiServer(port) {
   const server = http.createServer(handleApiRequest);
-  
-  server.listen(API_PORT, () => {
-    console.log(`📡 API server running at http://localhost:${API_PORT}`);
+
+  return new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(port, () => {
+      console.log(`📡 API server running at http://localhost:${port}`);
+      resolve(server);
+    });
   });
-  
-  return server;
 }
 
 // Start Parcel
-function startParcel() {
-  const parcel = spawn('npx', ['parcel', 'src/pages/*.html', '--port', String(PARCEL_PORT)], {
-    stdio: 'inherit',
-    shell: true,
-  });
-  
+function startParcel(port) {
+  const parcel = spawn(
+    'npx',
+    [
+      'parcel',
+      'src/pages/*.html',
+      'src/pages-generated/*.html',
+      '--port',
+      String(port),
+    ],
+    {
+      stdio: 'inherit',
+      shell: true,
+    }
+  );
+
   parcel.on('close', (code) => {
     console.log(`Parcel exited with code ${code}`);
-    process.exit(code);
+    process.exit(code ?? 0);
   });
-  
+
   return parcel;
 }
 
-// Main
-console.log('🚀 Starting Portfolio-OS dev environment...\n');
+async function main() {
+  console.log('🚀 Starting Portfolio-OS dev environment...\n');
 
-startApiServer();
-const parcel = startParcel();
+  let apiPort;
+  let parcelPort;
+  try {
+    apiPort = await resolveListeningPort('API_PORT', DEFAULT_API_PORT, API_PORT_SCAN_END);
+    parcelPort = await resolveListeningPort(
+      'PARCEL_PORT',
+      DEFAULT_PARCEL_PORT,
+      PARCEL_PORT_SCAN_END
+    );
+  } catch (err) {
+    console.error(err.message || err);
+    process.exit(1);
+    return;
+  }
 
-console.log(`\n🌐 Site: http://localhost:${PARCEL_PORT}`);
-console.log(`📝 Editor: http://localhost:${PARCEL_PORT}/editor.html`);
-console.log(`📡 API: http://localhost:${API_PORT}/api/content`);
-console.log(`🔐 Password verify: http://localhost:${API_PORT}/api/verify-password\n`);
+  let apiServer;
+  let parcel;
+  try {
+    apiServer = await startApiServer(apiPort);
+  } catch (err) {
+    console.error('Falha ao iniciar a API:', err.message || err);
+    process.exit(1);
+    return;
+  }
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-  console.log('\n👋 Shutting down...');
-  parcel.kill('SIGINT');
-  process.exit(0);
-});
+  parcel = startParcel(parcelPort);
 
-process.on('SIGTERM', () => {
-  parcel.kill('SIGTERM');
-  process.exit(0);
+  console.log(`\n🌐 Site: http://localhost:${parcelPort}`);
+  console.log(`📝 Editor: http://localhost:${parcelPort}/editor.html`);
+  console.log(`📡 API: http://localhost:${apiPort}/api/content`);
+  console.log(
+    `🔐 Password verify: http://localhost:${apiPort}/api/verify-password\n`
+  );
+
+  function shutdown(signal) {
+    return () => {
+      console.log(`\n👋 Shutting down (${signal})...`);
+      if (parcel) {
+        parcel.kill(signal);
+      }
+      if (apiServer) {
+        apiServer.close(() => process.exit(0));
+        return;
+      }
+      process.exit(0);
+    };
+  }
+
+  process.on('SIGINT', shutdown('SIGINT'));
+  process.on('SIGTERM', shutdown('SIGTERM'));
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });

@@ -12,9 +12,15 @@ Integração do renancrociari-site com o portfolio-os como workspace local.
 
 ## Packages Consumidos
 
-- `@portfolio-os/core` - Tipos, content loader, slug/contracts
-- `@portfolio-os/blocks` - Registry editorial
+- `@portfolio-os/core` - Tipos, content loader, slug/contracts (na API Node usamos `scripts/lib/slugify.cjs` alinhado ao `slugify` do core)
+- `@portfolio-os/blocks` - Registry editorial (catálogo authorable no editor)
 - `@portfolio-os/editor` - Mutações, adapters, preview plumbing
+
+## Editor
+
+- Campos extra para **Work**: `description`, `featured_image`, `tags` (vírgulas), gravados no frontmatter com o mesmo formato que o build.
+- Campos extra para **About** (`slug === about`): `description` (hero/SEO), `featured_image`.
+- Alterações nos metadados atualizam o preview em tempo real.
 
 ## Configuração de Resolução
 

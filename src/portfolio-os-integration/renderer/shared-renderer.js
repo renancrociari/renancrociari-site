@@ -8,12 +8,33 @@
  * @see BLOCK_CATALOG.md para catálogo completo
  */
 
+import { rewriteRelativeImagePaths } from '@portfolio-os/core/content-utils';
+
 /**
  * @typedef {Object} RenderOptions
  * @property {boolean} [isPreview] - Se é preview do editor
  * @property {string} [baseUrl] - URL base para resolução de links
  * @property {'comment'|'warning'|'error'|'degraded'} [fallbackMode='comment'] - Modo de fallback
+ * @property {string} [rewriteMarkdownImageBase] - Base opcional para `rewriteRelativeImagePaths` do core (ex.: `../` para snippets sem prefixo)
  */
+
+/**
+ * Aplica o utilitário do core e corrige o caso comum em que o conteúdo já usa `](../…)`
+ * e a base é `../`, evitando `](../../…)` duplicado.
+ * @param {string} text
+ * @param {string} [base]
+ * @returns {string}
+ */
+function applyRewriteRelativeImagePaths(text, base) {
+  const src = text ?? '';
+  if (!base) return src;
+  let out = rewriteRelativeImagePaths(src, base);
+  const norm = String(base).replace(/\/$/, '');
+  if (norm === '..' || norm === '.') {
+    out = out.replace(/\]\(\.\.\/\.\.\//g, '](../');
+  }
+  return out;
+}
 
 /**
  * Catálogo de blocos suportados e seus mapeamentos
@@ -724,10 +745,12 @@ function closingFeaturedMetrics() {
  * Markdown do corpo editorial com as mesmas classes/CSS do site publicado
  * (antes só existia em scripts/content/build-content.js).
  * @param {string} mdx
+ * @param {{ rewriteMarkdownImageBase?: string }} [renderOpts]
  * @returns {string}
  */
-export function renderSiteMarkdownBody(mdx) {
-  const lines = mdx.split('\n');
+export function renderSiteMarkdownBody(mdx, renderOpts = {}) {
+  const raw = applyRewriteRelativeImagePaths(mdx, renderOpts.rewriteMarkdownImageBase);
+  const lines = raw.split('\n');
   let html = '';
   let inList = false;
   let inTextBlock = false;
@@ -964,7 +987,7 @@ export function renderSiteHomePage(data, content) {
 /**
  * About: hero + artigo (igual ao build).
  */
-export function renderSiteAboutPage(metadata, mdx) {
+export function renderSiteAboutPage(metadata, mdx, renderOpts = {}) {
   let html = '<header class="content-header mt-5xl">\n';
   html += '  <div class="wrapper">\n';
   html += '    <div class="content-hero">\n';
@@ -979,7 +1002,7 @@ export function renderSiteAboutPage(metadata, mdx) {
   html += '</header>\n';
 
   html += '<div class="article-content">\n';
-  html += renderSiteMarkdownBody(mdx);
+  html += renderSiteMarkdownBody(mdx, renderOpts);
   html += '</div>\n';
 
   return html;
@@ -988,7 +1011,7 @@ export function renderSiteAboutPage(metadata, mdx) {
 /**
  * Case study: hero + corpo (igual ao build).
  */
-export function renderSiteWorkPage(metadata, mdx) {
+export function renderSiteWorkPage(metadata, mdx, renderOpts = {}) {
   let html = '';
 
   html += '<header class="content-header mt-5xl">\n';
@@ -1012,7 +1035,7 @@ export function renderSiteWorkPage(metadata, mdx) {
   html += '</header>\n';
 
   html += '<div class="article-content">\n';
-  html += renderSiteMarkdownBody(mdx);
+  html += renderSiteMarkdownBody(mdx, renderOpts);
   html += '</div>\n';
 
   return html;
@@ -1022,9 +1045,10 @@ export function renderSiteWorkPage(metadata, mdx) {
  * Página editorial simples (slug em pages que não é home/about).
  * @param {Record<string, unknown>} metadata
  * @param {string} markdownBody
+ * @param {{ rewriteMarkdownImageBase?: string }} [renderOpts]
  * @returns {string}
  */
-export function renderSiteGenericPage(metadata, markdownBody) {
+export function renderSiteGenericPage(metadata, markdownBody, renderOpts = {}) {
   const title = escapeHtml(String(metadata.title || ''));
   return `<header class="content-header mt-5xl">
   <div class="wrapper">
@@ -1034,26 +1058,33 @@ export function renderSiteGenericPage(metadata, markdownBody) {
   </div>
 </header>
 <div class="article-content">
-${renderSiteMarkdownBody(markdownBody)}
+${renderSiteMarkdownBody(markdownBody, renderOpts)}
 </div>`;
 }
 
 /**
  * HTML principal do preview do editor (entre navbar e footer), alinhado ao build.
- * @param {{ collection: string, slug: string, metadata: Record<string, unknown>, markdownBody: string }} input
+ * @param {{ collection: string, slug: string, metadata: Record<string, unknown>, markdownBody: string, rewriteMarkdownImageBase?: string }} input
  * @returns {string}
  */
-export function renderEditorPreviewMainHtml({ collection, slug, metadata, markdownBody }) {
+export function renderEditorPreviewMainHtml({
+  collection,
+  slug,
+  metadata,
+  markdownBody,
+  rewriteMarkdownImageBase,
+}) {
+  const ro = rewriteMarkdownImageBase ? { rewriteMarkdownImageBase } : {};
   if (collection === 'pages' && slug === 'home') {
     return renderSiteHomePage(metadata, markdownBody);
   }
   if (collection === 'pages' && slug === 'about') {
-    return renderSiteAboutPage(metadata, markdownBody);
+    return renderSiteAboutPage(metadata, markdownBody, ro);
   }
   if (collection === 'pages') {
-    return renderSiteGenericPage(metadata, markdownBody);
+    return renderSiteGenericPage(metadata, markdownBody, ro);
   }
-  return renderSiteWorkPage(metadata, markdownBody);
+  return renderSiteWorkPage(metadata, markdownBody, ro);
 }
 
 /**
@@ -1073,7 +1104,9 @@ export function renderDocument(document, options = {}) {
   // Markdown editorial: mesmo HTML que o build publica
   if (content) {
     try {
-      const html = renderSiteMarkdownBody(content);
+      const html = renderSiteMarkdownBody(content, {
+        rewriteMarkdownImageBase: options.rewriteMarkdownImageBase,
+      });
       return `<div class="document-content">${html}</div>`;
     } catch (e) {
       console.warn('Failed to render markdown:', e);
@@ -1113,8 +1146,10 @@ export function renderCaseStudy(caseStudy, options = {}) {
  * @param {RenderOptions} options
  * @returns {string}
  */
-export function renderAboutPage(page, _options = {}) {
+export function renderAboutPage(page, options = {}) {
   const metadata = page.metadata || page;
   const content = page.content ?? '';
-  return renderSiteAboutPage(metadata, content);
+  return renderSiteAboutPage(metadata, content, {
+    rewriteMarkdownImageBase: options.rewriteMarkdownImageBase,
+  });
 }

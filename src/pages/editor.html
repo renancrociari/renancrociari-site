@@ -184,6 +184,14 @@
       border-radius: var(--br-xxxs);
       font-family: var(--font-paragraph);
     }
+
+    .metadata-extra {
+      display: grid;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--background-gray-lighter);
+    }
     
     .content-editor {
       width: 100%;
@@ -361,6 +369,52 @@
               <input type="date" id="meta-publishedAt" />
             </div>
           </div>
+
+          <div id="meta-group-work" class="metadata-extra" style="display: none;">
+            <div class="metadata-field">
+              <label>Description (SEO / intro)</label>
+              <textarea id="meta-w-description" rows="3" placeholder="Resumo curto do case…"></textarea>
+            </div>
+            <div class="metadata-field">
+              <label>Featured image (path)</label>
+              <input type="text" id="meta-w-featured-image" placeholder="../images/case-…/featured.webp" />
+            </div>
+            <div class="metadata-field">
+              <label>Tags (separadas por vírgula)</label>
+              <input type="text" id="meta-w-tags" placeholder="Product Design, User Research" />
+            </div>
+            <div class="metadata-field">
+              <label>OG image (path)</label>
+              <input type="text" id="meta-w-og-image" placeholder="../images/case-og.jpg" />
+            </div>
+            <div class="metadata-field">
+              <label>Status</label>
+              <select id="meta-w-status">
+                <option value="published">published</option>
+                <option value="draft">draft</option>
+                <option value="protected">protected</option>
+              </select>
+            </div>
+            <div id="meta-w-protected-wrap" class="metadata-field" style="display: none;">
+              <label>protected_password (hash bcrypt)</label>
+              <input type="text" id="meta-w-protected-password" placeholder="$2b$10$… ou vazio" autocomplete="off" />
+            </div>
+          </div>
+
+          <div id="meta-group-about" class="metadata-extra" style="display: none;">
+            <div class="metadata-field">
+              <label>Descrição (hero + SEO)</label>
+              <textarea id="meta-a-description" rows="3" placeholder="Texto do H1 hero / meta description…"></textarea>
+            </div>
+            <div class="metadata-field">
+              <label>Featured image (path)</label>
+              <input type="text" id="meta-a-featured-image" placeholder="../images/img-renan.webp" />
+            </div>
+            <div class="metadata-field">
+              <label>OG image (path)</label>
+              <input type="text" id="meta-a-og-image" placeholder="../images/renan-og-image.jpg" />
+            </div>
+          </div>
         </div>
         
         <textarea class="content-editor" id="content-editor" placeholder="# Your content here...
@@ -395,7 +449,13 @@ Use Markdown syntax for formatting.
     <!-- Preview -->
     <aside class="editor-preview">
       <div class="preview-toolbar">
-        <span class="preview-label">Preview</span>
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-2xs); align-items: flex-start;">
+          <span class="preview-label">Preview</span>
+          <label class="preview-label" style="display: flex; align-items: center; gap: var(--spacing-xs); cursor: pointer; font-size: var(--font-2xs); max-width: 220px;">
+            <input type="checkbox" id="opt-rewrite-md-images" />
+            <span>Prefixar imagens Markdown (<code>../</code>) via portfolio-os/core</span>
+          </label>
+        </div>
         <div class="viewport-controls">
           <button class="viewport-btn active" data-width="100%" data-height="100%" title="Full">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -449,6 +509,32 @@ Use Markdown syntax for formatting.
 
     const blockCatalogEntries = getBlockCatalogEntriesForEditor();
     const blockCatalogSnippets = blockCatalogEntries.map((e) => e.snippet || '');
+
+    function updateProtectedPasswordVisibility() {
+      const wrap = document.getElementById('meta-w-protected-wrap');
+      const sel = document.getElementById('meta-w-status');
+      if (!wrap || !sel) return;
+      wrap.style.display = sel.value === 'protected' ? 'grid' : 'none';
+    }
+
+    function syncMetadataExtraPanels() {
+      const slugEl = document.getElementById('meta-slug');
+      const slug = slugEl ? slugEl.value.trim() : '';
+      const gW = document.getElementById('meta-group-work');
+      const gA = document.getElementById('meta-group-about');
+      if (!gW || !gA) return;
+      if (currentCollection === 'work') {
+        gW.style.display = 'grid';
+        gA.style.display = 'none';
+        updateProtectedPasswordVisibility();
+      } else if (currentCollection === 'pages' && slug === 'about') {
+        gA.style.display = 'grid';
+        gW.style.display = 'none';
+      } else {
+        gW.style.display = 'none';
+        gA.style.display = 'none';
+      }
+    }
     
     // Load document list
     async function loadDocumentList() {
@@ -494,6 +580,31 @@ Use Markdown syntax for formatting.
           doc.metadata.published === false || doc.metadata.published === 'false' ? 'false' : 'true';
         document.getElementById('meta-publishedAt').value = doc.metadata.publishedAt || '';
         contentEditor.value = doc.content || '';
+
+        ['meta-w-description', 'meta-w-featured-image', 'meta-w-tags', 'meta-w-og-image', 'meta-w-protected-password', 'meta-a-description', 'meta-a-featured-image', 'meta-a-og-image'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        syncMetadataExtraPanels();
+        if (currentCollection === 'work') {
+          document.getElementById('meta-w-description').value = doc.metadata.description || '';
+          document.getElementById('meta-w-featured-image').value = doc.metadata.featured_image || '';
+          const t = doc.metadata.tags;
+          document.getElementById('meta-w-tags').value = Array.isArray(t) ? t.join(', ') : (t || '');
+          document.getElementById('meta-w-og-image').value = doc.metadata.og_image || '';
+          const st = doc.metadata.status || 'published';
+          document.getElementById('meta-w-status').value =
+            st === 'draft' || st === 'protected' || st === 'published' ? st : 'published';
+          document.getElementById('meta-w-protected-password').value =
+            doc.metadata.protected_password && doc.metadata.protected_password !== 'null'
+              ? String(doc.metadata.protected_password)
+              : '';
+          updateProtectedPasswordVisibility();
+        } else if (currentCollection === 'pages' && doc.slug === 'about') {
+          document.getElementById('meta-a-description').value = doc.metadata.description || '';
+          document.getElementById('meta-a-featured-image').value = doc.metadata.featured_image || '';
+          document.getElementById('meta-a-og-image').value = doc.metadata.og_image || '';
+        }
         
         // Show editor
         emptyEditor.style.display = 'none';
@@ -522,6 +633,37 @@ Use Markdown syntax for formatting.
         published: document.getElementById('meta-published').value,
         publishedAt: document.getElementById('meta-publishedAt').value,
       };
+
+      if (currentCollection === 'work') {
+        metadata.description = document.getElementById('meta-w-description').value.trim();
+        metadata.featured_image = document.getElementById('meta-w-featured-image').value.trim();
+        const tagsArr = document.getElementById('meta-w-tags').value
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        if (tagsArr.length) metadata.tags = tagsArr;
+        else delete metadata.tags;
+        const ogW = document.getElementById('meta-w-og-image').value.trim();
+        if (ogW) metadata.og_image = ogW;
+        else delete metadata.og_image;
+        metadata.status = document.getElementById('meta-w-status').value;
+        if (metadata.status !== 'protected') {
+          delete metadata.protected_password;
+        } else {
+          const pw = document.getElementById('meta-w-protected-password').value.trim();
+          if (pw) metadata.protected_password = pw;
+          else delete metadata.protected_password;
+        }
+      } else if (currentCollection === 'pages') {
+        const slug = document.getElementById('meta-slug').value.trim();
+        if (slug === 'about') {
+          metadata.description = document.getElementById('meta-a-description').value.trim();
+          metadata.featured_image = document.getElementById('meta-a-featured-image').value.trim();
+          const ogA = document.getElementById('meta-a-og-image').value.trim();
+          if (ogA) metadata.og_image = ogA;
+          else delete metadata.og_image;
+        }
+      }
       
       try {
         await adapter.saveDocument(currentDocument.id, metadata, contentEditor.value);
@@ -577,13 +719,40 @@ Use Markdown syntax for formatting.
         published: document.getElementById('meta-published').value,
         publishedAt: document.getElementById('meta-publishedAt').value,
       };
+      if (currentCollection === 'work') {
+        mergedMetadata.description = document.getElementById('meta-w-description').value.trim();
+        mergedMetadata.featured_image = document.getElementById('meta-w-featured-image').value.trim();
+        const tagsArr = document.getElementById('meta-w-tags').value
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        if (tagsArr.length) mergedMetadata.tags = tagsArr;
+        else delete mergedMetadata.tags;
+        mergedMetadata.og_image = document.getElementById('meta-w-og-image').value.trim();
+        mergedMetadata.status = document.getElementById('meta-w-status').value;
+        const pwp = document.getElementById('meta-w-protected-password').value.trim();
+        if (pwp) mergedMetadata.protected_password = pwp;
+        else delete mergedMetadata.protected_password;
+      } else if (currentCollection === 'pages') {
+        const s = document.getElementById('meta-slug').value.trim();
+        if (s === 'about') {
+          mergedMetadata.description = document.getElementById('meta-a-description').value.trim();
+          mergedMetadata.featured_image = document.getElementById('meta-a-featured-image').value.trim();
+          mergedMetadata.og_image = document.getElementById('meta-a-og-image').value.trim();
+        }
+      }
       const content = contentEditor.value;
+
+      const rewriteChk = document.getElementById('opt-rewrite-md-images');
+      const rewriteMarkdownImageBase =
+        rewriteChk && rewriteChk.checked ? '../' : undefined;
 
       const mainContent = renderEditorPreviewMainHtml({
         collection: currentCollection,
         slug,
         metadata: mergedMetadata,
         markdownBody: content,
+        rewriteMarkdownImageBase,
       });
 
       // Carrega componentes do site real (mesmos usados nas páginas reais)
@@ -594,6 +763,25 @@ Use Markdown syntax for formatting.
         loadComponent('../components/password-dialog.html'),
       ]);
 
+      const safeSlugForAuth = String(slug).replace(/[^a-zA-Z0-9-_]/g, '') || 'study';
+      const contentAuthId = `case-${safeSlugForAuth}`;
+      const previewHeadProtected =
+        currentCollection === 'work' &&
+        String(mergedMetadata.status) === 'protected' &&
+        mergedMetadata.protected_password
+          ? `<script type="module">
+    import { isAuthenticated } from '../scripts/password-auth.js';
+    if (!isAuthenticated('${contentAuthId}')) {
+      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
+      window.location.href = '/#password-protected?content=${contentAuthId}';
+    }
+  <\/script>`
+          : '';
+      const ogRel = mergedMetadata.og_image ? String(mergedMetadata.og_image).trim() : '';
+      const previewOgMeta = ogRel
+        ? `<meta property="og:image" content="${escapeHtml(ogRel)}" />\n  `
+        : '';
+
       // Monta HTML completo idêntico ao site real
       const fullHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -601,6 +789,7 @@ Use Markdown syntax for formatting.
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, width=device-width" />
   <title>${escapeHtml(mergedMetadata.title || 'Preview')} · Preview</title>
+  ${previewOgMeta}${previewHeadProtected}
   <!-- Mesmo CSS do site real -->
   <link rel="stylesheet" href="../styles/global.css" />
   <link rel="stylesheet" href="../styles/reset.css" />
@@ -773,6 +962,7 @@ Use Markdown syntax for formatting.
         currentDocument = null;
         editorContainer.style.display = 'none';
         emptyEditor.style.display = 'block';
+        syncMetadataExtraPanels();
         syncBlockCatalogPanel();
         loadDocumentList();
       });
@@ -781,6 +971,20 @@ Use Markdown syntax for formatting.
     document.getElementById('btn-new').addEventListener('click', createDocument);
     document.getElementById('btn-save').addEventListener('click', saveDocument);
     document.getElementById('btn-preview').addEventListener('click', updatePreview);
+
+    function onMetadataFormUpdate(e) {
+      const tid = e.target.id;
+      if (!currentDocument || !tid || !tid.startsWith('meta-')) return;
+      if (tid === 'meta-slug') syncMetadataExtraPanels();
+      if (tid === 'meta-w-status') updateProtectedPasswordVisibility();
+      updatePreview();
+    }
+    document.getElementById('metadata-form').addEventListener('input', onMetadataFormUpdate);
+    document.getElementById('metadata-form').addEventListener('change', onMetadataFormUpdate);
+
+    document.getElementById('opt-rewrite-md-images')?.addEventListener('change', () => {
+      if (currentDocument) updatePreview();
+    });
     
     contentEditor.addEventListener('input', () => {
       isDirty = true;

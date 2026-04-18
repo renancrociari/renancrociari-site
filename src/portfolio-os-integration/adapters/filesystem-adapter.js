@@ -7,6 +7,8 @@
  * No ambiente de dev, usa a API local. Em produção, pode ser substituído.
  */
 
+import { resolveDevApiRoot } from '../lib/dev-api-root.js';
+
 /**
  * @typedef {Object} ContentDocument
  * @property {string} collection - 'pages' | 'work'
@@ -39,10 +41,29 @@
 // Em ambiente Node/Build, lê diretamente do filesystem
 
 const IS_BROWSER = typeof window !== 'undefined';
-// API server roda em porta separaada (3001) porque Parcel não suporta middleware
-const API_BASE = IS_BROWSER 
-  ? (window.location.port === '1234' ? 'http://localhost:3001/api/content' : '/api/content')
-  : 'http://localhost:3001/api/content';
+
+function isLocalDevHost(hostname) {
+  return hostname === 'localhost' || hostname === '127.0.0.1';
+}
+
+/** @type {Promise<string> | null} */
+let apiBasePromise = null;
+
+function getApiContentBase() {
+  if (!IS_BROWSER) {
+    return Promise.resolve('http://localhost:3001/api/content');
+  }
+  if (!isLocalDevHost(window.location.hostname)) {
+    return Promise.resolve('/api/content');
+  }
+  if (!apiBasePromise) {
+    apiBasePromise = (async () => {
+      const root = await resolveDevApiRoot();
+      return `${root}/api/content`;
+    })();
+  }
+  return apiBasePromise;
+}
 
 /**
  * Parse simples de frontmatter
@@ -134,6 +155,7 @@ export function createFilesystemAdapter(collection) {
         return null; // Implementado no build step
       }
       
+      const API_BASE = await getApiContentBase();
       const res = await fetch(`${API_BASE}?collection=${collection}&action=list`);
       if (!res.ok) return null;
       
@@ -153,6 +175,7 @@ export function createFilesystemAdapter(collection) {
      * @returns {Promise<EditorDocumentPayload>}
      */
     async loadDocument(documentId) {
+      const API_BASE = await getApiContentBase();
       const res = await fetch(`${API_BASE}?collection=${collection}&id=${encodeURIComponent(documentId)}&action=load`);
       if (!res.ok) throw new Error(await res.text());
       return await res.json();
@@ -166,6 +189,7 @@ export function createFilesystemAdapter(collection) {
      * @returns {Promise<void>}
      */
     async saveDocument(documentId, metadata, content) {
+      const API_BASE = await getApiContentBase();
       const res = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -187,6 +211,7 @@ export function createFilesystemAdapter(collection) {
      * @returns {Promise<{ entry: EditorDocumentListItem, document: EditorDocumentPayload }>}
      */
     async createDocument(title, slug) {
+      const API_BASE = await getApiContentBase();
       const res = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

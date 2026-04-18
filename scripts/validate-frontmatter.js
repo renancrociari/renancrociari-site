@@ -21,11 +21,11 @@ const CONTENT_DIR = path.join(__dirname, '..', 'content');
 const SCHEMAS = {
   page: {
     required: ['title', 'slug', 'type'],
-    optional: ['status', 'published', 'description', 'order', 'featured_image', 'og_image', 'created_at', 'updated_at']
+    optional: ['status', 'published', 'summary', 'description', 'order', 'featured_image', 'og_image', 'publishedAt', 'created_at', 'updated_at']
   },
   work: {
     required: ['title', 'slug', 'type', 'description'],
-    optional: ['status', 'published', 'tags', 'order', 'featured_image', 'og_image', 'protected_password', 'created_at', 'updated_at']
+    optional: ['status', 'published', 'summary', 'tags', 'order', 'featured_image', 'og_image', 'protected_password', 'publishedAt', 'created_at', 'updated_at']
   }
 };
 

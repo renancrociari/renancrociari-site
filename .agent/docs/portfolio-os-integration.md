@@ -110,6 +110,34 @@ Abaixo está o backlog técnico priorizado para implementar o plano no `renancro
 - `P2`: importante, mas pode entrar depois do núcleo
 - `P3`: melhoria/robustez
 
+**Legenda de estado (marcação de implementação)**
+- ✅ **Feito no código**: existe implementação que cumpre a maior parte dos critérios de aceite.
+- 🟡 **Parcial**: há base implementada ou documentada, mas falta cobertura, validação formal ou um critério explícito.
+- ☐ **Não feito / fora do repo**: não identificado no código deste repositório.
+
+## Estado da implementação no repositório
+
+Revisão com base no código e na pasta `.agent/docs/` (ex.: `SITE_INVENTORY.md`, `CONTENT_CONTRACT.md`, `SHARED_RENDERER.md`, `EDITOR_INTEGRATION.md`, `ROUTING.md`, `VALIDATION.md`, `SECURITY.md`, `OPERATIONAL.md`).
+
+| Task | Estado | Evidências no repo |
+|------|--------|-------------------|
+| 1 Workspace local | ✅ | `package.json`: dependências `file:../portfolio-main/packages/{core,blocks,editor}`, alias Parcel para `content-utils`; `npm install` / `npm start` / `npm run build` não exigem pacote publicado. |
+| 2 Inventário do site | ✅ | `.agent/docs/SITE_INVENTORY.md` + páginas/componentes em `src/pages/`, `src/components/`, estilos em `src/styles/`. |
+| 3 Contrato de conteúdo | ✅ | `content/pages/*`, `content/work/*`; `src/portfolio-os-integration/content-schema.js`; `scripts/validate-frontmatter.js`; `.agent/docs/CONTENT_CONTRACT.md`. |
+| 4 Compatibilidade de blocos | ✅ | `src/portfolio-os-integration/renderer/shared-renderer.js` (registry + fallbacks); `renderer/BLOCK_CATALOG.md`; `blocks/authorable-blocks-catalog.js`; `.agent/docs/BLOCKS_COMPATIBILITY.md`. |
+| 5 Migração de conteúdo | 🟡 | Conteúdo editorial em `content/` (ex.: `home`, `about`, casos em `work/`); build gera `src/pages-generated/*.html`. Coexistência com HTML em `src/pages/*.html` e mistura `.md`/`.mdx` — migrar/retirar legacy conforme decisão de produto. |
+| 6 Renderer compartilhado | ✅ | `shared-renderer.js` exporta `renderSite*`, `renderEditorPreviewMainHtml`, etc.; `scripts/content/build-content.js` importa o mesmo módulo para o build. |
+| 7 Shell visual preservado | ✅ | Template em `build-content.js` (includes `navbar`, `footer`, CSS global); `editor.html` liga `global.css` / `reset.css` / `main.css` para preview. |
+| 8 Adapter de leitura | ✅ | `adapters/filesystem-adapter.js` (`listDocuments`, `loadDocument`); API em `scripts/dev-server.js` (`GET /api/content` list/load). |
+| 9 Adapter de escrita | ✅ | `saveDocument`, `createDocument` no adapter; `POST /api/content` com `save`/`create` no `dev-server.js`; serialização YAML robusta no servidor. |
+| 10 Integração do editor | ✅ | `src/pages/editor.html` (UI + preview + persistência via API); bundle local em `src/portfolio-os-integration/index.js`. |
+| 11 Preview fiel | ✅ | Preview usa CSS do site + `renderEditorPreviewMainHtml` / mesma família de funções que o build (ver `PREVIEW_FIDEL.md`). |
+| 12 Build e geração | ✅ | `npm run build:content` → `scripts/content/build-content.js`; `npm run build` encadeia conteúdo + Parcel + cópia de `public/`; `prebuild` valida frontmatter. |
+| 13 Rotas e navegação | 🟡 | `.agent/docs/ROUTING.md` documenta slugs novos (URLs de work encurtadas vs paths antigos longos); páginas geradas em `pages-generated`. Redirecionamentos 1:1 para URLs antigas não verificados como código dedicado. |
+| 14 Validação visual e funcional | 🟡 | `.agent/docs/VALIDATION.md` define checklist; não há suite automatizada de regressão visual no repo — validação manual/documentada. |
+| 15 Segurança operacional e rollback | 🟡 | `npm run backup`, `npm run rollback` (`scripts/rollback.js`); validação de conteúdo; conteúdo protegido com hash (`bcryptjs`, `/api/verify-password`). “Backup antes de migrar” e recuperação dependem de disciplina de uso + Git. |
+| 16 Documentação operacional | ✅ | `src/portfolio-os-integration/README.md`; `.agent/docs/OPERATIONAL.md`, `BUILD.md`, `MIGRATION.md`, `ADAPTERS.md`, `EDITOR_INTEGRATION.md`, `IMPLEMENTATION_SUMMARY.md`. |
+
 **1. Workspace local do `portfolio-os`**
 - Prioridade: `P0`
 - Dependências: nenhuma

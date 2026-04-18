@@ -129,6 +129,51 @@
         });
     });
   }
+
+  /** Mesma chave que `src/portfolio-os-integration/lib/dev-api-root.js`. */
+  var PORTFOLIO_OS_API_ROOT_KEY = 'portfolio-os-api-root';
+
+  /**
+   * Descobre a origem da API do dev-server (porta dinâmica).
+   * @returns {Promise<string|null>}
+   */
+  async function resolveLocalDevApiRoot() {
+    var host = window.location.hostname;
+    if (host !== 'localhost' && host !== '127.0.0.1') {
+      return null;
+    }
+    var cached = sessionStorage.getItem(PORTFOLIO_OS_API_ROOT_KEY);
+    if (cached) {
+      return cached;
+    }
+    var ports = [];
+    for (var p = 3001; p <= 3060; p++) {
+      ports.push(p);
+    }
+    for (var i = 0; i < ports.length; i += 10) {
+      var chunk = ports.slice(i, i + 10);
+      try {
+        var found = await Promise.any(
+          chunk.map(function (port) {
+            var base = 'http://' + host + ':' + port;
+            return fetch(base + '/api/health', {
+              signal: AbortSignal.timeout(400),
+            }).then(function (res) {
+              if (!res.ok) {
+                throw new Error('bad');
+              }
+              return base;
+            });
+          })
+        );
+        sessionStorage.setItem(PORTFOLIO_OS_API_ROOT_KEY, found);
+        return found;
+      } catch (e) {
+        // próximo bloco de portas
+      }
+    }
+    return 'http://' + host + ':3001';
+  }
   
   // BCrypt verification - tenta API primeiro, fallback para comparação direta
   async function verifyPassword(password, hash) {
@@ -150,16 +195,19 @@
     // Fallback: verificação client-side para desenvolvimento
     // BCrypt hashes começam com $2b$ ou $2a$
     if (hash && (hash.startsWith('$2b$') || hash.startsWith('$2a$'))) {
-      // Para desenvolvimento: usar endpoint local da API
+      // Para desenvolvimento: usar endpoint local da API (porta descoberta via /api/health)
       try {
-        const response = await fetch('http://localhost:3001/api/verify-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password, hash })
-        });
-        if (response.ok) {
-          const result = await response.json();
-          return result.valid === true;
+        var apiRoot = await resolveLocalDevApiRoot();
+        if (apiRoot) {
+          const response = await fetch(apiRoot + '/api/verify-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password, hash })
+          });
+          if (response.ok) {
+            const result = await response.json();
+            return result.valid === true;
+          }
         }
       } catch (e) {
         // API local também não disponível
