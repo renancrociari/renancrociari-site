@@ -31,9 +31,10 @@
     "posthtml-include": "^2.0.1"
   },
   "dependencies": {
-    "medium-zoom": "^1.1.0",
-    "@portfolio-os/core": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/core",
     "@portfolio-os/blocks": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/blocks",
-    "@portfolio-os/editor": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/editor"
+    "@portfolio-os/core": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/core",
+    "@portfolio-os/editor": "file:/Users/andre/Arquivos Locais/Portfolio/renancrociari-site-portfolio-os-integration/portfolio-main/packages/editor",
+    "bcryptjs": "^3.0.3",
+    "medium-zoom": "^1.1.0"
   }
 }

@@ -183,7 +183,6 @@ function slugToBodyClass(slug) {
 function renderHomePage(data, content) {
     const lines = content.split('\n');
     let html = '';
-    let inProjects = false;
     
     html += '<header class="home-header wrapper">\n';
     html += '  <div class="home-logo-container">\n';
@@ -192,32 +191,62 @@ function renderHomePage(data, content) {
     html += '  <div class="home-hero">\n';
     html += '    <div class="hero-content">\n';
     
+    // Extract hero content: content after frontmatter was removed by parseFrontmatter
+    // Hero is from start until first --- separator (before Featured Projects)
     let heroContent = [];
-    let readingHero = true;
+    let inHero = true;
+    
     for (const line of lines) {
-        if (line.startsWith('# ')) {
-            readingHero = false;
-            continue;
+        // Stop at --- separator
+        if (line.trim() === '---') {
+            break;
         }
-        if (line.startsWith('---')) {
-            if (readingHero) {
-                readingHero = false;
-                continue;
-            }
-            if (inProjects) {
-                inProjects = false;
-            } else {
-                inProjects = true;
-            }
-            continue;
+        
+        // Also stop at Featured Projects heading
+        if (line.startsWith('# Featured Projects')) {
+            break;
         }
-        if (readingHero) {
+        
+        if (inHero) {
             heroContent.push(line);
         }
     }
     
-    html += `      <h1 class="hero">${heroContent[0] || ''}</h1>\n`;
-    html += `      <span class="body-medium mt-xl">${heroContent.slice(1).join(' ')}</span>\n`;
+    // Clean up hero content (remove empty lines at start)
+    while (heroContent.length > 0 && heroContent[0].trim() === '') {
+        heroContent.shift();
+    }
+    
+    // Extract heading (first line starting with #) and body
+    let heroTitle = '';
+    let heroBody = [];
+    
+    for (let i = 0; i < heroContent.length; i++) {
+        const line = heroContent[i];
+        if (line.startsWith('# ') && !heroTitle) {
+            heroTitle = line.substring(2).trim();
+        } else {
+            heroBody.push(line);
+        }
+    }
+    
+    // If no explicit heading found, use first non-empty line
+    if (!heroTitle && heroContent.length > 0) {
+        heroTitle = heroContent[0];
+        heroBody = heroContent.slice(1);
+    }
+    
+    // Render hero HTML with original formatting (line breaks preserved)
+    const heroBodyHtml = heroBody
+        .map(line => line.trim() === '' ? '<br>' : line)
+        .join(' ')
+        .replace(/<br>\s*<br>/g, '<br>')
+        .trim();
+    
+    html += `      <h1 class="hero">${heroTitle}</h1>\n`;
+    if (heroBodyHtml) {
+        html += `      <span class="body-medium mt-xl">${heroBodyHtml}</span>\n`;
+    }
     
     html += '    </div>\n';
     html += '  </div>\n';

@@ -2,51 +2,57 @@
 
 # SSL Setup Script for Local HTTPS Development
 # 
-# This script generates local SSL certificates using mkcert
-# for HTTPS development with Parcel
+# Generates local SSL certificates for HTTPS development with Parcel.
+# Uses mkcert (preferred) or openssl (fallback).
 
 set -e
 
-echo "🔒 Setting up SSL certificates for local development..."
-
-# Check if mkcert is installed
-if ! command -v mkcert &> /dev/null; then
-    echo "❌ mkcert is not installed. Installing via Homebrew..."
-    
-    if ! command -v brew &> /dev/null; then
-        echo "❌ Homebrew is not installed. Please install Homebrew first:"
-        echo "   /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
-        exit 1
-    fi
-    
-    brew install mkcert
-fi
-
-# Install the local CA
-echo "📜 Installing local Certificate Authority..."
-mkcert -install
-
-# Generate certificates for localhost
-echo "🔐 Generating SSL certificates..."
 cd "$(dirname "$0")/.."
 
-# Generate certificate for localhost, 127.0.0.1, and ::1
-mkcert localhost 127.0.0.1 ::1
+echo "🔒 Setting up SSL certificates for local development..."
 
-# Rename to match project naming convention
-if [ -f "localhost+2.pem" ]; then
-    mv localhost+2.pem localhost+3.pem
-    mv localhost+2-key.pem localhost+3-key.pem
-elif [ -f "localhost.pem" ]; then
-    mv localhost.pem localhost+3.pem
-    mv localhost-key.pem localhost+3-key.pem
+# Method 1: mkcert (preferred - trusted by browsers)
+if command -v mkcert &> /dev/null; then
+    echo "✅ Using mkcert (recommended)..."
+    mkcert -install
+    mkcert localhost 127.0.0.1 ::1
+
+    # Rename to match project naming convention
+    if [ -f "localhost+2.pem" ]; then
+        mv localhost+2.pem localhost+3.pem
+        mv localhost+2-key.pem localhost+3-key.pem
+    elif [ -f "localhost.pem" ]; then
+        mv localhost.pem localhost+3.pem
+        mv localhost-key.pem localhost+3-key.pem
+    fi
+
+    echo "✅ SSL certificates created with mkcert (browser-trusted)!"
+    echo "🚀 Run: npm start"
+    exit 0
 fi
 
-echo "✅ SSL certificates created successfully!"
+# Method 2: openssl (fallback - self-signed, browser will warn)
+if command -v openssl &> /dev/null; then
+    echo "⚠️  mkcert not found. Using openssl (self-signed certificate)..."
+    echo "   Note: Browser will show security warning. Accept to proceed."
+    echo ""
+
+    # Generate self-signed certificate valid for 365 days
+    openssl req -x509 -newkey rsa:2048 -keyout localhost+3-key.pem \
+        -out localhost+3.pem -days 365 -nodes \
+        -subj "/CN=localhost" \
+        -addext "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1"
+
+    echo "✅ Self-signed SSL certificates created!"
+    echo "⚠️  Browser will warn about untrusted certificate - this is normal."
+    echo "🚀 Run: npm start"
+    exit 0
+fi
+
+# No method available
+echo "❌ Neither mkcert nor openssl found."
 echo ""
-echo "📁 Files created:"
-echo "   - localhost+3.pem (certificate)"
-echo "   - localhost+3-key.pem (private key)"
-echo ""
-echo "🚀 You can now run: npm start"
-echo "   Server will be available at https://localhost:1234"
+echo "Install options:"
+echo "  Option 1 (recommended): brew install mkcert"
+echo "  Option 2: Use HTTP instead: npm run dev:all"
+exit 1

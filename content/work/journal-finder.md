@@ -15,7 +15,7 @@ tags:
 order: 3
 featured_image: "../images/case-journal-finder/journal-finder-featured-detail.webp"
 og_image: "../images/jf-case-og-image.jpg"
-protected_password: "$2b$10$EXAMPLEHASHHERE"
+protected_password: "$2b$10$sR0m98R9a3TaL1Qd7PbU3OAbX.mi67eyZG.NaxnOsKdozt.PzRaku"
 created_at: "2024-02-01"
 updated_at: "2024-06-10"
 ---

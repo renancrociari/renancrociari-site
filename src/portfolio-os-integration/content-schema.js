@@ -11,14 +11,15 @@
 export const PageSchema = {
   title: { type: 'string', required: true },
   slug: { type: 'string', required: true },
-  summary: { type: 'string', required: false },
-  publishedAt: { type: 'date', required: false },
-  template: { type: 'string', required: false, default: 'default' },
+  type: { type: 'string', required: true },
+  status: { type: 'string', required: false, default: 'published' },
   published: { type: 'boolean', required: false, default: true },
+  description: { type: 'string', required: false },
   order: { type: 'number', required: false, default: 0 },
-  seoTitle: { type: 'string', required: false },
-  seoDescription: { type: 'string', required: false },
-  ogImage: { type: 'string', required: false },
+  featured_image: { type: 'string', required: false },
+  og_image: { type: 'string', required: false },
+  created_at: { type: 'date', required: false },
+  updated_at: { type: 'date', required: false },
 };
 
 /**
@@ -28,42 +29,25 @@ export const PageSchema = {
 export const WorkSchema = {
   title: { type: 'string', required: true },
   slug: { type: 'string', required: true },
-  summary: { type: 'string', required: true },
-  publishedAt: { type: 'date', required: true },
+  type: { type: 'string', required: true },
+  status: { type: 'string', required: false, default: 'published' }, // 'published', 'protected'
   published: { type: 'boolean', required: false, default: true },
+  description: { type: 'string', required: true },
   order: { type: 'number', required: false, default: 0 },
-  
-  // Metadados do projeto
-  company: { type: 'string', required: false },
-  role: { type: 'string', required: false },
-  team: { type: 'string', required: false },
-  duration: { type: 'string', required: false },
-  domain: { type: 'string', required: false },
-  platforms: { type: 'string', required: false },
-  tools: { type: 'string', required: false },
-  
-  // Conteúdo estruturado
-  goals: { type: 'string', required: false },
-  outcomes: { type: 'string', required: false },
-  impactMetrics: { type: 'string', required: false },
   
   // Categorização
   tags: { type: 'array', required: false },
-  status: { type: 'string', required: false }, // 'completed', 'in-progress', 'coming-soon'
   
   // Mídia
-  coverImage: { type: 'string', required: false },
-  gallery: { type: 'array', required: false },
-  video: { type: 'string', required: false },
+  featured_image: { type: 'string', required: false },
+  og_image: { type: 'string', required: false },
   
-  // SEO
-  seoTitle: { type: 'string', required: false },
-  seoDescription: { type: 'string', required: false },
-  ogImage: { type: 'string', required: false },
+  // Segurança
+  protected_password: { type: 'string', required: false },
   
-  // Flags de comportamento
-  passwordProtected: { type: 'boolean', required: false, default: false },
-  featured: { type: 'boolean', required: false, default: false },
+  // Datas
+  created_at: { type: 'date', required: false },
+  updated_at: { type: 'date', required: false },
 };
 
 /**

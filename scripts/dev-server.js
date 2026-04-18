@@ -11,6 +11,7 @@ const { spawn } = require('child_process');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 
 const CONTENT_DIR = path.join(__dirname, '..', 'content');
 const API_PORT = 3001;
@@ -265,6 +266,29 @@ function handleApiRequest(req, res) {
     }
   }
   
+  // /api/verify-password
+  if (pathname === '/api/verify-password' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const { password, hash } = JSON.parse(body);
+        if (!password || !hash) {
+          res.statusCode = 400;
+          res.end(JSON.stringify({ error: 'Missing password or hash' }));
+          return;
+        }
+        const valid = bcrypt.compareSync(password, hash);
+        res.statusCode = 200;
+        res.end(JSON.stringify({ valid }));
+      } catch (err) {
+        res.statusCode = 500;
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+  
   res.statusCode = 404;
   res.end(JSON.stringify({ error: 'Not found' }));
 }
@@ -303,7 +327,8 @@ const parcel = startParcel();
 
 console.log(`\n🌐 Site: http://localhost:${PARCEL_PORT}`);
 console.log(`📝 Editor: http://localhost:${PARCEL_PORT}/editor.html`);
-console.log(`📡 API: http://localhost:${API_PORT}/api/content\n`);
+console.log(`📡 API: http://localhost:${API_PORT}/api/content`);
+console.log(`🔐 Password verify: http://localhost:${API_PORT}/api/verify-password\n`);
 
 // Graceful shutdown
 process.on('SIGINT', () => {
