@@ -18,7 +18,8 @@
     "validate:content:check": "node scripts/validate-frontmatter.js --check",
     "backup": "npm run build:legacy && cp -r dist dist-backup-$(date +%Y%m%d)",
     "rollback": "node scripts/rollback.js",
-    "prebuild": "npm run validate:content:check"
+    "prebuild": "npm run validate:content:check",
+    "clean": "rm -rf .parcel-cache"
   },
   "author": "",
   "license": "ISC",
