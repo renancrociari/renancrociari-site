@@ -8,11 +8,27 @@
     "incremental": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@/*": ["../src/editor-ui/*"],
-      "app/*": ["../src/editor-ui/app/*"]
-    }
+      "@/*": [
+        "../src/editor-ui/*"
+      ],
+      "app/*": [
+        "../src/editor-ui/app/*"
+      ]
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "strict": false,
+    "resolveJsonModule": true,
+    "jsx": "preserve"
   },
   "include": [
     "./**/*.ts",
@@ -23,7 +39,10 @@
     "../src/editor-ui/**/*.ts",
     "../src/editor-ui/**/*.tsx",
     "../src/portfolio-os-integration/**/*.js",
-    "../src/portfolio-os-integration/**/*.mjs"
+    "../src/portfolio-os-integration/**/*.mjs",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
