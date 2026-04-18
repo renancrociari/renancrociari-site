@@ -113,8 +113,7 @@ function cleanOutputDir() {
     }
 }
 
-function slugToHtml(content, slug, type, renderer, routing) {
-    const { data, content: mdxContent } = parseFrontmatter(content);
+function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
     const collection = type === 'page' ? 'pages' : 'work';
     const route = routing.resolveSiteRoute({
         collection,
@@ -163,13 +162,20 @@ function slugToHtml(content, slug, type, renderer, routing) {
     };
 }
 
+function slugToHtml(content, slug, type, renderer, routing) {
+    const { data, content: mdxContent } = parseFrontmatter(content);
+    return slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing);
+}
+
 async function buildContent() {
     console.log('🔨 Building content...\n');
 
     const sharedPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'renderer', 'shared-renderer.mjs');
     const routingPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'config', 'routing-manifest.mjs');
+    const workContentPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'editor', 'work-content.mjs');
     const renderer = await import(pathToFileURL(sharedPath).href);
     const routing = await import(pathToFileURL(routingPath).href);
+    const workContent = await import(pathToFileURL(workContentPath).href);
 
     cleanOutputDir();
     
@@ -194,13 +200,20 @@ async function buildContent() {
     console.log('');
     
     if (fs.existsSync(workDir)) {
-        const works = fs.readdirSync(workDir).filter(isContentFile);
+        const works = workContent.listWorkEntriesForEditor();
         console.log(`📄 Work: ${works.length}`);
         
         for (const work of works) {
-            const content = fs.readFileSync(path.join(workDir, work), 'utf-8');
-            const slug = work.replace(/\.(md|mdx)$/i, '');
-            const { outputFile, html } = slugToHtml(content, slug, 'work', renderer, routing);
+            const document = workContent.readWorkDocumentForEditor(work.documentId);
+            const metadata = workContent.materializeWorkMetadataForRender(document.rawMetadata);
+            const { outputFile, html } = slugToHtmlFromParsed(
+                metadata,
+                document.content,
+                work.slug,
+                'work',
+                renderer,
+                routing
+            );
             fs.writeFileSync(path.join(OUTPUT_DIR, outputFile), html);
             console.log(`  ✓ ${outputFile}`);
         }

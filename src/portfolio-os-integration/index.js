@@ -12,6 +12,7 @@ export {
   SITE_BASE_URL,
   resolveSiteRoute,
   resolveSiteRouteFromPath,
+  resolveSiteRouteFromDocumentId,
   listManagedLegacySourcePages,
 } from './config/routing-manifest.mjs';
 

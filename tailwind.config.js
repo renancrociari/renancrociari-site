@@ -6,6 +6,7 @@ module.exports = {
   presets: [sharedPreset],
   content: [
     './src/editor-ui/**/*.{ts,tsx,js,jsx,html}',
+    './editor-sidecar/**/*.{ts,tsx,js,jsx,mdx}',
   ],
   plugins: [require('@tailwindcss/container-queries')],
 };
