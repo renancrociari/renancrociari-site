@@ -252,7 +252,87 @@ function renderHomePage(data, content) {
     html += '  </div>\n';
     html += '</header>\n';
     
+    // Parse and render featured projects
     html += '<section class="featured-projects wrapper">\n';
+    
+    const projects = parseFeaturedProjects(content);
+    const cardClasses = ['card-4', 'card-1', 'card-2', 'card-3'];
+    
+    projects.forEach((project, index) => {
+        const cardClass = cardClasses[index] || 'card-1';
+        html += renderProjectCard(project, cardClass, index);
+    });
+    
+    html += '</section>\n';
+    
+    return html;
+}
+
+function parseFeaturedProjects(content) {
+    const lines = content.split('\n');
+    const projects = [];
+    let currentProject = null;
+    let inFeaturedProjects = false;
+    
+    for (const line of lines) {
+        if (line.startsWith('# Featured Projects')) {
+            inFeaturedProjects = true;
+            continue;
+        }
+        
+        if (inFeaturedProjects) {
+            if (line.startsWith('## ')) {
+                // New project
+                if (currentProject) {
+                    projects.push(currentProject);
+                }
+                currentProject = {
+                    title: line.substring(3).trim(),
+                    description: [],
+                    link: null
+                };
+            } else if (currentProject) {
+                if (line.startsWith('[') && line.includes('](')) {
+                    // Extract link
+                    const match = line.match(/\[([^\]]+)\]\(([^)]+)\)/);
+                    if (match) {
+                        currentProject.link = {
+                            text: match[1],
+                            url: match[2]
+                        };
+                    }
+                } else if (line.trim() !== '' && !line.startsWith('---')) {
+                    currentProject.description.push(line.trim());
+                }
+            }
+        }
+    }
+    
+    if (currentProject) {
+        projects.push(currentProject);
+    }
+    
+    return projects;
+}
+
+function renderProjectCard(project, cardClass, index) {
+    let html = `    <article class="project-card ${cardClass}">\n`;
+    html += '      <div class="project-card-content">\n';
+    html += `        <h2 class="t-white display-lg">${project.title}</h2>\n`;
+    
+    if (project.link) {
+        html += `        <a class="btn body-medium btn-white" href="${project.link.url}">\n`;
+        html += `          ${project.link.text}\n`;
+        html += '          <div class="svg-button">\n';
+        html += '            <svg viewBox="0 0 24.96 14.4" width="100%" xmlns="http://www.w3.org/2000/svg">\n';
+        html += '              <path d="M17.5512 1.092C17.4649 1.18378 17.3963 1.29296 17.3496 1.41326C17.3028 1.53356 17.2787 1.6626 17.2787 1.79292C17.2787 1.92324 17.3028 2.05228 17.3496 2.17258C17.3963 2.29288 17.4649 2.40206 17.5512 2.49384L21.7897 7.03499H0.921394C0.677025 7.03499 0.442665 7.139 0.26987 7.32414C0.0970752 7.50928 0 7.76038 0 8.0222C0 8.28403 0.0970752 8.53513 0.26987 8.72026C0.677025 8.9054 0.677025 9.00941 0.921394 9.00941H21.7712L17.5512 13.521C17.3796 13.7059 17.2833 13.9561 17.2833 14.2169C17.2833 14.4777 17.3796 14.7279 17.5512 14.9129C17.7239 15.0968 17.9574 15.2 18.2008 15.2C18.4442 15.2 18.6778 15.0968 18.8504 14.9129L24.7105 8.63427C24.7893 8.55319 24.8521 8.45586 24.895 8.34814C24.9378 8.24041 24.9599 8.12451 24.9599 8.00739C24.9599 7.89028 24.9378 7.77438 24.895 7.66665C24.8521 7.55892 24.7893 7.4616 24.7105 7.38052L18.8596 1.092C18.774 0.999473 18.6721 0.92603 18.5598 0.875911C18.4475 0.825792 18.3271 0.799988 18.2054 0.799988C18.0838 0.799988 17.9634 0.825792 17.8511 0.875911C17.7388 0.92603 17.6369 0.999473 17.5512 1.092Z" />\n';
+        html += '            </svg>\n';
+        html += '          </div>\n';
+        html += '        </a>\n';
+    }
+    
+    html += '      </div>\n';
+    html += '    </article>\n';
     
     return html;
 }
