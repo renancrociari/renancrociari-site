@@ -10,31 +10,66 @@ Before you begin, ensure you have the following installed on your machine:
 
 ## 🚀 Quick Start
 
+### Development (HTTP)
 ```bash
 # Install dependencies
 npm install
 
-# Start development server
+# Start development server (HTTP)
+npm run dev
+
+# Or serve both original + generated pages
+npm run dev:all
+```
+
+### Development (HTTPS)
+```bash
+# Setup SSL certificates (first time only)
+npm run setup:ssl
+
+# Start with HTTPS
 npm start
+```
+
+### Content Management
+```bash
+# Validate content before building
+npm run validate:content
+
+# Generate HTML from Markdown
+npm run build:content
+
+# Start visual editor
+npm run editor
 
 # Build for production
-npm build
+npm run build
 ```
 
 ## 📁 Project Structure
 
 ```
 renancrociari-2026/
-├── src/                      # Source files
-│   ├── pages/               # HTML pages
-│   ├── components/          # Reusable HTML components
-│   ├── styles/              # CSS files
-│   ├── scripts/             # JavaScript files
-│   ├── fonts/               # Web fonts
-│   └── images/              # Project images and assets
-├── public/                  # Static assets (favicons, manifests, downloads)
-├── dist/                    # Build output (generated)
-└── node_modules/            # Dependencies (generated)
+├── content/                 # Markdown content source
+│   ├── pages/              # Static pages (about, home)
+│   └── work/               # Case studies
+├── src/                     # Source files
+│   ├── pages/              # HTML pages (legacy + generated)
+│   ├── pages-generated/    # Auto-generated from content/
+│   ├── components/         # Reusable HTML components
+│   ├── styles/             # CSS files
+│   ├── scripts/            # JavaScript files
+│   ├── fonts/              # Web fonts
+│   └── images/             # Project images and assets
+├── public/                 # Static assets (favicons, manifests, downloads)
+├── dist/                   # Build output (generated)
+├── scripts/                # Build & utility scripts
+│   ├── content/            # Content build scripts
+│   ├── validate-frontmatter.js
+│   ├── password-gate.js
+│   ├── rollback.js
+│   └── setup-ssl.sh
+└── node_modules/           # Dependencies (generated)
 ```
 
 ## 🛠️ Tech Stack
@@ -42,7 +77,62 @@ renancrociari-2026/
 - **Build Tool**: Parcel
 - **Templating**: PostHTML Include
 - **Styling**: Vanilla CSS
+- **Content**: Markdown with YAML frontmatter
 - **Deployment**: Static hosting
+
+## 📝 Content Management
+
+This site uses a content management system based on Markdown files with YAML frontmatter.
+
+### Content Structure
+
+```yaml
+---
+title: "Page Title"
+slug: "page-slug"
+type: "work" | "page"
+status: "published" | "protected"
+description: "Page description for SEO"
+tags:
+  - Tag 1
+  - Tag 2
+order: 1
+featured_image: "../images/path/to/image.webp"
+og_image: "../images/path/to/og-image.jpg"
+created_at: "2024-01-01"
+updated_at: "2024-06-01"
+protected_password: "$2b$10$..."  # Only for protected content
+---
+
+# Markdown Content
+
+Your content here using standard Markdown syntax.
+```
+
+### Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start dev server (HTTP, legacy pages only) |
+| `npm run dev:all` | Start dev server (HTTP, all pages) |
+| `npm start` | Start dev server with HTTPS |
+| `npm run setup:ssl` | Generate SSL certificates for HTTPS |
+| `npm run editor` | Start visual content editor |
+| `npm run build:content` | Generate HTML from Markdown |
+| `npm run validate:content` | Validate content frontmatter |
+| `npm run backup` | Create backup of current build |
+| `npm run rollback` | Restore from backup |
+| `npm run build` | Full production build |
+| `npm run build:legacy` | Build only legacy pages |
+
+### Protected Content
+
+Pages with `status: protected` require a password to view. The password hash is stored in `protected_password` field using BCrypt.
+
+To view protected content:
+1. Access the page URL
+2. Enter the password in the gate
+3. Content unlocks for the session
 
 ## 📝 Development Notes
 

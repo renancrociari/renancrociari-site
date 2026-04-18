@@ -256,7 +256,15 @@ function renderWorkPage(data, content) {
     const metadata = data;
     const mdx = content;
 
-    let html = '<header class="content-header mt-5xl">\n';
+    let html = '';
+    
+    // Adicionar proteção de senha se status for protected
+    if (metadata.status === 'protected' && metadata.protected_password) {
+        html += `<meta name="protected-password" content="${metadata.protected_password}">\n`;
+        html += '<script src="../scripts/password-gate.js"></script>\n';
+    }
+    
+    html += '<header class="content-header mt-5xl">\n';
     html += '  <div class="wrapper">\n';
     html += '    <div class="content-hero">\n';
     html += `      <h1 class="t-white">${metadata.title}</h1>\n`;
