@@ -34,14 +34,19 @@ const ROOT = findRepoRoot(__dirname);
 
 const PHASE1_WORK_SLUGS = ['farfetch-performance', 'dating-platform', 'journal-finder'];
 
+const PHASE2_PAGES_SLUGS = ['home', 'about'];
+
 const REQUIRED_FILES = [
   'editor-sidecar/app/api/editor/work/route.ts',
+  'editor-sidecar/app/api/editor/pages/route.ts',
   'editor-sidecar/app/api/editor/drafts/route.ts',
   'editor-sidecar/app/api/verify-password/route.ts',
   'editor-sidecar/app/editor/preview/work/[slug]/page.tsx',
+  'editor-sidecar/app/editor/preview/pages/[slug]/page.tsx',
   'editor-sidecar/app/editor/page.tsx',
   'scripts/dev-server.js',
   'src/portfolio-os-integration/config/routing-manifest.mjs',
+  'src/portfolio-os-integration/editor/pages-content.mjs',
   'scripts/content/build-content.js',
 ];
 
@@ -86,6 +91,17 @@ function checkCanonicalWorkMdx() {
       log('FAIL', `Conteúdo canónico em falta: ${rel}`);
     } else {
       log('PASS', `MDX canónico: ${rel}`);
+    }
+  }
+}
+
+function checkCanonicalPagesMdx() {
+  for (const slug of PHASE2_PAGES_SLUGS) {
+    const rel = `content/pages/${slug}/index.mdx`;
+    if (!fileExists(rel)) {
+      log('FAIL', `Páginas canónicas em falta: ${rel}`);
+    } else {
+      log('PASS', `MDX canónico (pages): ${rel}`);
     }
   }
 }
@@ -178,6 +194,8 @@ async function main() {
   checkRequiredFiles();
   console.log('');
   checkCanonicalWorkMdx();
+  console.log('');
+  checkCanonicalPagesMdx();
   console.log('');
   checkFlatLegacyFiles();
   console.log('');

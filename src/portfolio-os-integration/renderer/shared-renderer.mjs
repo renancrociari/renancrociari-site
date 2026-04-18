@@ -1393,6 +1393,22 @@ function renderTextCluster(blocks, ctx, { title = '', sectionTitle = '', titleLe
   return html;
 }
 
+function inferInstrumentImageCanonical(images, slug, sectionTitle, groupIndex) {
+  if (slug === 'dating-platform' && images.length === 1 && /menu-hamburger-poster\.webp$/i.test(images[0].src)) {
+    return 'VideoFigure';
+  }
+  if (images.length === 2) {
+    return 'FigurePair';
+  }
+  if (slug === 'dating-platform' && images.length === 1 && /explore-page\.webp$|profile-page\.webp$/i.test(images[0].src)) {
+    return 'FigureLarge';
+  }
+  if (images.length === 1) {
+    return 'Figure';
+  }
+  return 'FigureGroup';
+}
+
 function renderImageGroup(images, ctx, sectionTitle, groupIndex) {
   if (!images.length) return '';
 
@@ -1516,7 +1532,8 @@ function buildStructuredSectionFragments(section, ctx) {
       titleLevel: section.titleLevel || 1,
       clusterIndex: titleConsumed ? 1 : 0,
     });
-    if (html) fragments.push({ componentName: 'TextCluster', html });
+    const textName = ctx.slug === 'dating-platform' ? 'TextBlock' : 'TextCluster';
+    if (html) fragments.push({ componentName: textName, html });
     textBlocks = [];
     titleConsumed = true;
   };
@@ -1524,7 +1541,11 @@ function buildStructuredSectionFragments(section, ctx) {
   const flushImageGroup = () => {
     if (!imageGroup.length) return;
     const html = renderImageGroup(imageGroup, ctx, section.title, imageGroupIndex);
-    if (html) fragments.push({ componentName: 'ImageGroup', html });
+    const imageName =
+      ctx.slug === 'dating-platform'
+        ? inferInstrumentImageCanonical(imageGroup, ctx.slug, section.title, imageGroupIndex)
+        : 'ImageGroup';
+    if (html) fragments.push({ componentName: imageName, html });
     imageGroup = [];
     imageGroupIndex += 1;
   };
@@ -1545,7 +1566,252 @@ function buildStructuredSectionFragments(section, ctx) {
 }
 
 /**
- * Itens de outline `kind: 'block'` alinhados ao DOM instrumentado do preview (B9).
+ * @param {string[]} lines
+ * @param {number} lineIdx
+ */
+function lineCharStartInJoinedBody(lines, lineIdx) {
+  let o = 0;
+  for (let k = 0; k < lineIdx && k < lines.length; k += 1) {
+    o += lines[k].length + 1;
+  }
+  return o;
+}
+
+/**
+ * Mesma ordem e contagem que `section.blocks` após parse do corpo (sem título).
+ * @param {string[]} lines
+ * @returns {{ startLine: number, endLineExclusive: number }[]}
+ */
+function parseBodyLinesIntoBlockLineSpans(lines) {
+  const spans = [];
+  for (let i = 0; i < lines.length; ) {
+    const trimmed = String(lines[i] || '').trim();
+    if (!trimmed) {
+      i += 1;
+      continue;
+    }
+    const startLine = i;
+
+    if (parseMarkdownHeading(trimmed)) {
+      spans.push({ startLine, endLineExclusive: i + 1 });
+      i += 1;
+      continue;
+    }
+
+    if (parseMarkdownImageLine(trimmed)) {
+      spans.push({ startLine, endLineExclusive: i + 1 });
+      i += 1;
+      continue;
+    }
+
+    if (/^[-*]\s+/.test(trimmed)) {
+      const { nextIndex } = parseMarkdownList(lines, i, false);
+      spans.push({ startLine, endLineExclusive: nextIndex });
+      i = nextIndex;
+      continue;
+    }
+
+    if (/^\d+\.\s+/.test(trimmed)) {
+      const { nextIndex } = parseMarkdownList(lines, i, true);
+      spans.push({ startLine, endLineExclusive: nextIndex });
+      i = nextIndex;
+      continue;
+    }
+
+    let j = i + 1;
+    while (j < lines.length && lines[j].trim() && !isMarkdownSpecialLine(lines[j])) {
+      j += 1;
+    }
+    spans.push({ startLine, endLineExclusive: j });
+    i = j;
+  }
+  return spans;
+}
+
+/**
+ * @param {string[]} lines
+ * @param {number} bodyLen
+ * @param {{ startLine: number, endLineExclusive: number }[]} spanArr
+ */
+function mergeLineSpansToCharRange(lines, bodyLen, spanArr) {
+  if (!spanArr.length) return { start: 0, end: 0 };
+  const first = spanArr[0].startLine;
+  const last = spanArr[spanArr.length - 1].endLineExclusive;
+  const start = lineCharStartInJoinedBody(lines, first);
+  const end = last >= lines.length ? bodyLen : lineCharStartInJoinedBody(lines, last);
+  return { start, end };
+}
+
+/**
+ * Intervalos `[start,end)` em `bodyText` (corpo da secção de `getStructuredWorkMdxSectionSplits`),
+ * na mesma ordem e critérios de emissão que `buildStructuredSectionFragments` / preview `sec{n}-blk{m}-*`.
+ * @param {ReturnType<parseMarkdownSection>} section
+ * @param {{ slug: string, sectionIndex?: number }} ctx
+ * @param {string} bodyText
+ * @returns {{ start: number, end: number }[]}
+ */
+function buildStructuredSectionFragmentBodyRanges(section, ctx, bodyText) {
+  const body = String(bodyText ?? '');
+  const fragments = buildStructuredSectionFragments(section, ctx);
+  if (!fragments.length) return [];
+
+  const slug = String(ctx.slug || '');
+
+  const singleInstrumentedAggregation =
+    fragments.length === 1 &&
+    (section.title === 'Executive summary' ||
+      (slug === 'journal-finder' && section.title === 'Metrics') ||
+      (slug === 'journal-finder' && section.title === 'Footnotes') ||
+      String(section.title || '').startsWith('Achievements of') ||
+      (section.blocks?.length > 0 &&
+        section.blocks.every((b) => b.type === 'image') &&
+        section.title === 'Brands I collaborated with at Farfetch'));
+
+  if (singleInstrumentedAggregation) {
+    return [{ start: 0, end: body.length }];
+  }
+
+  const lines = body.split('\n');
+  const blockSpans = parseBodyLinesIntoBlockLineSpans(lines);
+  const blocks = section.blocks || [];
+  if (blockSpans.length !== blocks.length) {
+    const step = fragments.length ? body.length / fragments.length : 0;
+    const out = [];
+    for (let fi = 0; fi < fragments.length; fi += 1) {
+      out.push({
+        start: Math.floor(fi * step),
+        end: Math.min(body.length, Math.floor((fi + 1) * step)),
+      });
+    }
+    return out;
+  }
+
+  const ranges = [];
+  let titleConsumed = false;
+  let textBlocks = [];
+  let imageGroup = [];
+  let textSpans = [];
+  let imageSpans = [];
+  let imageGroupIndex = 0;
+
+  const flushText = () => {
+    if (!textBlocks.length) return;
+    const html = renderTextCluster(textBlocks, ctx, {
+      title: titleConsumed ? '' : section.title,
+      sectionTitle: section.title,
+      titleLevel: section.titleLevel || 1,
+      clusterIndex: titleConsumed ? 1 : 0,
+    });
+    if (html) {
+      ranges.push(mergeLineSpansToCharRange(lines, body.length, textSpans));
+    }
+    textBlocks = [];
+    textSpans = [];
+    titleConsumed = true;
+  };
+
+  const flushImg = () => {
+    if (!imageGroup.length) return;
+    const html = renderImageGroup(imageGroup, ctx, section.title, imageGroupIndex);
+    if (html) {
+      ranges.push(mergeLineSpansToCharRange(lines, body.length, imageSpans));
+    }
+    imageGroup = [];
+    imageSpans = [];
+    imageGroupIndex += 1;
+  };
+
+  for (let bi = 0; bi < blocks.length; bi += 1) {
+    const block = blocks[bi];
+    const span = blockSpans[bi];
+    if (block.type === 'image') {
+      flushText();
+      imageGroup.push(block);
+      imageSpans.push(span);
+    } else {
+      flushImg();
+      textBlocks.push(block);
+      textSpans.push(span);
+    }
+  }
+  flushText();
+  flushImg();
+
+  if (ranges.length !== fragments.length) {
+    const step = fragments.length ? body.length / fragments.length : 0;
+    const out = [];
+    for (let fi = 0; fi < fragments.length; fi += 1) {
+      out.push({
+        start: Math.floor(fi * step),
+        end: Math.min(body.length, Math.floor((fi + 1) * step)),
+      });
+    }
+    return out;
+  }
+
+  return ranges;
+}
+
+/**
+ * Mapa `sectionIndex` → intervalos no corpo MDX da secção (alinhado a `sec{n}-blk{m}-*` do preview).
+ * @param {string} mdx
+ * @param {string} slug
+ * @returns {Map<number, { start: number, end: number }[]>}
+ */
+export function getStructuredWorkBlockBodyRangesMap(mdx, slug) {
+  const raw = applyRewriteRelativeImagePaths(mdx, undefined);
+  const splits = getStructuredWorkMdxSectionSplits(mdx, slug);
+  const sections = mergeStructuredSubsections(parseMarkdownSections(raw), String(slug || ''));
+  const map = new Map();
+  sections.forEach((section, sectionIndex) => {
+    const body = splits[sectionIndex]?.body ?? '';
+    const ranges = buildStructuredSectionFragmentBodyRanges(
+      section,
+      {
+        slug: String(slug || ''),
+        sectionIndex,
+      },
+      body
+    );
+    map.set(sectionIndex, ranges);
+  });
+  return map;
+}
+
+function labelStructuredInstrumentBlock(componentName) {
+  switch (componentName) {
+    case 'TextCluster':
+    case 'TextBlock':
+      return 'Text';
+    case 'ImageGroup':
+      return 'Image';
+    case 'Figure':
+      return 'Image';
+    case 'FigurePair':
+      return 'Image pair';
+    case 'FigureLarge':
+      return 'Image (large)';
+    case 'VideoFigure':
+      return 'Video';
+    case 'FigureGroup':
+      return 'Images';
+    case 'ExecutiveSummary':
+      return 'Executive summary';
+    case 'FeaturedMetrics':
+      return 'Metrics';
+    case 'Footnotes':
+      return 'Footnotes';
+    case 'BrandsGrid':
+      return 'Brands';
+    case 'ImpactResults':
+      return 'Metrics';
+    default:
+      return componentName;
+  }
+}
+
+/**
+ * Itens de outline `kind: 'block'` alinhados ao DOM instrumentado do preview (B9/B10).
  * @param {string} mdx
  * @param {string} slug
  * @returns {Array<{ kind: 'block', nodeId: string, sectionIndex: number, blockName: string, label: string }>}
@@ -1565,7 +1831,7 @@ export function getStructuredWorkEditorBlockOutlineItems(mdx, slug) {
         nodeId: `sec${sectionIndex}-blk${blockSeq}-${f.componentName}`,
         sectionIndex,
         blockName: f.componentName,
-        label: f.componentName,
+        label: labelStructuredInstrumentBlock(f.componentName),
       });
     });
   });

@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import test from 'node:test';
@@ -66,4 +67,65 @@ test('build público e preview partilham renderSiteWorkPage; só editorPreview i
     /data-editor-node-id="sec0-blk0-ExecutiveSummary"/,
     'preview deve instrumentar blocos sec{n}-blk{m}-Component (B9)'
   );
+});
+
+test('dating-platform: preview com TextBlock, VideoFigure e FigureLarge; outline alinha (B10)', async () => {
+  const {
+    renderEditorPreviewMainHtml,
+    renderSiteWorkPage,
+    getStructuredWorkEditorBlockOutlineItems,
+  } = await import(rendererUrl);
+
+  const raw = readFileSync(join(root, 'content/work/dating-platform/index.mdx'), 'utf8');
+  const markdownBody = raw.replace(/^---\n[\s\S]*?\n---\n\n/, '');
+
+  const metadata = {
+    slug: 'dating-platform',
+    title: 'Redesigning the mobile experience of a dating platform',
+    tags: ['User Research'],
+    featured_image: '../images/case-sl-mobile/sl-case-featured.webp',
+    summary: 'Summary line for shell-summary.',
+    company: 'SL',
+    role: 'Lead',
+    publishedAt: '2024-01-10',
+    platforms: 'Web',
+    domain: 'Social',
+  };
+
+  const publicMain = renderEditorPreviewMainHtml({
+    collection: 'work',
+    slug: 'dating-platform',
+    metadata,
+    markdownBody,
+  });
+  assert.doesNotMatch(publicMain, /data-editor-node-id="sec\d+-blk/);
+
+  const direct = renderSiteWorkPage(metadata, markdownBody, {});
+  assert.strictEqual(publicMain, direct);
+
+  const previewMain = renderEditorPreviewMainHtml({
+    collection: 'work',
+    slug: 'dating-platform',
+    metadata,
+    markdownBody,
+    editorPreview: true,
+  });
+
+  assert.match(previewMain, /data-editor-node-id="sec[0-9]+-blk[0-9]+-TextBlock"/);
+  assert.match(previewMain, /data-editor-node-id="sec[0-9]+-blk[0-9]+-VideoFigure"/);
+  assert.match(previewMain, /data-editor-node-id="sec[0-9]+-blk[0-9]+-FigureLarge"/);
+
+  const blocks = getStructuredWorkEditorBlockOutlineItems(markdownBody, 'dating-platform');
+  const previewBlockIds = [...previewMain.matchAll(/data-editor-node-id="(sec\d+-blk\d+-[^"]+)"/g)]
+    .map((m) => m[1])
+    .filter((id) => /^sec\d+-blk\d+-/.test(id));
+
+  assert.strictEqual(
+    previewBlockIds.length,
+    blocks.length,
+    'contagem de nós sec{n}-blk{m} no HTML = itens de outline'
+  );
+  for (let i = 0; i < blocks.length; i++) {
+    assert.strictEqual(blocks[i].nodeId, previewBlockIds[i], `paridade nodeId bloco ${i}`);
+  }
 });

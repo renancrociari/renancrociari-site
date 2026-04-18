@@ -1,6 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3001';
+/** Porta dedicada ao Playwright (evita colisão com `npm start` em :3001 e garante NODE_ENV=development no sidecar). */
+const editorPort = process.env.PLAYWRIGHT_EDITOR_PORT ?? '3010';
+const baseURL =
+  process.env.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${editorPort}`;
+
+const nextDevCmd =
+  process.env.CI === '1'
+    ? `rm -rf .next && npx next dev -p ${editorPort} --hostname 127.0.0.1`
+    : `npx next dev -p ${editorPort} --hostname 127.0.0.1`;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -17,14 +25,16 @@ export default defineConfig({
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm start',
+    command: nextDevCmd,
+    cwd: './editor-sidecar',
     url: `${baseURL}/api/health`,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: !!process.env.PLAYWRIGHT_REUSE_EDITOR,
     timeout: 180_000,
     env: {
       ...process.env,
-      API_PORT: '3001',
-      PARCEL_PORT: '1234',
+      NODE_ENV: 'development',
+      PORTFOLIO_API_ORIGIN: baseURL,
+      PORTFOLIO_SITE_ORIGIN: 'http://127.0.0.1:1234',
     },
   },
 });

@@ -1311,9 +1311,12 @@ export default function EditorPage({
       bumpPreview?: boolean
     }) => {
       if (!persistRemoteDrafts || !draftsApiPath) return
+      const collectionField =
+        bundle.collection === 'pages' ? { collection: 'pages' as const } : {}
       const payload =
         opts.nextDraftId != null
           ? {
+              ...collectionField,
               draftId: opts.nextDraftId,
               workFileId: opts.documentId,
               slug: opts.slug,
@@ -1321,6 +1324,7 @@ export default function EditorPage({
               content: opts.body,
             }
           : {
+              ...collectionField,
               workFileId: opts.documentId,
               slug: opts.slug,
               metadata: opts.meta,
@@ -1339,7 +1343,7 @@ export default function EditorPage({
         setPreviewKey((value) => value + 1)
       }
     },
-    [draftsApiPath, persistRemoteDrafts]
+    [bundle.collection, draftsApiPath, persistRemoteDrafts]
   )
 
   const bootstrapDraft = useCallback(

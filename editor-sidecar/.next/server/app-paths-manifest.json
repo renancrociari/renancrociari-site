@@ -1,1 +1,7 @@
-{}
+{
+  "/api/health/route": "app/api/health/route.js",
+  "/api/editor/pages/route": "app/api/editor/pages/route.js",
+  "/api/editor/drafts/route": "app/api/editor/drafts/route.js",
+  "/editor/pages/page": "app/editor/pages/page.js",
+  "/editor/preview/pages/[slug]/page": "app/editor/preview/pages/[slug]/page.js"
+}

@@ -1,6 +1,10 @@
 # Plano de Integração Correta do Editor do `portfolio-os` no `renancrociari-site`
 
 ## Atualização de status
+- **`Atualizado em 2026-04-18 (B13 intervalos de bloco)`** — **`getStructuredWorkBlockBodyRangesMap`** em `shared-renderer.mjs` calcula intervalos `[start,end)` no corpo MDX de cada secção estruturada na mesma ordem que `buildStructuredSectionFragments` (critério `if (html)` alinhado ao preview). **`buildSectionBlockRangesMapForWork`** deixa de usar `listBlockRangesForSectionBody` (só JSX) e passa a usar esse mapa; **`buildWorkMdxOutlineAligned`** intercala secções e blocos como `buildWorkMdxOutline`. Teste **`work-outline-dom-alignment.test.mjs`** (intervalos vs contagem de fragmentos). `npm run harness:verify` e `npm run test:portfolio-os` verificados.
+- **`Atualizado em 2026-04-18 (Fase 2 — pages)`** — Conteúdo em `content/pages/<slug>/index.mdx` (about, home, aaaa); **`src/portfolio-os-integration/editor/pages-content.mjs`** com o mesmo contrato que `work` (ids `…/index.mdx`, listagem, save, create com slugs reservados `home`/`about` e limite de documentos); **`GET/POST /api/editor/pages`** e **`/api/content`** alinhados ao wire format; **`build:content`** itera páginas via `pages-content`; normalização de paths `../../images` → `../images` para Parcel em `pages-generated`; preview **`/editor/preview/pages/[slug]`** com drafts `collection: 'pages'`; harness inclui `pages-content.mjs`, rotas `pages` e MDX canónicos `home`/`about`; testes `api-contract` para pages + draft pages. `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` verificados.
+- **`Atualizado em 2026-04-18 (B9 blocos preview)`** — Instrumentação **`sec{n}-blk{m}-Component`** no preview: `buildStructuredSectionFragments` + `wrapEditorInstrumentedBlock` em `shared-renderer.mjs` (blocos lógicos `ExecutiveSummary`, `TextCluster`, `ImageGroup`, etc.); `getStructuredWorkEditorBlockOutlineItems` alinha o outline do editor ao DOM; `work-outline-alignment.ts` usa estes blocos em vez de JSX-only. Teste `work-render-pipeline.test.mjs` estende asserção. `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` a reverificar após merge.
+- **`Atualizado em 2026-04-18 (B10 dating)`** — **dating-platform:** fragmentos de texto como **`TextBlock`**; grupos de imagem com **`inferInstrumentImageCanonical`** (`VideoFigure` para poster do menu, `FigureLarge` para explore/profile, `FigurePair` para pares, etc.); labels no outline via `labelStructuredInstrumentBlock`; teste de paridade ordem/contagem `nodeId` preview ↔ `getStructuredWorkEditorBlockOutlineItems`. `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` verificados.
 - **`Atualizado em 2026-04-18 (B12 REQUEST_REFRESH)`** — O cliente `EditorPreviewIframeClient` no sidecar envia `editor-preview:request-refresh` para o parent (throttle 2s) em falhas de `img` na área instrumentada e em `pageshow` com `persisted`, acionando o `onPreviewRequestRefresh` → `resyncPreview()` já ligado em `EditorPreviewBridge`. `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` reverificados.
 - **`Atualizado em 2026-04-18 (B2 sandbox)`** — A UI do editor em `src/editor-ui/app/editor/main/editor-page.tsx` deixou de importar fixtures/adapters da **sandbox pública** (`@portfolio-os/editor`: `buildSandboxWorkEntries`, `createSandboxEditorDataAdapter`, `localStorage` de sandbox, `SandboxCasePreview`, etc.). Paths de imagens relativas para `work` usam `workDocumentAssetDirFromId` em `app/lib/work-document-asset-path.ts`. `variant === 'public-sandbox'` e bundles com `deployment: 'public-sandbox'` são **normalizados** para o fluxo `development` / `private-work-editor`. `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` verificados.
 - **`Atualizado em 2026-04-18 (B0 baseline)`** — B0 fechado no plano: **registo explícito** das três rotas públicas de `work` na Fase 1, **tabela canónica** `documentSlug → publicPath → outputFile → bodyClass → authId` (+ `documentId`, HTML legado, `previewPath`), **referência estrutural** em `src/pages/<legacySourcePage>.html`, e nota de **escopo** (`pages` fora da Fase 1). Fonte de verdade operacional do mapeamento: `src/portfolio-os-integration/config/routing-manifest.mjs` (`MANAGED_ROUTE_MANIFEST.work`).
@@ -12,6 +16,9 @@
 - **`Atualizado em 2026-04-18 (B16 term-size)`** — Em `scripts/parcel-site.cjs`, **`COLUMNS` / `LINES`** são definidos antes do spawn do Parcel quando ausentes, para o `term-size` usado pelo `@parcel/reporter-cli` não invocar o binário macOS via `shell: true` com path não citado (ruído `/bin/sh: .../Arquivos: is a directory` em pastas com espaço). `npm run harness:verify`, `npm run test:portfolio-os` e `npm run build` reverificados.
 - **`Atualizado em 2026-04-18 (B18 paridade)`** — Teste **`work-html-parity.test.mjs`**: paridade de **texto visível** para **farfetch-performance**; **journal-finder** por contagens estruturais. Conteúdo **Farfetch** alinhado ao legado: imagem do funil **antes** de «Methods and tools», imagem **eye-tracking** a seguir aos métodos (faltava no MDX).
 - **`Atualizado em 2026-04-18 (B18 dating)`** — **dating-platform:** prova por **Jaccard lexical** (≥ 0,993) sobre palavras-tipo após normalizar `# Painpoint` e «(see the image below)» no texto legado; paridade caractere-a-caractere continua impraticável (DOM/alts diferentes). `npm run test:portfolio-os` sem skips nesta suíte.
+- **`Atualizado em 2026-04-18 (B13 outline)`** — Outline e splits de secções MDX alinhados ao **mesmo modelo** que `renderStructuredWorkBody` / `data-editor-section-index` (`getStructuredWorkMdxSectionSplits` / `getStructuredWorkSectionCount` em `shared-renderer.mjs`; `work-outline-alignment.ts` + ajustes em `editor-page.tsx`). Teste Node **`work-outline-dom-alignment.test.mjs`**. Correcção de import relativo para `../../../portfolio-os-integration/renderer/shared-renderer.mjs` (evita `Module not found` no Next).
+- **`Atualizado em 2026-04-18 (B19 E2E smoke)`** — **`npm run test:e2e`** (`@playwright/test`): spec **`tests/e2e/editor-work.spec.ts`** — `/editor`, lista via API, abrir **farfetch-performance**, iframe de preview com `data-editor-*`. O **`playwright.config.ts`** sobe só o **sidecar Next** (`next dev -p 3001` em `editor-sidecar/`) para o health check; não substitui o stack completo **`npm start`** (Parcel + API). CI: `CI=1 npx playwright test` (sem `reuseExistingServer`). Após clonar: `npx playwright install chromium`.
+- **`Atualizado em 2026-04-18 (B20 operacional)`** — Resumo HARNESS-DOC1 / Fase 1: ver bullets em **B20** abaixo (drafts, senha pública, rollback).
 
 ### Estado da Fase 1 (`work`) — código
 - Base estrutural implementada:
@@ -21,7 +28,7 @@
   - conteúdo canónico em `content/work/<slug>/index.mdx` para os 3 cases; **cutover flat** feito para esses slugs (ficheiros `content/work/<slug>.mdx` removidos); `aaaa` mantém-se flat até migração opcional
   - `src/portfolio-os-integration/config/routing-manifest.mjs` com `documentId`, `publicPath`, `templateKey`, `previewPath`, `authId` onde aplicável
   - preview em `/editor/preview/work/[slug]` com `postMessage` e atributos de editor
-  - `build:content` e preview usam **`renderEditorPreviewMainHtml`** (público sem flags de instrumentação); **B18** com prova parcial (`work-html-parity.test.mjs`); **B19** E2E em aberto
+  - `build:content` e preview usam **`renderEditorPreviewMainHtml`** (público sem flags de instrumentação); **B18** com prova parcial (`work-html-parity.test.mjs`); **B19** smoke E2E Playwright entregue (`npm run test:e2e`; fluxo completo metadata/save/draft interativo ainda extensível)
 - **B1 / B16 / build do sidecar (entregue):**
   - **Tailwind no sidecar:** `editor-sidecar/tailwind.config.js` e `postcss.config.js` com preset partilhado (`colors.border`, etc.); `@apply border-border` em `src/editor-ui/styles/global.css` com CWD em `editor-sidecar/`
   - **Build do sidecar:** `editor-sidecar/next.config.mjs` resolve `@portfolio-os/*`; `NormalModuleReplacementPlugin` para `@portfolio-os/core/content-utils` e `@portfolio-os/core/slugify`; MDXEditor via `@mdxeditor/editor/style.css`
@@ -38,7 +45,7 @@
 - **`AGENTS.md`:** referência ao plano v2, harness e skill.
 
 ### Pendências para “Fase 1 fechada”
-- B13 (outline ↔ DOM), **B17** fechado salvo extensões opcionais (E2E HTTP real), **B18** parcial (farfetch texto exato; journal contagens; dating Jaccard; journal texto completo literal pendente), **B19**, **B20**. **B16** (ruído Parcel/term-size em path com espaço) mitigado. Fase 2 `pages` (**P1–P4**). Cutover documentado em B15; rollback: repor `*.mdx` flat a partir de git se necessário.
+- **B13** e **B19** (smoke) e **B20** (doc base) fechados neste plano. **B17** fechado salvo extensões opcionais. **B18** parcial (farfetch texto exato; journal contagens; dating Jaccard; journal texto completo literal pendente). **B19** extensões: editar metadata/corpo, salvar, todos os cases, seleção preview↔sidebar. **B16** (ruído Parcel/term-size em path com espaço) mitigado. Fase 2 `pages`: **P1–P3** fechados; **P4** pendente de E2E Playwright em `/editor/pages` e doc final. Cutover documentado em B15; rollback: repor `*.mdx` flat a partir de git se necessário.
 
 ## Resumo
 - Implementar a integração em duas fases, começando por `work` apenas, porque esse foi o escopo escolhido para a primeira entrega e é onde hoje existe o maior desvio entre editor, preview e site público.
@@ -76,6 +83,7 @@
 ## Testes
 - **Verificação estática do repo (entregue):** `npm run harness:verify` — ficheiros críticos, MDX canónico dos 3 cases, campos do manifesto `work` (não substitui testes HTTP/E2E abaixo).
 - **Smoke Node (B17):** `npm run test:portfolio-os` — manifesto, pipeline de render, **serialização** (`serializeFrontmatter` ↔ parse), **migração/canónico** (paths + leitura dos 3 cases), **contrato das rotas** work + drafts (`tsx --test editor-sidecar/tests/api-contract.test.ts`, `NODE_ENV=development`).
+- **Smoke E2E (B19):** `npm run test:e2e` — Playwright (`tests/e2e/editor-work.spec.ts`); `playwright.config.ts` arranca o sidecar Next em `:3001` (não é o `npm start` completo).
 - Testes de contrato para `/api/editor/work` e `/api/editor/drafts`, cobrindo listagem, load, save, create, bootstrap de draft, update de draft e delete.
 - Testes de migração para garantir que cada documento `work` antigo vira `content/work/<slug>/index.mdx` sem perda de body nem de metadados essenciais.
 - Testes de paridade DOM para cada case gerenciado, comparando o HTML legado e o HTML gerado pelo novo template adapter com normalização de atributos voláteis.
@@ -315,13 +323,13 @@
     - ✅ captions
   - ✅ implementar render público fiel ao HTML legado *(via `shared-renderer` estruturado existente)*
   - ✅ implementar render de preview com os mesmos nós estruturais *(preview sidecar = mesmo renderer + CSS do site)*
-  - ⬜ instrumentar:
+  - ✅ instrumentar:
     - ✅ `shell-hero`
     - ✅ `shell-meta` *(bloco só-preview; paridade DOM público vs legado em B18)*
     - ✅ `shell-tags`
     - ✅ `shell-summary` *(bloco só-preview)*
     - ✅ `section-*`
-    - ⬜ `sec{n}-blk{m}-Component`
+    - ✅ `sec{n}-blk{m}-Component` *(blocos lógicos alinhados ao renderer + outline)*
 - Critério de aceite:
   - o HTML gerado do Farfetch fica estruturalmente equivalente ao HTML legado
 
@@ -338,7 +346,7 @@
     - ✅ KPI groups
     - ✅ vídeos/posters
     - ✅ grandes imagens comparativas
-  - ⬜ instrumentar shell, seções e blocos no mesmo padrão do editor *(shell/seções como B9; blocos granulares `sec{n}-blk{m}` pendente)*
+  - ✅ instrumentar shell, seções e blocos no mesmo padrão do editor *(shell/seções como B9; blocos granulares `sec{n}-blk{m}-Component` com `TextBlock` / tipos de figura para dating)*
 - Critério de aceite:
   - preview e HTML gerado mantêm a estrutura editorial do case real
 
@@ -386,10 +394,10 @@
 - Dependência: `B12`
 - Objetivo: alinhar seleção, navegação e edição contextual.
 - **Checklist:**
-  - ⬜ garantir que os node IDs do preview sigam exatamente o padrão do outline
-  - ⬜ garantir que as seções do MDX correspondam às seções instrumentadas do preview
-  - ⬜ garantir que blocos authorables mantenham contagem e ordem estáveis
-  - ⬜ ajustar qualquer divergência entre `splitMdxSections`, outline e template adapters
+  - ✅ garantir que os node IDs do preview sigam exatamente o padrão do outline *(B9 + `getStructuredWorkEditorBlockOutlineItems`)*
+  - ✅ garantir que as seções do MDX correspondam às seções instrumentadas do preview *(`getStructuredWorkMdxSectionSplits` / `work-outline-alignment.ts`; teste `work-outline-dom-alignment.test.mjs`)*
+  - ✅ garantir que blocos authorables mantenham contagem e ordem estáveis *(B9/B10 + `getStructuredWorkBlockBodyRangesMap` para offsets no corpo da secção / modo MDX bruto)*
+  - ✅ ajustar qualquer divergência entre `splitMdxSections`, outline e template adapters *(slugs estruturados: `splitMdxSectionsForWork` + outline intercalado secção→blocos + mapa de intervalos alinhado ao renderer)*
 - Critério de aceite:
   - selecionar um item na sidebar destaca o nó correspondente no preview e vice-versa
 
@@ -467,19 +475,19 @@
 - Dependência: `B2`, `B6`, `B7`, `B12`
 - Objetivo: validar o fluxo real do usuário.
 - **Checklist:**
-  - ⬜ abrir `/editor`
-  - ⬜ esperar atributos `data-editor-*`
-  - ⬜ carregar a lista de documentos
-  - ⬜ abrir cada case principal
+  - ✅ abrir `/editor` *(Playwright `tests/e2e/editor-work.spec.ts`)*
+  - ✅ esperar atributos `data-editor-*` *(assert no `iframe` de preview)*
+  - ✅ carregar a lista de documentos
+  - ⬜ abrir cada case principal *(smoke: **farfetch-performance**; alargar a dating / journal depois)*
   - ⬜ editar metadata
   - ⬜ editar corpo
   - ⬜ salvar
   - ⬜ validar criação/atualização de draft
-  - ⬜ validar presença do iframe de preview
+  - ✅ validar presença do iframe de preview
   - ⬜ validar seleção preview -> sidebar
   - ⬜ validar highlight sidebar -> preview
 - Critério de aceite:
-  - o fluxo principal do editor privado de `work` passa ponta a ponta
+  - o fluxo principal do editor privado de `work` passa ponta a ponta *(smoke automatizado entregue; extensões pendentes na checklist)*
 
 ### B20. Documentação operacional da Fase 1
 - `P2`
@@ -487,13 +495,13 @@
 - Objetivo: deixar a integração operável por outras pessoas.
 - **Checklist:**
   - ✅ atualizar o plano principal com o estado real *(este ficheiro + harness)*
-  - ⬜ documentar *(parcialmente no harness; completar após B19):*
+  - ✅ documentar *(harness + plano + `AGENTS.md`; ver também bullets abaixo)*
     - ✅ como subir o stack *(`.agent/docs/.../v2/harness/EXECUCAO.md`, `AGENTS.md`)*
     - ✅ qual porta serve o quê *(habitual: Parcel `1234`, sidecar `3001`; ver `scripts/dev-server.js`)*
     - ✅ quais rotas do editor existem *(harness `README`, rotas em `editor-sidecar/app`)*
-    - ⬜ como funciona o draft preview *(contrato em `contracts/`; detalhe operacional pendente)*
-    - ⬜ como funciona a proteção de conteúdo *(ver `SECURITY`/password flow; resumo pendente)*
-    - ⬜ como fazer rollback para o HTML legado *(script `npm run rollback` / processo explícito pendente)*
+    - ✅ como funciona o draft preview *(memória dev: `editor-sidecar/lib/draft-store.ts`; `POST/GET/DELETE` em `editor-sidecar/app/api/editor/drafts/route.ts`; iframe em `/editor/preview/work/[slug]?draftId=…` + `renderEditorPreviewMainHtml`; contrato em `harness/contracts/`)*
+    - ✅ como funciona a proteção de conteúdo *(HTML público: `authId` no manifesto + fluxo de password no site gerado; preview em dev não aplica a mesma gate — ver `routing-manifest.mjs` e `POST /api/verify-password` para testes locais da gate)*
+    - ✅ como fazer rollback para o HTML legado *(`npm run rollback` para cópias de `dist/`; conteúdo MDX: `git checkout -- …` conforme B15; depois `npm run build`)*
   - ✅ listar pendências explicitamente para `pages` *(secção Fase 2 abaixo + `COBERTURA-HARNESS-PLANO.md`)*
 - Critério de aceite:
   - outra pessoa consegue subir, testar e entender a Fase 1 sem leitura arqueológica do repo
@@ -504,9 +512,9 @@
 - `P1`
 - Dependência: conclusão da Fase 1
 - **Checklist:**
-  - ⬜ migrar `content/pages/*.mdx` para `content/pages/<slug>/index.mdx`
-  - ⬜ alinhar `id` canônico
-  - ⬜ normalizar frontmatter de `about` e páginas gerenciadas
+  - ✅ migrar `content/pages/*.mdx` para `content/pages/<slug>/index.mdx`
+  - ✅ alinhar `id` canônico (`<slug>/index.mdx`, espelhado em `listPagesEntriesForEditor`)
+  - ✅ normalizar frontmatter de `about` e páginas gerenciadas (`normalizePageMetadataForEditor` / storage em `pages-content.mjs`)
 - Critério de aceite:
   - `pages` segue o mesmo contrato que `work`
 
@@ -514,8 +522,8 @@
 - `P1`
 - Dependência: `P1`
 - **Checklist:**
-  - ⬜ implementar list/load/save/create no wire format do editor original
-  - ⬜ aplicar políticas de limite e slugs reservados
+  - ✅ implementar list/load/save/create no wire format do editor original
+  - ✅ aplicar políticas de limite e slugs reservados *(máx. 120 páginas; criação bloqueada para slugs `home` e `about`)*
 - Critério de aceite:
   - o editor original consegue operar também em `/editor/pages`
 
@@ -523,13 +531,13 @@
 - `P1`
 - Dependência: `P1`
 - **Checklist:**
-  - ⬜ criar template adapter fiel para `about`
-  - ⬜ decidir se `home` entra na UI do editor nesta fase ou permanece fora
-  - ⬜ se `home` entrar, implementar adapter fiel preservando:
-    - ⬜ hero com quebras
-    - ⬜ nav de botões
-    - ⬜ cards especiais
-    - ⬜ journal finder protegido
+  - ✅ criar template adapter fiel para `about` *(existente: `renderSiteAboutPage` em `shared-renderer.mjs`; preview/build via `renderEditorPreviewMainHtml`)*
+  - ✅ decidir se `home` entra na UI do editor nesta fase ou permanece fora *(incluído na API de listagem; editável como as outras páginas geridas)*
+  - ✅ se `home` entrar, implementar adapter fiel preservando:
+    - ✅ hero com quebras
+    - ✅ nav de botões
+    - ✅ cards especiais
+    - ✅ journal finder protegido *(link no corpo; case continua protegido na rota pública de `work`)*
 - Critério de aceite:
   - `pages` deixa de depender do renderer heurístico atual
 
@@ -537,10 +545,10 @@
 - `P1`
 - Dependência: `P2`, `P3`
 - **Checklist:**
-  - ⬜ validar `/editor/pages`
-  - ⬜ validar preview por iframe
-  - ⬜ validar save e geração pública
-  - ⬜ finalizar a documentação da integração completa
+  - ⬜ validar `/editor/pages` *(E2E Playwright — pendente; contrato HTTP coberto em `api-contract.test.ts`)*
+  - ✅ validar preview por iframe *(rota `/editor/preview/pages/[slug]?draftId=…` + `collection: 'pages'` nos drafts)*
+  - ✅ validar save e geração pública *(save via API + `npm run build`)*
+  - ⬜ finalizar a documentação da integração completa *(parcial: esta secção + harness; revisão COBERTURA opcional)*
 - Critério de aceite:
   - `work` e `pages` passam a compartilhar o mesmo modelo operacional da integração
 

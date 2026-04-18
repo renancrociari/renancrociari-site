@@ -119,11 +119,12 @@ export function createPreviewAdapterFromBundle(
   options?: { embeddedPreview?: ComponentType<EditorEmbeddedPreviewProps> }
 ): EditorPreviewAdapter {
   if (bundle.previewChannel === 'iframe-postmessage') {
+    const previewSegment = bundle.collection === 'pages' ? 'pages' : 'work';
     return {
       channel: 'iframe-postmessage',
       iframeSrcBuilder: ({ draftId, slug, cacheKey }) => {
         const root = getDevApiRootSync();
-        const base = `${root}/editor/preview/work/${encodeURIComponent(slug)}`;
+        const base = `${root}/editor/preview/${previewSegment}/${encodeURIComponent(slug)}`;
         return `${base}?draftId=${encodeURIComponent(draftId)}&v=${cacheKey}`;
       },
     };

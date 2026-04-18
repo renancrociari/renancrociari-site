@@ -11,6 +11,7 @@
 - `npm start` na raiz executa `node scripts/dev-server.js` e sobe o stack completo (Parcel para o site e API local usada pelo fluxo do editor); portas habituais 1234 para o site e 3001 para a API.
 - `npm run harness:verify` na raiz corre o script estático do harness v2 (estrutura, MDX canónico dos três cases, manifesto `work`); não substitui testes HTTP/E2E do plano.
 - `npm run test:portfolio-os` na raiz corre testes Node (`tests/portfolio-os-v2/`: manifesto, pipeline de render, migração, serialização, **paridade HTML** `work-html-parity.test.mjs`) e, com `NODE_ENV=development`, testes `tsx` das rotas `editor-sidecar/tests/api-contract.test.ts` (work + drafts); complementam o harness.
+- `npm run test:e2e` corre **Playwright** (`playwright.config.ts` na raiz): sobe o **sidecar Next** sozinho (`next dev -p 3001` com CWD `editor-sidecar/`) para o smoke em `tests/e2e/editor-work.spec.ts`. Não substitui o ambiente completo `npm start` (Parcel + API). Em CI usar `CI=1 npx playwright test`; após clone executar `npx playwright install chromium`.
 - `npm run dev`, `npm run dev:all` e `npm run dev:generated` sobem só o Parcel em HTTP, sem o processo da API do `dev-server`.
 - `npm run start:https` usa Parcel com TLS, esperando `localhost+3.pem` e `localhost+3-key.pem` na raiz do projeto.
 - A integração no código do site vive sob `src/portfolio-os-integration/` (incluindo adapters e renderer partilhado).

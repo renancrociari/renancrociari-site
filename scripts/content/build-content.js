@@ -113,9 +113,22 @@ function cleanOutputDir() {
     }
 }
 
-function stripDotDotSlash(value) {
+/** MDX em content/pages/&lt;slug&gt;/index.mdx → HTML em src/pages-generated/ (Parcel resolve ../images). */
+function normalizePageAssetPathForGeneratedHtml(value) {
     if (value === undefined || value === null) return value;
-    return String(value).replace(/\.\.\//g, '');
+    const s = String(value);
+    if (s.startsWith('../../images/')) {
+        return s.replace(/^\.\.\/\.\.\/images\//, '../images/');
+    }
+    if (s.startsWith('../images/')) {
+        return s;
+    }
+    return s;
+}
+
+/** Para meta og:url absoluto: images/foo a partir de ../images/foo */
+function stripToSiteRelativeUrlPath(value) {
+    return String(value || '').replace(/\.\.\//g, '').replace(/^\//, '');
 }
 
 function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
@@ -125,9 +138,11 @@ function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
             ? {
                   ...data,
                   featured_image: data.featured_image
-                      ? stripDotDotSlash(data.featured_image)
+                      ? normalizePageAssetPathForGeneratedHtml(data.featured_image)
                       : data.featured_image,
-                  og_image: data.og_image ? stripDotDotSlash(data.og_image) : data.og_image,
+                  og_image: data.og_image
+                      ? normalizePageAssetPathForGeneratedHtml(data.og_image)
+                      : data.og_image,
               }
             : data;
     const route = routing.resolveSiteRoute({
@@ -176,7 +191,7 @@ function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
         .replaceAll('{{TITLE}}', pageTitle)
         .replaceAll('{{DESCRIPTION}}', pageData.description || '')
         .replaceAll('{{CANONICAL}}', canonical)
-        .replaceAll('{{OG_IMAGE}}', pageData.og_image ? `${baseUrl}/${stripDotDotSlash(pageData.og_image)}` : `${baseUrl}/images/renan-og-image.jpg`)
+        .replaceAll('{{OG_IMAGE}}', pageData.og_image ? `${baseUrl}/${stripToSiteRelativeUrlPath(pageData.og_image)}` : `${baseUrl}/images/renan-og-image.jpg`)
         .replaceAll('{{BODY_CLASS}}', bodyClass)
         .replaceAll('{{HEAD_EXTRA}}', headExtra)
         .replaceAll('{{CONTENT}}', htmlContent),

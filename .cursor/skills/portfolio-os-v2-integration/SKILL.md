@@ -45,6 +45,7 @@ Na raiz do repo:
 ```bash
 npm run harness:verify
 npm run test:portfolio-os
+npm run test:e2e
 npm run build
 ```
 

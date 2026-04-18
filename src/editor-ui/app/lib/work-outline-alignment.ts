@@ -3,13 +3,13 @@ import {
   buildSectionBlockRangesMap,
   buildWorkMdxOutline,
   findSectionStartCharOffsetInMdx,
-  listBlockRangesForSectionBody,
   splitMdxSections,
 } from '@portfolio-os/editor'
 import {
+  getStructuredWorkBlockBodyRangesMap,
   getStructuredWorkEditorBlockOutlineItems,
   getStructuredWorkMdxSectionSplits,
-} from '../../../../portfolio-os-integration/renderer/shared-renderer.mjs'
+} from '../../../portfolio-os-integration/renderer/shared-renderer.mjs'
 
 /** Cases com `renderStructuredWorkBody` + `mergeStructuredSubsections` (mesma ordem que `data-editor-section-index`). */
 export const STRUCTURED_WORK_SLUGS = new Set([
@@ -56,7 +56,16 @@ export function buildWorkMdxOutlineAligned(
     label: sec.title?.trim() || `Secção ${sectionIndex + 1}`,
   }))
   const blocks = getStructuredWorkEditorBlockOutlineItems(content, slug as string)
-  return [...shell, ...sections, ...blocks]
+  const items: OutlineItem[] = [...shell]
+  for (let si = 0; si < sections.length; si += 1) {
+    items.push(sections[si])
+    for (const b of blocks) {
+      if (b.sectionIndex === si) {
+        items.push(b)
+      }
+    }
+  }
+  return items
 }
 
 export function buildSectionBlockRangesMapForWork(
@@ -66,15 +75,7 @@ export function buildSectionBlockRangesMapForWork(
   if (!isStructuredWorkSlug(slug)) {
     return buildSectionBlockRangesMap(content)
   }
-  const splits = getStructuredWorkMdxSectionSplits(content, slug as string)
-  const map = new Map<number, { start: number; end: number }[]>()
-  splits.forEach((sec, i) => {
-    map.set(
-      i,
-      listBlockRangesForSectionBody(sec.body).map(({ start, end }) => ({ start, end }))
-    )
-  })
-  return map
+  return getStructuredWorkBlockBodyRangesMap(content, slug as string)
 }
 
 export function findSectionStartCharOffsetInMdxForWork(
