@@ -20,8 +20,22 @@ async function resolveEntryFiles(scope) {
   }
 }
 
+function ensureTermSizeEnvForParcel() {
+  // @parcel/reporter-cli uses `term-size`, which on macOS may exec a bundled
+  // binary via execFileSync(..., { shell: true }). Paths with spaces then
+  // produce `/bin/sh: .../Arquivos: is a directory`. Exporting dimensions
+  // skips that branch (see term-size: env.COLUMNS / env.LINES).
+  if (!process.env.COLUMNS) {
+    process.env.COLUMNS = String(process.stdout.columns || 80);
+  }
+  if (!process.env.LINES) {
+    process.env.LINES = String(process.stdout.rows || 24);
+  }
+}
+
 async function main() {
   const [, , command = 'serve', scope = 'site', ...extraArgs] = process.argv;
+  ensureTermSizeEnvForParcel();
   const entryFiles = await resolveEntryFiles(scope);
 
   if (!entryFiles.length) {
@@ -30,13 +44,14 @@ async function main() {
     return;
   }
 
-  const parcelArgs = ['parcel'];
+  const parcelBin = require.resolve('parcel/lib/bin.js');
+  const parcelArgs = [parcelBin];
   if (command === 'build') {
     parcelArgs.push('build');
   }
   parcelArgs.push(...entryFiles, ...extraArgs);
 
-  const child = spawn('npx', parcelArgs, {
+  const child = spawn(process.execPath, parcelArgs, {
     cwd: ROOT_DIR,
     stdio: 'inherit',
     shell: false,

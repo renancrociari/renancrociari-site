@@ -17,6 +17,8 @@ import { resolveSiteRouteFromPath } from '../config/routing-manifest.mjs';
  * @property {string} [baseUrl] - URL base para resolução de links
  * @property {'comment'|'warning'|'error'|'degraded'} [fallbackMode='comment'] - Modo de fallback
  * @property {string} [rewriteMarkdownImageBase] - Base opcional para `rewriteRelativeImagePaths` do core (ex.: `../` para snippets sem prefixo)
+ * @property {boolean} [editorInstrumentation] - Atributos `data-editor-*` para preview postMessage (não usar no HTML público).
+ * @property {boolean} [editorPreviewShell] - Blocos extra shell-meta/shell-summary só para preview do editor (não usar no build público).
  */
 
 /**
@@ -942,6 +944,88 @@ function mergeStructuredSubsections(sections, slug) {
   return merged;
 }
 
+/**
+ * Paralelo a `mergeStructuredSubsections`, mantém o texto MDX bruto por secção lógica
+ * (para outline / `splitMdxSections` alinhados ao DOM `section-N` do preview).
+ * @param {ReturnType<parseMarkdownSection>[]} sections
+ * @param {string[]} rawParts
+ * @param {string} slug
+ */
+function mergeStructuredSubsectionsWithRaw(sections, rawParts, slug) {
+  if (slug !== 'dating-platform') {
+    return sections.map((s, i) => ({ section: s, raw: rawParts[i] ?? '' }));
+  }
+
+  const merged = [];
+  const mergedRaw = [];
+
+  for (let i = 0; i < sections.length; i++) {
+    const section = sections[i];
+    const raw = rawParts[i] ?? '';
+    const parent = merged[merged.length - 1];
+    const parentRaw = mergedRaw[mergedRaw.length - 1];
+    const canMerge =
+      section.titleLevel === 2 &&
+      parent &&
+      parent.titleLevel === 1 &&
+      !String(parent.title || '').startsWith('Achievements of');
+
+    if (canMerge) {
+      parent.blocks.push({ type: 'subheading', level: section.titleLevel, text: section.title });
+      parent.blocks.push(...section.blocks);
+      mergedRaw[mergedRaw.length - 1] = `${parentRaw}\n---\n\n${raw}`;
+      continue;
+    }
+
+    merged.push({
+      ...section,
+      blocks: [...section.blocks],
+    });
+    mergedRaw.push(raw);
+  }
+
+  return merged.map((section, i) => ({ section, raw: mergedRaw[i] }));
+}
+
+function rawChunkToMdxSectionSplit(section, rawChunk) {
+  const lines = String(rawChunk || '').split('\n');
+  const trimmedFirst = lines[0]?.trim() ?? '';
+  if (/^#\s+/.test(trimmedFirst) && section.title) {
+    return {
+      title: section.title,
+      body: lines.slice(1).join('\n').trim(),
+    };
+  }
+  return {
+    title: section.title,
+    body: String(rawChunk || '').trim(),
+  };
+}
+
+/**
+ * Secções MDX alinhadas ao `renderStructuredWorkBody` (--- + merge dating): mesma ordem e contagem que `data-editor-section-index`.
+ * Formato compatível com `MdxSectionSplit` do `@portfolio-os/editor`.
+ * @param {string} mdx
+ * @param {string} slug
+ * @returns {{ title: string | null, body: string }[]}
+ */
+export function getStructuredWorkMdxSectionSplits(mdx, slug) {
+  const raw = applyRewriteRelativeImagePaths(mdx, undefined);
+  const rawParts = String(raw || '').split(/\n---\n/g);
+  const parsed = rawParts.map(parseMarkdownSection).filter(Boolean);
+  const pairs = mergeStructuredSubsectionsWithRaw(parsed, rawParts, String(slug || ''));
+  return pairs.map(({ section, raw: chunk }) => rawChunkToMdxSectionSplit(section, chunk));
+}
+
+/**
+ * @param {string} mdx
+ * @param {string} slug
+ * @returns {number}
+ */
+export function getStructuredWorkSectionCount(mdx, slug) {
+  return getStructuredWorkMdxSectionSplits(mdx, slug).length;
+}
+
 function renderMetricTitle(title) {
   const raw = String(title || '').trim();
   const match = raw.match(/^Achievements of the improved (.+)$/);
@@ -1365,35 +1449,60 @@ ${captionHtml}`;
     .join('\n');
 }
 
-function renderStructuredWorkSection(section, ctx) {
-  if (!section?.blocks?.length && !section?.title) return '';
+/**
+ * Wrapper de bloco editorial para preview (outline `sec{n}-blk{m}-Component`).
+ * @param {string} html
+ * @param {number} sectionIndex
+ * @param {number} blockSeq
+ * @param {string} componentName
+ * @returns {string}
+ */
+function wrapEditorInstrumentedBlock(html, sectionIndex, blockSeq, componentName) {
+  const safe = String(componentName || 'Block').replace(/[^A-Za-z0-9_-]/g, '');
+  const nodeId = `sec${sectionIndex}-blk${blockSeq}-${safe}`;
+  return `<div data-editor-kind="block" data-editor-node-id="${nodeId}" data-editor-section-index="${sectionIndex}" data-editor-block="${safe}">${html}</div>`;
+}
+
+/**
+ * Fragmentos HTML na mesma ordem do render — usado pelo outline do editor e por `renderStructuredWorkSection`.
+ * @param {ReturnType<parseMarkdownSection>} section
+ * @param {{ slug: string, sectionIndex?: number }} ctx
+ * @returns {{ componentName: string, html: string }[]}
+ */
+function buildStructuredSectionFragments(section, ctx) {
+  if (!section?.blocks?.length && !section?.title) return [];
 
   if (section.title === 'Executive summary') {
-    return renderExecutiveSummarySection(section);
+    const html = renderExecutiveSummarySection(section);
+    return html ? [{ componentName: 'ExecutiveSummary', html }] : [];
   }
 
   if (ctx.slug === 'journal-finder' && section.title === 'Metrics') {
-    return renderFeaturedMetricsSection(section, {
+    const html = renderFeaturedMetricsSection(section, {
       centered: true,
       extraClass: 'featured-metrics-2',
       title: '',
     });
+    return html ? [{ componentName: 'FeaturedMetrics', html }] : [];
   }
 
   if (ctx.slug === 'journal-finder' && section.title === 'Footnotes') {
-    return renderFootnotesSection(section);
+    const html = renderFootnotesSection(section);
+    return html ? [{ componentName: 'Footnotes', html }] : [];
   }
 
   if (String(section.title || '').startsWith('Achievements of')) {
-    return renderFeaturedMetricsSection(section);
+    const html = renderFeaturedMetricsSection(section);
+    return html ? [{ componentName: 'ImpactResults', html }] : [];
   }
 
   const imagesOnly = section.blocks.length > 0 && section.blocks.every((block) => block.type === 'image');
   if (imagesOnly && section.title === 'Brands I collaborated with at Farfetch') {
-    return renderBrandsGrid(section);
+    const html = renderBrandsGrid(section);
+    return html ? [{ componentName: 'BrandsGrid', html }] : [];
   }
 
-  let html = '';
+  const fragments = [];
   let titleConsumed = false;
   let textBlocks = [];
   let imageGroup = [];
@@ -1401,19 +1510,21 @@ function renderStructuredWorkSection(section, ctx) {
 
   const flushTextBlocks = () => {
     if (!textBlocks.length) return;
-    html += renderTextCluster(textBlocks, ctx, {
+    const html = renderTextCluster(textBlocks, ctx, {
       title: titleConsumed ? '' : section.title,
       sectionTitle: section.title,
       titleLevel: section.titleLevel || 1,
       clusterIndex: titleConsumed ? 1 : 0,
     });
+    if (html) fragments.push({ componentName: 'TextCluster', html });
     textBlocks = [];
     titleConsumed = true;
   };
 
   const flushImageGroup = () => {
     if (!imageGroup.length) return;
-    html += renderImageGroup(imageGroup, ctx, section.title, imageGroupIndex);
+    const html = renderImageGroup(imageGroup, ctx, section.title, imageGroupIndex);
+    if (html) fragments.push({ componentName: 'ImageGroup', html });
     imageGroup = [];
     imageGroupIndex += 1;
   };
@@ -1430,21 +1541,120 @@ function renderStructuredWorkSection(section, ctx) {
 
   flushTextBlocks();
   flushImageGroup();
-  return html;
+  return fragments;
+}
+
+/**
+ * Itens de outline `kind: 'block'` alinhados ao DOM instrumentado do preview (B9).
+ * @param {string} mdx
+ * @param {string} slug
+ * @returns {Array<{ kind: 'block', nodeId: string, sectionIndex: number, blockName: string, label: string }>}
+ */
+export function getStructuredWorkEditorBlockOutlineItems(mdx, slug) {
+  const raw = applyRewriteRelativeImagePaths(mdx, undefined);
+  const sections = mergeStructuredSubsections(parseMarkdownSections(raw), String(slug || ''));
+  const items = [];
+  sections.forEach((section, sectionIndex) => {
+    const fragments = buildStructuredSectionFragments(section, {
+      slug: String(slug || ''),
+      sectionIndex,
+    });
+    fragments.forEach((f, blockSeq) => {
+      items.push({
+        kind: 'block',
+        nodeId: `sec${sectionIndex}-blk${blockSeq}-${f.componentName}`,
+        sectionIndex,
+        blockName: f.componentName,
+        label: f.componentName,
+      });
+    });
+  });
+  return items;
+}
+
+function renderStructuredWorkSection(section, ctx) {
+  const fragments = buildStructuredSectionFragments(section, ctx);
+  if (!fragments.length) return '';
+  if (!ctx.editorInstrumentation) {
+    return fragments.map((f) => f.html).join('');
+  }
+  const sectionIndex = ctx.sectionIndex ?? 0;
+  return fragments
+    .map((f, i) => wrapEditorInstrumentedBlock(f.html, sectionIndex, i, f.componentName))
+    .join('');
 }
 
 function renderStructuredWorkBody(metadata, mdx, renderOpts = {}) {
   const raw = applyRewriteRelativeImagePaths(mdx, renderOpts.rewriteMarkdownImageBase);
   const slug = String(metadata?.slug || '');
   const sections = mergeStructuredSubsections(parseMarkdownSections(raw), slug);
+  const instrument = renderOpts.editorInstrumentation === true;
   return sections
-    .map((section, sectionIndex) =>
-      renderStructuredWorkSection(section, {
+    .map((section, sectionIndex) => {
+      const inner = renderStructuredWorkSection(section, {
         slug,
         sectionIndex,
-      })
-    )
+        editorInstrumentation: instrument,
+      });
+      if (!inner) return '';
+      if (!instrument) return inner;
+      return `<div data-editor-kind="section" data-editor-node-id="section-${sectionIndex}" data-editor-section-index="${sectionIndex}">${inner}</div>`;
+    })
     .join('');
+}
+
+/**
+ * Blocos opcionais só no preview do editor (alinhamento com shell da sidebar).
+ * @param {Record<string, unknown>} metadata
+ * @returns {string}
+ */
+function renderEditorPreviewShellBlocks(metadata) {
+  const summary = String(metadata?.summary || '').trim();
+  let year = '';
+  if (metadata?.publishedAt) {
+    const d = new Date(String(metadata.publishedAt));
+    if (!Number.isNaN(d.getTime())) {
+      year = String(d.getFullYear());
+    }
+  }
+  const items = [
+    { label: 'Company', value: metadata?.company },
+    { label: 'Role', value: metadata?.role },
+    { label: 'Year', value: year || undefined },
+    { label: 'Platform', value: metadata?.platforms },
+    { label: 'Focus', value: metadata?.domain },
+  ].filter((item) => String(item.value || '').trim());
+
+  let html = '';
+  if (items.length) {
+    const cells = items
+      .map(
+        (item) => `
+    <div>
+      <h3 class="body-small t-upper t-gray-300 t-semibold">${escapeHtml(item.label)}</h3>
+      <p class="body-medium mt-sm">${escapeHtml(String(item.value))}</p>
+    </div>`
+      )
+      .join('\n');
+    html += `
+<div class="wrapper mt-3xl" data-editor-kind="shell" data-editor-node-id="shell-meta">
+  <div class="executive-summary-text mt-2xl mb-4xl">
+${cells}
+  </div>
+</div>`;
+  }
+
+  if (summary) {
+    html += `
+<div class="wrapper mt-3xl" data-editor-kind="shell" data-editor-node-id="shell-summary">
+  <h2 class="mt-5xl">Overview</h2>
+  <div class="executive-summary-text mt-2xl mb-4xl">
+    <p class="body-medium mt-sm">${escapeHtml(summary)}</p>
+  </div>
+</div>`;
+  }
+
+  return html;
 }
 
 /**
@@ -1744,14 +1954,22 @@ export function renderSiteWorkPage(metadata, mdx, renderOpts = {}) {
     'journal-finder',
   ]).has(workSlug);
   const heroTitleClass = workSlug === 'journal-finder' ? 't-gray-200' : 't-white';
+  const instrument = renderOpts.editorInstrumentation === true;
+  const previewShell = renderOpts.editorPreviewShell === true;
 
-  html += '<header class="content-header mt-5xl">\n';
+  const headerShellAttrs = instrument
+    ? ' data-editor-kind="shell" data-editor-node-id="shell-hero"'
+    : '';
+  html += `<header class="content-header mt-5xl"${headerShellAttrs}>\n`;
   html += '  <div class="wrapper">\n';
   html += '    <div class="content-hero">\n';
   html += `      <h1 class="${heroTitleClass}">${metadata.title}</h1>\n`;
 
   if (metadata.tags && metadata.tags.length) {
-    html += '      <div class="tags body-small t-gray-300 mt-sm">\n';
+    const tagsShellAttrs = instrument
+      ? ' data-editor-kind="shell" data-editor-node-id="shell-tags"'
+      : '';
+    html += `      <div class="tags body-small t-gray-300 mt-sm"${tagsShellAttrs}>\n`;
     html += `      ${metadata.tags.join(' <span class="divider">/</span> ')}\n`;
     html += '      </div>\n';
   }
@@ -1766,6 +1984,9 @@ export function renderSiteWorkPage(metadata, mdx, renderOpts = {}) {
   html += '</header>\n';
 
   html += '<div class="article-content">\n';
+  if (previewShell && isStructuredWork) {
+    html += renderEditorPreviewShellBlocks(metadata);
+  }
   html += isStructuredWork
     ? renderStructuredWorkBody(metadata, mdx, renderOpts)
     : renderSiteMarkdownBody(mdx, renderOpts);
@@ -1797,7 +2018,7 @@ ${renderSiteMarkdownBody(markdownBody, renderOpts)}
 
 /**
  * HTML principal do preview do editor (entre navbar e footer), alinhado ao build.
- * @param {{ collection: string, slug: string, metadata: Record<string, unknown>, markdownBody: string, rewriteMarkdownImageBase?: string }} input
+ * @param {{ collection: string, slug: string, metadata: Record<string, unknown>, markdownBody: string, rewriteMarkdownImageBase?: string, editorPreview?: boolean }} input
  * @returns {string}
  */
 export function renderEditorPreviewMainHtml({
@@ -1806,8 +2027,14 @@ export function renderEditorPreviewMainHtml({
   metadata,
   markdownBody,
   rewriteMarkdownImageBase,
+  editorPreview,
 }) {
-  const ro = rewriteMarkdownImageBase ? { rewriteMarkdownImageBase } : {};
+  const ro = {
+    ...(rewriteMarkdownImageBase ? { rewriteMarkdownImageBase } : {}),
+    ...(editorPreview
+      ? { editorInstrumentation: true, editorPreviewShell: true }
+      : {}),
+  };
   if (collection === 'pages' && slug === 'home') {
     return renderSiteHomePage(metadata, markdownBody);
   }

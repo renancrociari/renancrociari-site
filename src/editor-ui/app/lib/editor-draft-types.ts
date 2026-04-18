@@ -1,6 +1,6 @@
 import type { CaseStudyMetadata } from 'app/lib/content-types';
 
-export type DraftCollection = 'work';
+export type DraftCollection = 'work' | 'pages';
 
 export type DraftDocument = {
   collection: DraftCollection;

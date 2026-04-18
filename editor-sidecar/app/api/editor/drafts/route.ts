@@ -1,8 +1,5 @@
-import {
-  createWorkDraft,
-  draftStore,
-  upsertWorkDraft,
-} from '../../../../lib/draft-store';
+import type { DraftCollection } from 'app/lib/editor-draft-types';
+import { createDraft, draftStore, upsertDraft } from '../../../../lib/draft-store';
 import {
   devOnlyGuard,
   jsonWithCors,
@@ -41,6 +38,7 @@ export async function POST(request: Request) {
 
   let body: {
     draftId?: string;
+    collection?: DraftCollection;
     workFileId?: string;
     slug?: string;
     metadata?: Record<string, string>;
@@ -60,7 +58,11 @@ export async function POST(request: Request) {
   }
 
   if (body.draftId) {
-    const updated = upsertWorkDraft(body.draftId, {
+    const previous = draftStore.get(body.draftId);
+    if (!previous) {
+      return textWithCors(request, 'Draft not found', { status: 404 });
+    }
+    const updated = upsertDraft(body.draftId, {
       workFileId: body.workFileId,
       slug: body.slug,
       metadata: body.metadata,
@@ -72,9 +74,13 @@ export async function POST(request: Request) {
     return jsonWithCors(request, updated);
   }
 
+  const collection: DraftCollection =
+    body.collection === 'pages' ? 'pages' : 'work';
+
   return jsonWithCors(
     request,
-    createWorkDraft({
+    createDraft({
+      collection,
       workFileId: body.workFileId,
       slug: body.slug,
       metadata: body.metadata ?? {},

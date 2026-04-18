@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.agent/harness/work-frontmatter.schema.json",
+  "title": "Work MDX frontmatter (normalized)",
+  "description": "Shape alvo para work após migração; campos legados podem existir só para leitura até o cutover.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string" },
+    "slug": { "type": "string" },
+    "summary": { "type": "string" },
+    "publishedAt": { "type": "string" },
+    "published": { "type": "boolean" },
+    "order": { "type": "integer" },
+    "company": { "type": "string" },
+    "role": { "type": "string" },
+    "team": { "type": "string" },
+    "duration": { "type": "string" },
+    "domain": { "type": "string" },
+    "platforms": {
+      "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
+    },
+    "tools": {
+      "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
+    },
+    "goals": { "type": "string" },
+    "outcomes": { "type": "string" },
+    "impactMetrics": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array" },
+        { "type": "object" }
+      ]
+    },
+    "tags": {
+      "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
+    },
+    "status": { "type": "string" },
+    "coverImage": { "type": "string" },
+    "gallery": { "type": "array" },
+    "video": {
+      "oneOf": [{ "type": "string" }, { "type": "object" }, { "type": "null" }]
+    }
+  }
+}

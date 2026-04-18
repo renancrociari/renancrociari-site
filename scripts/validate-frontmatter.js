@@ -25,8 +25,33 @@ const SCHEMAS = {
   },
   work: {
     required: ['title', 'slug', 'type', 'description'],
-    optional: ['status', 'published', 'summary', 'tags', 'order', 'featured_image', 'og_image', 'protected_password', 'publishedAt', 'created_at', 'updated_at']
-  }
+    optional: [
+      'status',
+      'published',
+      'summary',
+      'tags',
+      'order',
+      'featured_image',
+      'coverImage',
+      'og_image',
+      'protected_password',
+      'publishedAt',
+      'created_at',
+      'updated_at',
+      'company',
+      'role',
+      'team',
+      'duration',
+      'domain',
+      'platforms',
+      'tools',
+      'goals',
+      'outcomes',
+      'impactMetrics',
+      'gallery',
+      'video',
+    ],
+  },
 };
 
 function validateFile(filePath) {
@@ -69,29 +94,64 @@ function validateFile(filePath) {
   return { valid: errors.length === 0, errors, data };
 }
 
-function validateCollection(collection) {
+function listMarkdownFilesInCollection(collection) {
   const dir = path.join(CONTENT_DIR, collection);
   if (!fs.existsSync(dir)) {
-    return { files: [], errors: 0 };
+    return [];
   }
 
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.md') || f.endsWith('.mdx'));
+  const relPaths = [];
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.isFile()) {
+      const n = entry.name;
+      if (n.endsWith('.md') || n.endsWith('.mdx')) {
+        relPaths.push(path.join(collection, n));
+      }
+      continue;
+    }
+
+    if (!entry.isDirectory() || entry.name.startsWith('.')) continue;
+
+    for (const ext of ['.mdx', '.md']) {
+      const indexPath = path.join(dir, entry.name, `index${ext}`);
+      if (fs.existsSync(indexPath)) {
+        relPaths.push(path.join(collection, entry.name, `index${ext}`));
+        break;
+      }
+    }
+  }
+
+  return relPaths;
+}
+
+function validateCollection(collection) {
+  const files =
+    collection === 'work' || collection === 'pages'
+      ? listMarkdownFilesInCollection(collection)
+      : fs
+          .readdirSync(path.join(CONTENT_DIR, collection))
+          .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
+          .map((f) => path.join(collection, f));
+
   let totalErrors = 0;
   const results = [];
 
-  for (const file of files) {
-    const filePath = path.join(dir, file);
+  for (const rel of files) {
+    const filePath = path.join(CONTENT_DIR, rel);
+    const display = rel.replace(/\\/g, '/');
     const result = validateFile(filePath);
-    results.push({ file, ...result });
+    results.push({ file: display, ...result });
 
     if (!result.valid) {
       totalErrors++;
-      console.log(`❌ ${collection}/${file}:`);
+      console.log(`❌ ${display}:`);
       for (const error of result.errors) {
         console.log(`   - ${error}`);
       }
     } else {
-      console.log(`✅ ${collection}/${file}`);
+      console.log(`✅ ${display}`);
     }
   }
 

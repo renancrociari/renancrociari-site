@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.agent/harness/routing-manifest-work-entry.schema.json",
+  "title": "MANAGED_ROUTE_MANIFEST.work[slug]",
+  "description": "Entrada de rota para um case work gerido; collection está implícita pela chave pai 'work'.",
+  "type": "object",
+  "required": [
+    "documentId",
+    "publicPath",
+    "outputFile",
+    "bodyClass",
+    "legacySourcePage",
+    "templateKey",
+    "previewPath"
+  ],
+  "properties": {
+    "documentId": { "type": "string", "pattern": ".+/index\\.mdx$" },
+    "publicPath": { "type": "string", "pattern": "^/" },
+    "outputFile": { "type": "string" },
+    "bodyClass": { "type": "string" },
+    "authId": { "type": "string" },
+    "isProtected": { "type": "boolean" },
+    "legacySourcePage": { "type": "string" },
+    "templateKey": { "type": "string" },
+    "previewPath": { "type": "string", "pattern": "^/editor/preview/work/" }
+  },
+  "additionalProperties": true
+}

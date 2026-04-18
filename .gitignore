@@ -30,6 +30,10 @@ npm-debug.log*
 
 # Testing
 coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
 # Cache
 .npm

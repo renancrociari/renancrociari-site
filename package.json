@@ -51,6 +51,9 @@
     "setup:ssl": "./scripts/setup-ssl.sh",
     "validate:content": "node scripts/validate-frontmatter.js",
     "validate:content:check": "node scripts/validate-frontmatter.js --check",
+    "harness:verify": "node .agent/docs/portfolio-os-integration/v2/harness/scripts/verify-static-harness.mjs",
+    "test:portfolio-os": "node --test tests/portfolio-os-v2/routing-manifest.test.mjs tests/portfolio-os-v2/work-render-pipeline.test.mjs tests/portfolio-os-v2/work-content-serialization.test.mjs tests/portfolio-os-v2/work-content-migration.test.mjs tests/portfolio-os-v2/work-html-parity.test.mjs tests/portfolio-os-v2/work-outline-dom-alignment.test.mjs && NODE_ENV=development npx tsx --test editor-sidecar/tests/api-contract.test.ts",
+    "test:e2e": "playwright test",
     "backup": "npm run build:legacy && cp -r dist dist-backup-$(date +%Y%m%d)",
     "rollback": "node scripts/rollback.js",
     "prebuild": "npm run validate:content:check",
@@ -62,10 +65,12 @@
     "@parcel/packager-raw-url": "^2.16.3",
     "@parcel/transformer-jsonld": "^2.16.3",
     "@parcel/transformer-webmanifest": "^2.16.3",
+    "@playwright/test": "^1.59.1",
     "parcel": "^2.7.0",
     "path-browserify": "^1.0.1",
     "posthtml-include": "^2.0.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "tsx": "^4.21.0"
   },
   "dependencies": {
     "@mdxeditor/editor": "^3.52.3",

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.agent/harness/work-api-responses.schema.json",
+  "title": "Editor work API — formas mínimas",
+  "description": "Referência para GET list e GET by id; alinhar com a UI em editor-sidecar e pacote @portfolio-os/editor.",
+  "oneOf": [
+    {
+      "title": "GET /api/editor/work (listagem)",
+      "type": "object",
+      "required": ["entries"],
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "slug", "title", "published"],
+            "properties": {
+              "id": { "type": "string", "pattern": ".+/index\\.mdx$" },
+              "documentId": { "type": "string", "description": "Legado / espelho; a API devolve `id`." },
+              "slug": { "type": "string" },
+              "title": { "type": "string" },
+              "published": { "type": "boolean" }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    {
+      "title": "GET /api/editor/work?id=... (documento)",
+      "type": "object",
+      "required": ["metadata", "content"],
+      "properties": {
+        "metadata": { "type": "object" },
+        "content": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

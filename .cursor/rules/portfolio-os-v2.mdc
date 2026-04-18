@@ -1,0 +1,11 @@
+---
+description: Integração Portfolio-OS v2 — plano, harness e skill para work/pages
+globs: editor-sidecar/**/*,src/portfolio-os-integration/**/*,scripts/content/**/*,content/work/**/*
+alwaysApply: false
+---
+
+# Integração Portfolio-OS (v2)
+
+Antes de implementar ou rever alterações nestes caminhos, seguir a skill [`.cursor/skills/portfolio-os-v2-integration/SKILL.md`](../skills/portfolio-os-v2-integration/SKILL.md): plano em `.agent/docs/portfolio-os-integration/v2/v2 copy.md`, harness em `.agent/docs/portfolio-os-integration/v2/harness/`, e não dar tarefa por concluída sem `npm run harness:verify` e `npm run build` quando o contrato ou o build forem afetados. Após implementação verificada e testes a passar, **atualizar `v2 copy.md`** (status + checklists; **HARNESS-DOC1**).
+
+Documentação do plano v2 (índice): `.agent/docs/portfolio-os-integration/v2/README.md`.

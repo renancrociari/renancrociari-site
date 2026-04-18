@@ -113,12 +113,27 @@ function cleanOutputDir() {
     }
 }
 
+function stripDotDotSlash(value) {
+    if (value === undefined || value === null) return value;
+    return String(value).replace(/\.\.\//g, '');
+}
+
 function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
     const collection = type === 'page' ? 'pages' : 'work';
+    const pageData =
+        type === 'page'
+            ? {
+                  ...data,
+                  featured_image: data.featured_image
+                      ? stripDotDotSlash(data.featured_image)
+                      : data.featured_image,
+                  og_image: data.og_image ? stripDotDotSlash(data.og_image) : data.og_image,
+              }
+            : data;
     const route = routing.resolveSiteRoute({
         collection,
         documentSlug: slug,
-        metadata: data,
+        metadata: pageData,
     });
     const baseUrl = routing.SITE_BASE_URL;
     const canonical = route.canonicalUrl;
@@ -128,13 +143,19 @@ function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
     let headExtra = '';
 
     if (type === 'page' && slug === 'home') {
-        htmlContent = renderer.renderSiteHomePage(data, mdxContent);
+        htmlContent = renderer.renderSiteHomePage(pageData, mdxContent);
     } else if (type === 'page' && slug === 'about') {
-        htmlContent = renderer.renderSiteAboutPage(data, mdxContent);
+        htmlContent = renderer.renderSiteAboutPage(pageData, mdxContent);
     } else if (type === 'page') {
-        htmlContent = renderer.renderSiteGenericPage(data, mdxContent);
+        htmlContent = renderer.renderSiteGenericPage(pageData, mdxContent);
     } else {
-        htmlContent = renderer.renderSiteWorkPage(data, mdxContent);
+        // Mesmo pipeline que o preview do editor (sem `editorPreview`: sem instrumentação nem blocos só-preview).
+        htmlContent = renderer.renderEditorPreviewMainHtml({
+            collection: 'work',
+            slug,
+            metadata: data,
+            markdownBody: mdxContent,
+        });
         if (data.status === 'protected' && data.protected_password) {
             const contentAuthId = route.authId;
             headExtra = `<script type="module">
@@ -147,15 +168,15 @@ function slugToHtmlFromParsed(data, mdxContent, slug, type, renderer, routing) {
         }
     }
     
-    const pageTitle = route.metaTitle || (data.title + ' · Renan Crociari');
+    const pageTitle = route.metaTitle || (pageData.title + ' · Renan Crociari');
 
     return {
         outputFile: route.outputFile,
         html: TEMPLATE_PAGE
         .replaceAll('{{TITLE}}', pageTitle)
-        .replaceAll('{{DESCRIPTION}}', data.description || '')
+        .replaceAll('{{DESCRIPTION}}', pageData.description || '')
         .replaceAll('{{CANONICAL}}', canonical)
-        .replaceAll('{{OG_IMAGE}}', data.og_image ? `${baseUrl}/${data.og_image.replace('../', '')}` : `${baseUrl}/images/renan-og-image.jpg`)
+        .replaceAll('{{OG_IMAGE}}', pageData.og_image ? `${baseUrl}/${stripDotDotSlash(pageData.og_image)}` : `${baseUrl}/images/renan-og-image.jpg`)
         .replaceAll('{{BODY_CLASS}}', bodyClass)
         .replaceAll('{{HEAD_EXTRA}}', headExtra)
         .replaceAll('{{CONTENT}}', htmlContent),
@@ -173,25 +194,30 @@ async function buildContent() {
     const sharedPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'renderer', 'shared-renderer.mjs');
     const routingPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'config', 'routing-manifest.mjs');
     const workContentPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'editor', 'work-content.mjs');
+    const pagesContentPath = path.join(__dirname, '..', '..', 'src', 'portfolio-os-integration', 'editor', 'pages-content.mjs');
     const renderer = await import(pathToFileURL(sharedPath).href);
     const routing = await import(pathToFileURL(routingPath).href);
     const workContent = await import(pathToFileURL(workContentPath).href);
+    const pagesContent = await import(pathToFileURL(pagesContentPath).href);
 
     cleanOutputDir();
     
-    const pagesDir = path.join(CONTENT_DIR, 'pages');
     const workDir = path.join(CONTENT_DIR, 'work');
 
-    const isContentFile = (f) => f.endsWith('.md') || f.endsWith('.mdx');
-    
-    if (fs.existsSync(pagesDir)) {
-        const pages = fs.readdirSync(pagesDir).filter(isContentFile);
-        console.log(`📄 Pages: ${pages.length}`);
-        
-        for (const page of pages) {
-            const content = fs.readFileSync(path.join(pagesDir, page), 'utf-8');
-            const slug = page.replace(/\.(md|mdx)$/i, '');
-            const { outputFile, html } = slugToHtml(content, slug, 'page', renderer, routing);
+    const pageEntries = pagesContent.listPagesEntriesForEditor();
+    if (pageEntries.length) {
+        console.log(`📄 Pages: ${pageEntries.length}`);
+        for (const page of pageEntries) {
+            const document = pagesContent.readPageDocumentForEditor(page.documentId);
+            const metadata = pagesContent.materializePageMetadataForRender(document.rawMetadata);
+            const { outputFile, html } = slugToHtmlFromParsed(
+                metadata,
+                document.content,
+                page.slug,
+                'page',
+                renderer,
+                routing
+            );
             fs.writeFileSync(path.join(OUTPUT_DIR, outputFile), html);
             console.log(`  ✓ ${outputFile}`);
         }

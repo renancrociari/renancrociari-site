@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import '@mdxeditor/editor/dist/style.css'
+import '@mdxeditor/editor/style.css'
 import {
   AdmonitionDirectiveDescriptor,
   BlockTypeSelect,

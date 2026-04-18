@@ -22,14 +22,15 @@ export const draftStore = {
   },
 };
 
-export function createWorkDraft(input: {
+export function createDraft(input: {
+  collection: DraftDocument['collection'];
   workFileId: string;
   slug: string;
   metadata: Record<string, string>;
   content: string;
 }) {
   const doc: DraftDocument = {
-    collection: 'work',
+    collection: input.collection,
     id: randomUUID(),
     slug: input.slug,
     workFileId: input.workFileId,
@@ -41,7 +42,16 @@ export function createWorkDraft(input: {
   return doc;
 }
 
-export function upsertWorkDraft(
+export function createWorkDraft(input: {
+  workFileId: string;
+  slug: string;
+  metadata: Record<string, string>;
+  content: string;
+}) {
+  return createDraft({ ...input, collection: 'work' });
+}
+
+export function upsertDraft(
   draftId: string,
   patch: Partial<
     Pick<DraftDocument, 'metadata' | 'content' | 'slug' | 'workFileId'>
@@ -62,4 +72,11 @@ export function upsertWorkDraft(
 
   draftStore.set(next);
   return next;
+}
+
+export function upsertWorkDraft(
+  draftId: string,
+  patch: Parameters<typeof upsertDraft>[1]
+) {
+  return upsertDraft(draftId, patch);
 }

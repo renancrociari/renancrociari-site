@@ -31,6 +31,18 @@ function parseSelectionFromElement(element: Element): EditorSelection | null {
 export function EditorPreviewIframeClient() {
   useEffect(() => {
     let lastHoveredNodeId: string | null = null;
+    let lastRequestRefreshAt = 0;
+    const REQUEST_REFRESH_MIN_INTERVAL_MS = 2000;
+
+    function postRequestRefreshToParent() {
+      const now = Date.now();
+      if (now - lastRequestRefreshAt < REQUEST_REFRESH_MIN_INTERVAL_MS) return;
+      lastRequestRefreshAt = now;
+      window.parent?.postMessage(
+        { type: EDITOR_PREVIEW_MSG.REQUEST_REFRESH } as EditorPreviewMessage,
+        '*'
+      );
+    }
 
     function clearClass(className: string) {
       document.querySelectorAll(`.${className}`).forEach((node) => {
@@ -106,9 +118,24 @@ export function EditorPreviewIframeClient() {
       }
     }
 
+    function onResourceErrorCapture(event: Event) {
+      const target = event.target;
+      if (!(target instanceof HTMLImageElement)) return;
+      if (!target.closest('[data-editor-node-id]')) return;
+      postRequestRefreshToParent();
+    }
+
+    function onPageShow(event: PageTransitionEvent) {
+      if (event.persisted) {
+        postRequestRefreshToParent();
+      }
+    }
+
     document.addEventListener('pointermove', onPointerMoveCapture, true);
     document.documentElement.addEventListener('pointerleave', onPointerLeaveCapture, true);
     document.addEventListener('click', onClickCapture, true);
+    document.addEventListener('error', onResourceErrorCapture, true);
+    window.addEventListener('pageshow', onPageShow);
     window.addEventListener('message', onMessage);
     window.parent?.postMessage(
       { type: EDITOR_PREVIEW_MSG.READY } as EditorPreviewMessage,
@@ -123,6 +150,8 @@ export function EditorPreviewIframeClient() {
         true
       );
       document.removeEventListener('click', onClickCapture, true);
+      document.removeEventListener('error', onResourceErrorCapture, true);
+      window.removeEventListener('pageshow', onPageShow);
       window.removeEventListener('message', onMessage);
     };
   }, []);

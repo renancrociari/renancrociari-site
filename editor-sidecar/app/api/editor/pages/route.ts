@@ -3,7 +3,7 @@ import {
   listPagesEntriesForEditor,
   readPageDocumentForEditor,
   savePageDocumentFromEditor,
-} from '../../../../lib/pages-content';
+} from '../../../../../src/portfolio-os-integration/editor/pages-content.mjs';
 import {
   devOnlyGuard,
   jsonWithCors,
@@ -26,11 +26,22 @@ export function GET(request: Request) {
   const id = searchParams.get('id');
 
   if (!id) {
-    return jsonWithCors(request, { entries: listPagesEntriesForEditor() });
+    const entries = listPagesEntriesForEditor().map((entry) => ({
+      id: entry.documentId,
+      slug: entry.slug,
+      title: entry.title,
+      published: entry.published,
+    }));
+    return jsonWithCors(request, { entries });
   }
 
   try {
-    return jsonWithCors(request, readPageDocumentForEditor(id));
+    const document = readPageDocumentForEditor(id);
+    return jsonWithCors(request, {
+      id: document.id,
+      metadata: document.metadata,
+      content: document.content,
+    });
   } catch (error) {
     return textWithCors(
       request,

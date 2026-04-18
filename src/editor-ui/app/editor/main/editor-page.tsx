@@ -24,14 +24,16 @@ import {
   parseBlockNodeId,
   updateSectionMarkdown,
 } from 'app/lib/document-mutations'
-import { buildSectionBlockRangesMap, buildWorkMdxOutline } from 'app/lib/mdx-outline'
 import { parsePublished } from 'app/lib/content-types'
 import { slugify } from 'app/lib/slugify'
 import {
-  findSectionStartCharOffsetInMdx,
-  joinMdxSections,
-  splitMdxSections,
-} from 'app/lib/split-mdx-sections'
+  buildSectionBlockRangesMapForWork,
+  buildWorkMdxOutlineAligned,
+  editorialSlugFromDocumentId,
+  findSectionStartCharOffsetInMdxForWork,
+  isStructuredWorkSlug,
+  splitMdxSectionsForWork,
+} from 'app/lib/work-outline-alignment'
 import { metadataRecordToCaseStudy } from 'app/lib/work-case-metadata'
 import { rewriteRelativeImagePaths } from 'app/lib/work-image-paths'
 import {
@@ -41,7 +43,6 @@ import {
   ChevronRight,
   ChevronUp,
   FileText,
-  Info,
   Plus,
   Image as ImageIcon,
   MousePointer2,
@@ -49,19 +50,8 @@ import {
   Undo2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import {
-  buildSandboxWorkEntries,
-  createSandboxEditorDataAdapter,
-  getEditorSandboxInitialDocuments,
-  getSandboxInitialEditorState,
-  mergePersistedSandboxDocuments,
-  SANDBOX_LOCAL_STORAGE_KEY,
-  SANDBOX_SAMPLE_FOR_ENTRY_ID,
-  sandboxEditorAssetBasePath,
-  sandboxEditorFixtureForSample,
-  type EditorSandboxDocument,
-} from '@portfolio-os/editor'
 import type { EditorPageVariant } from 'app/lib/editor-page-variant'
+import { workDocumentAssetDirFromId } from 'app/lib/work-document-asset-path'
 import {
   createEditorAdapterBundle,
   createPreviewAdapterFromBundle,
@@ -71,7 +61,6 @@ import {
   type EditorDataAdapter,
   type EditorDocumentListItem,
 } from 'app/lib/editor-adapters'
-import { SandboxCasePreview } from '../sandbox/sandbox-case-preview'
 
 export type { EditorPageVariant } from 'app/lib/editor-page-variant'
 
@@ -136,10 +125,7 @@ type EditorUiPack = {
   adjustPanelTitle: string
   previewPickFileLine1: string
   previewPickFileLine2: string
-  sandboxBanner: string
   documentNotFound: string
-  couldNotSave: string
-  savedInBrowserDemo: string
   editorDevOnly: string
   failedLoadFileList: string
   failedLoadFile: string
@@ -149,7 +135,6 @@ type EditorUiPack = {
   unsavedDiscardNewContent: string
   failedCreate: string
   newContentSuccess: string
-  resetSample: string
 }
 
 function createEditorUiPack(locale: 'pt' | 'en'): EditorUiPack {
@@ -270,11 +255,7 @@ function createEditorUiPack(locale: 'pt' | 'en'): EditorUiPack {
       adjustPanelTitle: 'Drag to resize the panel',
       previewPickFileLine1: 'Pick a file from the list beside',
       previewPickFileLine2: 'to see the preview here.',
-      sandboxBanner:
-        'Editor Sandbox: public demo — preview runs in your browser. Use public URLs or paths for images. File upload is not available in production.',
       documentNotFound: 'Document not found.',
-      couldNotSave: 'Could not save.',
-      savedInBrowserDemo: 'Saved in this browser (demo).',
       editorDevOnly: 'Editor is only available in development.',
       failedLoadFileList: 'Failed to load the file list.',
       failedLoadFile: 'Failed to load the file.',
@@ -285,7 +266,6 @@ function createEditorUiPack(locale: 'pt' | 'en'): EditorUiPack {
         'You have unsaved changes. Discard them to create new content?',
       failedCreate: 'Failed to create content.',
       newContentSuccess: 'New content created successfully.',
-      resetSample: 'Reset sample',
     }
   }
 
@@ -405,11 +385,7 @@ function createEditorUiPack(locale: 'pt' | 'en'): EditorUiPack {
     adjustPanelTitle: 'Arraste para ajustar a largura do painel',
     previewPickFileLine1: 'Selecione um arquivo da lista ao lado',
     previewPickFileLine2: 'para ver o preview aqui.',
-    sandboxBanner:
-      'Editor Sandbox: demo pública — o preview corre no teu browser. Usa URLs ou caminhos públicos para imagens. O upload não está disponível em produção.',
     documentNotFound: 'Documento não encontrado.',
-    couldNotSave: 'Não foi possível guardar.',
-    savedInBrowserDemo: 'Guardado neste browser (demo).',
     editorDevOnly: 'Editor disponível apenas em desenvolvimento.',
     failedLoadFileList: 'Falha ao carregar a lista de arquivos.',
     failedLoadFile: 'Falha ao carregar o arquivo.',
@@ -420,7 +396,6 @@ function createEditorUiPack(locale: 'pt' | 'en'): EditorUiPack {
       'Há alterações não salvas. Deseja descartá-las para criar um novo conteúdo?',
     failedCreate: 'Falha ao criar o conteúdo.',
     newContentSuccess: 'Novo conteúdo criado com sucesso.',
-    resetSample: 'Repor sample',
   }
 }
 
@@ -829,28 +804,23 @@ function CoverImageField({
 }
 
 export default function EditorPage({
-  variant = 'development',
+  variant: variantProp = 'development',
   adapterBundle: adapterBundleProp,
   dataAdapter: dataAdapterProp,
 }: {
   variant?: EditorPageVariant
   /** Injeta modo editorial (testes / futuras coleções); por defeito deriva de `variant`. */
   adapterBundle?: EditorAdapterBundle
-  /** Injeta persistência/listagem (testes); sandbox usa estado + fixtures por defeito. */
+  /** Injeta persistência/listagem (testes). */
   dataAdapter?: EditorDataAdapter
 } = {}) {
-  const bundle = useMemo(
-    () => adapterBundleProp ?? createEditorAdapterBundle(variant),
-    [adapterBundleProp, variant]
-  )
-  const isPublicSandbox = bundle.deployment === 'public-sandbox'
-  const previewAdapter = useMemo(
-    () =>
-      createPreviewAdapterFromBundle(bundle, {
-        embeddedPreview: SandboxCasePreview,
-      }),
-    [bundle]
-  )
+  const variant = variantProp === 'public-sandbox' ? 'development' : variantProp
+  const bundle = useMemo(() => {
+    const raw = adapterBundleProp ?? createEditorAdapterBundle(variant)
+    if (raw.deployment !== 'public-sandbox') return raw
+    return createEditorAdapterBundle('development', raw.collection)
+  }, [adapterBundleProp, variant])
+  const previewAdapter = useMemo(() => createPreviewAdapterFromBundle(bundle), [bundle])
   const useIframePreview =
     previewAdapter.channel === 'iframe-postmessage'
   const persistRemoteDrafts = bundle.capabilities.canPersistRemotely
@@ -861,7 +831,6 @@ export default function EditorPage({
 
   const ui = useMemo(() => createEditorUiPack(bundle.uiLocale), [bundle.uiLocale])
   const coverUploadAllowed = bundle.capabilities.canUpload
-  const showSandboxBanner = bundle.showSandboxBanner
   const mdxImageUploadHandler = useMemo(
     () =>
       bundle.capabilities.canUpload
@@ -870,40 +839,19 @@ export default function EditorPage({
     [bundle.capabilities.canUpload]
   )
 
-  const [entries, setEntries] = useState<EditorDocumentListItem[]>(() =>
-    isPublicSandbox ? sortEntriesByTitle(buildSandboxWorkEntries()) : []
-  )
-  const sandboxInitial = isPublicSandbox ? getSandboxInitialEditorState() : null
-  const [selectedDocumentId, setSelectedDocumentId] = useState(
-    () => sandboxInitial?.selectedDocumentId ?? ''
-  )
-  const [metadata, setMetadata] = useState<Record<string, string>>(
-    () => sandboxInitial?.metadata ?? {}
-  )
-  const [content, setContent] = useState(
-    () => sandboxInitial?.content ?? ''
-  )
-  const [sandboxDocuments, setSandboxDocuments] = useState<
-    Record<string, EditorSandboxDocument>
-  >(() => (isPublicSandbox ? getEditorSandboxInitialDocuments() : {}))
-  const sandboxDocumentsRef = useRef(sandboxDocuments)
-  sandboxDocumentsRef.current = sandboxDocuments
+  const [entries, setEntries] = useState<EditorDocumentListItem[]>([])
+  const [selectedDocumentId, setSelectedDocumentId] = useState('')
+  const [metadata, setMetadata] = useState<Record<string, string>>({})
+  const [content, setContent] = useState('')
 
   const dataAdapter = useMemo<EditorDataAdapter>(() => {
     if (dataAdapterProp) return dataAdapterProp
-    if (bundle.deployment === 'public-sandbox') {
-      return createSandboxEditorDataAdapter({
-        getDocuments: () => sandboxDocumentsRef.current,
-        setDocuments: setSandboxDocuments,
-      })
-    }
     if (bundle.deployment === 'pages-editor') {
       return createPagesEditorDataAdapter()
     }
     return createPrivateWorkEditorDataAdapter()
   }, [dataAdapterProp, bundle.deployment])
 
-  const [isSandboxHydrated, setIsSandboxHydrated] = useState(() => !isPublicSandbox)
   const [status, setStatus] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -915,17 +863,11 @@ export default function EditorPage({
   const [createStatus, setCreateStatus] = useState('')
   const [draftId, setDraftId] = useState<string | null>(null)
   const [previewKey, setPreviewKey] = useState(0)
-  const [selection, setSelection] = useState<EditorSelection | null>(() =>
-    isPublicSandbox
-      ? null
-      : {
-          kind: 'shell',
-          nodeId: 'shell-hero',
-        }
-  )
-  const [activeEditorialSectionIndex, setActiveEditorialSectionIndex] = useState<number | null>(
-    () => (isPublicSandbox ? null : 0)
-  )
+  const [selection, setSelection] = useState<EditorSelection | null>(() => ({
+    kind: 'shell',
+    nodeId: 'shell-hero',
+  }))
+  const [activeEditorialSectionIndex, setActiveEditorialSectionIndex] = useState<number | null>(0)
   const [isDocumentBrowserOpen, setIsDocumentBrowserOpen] = useState(true)
   const [isContentCollapsed, setIsContentCollapsed] = useState(false)
   const [isMdxMode, setIsMdxMode] = useState(false)
@@ -964,21 +906,6 @@ export default function EditorPage({
     }
   }, [bundle.collection, bundle.deployment, bundle.previewChannel])
 
-  useEffect(() => {
-    if (!isPublicSandbox) return
-    try {
-      const raw = window.localStorage.getItem(SANDBOX_LOCAL_STORAGE_KEY)
-      if (raw) {
-        const parsed = JSON.parse(raw) as Record<string, EditorSandboxDocument>
-        setSandboxDocuments(mergePersistedSandboxDocuments(parsed))
-      }
-    } catch {
-      /* ignore */
-    } finally {
-      setIsSandboxHydrated(true)
-    }
-  }, [isPublicSandbox])
-
   const isDirty = useMemo(() => {
     if (!selectedDocumentId) return false
     const metaChanged = !metadataRecordsEqualForDirtyCheck(
@@ -1012,11 +939,14 @@ export default function EditorPage({
   )
 
   const outlineItems = useMemo(
-    () => buildWorkMdxOutline(content, renderMetadata),
-    [content, renderMetadata]
+    () => buildWorkMdxOutlineAligned(content, renderMetadata, selectedEntry?.slug),
+    [content, renderMetadata, selectedEntry?.slug]
   )
 
-  const sectionsParsed = useMemo(() => splitMdxSections(content), [content])
+  const sectionsParsed = useMemo(
+    () => splitMdxSectionsForWork(content, selectedEntry?.slug),
+    [content, selectedEntry?.slug]
+  )
 
   const fixedInputItems = useMemo<ContentTreeItem[]>(
     () => [...FIXED_CONTENT_ITEMS],
@@ -1133,8 +1063,8 @@ export default function EditorPage({
   }, [activeEditorialItem?.nodeId, selection])
 
   const blockRangesMap = useMemo(
-    () => buildSectionBlockRangesMap(content),
-    [content]
+    () => buildSectionBlockRangesMapForWork(content, selectedEntry?.slug),
+    [content, selectedEntry?.slug]
   )
 
   const currentSectionIndex = activeEditorialSectionIndex ?? undefined
@@ -1333,7 +1263,7 @@ export default function EditorPage({
 
   const applyEntryResponse = useCallback(
     (documentId: string, data: LoadedEditorDocumentPayload) => {
-    const imageBaseDir = sandboxEditorAssetBasePath(documentId)
+    const imageBaseDir = workDocumentAssetDirFromId(documentId)
     const normalizedContent = rewriteRelativeImagePaths(
       data.content || '',
       imageBaseDir
@@ -1344,7 +1274,8 @@ export default function EditorPage({
     setContent(normalizedContent)
     initialMetadataRef.current = { ...(data.metadata || {}) }
     initialContentRef.current = normalizedContent
-    const parsedSections = splitMdxSections(normalizedContent)
+    const slug = editorialSlugFromDocumentId(documentId)
+    const parsedSections = splitMdxSectionsForWork(normalizedContent, slug)
     setActiveEditorialSectionIndex(parsedSections.length ? 0 : null)
     setSelection(null)
     setHoveredNodeId(null)
@@ -1494,18 +1425,6 @@ export default function EditorPage({
   ])
 
   useEffect(() => {
-    if (!isPublicSandbox || !isSandboxHydrated) return
-    try {
-      window.localStorage.setItem(
-        SANDBOX_LOCAL_STORAGE_KEY,
-        JSON.stringify(sandboxDocuments)
-      )
-    } catch {
-      /* ignore */
-    }
-  }, [isPublicSandbox, isSandboxHydrated, sandboxDocuments])
-
-  useEffect(() => {
     setMdxEditingContextNodeId(null)
   }, [selectedDocumentId])
 
@@ -1565,8 +1484,6 @@ export default function EditorPage({
   }, [isDocumentBrowserOpen, selectedEntry])
 
   useEffect(() => {
-    if (isPublicSandbox) return
-
     let active = true
 
     async function loadEntries() {
@@ -1588,7 +1505,7 @@ export default function EditorPage({
     return () => {
       active = false
     }
-  }, [dataAdapter, isPublicSandbox, ui.editorDevOnly, ui.failedLoadFileList])
+  }, [dataAdapter, ui.editorDevOnly, ui.failedLoadFileList])
 
   useEffect(() => {
     if (!isDirty) return
@@ -1623,24 +1540,22 @@ export default function EditorPage({
         const data = await dataAdapter.loadDocument(id)
         applyEntryResponse(id, data)
 
-        if (!isPublicSandbox) {
-          const entry = entries.find((item) => item.documentId === id)
-          const slug = resolveEffectiveSlug(
-            data.metadata || {},
-            data.metadata.title || entry?.title,
-            entry?.slug
-          )
+        const entry = entries.find((item) => item.documentId === id)
+        const slug = resolveEffectiveSlug(
+          data.metadata || {},
+          data.metadata.title || entry?.title,
+          entry?.slug
+        )
 
-          await bootstrapDraft(
-            id,
-            slug,
-            data.metadata || {},
-            rewriteRelativeImagePaths(
-              data.content || '',
-              sandboxEditorAssetBasePath(id)
-            )
+        await bootstrapDraft(
+          id,
+          slug,
+          data.metadata || {},
+          rewriteRelativeImagePaths(
+            data.content || '',
+            workDocumentAssetDirFromId(id)
           )
-        }
+        )
         setShowCreateForm(false)
       } catch (e) {
         if (e instanceof Error && e.message === 'Document not found') {
@@ -1658,7 +1573,6 @@ export default function EditorPage({
       dataAdapter,
       entries,
       isDirty,
-      isPublicSandbox,
       selectedDocumentId,
       ui.documentNotFound,
       ui.failedLoadFile,
@@ -1738,13 +1652,21 @@ export default function EditorPage({
     let offset = 0
 
     if (selection.kind === 'section' && selection.sectionIndex !== undefined) {
-      offset = findSectionStartCharOffsetInMdx(content, selection.sectionIndex)
+      offset = findSectionStartCharOffsetInMdxForWork(
+        content,
+        selection.sectionIndex,
+        selectedEntry?.slug
+      )
     }
 
     if (selection.kind === 'block') {
       const parsed = parseBlockNodeId(selection.nodeId)
       if (parsed) {
-        offset = findSectionStartCharOffsetInMdx(content, parsed.sectionIndex)
+        offset = findSectionStartCharOffsetInMdxForWork(
+          content,
+          parsed.sectionIndex,
+          selectedEntry?.slug
+        )
         const ranges = blockRangesMap.get(parsed.sectionIndex)
         const range = ranges?.[parsed.blockSeq]
         if (range) {
@@ -1766,7 +1688,7 @@ export default function EditorPage({
       textarea.scrollTop = Math.max(0, line * lineHeight - 48)
       codeFocusKeyRef.current = focusKey
     })
-  }, [blockRangesMap, content, isMdxMode, selection])
+  }, [blockRangesMap, content, isMdxMode, selection, selectedEntry?.slug])
 
   const finishEditorPanelResize = useCallback(
     (handle?: HTMLButtonElement | null) => {
@@ -1823,61 +1745,12 @@ export default function EditorPage({
     setEditorPanelWidth((current) => clampEditorPanelWidth(current + delta))
   }, [])
 
-  const resetSandboxSample = useCallback(() => {
-    if (!bundle.capabilities.canResetSample || !selectedDocumentId) return
-    const sampleId = SANDBOX_SAMPLE_FOR_ENTRY_ID[selectedDocumentId]
-    if (!sampleId) return
-    const initial = sandboxEditorFixtureForSample(sampleId)
-    if (!initial) return
-    setSandboxDocuments((previous) => ({
-      ...previous,
-      [sampleId]: {
-        metadata: { ...initial.metadata },
-        content: initial.content,
-      },
-    }))
-    const dir = sandboxEditorAssetBasePath(selectedDocumentId)
-    const normalized = rewriteRelativeImagePaths(initial.content, dir)
-    applyEntryResponse(selectedDocumentId, {
-      metadata: { ...initial.metadata },
-      content: normalized,
-    })
-    setStatus('')
-  }, [applyEntryResponse, bundle.capabilities.canResetSample, selectedDocumentId])
-
   const saveEntry = useCallback(async () => {
     if (!selectedDocumentId) return
     setIsSaving(true)
     setStatus('')
 
     try {
-      if (isPublicSandbox) {
-        try {
-          await dataAdapter.saveDocument(selectedDocumentId, metadata, content)
-        } catch {
-          setStatus(ui.couldNotSave)
-          return
-        }
-        initialMetadataRef.current = { ...metadata }
-        initialContentRef.current = content
-        setEntries((previous) =>
-          sortEntriesByTitle(
-            previous.map((entry) =>
-              entry.documentId === selectedDocumentId
-                ? {
-                    ...entry,
-                    title: metadata.title || entry.title,
-                    slug: resolveEffectiveSlug(metadata, entry.title, entry.slug),
-                  }
-                : entry
-            )
-          )
-        )
-        setStatus(ui.savedInBrowserDemo)
-        window.setTimeout(() => setStatus(''), 2800)
-        return
-      }
-
       await dataAdapter.saveDocument(selectedDocumentId, metadata, content)
 
       setStatus(ui.savedSuccess)
@@ -1920,14 +1793,11 @@ export default function EditorPage({
     content,
     dataAdapter,
     effectiveDraftSlug,
-    isPublicSandbox,
     metadata,
     pushDraftToServer,
     selectedEntry,
     selectedDocumentId,
-    ui.couldNotSave,
     ui.failedSave,
-    ui.savedInBrowserDemo,
     ui.savedSuccess,
   ])
 
@@ -1984,7 +1854,7 @@ export default function EditorPage({
         createdDoc.metadata || {},
         rewriteRelativeImagePaths(
           createdDoc.content || '',
-          sandboxEditorAssetBasePath(createdEntry.documentId)
+          workDocumentAssetDirFromId(createdEntry.documentId)
         )
       )
       setShowCreateForm(false)
@@ -2027,8 +1897,9 @@ export default function EditorPage({
       suffix += 1
     }
 
-    const nextContent = `${content.trimEnd()}\n\n# ${nextTitle}\n\n${ui.newSectionBodyLine}\n`
-    const nextSections = splitMdxSections(nextContent)
+    const sep = isStructuredWorkSlug(selectedEntry?.slug) ? '\n\n---\n\n' : '\n\n'
+    const nextContent = `${content.trimEnd()}${sep}# ${nextTitle}\n\n${ui.newSectionBodyLine}\n`
+    const nextSections = splitMdxSectionsForWork(nextContent, selectedEntry?.slug)
     const nextIndex = nextSections.length - 1
 
     setContent(nextContent)
@@ -2040,7 +1911,13 @@ export default function EditorPage({
     setActiveEditorialSectionIndex(nextIndex)
     setIsContentCollapsed(false)
     setIsMdxMode(false)
-  }, [content, sectionsParsed, ui.newSectionBodyLine, ui.newSectionTitle])
+  }, [
+    content,
+    sectionsParsed,
+    selectedEntry?.slug,
+    ui.newSectionBodyLine,
+    ui.newSectionTitle,
+  ])
 
   const onSelectFromPreview = useCallback((nextSelection: EditorSelection) => {
     setSelection(nextSelection)
@@ -2242,7 +2119,7 @@ export default function EditorPage({
           value={content}
           onChange={setContent}
           imageUploadHandler={mdxImageUploadHandler}
-          imageBasePath={`/work/${sandboxEditorAssetBasePath(selectedEntry.documentId)}`}
+          imageBasePath={`/work/${workDocumentAssetDirFromId(selectedEntry.documentId)}`}
           editorKey={`${selectedDocumentId}-editorial-body`}
           surface="work-body"
           syncTarget={editorialSyncTarget}
@@ -2334,77 +2211,75 @@ export default function EditorPage({
                       </div>
                     </div>
 
-                    {!isPublicSandbox ? (
-                      <>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setShowCreateForm((prev) => !prev)
-                            setCreateStatus('')
-                          }}
-                          className="flex h-[40px] shrink-0 items-center gap-2 rounded-[8px] border border-[#e5e5e5] bg-white px-4 text-sm font-medium leading-5 text-[#0a0a0a] transition-colors hover:bg-[#fafafa]"
-                        >
-                          <Plus className="h-3.5 w-3.5" />
-                          {ui.newPage}
-                        </button>
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowCreateForm((prev) => !prev)
+                          setCreateStatus('')
+                        }}
+                        className="flex h-[40px] shrink-0 items-center gap-2 rounded-[8px] border border-[#e5e5e5] bg-white px-4 text-sm font-medium leading-5 text-[#0a0a0a] transition-colors hover:bg-[#fafafa]"
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                        {ui.newPage}
+                      </button>
 
-                        {showCreateForm ? (
-                          <div className="w-full space-y-3 rounded-[8px] border border-[#e5e5e5] bg-white p-3">
-                            <label className="block space-y-1.5 text-sm">
-                              <span className="font-medium text-[#0a0a0a]">
-                                {ui.createFormTitle}
-                              </span>
-                              <input
-                                value={newEntryTitle}
-                                onChange={(event) => setNewEntryTitle(event.target.value)}
-                                placeholder="Ex.: New Product Vision"
-                                className="w-full rounded-[8px] border border-[#e5e5e5] bg-white px-3 py-2 text-sm text-[#0a0a0a]"
-                              />
-                            </label>
-                            <label className="block space-y-1.5 text-sm">
-                              <span className="font-medium text-[#0a0a0a]">
-                                {ui.createFormSlug}
-                              </span>
-                              <input
-                                value={newEntrySlug}
-                                onChange={(event) => setNewEntrySlug(event.target.value)}
-                                placeholder={
-                                  newEntryTitle
-                                    ? slugify(newEntryTitle)
-                                    : ui.createFormSlugPlaceholderFromTitle
-                                }
-                                className="w-full rounded-[8px] border border-[#e5e5e5] bg-white px-3 py-2 text-sm text-[#0a0a0a]"
-                              />
-                            </label>
-                            {createStatus ? (
-                              <p className="text-[11px] text-[#737373]">{createStatus}</p>
-                            ) : null}
-                            <div className="flex gap-2">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setShowCreateForm(false)
-                                  setNewEntryTitle('')
-                                  setNewEntrySlug('')
-                                  setCreateStatus('')
-                                }}
-                                className="flex-1 rounded-[8px] border border-[#e5e5e5] bg-white px-3 py-2 text-sm font-medium text-[#0a0a0a]"
-                              >
-                                {ui.cancel}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={createEntry}
-                                disabled={isCreating}
-                                className="flex-1 rounded-[8px] border border-[#0a0a0a] bg-[#0a0a0a] px-3 py-2 text-sm font-medium text-white disabled:opacity-50"
-                              >
-                                {isCreating ? ui.creating : ui.create}
-                              </button>
-                            </div>
+                      {showCreateForm ? (
+                        <div className="w-full space-y-3 rounded-[8px] border border-[#e5e5e5] bg-white p-3">
+                          <label className="block space-y-1.5 text-sm">
+                            <span className="font-medium text-[#0a0a0a]">
+                              {ui.createFormTitle}
+                            </span>
+                            <input
+                              value={newEntryTitle}
+                              onChange={(event) => setNewEntryTitle(event.target.value)}
+                              placeholder="Ex.: New Product Vision"
+                              className="w-full rounded-[8px] border border-[#e5e5e5] bg-white px-3 py-2 text-sm text-[#0a0a0a]"
+                            />
+                          </label>
+                          <label className="block space-y-1.5 text-sm">
+                            <span className="font-medium text-[#0a0a0a]">
+                              {ui.createFormSlug}
+                            </span>
+                            <input
+                              value={newEntrySlug}
+                              onChange={(event) => setNewEntrySlug(event.target.value)}
+                              placeholder={
+                                newEntryTitle
+                                  ? slugify(newEntryTitle)
+                                  : ui.createFormSlugPlaceholderFromTitle
+                              }
+                              className="w-full rounded-[8px] border border-[#e5e5e5] bg-white px-3 py-2 text-sm text-[#0a0a0a]"
+                            />
+                          </label>
+                          {createStatus ? (
+                            <p className="text-[11px] text-[#737373]">{createStatus}</p>
+                          ) : null}
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setShowCreateForm(false)
+                                setNewEntryTitle('')
+                                setNewEntrySlug('')
+                                setCreateStatus('')
+                              }}
+                              className="flex-1 rounded-[8px] border border-[#e5e5e5] bg-white px-3 py-2 text-sm font-medium text-[#0a0a0a]"
+                            >
+                              {ui.cancel}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={createEntry}
+                              disabled={isCreating}
+                              className="flex-1 rounded-[8px] border border-[#0a0a0a] bg-[#0a0a0a] px-3 py-2 text-sm font-medium text-white disabled:opacity-50"
+                            >
+                              {isCreating ? ui.creating : ui.create}
+                            </button>
                           </div>
-                        ) : null}
-                      </>
-                    ) : null}
+                        </div>
+                      ) : null}
+                    </>
                   </div>
 
                   <div className="min-h-0 flex-1 overflow-y-auto bg-white px-2 py-2">
@@ -2497,15 +2372,6 @@ export default function EditorPage({
                 >
                   <Redo2 className="size-3.5" />
                 </SidebarHeaderActionButton>
-                {bundle.capabilities.canResetSample && selectedDocumentId ? (
-                  <button
-                    type="button"
-                    onClick={() => resetSandboxSample()}
-                    className="flex h-[40px] shrink-0 items-center rounded-[8px] border border-[#e5e5e5] bg-white px-3 text-sm font-medium leading-5 text-[#0a0a0a] transition-colors hover:bg-[#fafafa]"
-                  >
-                    {ui.resetSample}
-                  </button>
-                ) : null}
                 <button
                   type="button"
                   onClick={() => void saveEntry()}
@@ -2702,22 +2568,5 @@ export default function EditorPage({
     </>
   )
 
-  return showSandboxBanner ? (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
-      <div
-        className="flex shrink-0 items-start gap-2 rounded-[8px] border border-[var(--blue-9)] bg-[rgba(0,144,255,0.1)] px-3 py-2 text-[12px] leading-snug text-[var(--blue-12)]"
-        role="note"
-      >
-        <Info
-          className="mt-0.5 size-[14px] shrink-0 text-[var(--blue-9)]"
-          strokeWidth={2}
-          aria-hidden
-        />
-        <span className="min-w-0">{ui.sandboxBanner}</span>
-      </div>
-      <div className="flex min-h-0 min-w-0 flex-1 gap-[16px]">{editorWorkspace}</div>
-    </div>
-  ) : (
-    editorWorkspace
-  )
+  return editorWorkspace
 }

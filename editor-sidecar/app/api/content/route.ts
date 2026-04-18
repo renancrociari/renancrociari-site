@@ -9,7 +9,7 @@ import {
   listPagesEntriesForEditor,
   readPageDocumentForEditor,
   savePageDocumentFromEditor,
-} from '../../../lib/pages-content';
+} from '../../../../src/portfolio-os-integration/editor/pages-content.mjs';
 import {
   devOnlyGuard,
   jsonWithCors,
@@ -44,7 +44,12 @@ export function GET(request: Request) {
                 title: entry.title,
                 published: entry.published,
               }))
-            : listPagesEntriesForEditor(),
+            : listPagesEntriesForEditor().map((entry) => ({
+                id: entry.documentId,
+                slug: entry.slug,
+                title: entry.title,
+                published: entry.published,
+              })),
       });
     }
 
