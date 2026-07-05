@@ -1,8 +1,0 @@
-{
-    "liveServer.settings.port": 5502,
-    "css-var-complete.exclude": [
-        "**/dist/**",
-        "**/.parcel-cache/**",
-        "**/node_modules/**"
-    ]
-}
