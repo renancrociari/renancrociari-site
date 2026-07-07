@@ -1236,7 +1236,7 @@ button {
 }
 
 .hero-content {
-  max-width: 564px;
+  max-width: 664px;
   position: relative;
 }
 
@@ -1245,8 +1245,8 @@ button {
   content: "";
   width: 160px;
   height: 160px;
-  top: -94px;
-  left: -130px;
+  top: -98px;
+  left: -140px;
   z-index: -10;
   background: url(../images/renan-profile.webp) no-repeat left top;
   background-size: 160px;
