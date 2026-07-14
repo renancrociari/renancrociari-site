@@ -2266,9 +2266,17 @@ details>div>div {
   padding: 0 var(--spacing-lg);
 }
 
-.featured-metrics-2 .metrics-list {
+.featured-metrics-2-col .metrics-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  gap: 64px;
+  row-gap: 128px;
+}
+
+.featured-metrics-3-col .metrics-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   gap: 64px;
   row-gap: 128px;
@@ -2293,7 +2301,7 @@ details>div>div {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-width: 200px;
+  max-width: 280px;
   align-items: center;
 }
 
