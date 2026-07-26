@@ -85,6 +85,8 @@ if (passwordModal && openPasswordModal.length > 0) {
 
   // Store current content ID
   let currentContentId = null;
+  // Store original button content for restoring after BFCache
+  let originalButtonContent = submitButton ? submitButton.innerHTML : '';
 
   // Função para abrir a password dialog
   function openPasswordDialog(skipAnimation = false) {
@@ -156,7 +158,11 @@ if (passwordModal && openPasswordModal.length > 0) {
       errorMessage.style.display = 'none';
     }
 
-    history.pushState({ page: 'password-protected' }, 'password-protected', '#password-protected');
+    history.pushState(
+      { page: 'password-protected', contentId: currentContentId }, 
+      'password-protected', 
+      `#password-protected${currentContentId ? `?content=${currentContentId}` : ''}`
+    );
   }
 
   // Função para fechar a password dialog
@@ -196,7 +202,7 @@ if (passwordModal && openPasswordModal.length > 0) {
     }
 
     // Show loading state with spinner
-    const originalButtonContent = submitButton.innerHTML;
+    originalButtonContent = submitButton.innerHTML;
     submitButton.disabled = true;
     submitButton.innerHTML = '<div class="btn-spinner"></div>';
 
@@ -285,9 +291,31 @@ if (passwordModal && openPasswordModal.length > 0) {
   // Detecta quando o usuário clica em 'voltar' ou 'avançar' no navegador
   window.addEventListener('popstate', (event) => {
     if (event.state && event.state.page === 'password-protected') {
-      openPasswordDialog();
+      const stateContentId = event.state.contentId || currentContentId;
+      if (stateContentId && isAuthenticated(stateContentId)) {
+        // User is already authenticated, don't reopen dialog. Clean up URL.
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } else {
+        if (stateContentId) currentContentId = stateContentId;
+        openPasswordDialog();
+      }
     } else if (passwordModal.hasAttribute('open')) {
       closePasswordDialog();
+    }
+  });
+
+  // Handle BFCache (Back-Forward Cache) restores
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted && currentContentId && isAuthenticated(currentContentId)) {
+      if (passwordModal.hasAttribute('open')) {
+        passwordModal.close();
+        body.classList.remove('body-fixed');
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+      if (submitButton && submitButton.disabled) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonContent;
+      }
     }
   });
 
@@ -301,8 +329,14 @@ if (passwordModal && openPasswordModal.length > 0) {
       if (contentId) {
         currentContentId = contentId;
       }
-      // Skip animation when opening from redirect to prevent flash
-      openPasswordDialog(true);
+      
+      if (currentContentId && isAuthenticated(currentContentId)) {
+        // User is authenticated, clean up URL and don't open dialog
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } else {
+        // Skip animation when opening from redirect to prevent flash
+        openPasswordDialog(true);
+      }
     }
   });
 
