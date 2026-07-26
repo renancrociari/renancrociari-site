@@ -4,7 +4,7 @@
  * Pushes custom events to the GTM dataLayer for GA4 tracking.
  * All tracking logic is isolated here to keep it separate from application logic.
  * 
- * See event-tracking-documentation.md for a full reference of all tracked events.
+ * See ../../docs/EVENT_TRACKING.md for a full reference of all tracked events.
  */
 
 // ─── Helper ────────────────────────────────────────────────────
