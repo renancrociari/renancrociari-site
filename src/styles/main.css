@@ -2337,7 +2337,7 @@ details>div>div {
   }
 
   .project-card {
-    aspect-ratio: 13 / 20;
+    aspect-ratio: 2 / 3;
   }
 
 }
@@ -2399,7 +2399,7 @@ details>div>div {
   /*project card original*/
 
   .project-card {
-    aspect-ratio: 13 / 20;
+    aspect-ratio: 2 / 3;
   }
 
   .card-5 {
@@ -2427,7 +2427,14 @@ details>div>div {
 
 }
 
-
+/********************************** Only applies to the typography of the homepage cards *******************************************/
+@media (768px <=width <=991px) {
+  .project-card>.project-card-content>h2 {
+    font-size: var(--font-md);
+    font-weight: 600;
+    line-height: 30px;
+  }
+}
 
 /********************************** Medium devices (landscape tablets, 480px - 767px) *******************************************/
 
