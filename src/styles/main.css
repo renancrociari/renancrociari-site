@@ -1540,7 +1540,7 @@ button {
 /*cards backgrounds*/
 
 .card-1 {
-  background: #8944A1 url(../images/case-sl-mobile/redesign-mobile-home.webp) no-repeat bottom 0px center;
+  background: #8944A1 url(../images/case-sl-mobile/sl-case-home.avif) no-repeat bottom 0px center;
   background-size: 88%;
 }
 
@@ -1549,7 +1549,7 @@ button {
 }
 
 .card-2 {
-  background: #4A6D88 url(../images/case-journal-finder/journal-finder-home.webp) no-repeat center bottom -60px;
+  background: #4A6D88 url(../images/case-journal-finder/jf-case-home.avif) no-repeat center bottom -60px;
   background-size: 140%;
 }
 
@@ -1567,7 +1567,7 @@ button {
 }
 
 .card-4 {
-  background: #C72932 url(../images/case-farfetch/farfetch-home.webp) no-repeat center bottom 0px;
+  background: #C72932 url(../images/case-farfetch/ff-case-home.avif) no-repeat center bottom 0px;
   background-size: 100%;
 }
 
@@ -2961,7 +2961,7 @@ details>div>div {
   }
 
   .card-2 {
-    background: #4A6D88 url(../images/case-journal-finder/journal-finder-home.webp) no-repeat left -120px bottom -60px;
+    background-position: left -120px bottom -60px;
     background-size: 170%;
   }
 
