@@ -2340,6 +2340,14 @@ details>div>div {
     aspect-ratio: 2 / 3;
   }
 
+  .card-1 {
+    background-size: 92% auto;
+  }
+
+  .card-2 {
+    background-size: 160% auto;
+  }
+
 }
 
 
@@ -2432,7 +2440,7 @@ details>div>div {
   .project-card>.project-card-content>h2 {
     font-size: var(--font-md);
     font-weight: 600;
-    line-height: 30px;
+    line-height: 28px;
   }
 }
 
@@ -2501,6 +2509,10 @@ details>div>div {
 
   .project-card {
     aspect-ratio: 39 / 50;
+  }
+
+  .card-2 {
+    background-size: 150% auto;
   }
 
 
@@ -2577,7 +2589,7 @@ details>div>div {
   h3,
   .display-lg {
     font-size: var(--font-md);
-    line-height: 30px;
+    line-height: 28px;
     font-weight: 600;
   }
 
