@@ -1491,6 +1491,11 @@ button {
   grid-gap: 32px;
 }
 
+.related-projects {
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px;
+}
+
 /*project card original*/
 
 .project-card {
