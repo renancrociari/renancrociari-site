@@ -2887,7 +2887,12 @@ details>div>div {
   }
 
   .experience-description {
-    margin: 0 var(--spacing-sm) 36px var(--spacing-sm);
+    margin: 0 var(--spacing-sm) 0 var(--spacing-sm);
+  }
+
+  .experience-description>div>*:last-child {
+    /* This is a workaround to add margin to the description*/
+    margin-bottom: var(--spacing-xl);
   }
 
 
