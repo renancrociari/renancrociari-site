@@ -2325,14 +2325,20 @@ details>div>div {
   padding: 0 var(--spacing-lg);
 }
 
-/********* RELATED PROJECTS *************/
+/********* RELATED PROJECTS - CHILD PAGES *************/
 
 .related-projects {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 16px;
 }
 
-.project-card {
+.about .related-projects {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 930px;
+}
+
+
+.related-projects .project-card {
   aspect-ratio: 13 / 18;
 }
 
@@ -2359,10 +2365,11 @@ details>div>div {
 
   .card-1 {
     background-size: 92% auto;
+    background-position: bottom -20px center;
   }
 
   .card-2 {
-    background-size: 160% auto;
+    background-size: 145% auto;
   }
 
   .featured-projects {
@@ -2427,6 +2434,14 @@ details>div>div {
     aspect-ratio: 2 / 3;
   }
 
+  .card-1 {
+    background-position: bottom 0 center;
+  }
+
+  .card-2 {
+    background-size: 160% auto;
+  }
+
   .card-5 {
     height: 360px;
   }
@@ -2447,9 +2462,6 @@ details>div>div {
     width: 100%;
   }
 
-
-
-
 }
 
 /********************************** Only applies to the typography of the homepage cards *******************************************/
@@ -2464,7 +2476,7 @@ details>div>div {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .related-projects .project-card:last-child {
+  body:not(.about) .related-projects .project-card:last-child {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -2474,12 +2486,12 @@ details>div>div {
 
   /******* Adjust the background position of the cards on the child pages *************/
 
-  .related-projects .card-1 {
+  body:not(.about) .related-projects .card-1 {
     background-size: 48% auto;
     background-position: bottom 0 right 10%;
   }
 
-  .related-projects .card-1 .project-card-content {
+  body:not(.about) .related-projects .card-1 .project-card-content {
     width: 50%;
     padding: 10% 6%;
   }
@@ -2554,12 +2566,14 @@ details>div>div {
 
   /********** HOME PROJECT CARDS 480px - 767px **********/
 
-  .featured-projects {
+  .featured-projects,
+  .about .featured-projects {
     max-width: 624px;
     grid-template-columns: 1fr;
   }
 
-  .project-card {
+  .project-card,
+  .featured-projects .project-card {
     aspect-ratio: 39 / 50;
   }
 
@@ -3032,7 +3046,8 @@ details>div>div {
     grid-template-columns: 1fr;
   }
 
-  .project-card {
+  .project-card,
+  .featured-projects .project-card {
     aspect-ratio: 41 / 65;
   }
 
@@ -3041,8 +3056,9 @@ details>div>div {
     background-size: 170%;
   }
 
-  .project-card-content {
-    padding: 16% 8% 16% 8%;
+  .project-card-content,
+  .related-projects .project-card-content {
+    padding: 16% 8%;
   }
 
   /********** DIALOG 0 - 479px **********/
