@@ -2460,22 +2460,37 @@ details>div>div {
     line-height: 28px;
   }
 
-  .featured-projects {
+  .related-projects {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .farfetch .card-1 {
+  .related-projects .project-card:last-child {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     grid-column: span 2;
     aspect-ratio: 8 / 4;
+  }
+
+  /******* Adjust the background position of the cards on the child pages *************/
+
+  .related-projects .card-1 {
     background-size: 48% auto;
     background-position: bottom 0 right 10%;
   }
 
-  .farfetch .card-1 .project-card-content {
+  .related-projects .card-1 .project-card-content {
     width: 50%;
+    padding: 10% 6%;
+  }
+
+  .sl-mobile .related-projects .card-2 {
+    background-size: 74% auto;
+    background-position: bottom -40px right -70px;
+  }
+
+  .sl-mobile .related-projects .card-2 .project-card-content {
+    width: 52%;
     padding: 10% 6%;
   }
 
