@@ -1484,17 +1484,12 @@ button {
 /********** HOME PROJECT CARDS **********/
 
 .featured-projects {
-  margin: 0 auto;
   max-width: 1344px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 32px;
 }
 
-.related-projects {
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 16px;
-}
 
 /*project card original*/
 
@@ -2253,10 +2248,12 @@ details>div>div {
 /**************** FEATURED METRICS ****************/
 
 .featured-metrics {
-  width: calc(100% - 64px);
-  max-width: 1344px;
-  background-color: var(--background-gray-light);
   text-align: center;
+}
+
+
+.featured-metrics-content {
+  background-color: var(--background-gray-light);
   padding: var(--spacing-3xl) 0px var(--spacing-3xl) 0px;
 }
 
@@ -2328,6 +2325,21 @@ details>div>div {
   padding: 0 var(--spacing-lg);
 }
 
+/********* RELATED PROJECTS *************/
+
+.related-projects {
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px;
+}
+
+.project-card {
+  aspect-ratio: 13 / 18;
+}
+
+.related-projects .project-card-content {
+  padding: 14% 10%;
+}
+
 
 
 
@@ -2353,6 +2365,9 @@ details>div>div {
     background-size: 160% auto;
   }
 
+  .featured-projects {
+    grid-gap: 8px;
+  }
 }
 
 
@@ -2405,9 +2420,6 @@ details>div>div {
 
   /********** HOME PROJECT CARDS 768 - 991 **********/
 
-  .featured-projects {
-    gap: 16px;
-  }
 
   /*project card original*/
 
@@ -2447,6 +2459,26 @@ details>div>div {
     font-weight: 600;
     line-height: 28px;
   }
+
+  .featured-projects {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .farfetch .card-1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    grid-column: span 2;
+    aspect-ratio: 8 / 4;
+    background-size: 48% auto;
+    background-position: bottom 0 right 10%;
+  }
+
+  .farfetch .card-1 .project-card-content {
+    width: 50%;
+    padding: 10% 6%;
+  }
+
 }
 
 /********************************** Medium devices (landscape tablets, 480px - 767px) *******************************************/
