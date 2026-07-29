@@ -2970,6 +2970,27 @@ details>div>div {
   }
 
 
+  /********** IMPACT METRICS - 480px - 767px **********/
+
+
+
+  .featured-metrics-2-col .metrics-list,
+  .featured-metrics-3-col .metrics-list {
+    gap: 32px 16px;
+    padding: 0 16px;
+    margin-top: var(--spacing-md);
+    ;
+  }
+
+  .featured-metrics-3-col .metrics-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featured-metrics-3-col .metrics-list .metric:last-child {
+    grid-column: span 2;
+  }
+
+
 
   /********** TESTIMONIALS  **********/
 
@@ -3104,5 +3125,17 @@ details>div>div {
     row-gap: 4px;
   }
 
+  /********** IMPACT METRICS - 480px - 767px **********/
+
+
+  .featured-metrics-2-col .metrics-list,
+  .featured-metrics-3-col .metrics-list {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .featured-metrics-3-col .metrics-list .metric:last-child {
+    grid-column: span 1;
+  }
 
 }
