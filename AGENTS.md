@@ -6,6 +6,33 @@ Personal portfolio website for **Renan Crociari**, a Senior Product Designer wit
 
 ---
 
+## Reference Files
+
+The following files contain detailed instructions for specific tasks. Read them before performing the related work.
+
+### Design System
+
+- **File:** `.agent/skills/design-system/SKILL.md`
+- **When to use:** Before adding or modifying any visual components, spacing, typography, colors, or UI elements. This is the authoritative source for all design tokens, component styles, and utility classes used across the project.
+
+### Deploy Workflow
+
+- **File:** `.agent/workflows/deploy.md`
+- **When to use:** When deploying the website to Umbler hosting via GitHub Actions.
+
+### Environment Setup Workflow
+
+- **File:** `.agent/workflows/setup_environment.md`
+- **When to use:** When setting up the local development environment for the first time (Node.js, dependencies, HTTPS certificates, dev server).
+
+### Skills Registration
+
+- **Config:** `opencode.json` registers `.agent/skills` via `"skills": { "paths": [".agent/skills"] }`.
+- **Adding a new skill:** Create a folder at `.agent/skills/<name>/SKILL.md` with valid frontmatter (`name` matching the folder name, plus a `description`). The loader scans `**/SKILL.md` recursively, so no config change is needed — just restart opencode.
+- **Workflows:** `.agent/workflows/*.md` are process documents, not registered skills.
+
+---
+
 ## Tech Stack & Architecture
 
 | Layer | Technology | Details / Notes |
@@ -27,19 +54,19 @@ Personal portfolio website for **Renan Crociari**, a Senior Product Designer wit
 
 ```
 renancrociari-2026/
+├── AGENTS.md             # Project rules & agent guide (this file)
 ├── src/
-│   ├── pages/          # Standalone HTML entry points (one file per URL route)
-│   ├── components/     # Reusable PostHTML partials (navbar, footer, dialogs, gtm-noscript)
-│   ├── styles/         # CSS hierarchy (reset.css -> global.css -> main.css)
-│   ├── scripts/        # JavaScript logic (script.js, analytics.js, password auth)
-│   ├── fonts/          # Self-hosted Degular and Source Serif web font files
-│   └── images/         # Project images (processed verbatim by Parcel raw transformer)
-├── public/             # Static assets copied directly to dist (favicons, .htaccess, downloads, OG images)
-├── scripts/            # Node.js build post-processing scripts (fix-paths.js)
-├── dist/               # Production build destination directory (generated, gitignored)
-├── .github/workflows/  # GitHub Actions CI/CD workflows (deploy-to-umbler.yml)
-├── .agent/             # Agent skills (design-system) and workflows (deploy, setup_environment)
-└── .agents/            # Workspace rules (AGENTS.md)
+│   ├── pages/            # Standalone HTML entry points (one file per URL route)
+│   ├── components/       # Reusable PostHTML partials (navbar, footer, dialogs, gtm-noscript)
+│   ├── styles/           # CSS hierarchy (reset.css -> global.css -> main.css)
+│   ├── scripts/          # JavaScript logic (script.js, analytics.js, password auth)
+│   ├── fonts/            # Self-hosted Degular and Source Serif web font files
+│   └── images/           # Project images (processed verbatim by Parcel raw transformer)
+├── public/               # Static assets copied directly to dist (favicons, .htaccess, downloads, OG images)
+├── scripts/              # Node.js build post-processing scripts (fix-paths.js)
+├── dist/                 # Production build destination directory (generated, gitignored)
+├── .github/workflows/    # GitHub Actions CI/CD workflows (deploy-to-umbler.yml)
+└── .agent/               # Agent skills (design-system) and workflows (deploy, setup_environment)
 ```
 
 ### Current Pages & Routes
