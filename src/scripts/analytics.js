@@ -158,6 +158,13 @@ function initAnalytics() {
       trackEvent('click_copy_email', 'email', 'copy');
     });
   }
+
+  // ─────────────────────────────────────────────────────────────
+  // 10. AUTH — Recruiter Token Access
+  // ─────────────────────────────────────────────────────────────
+  if (sessionStorage.getItem('rc_recruiter_access')) {
+    trackEvent('access_recruiter_token', 'auth', 'ref_parameter');
+  }
 }
 
 // Safe DOM-ready: handles both cases — already loaded or still loading

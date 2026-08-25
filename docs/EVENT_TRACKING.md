@@ -125,8 +125,20 @@ Every event pushed to the dataLayer includes:
 
 ---
 
+## 5. Auth Events
+
+**Event name:** `access_recruiter_token`  
+**Category:** `auth`
+
+| Label | Trigger | Description |
+|---|---|---|
+| `ref_parameter` | Page view with active recruiter session | Triggered when a visitor browses with an active recruiter access token session |
+
+---
+
 ## GTM Container
 
 - **Container ID:** `GTM-P7FKT9N`
 - **Implementation:** Events are pushed to `window.dataLayer` and are available for GA4 Event tags in GTM.
 - **Localhost exclusion:** GTM only loads on production (hostname check in the GTM snippet).
+

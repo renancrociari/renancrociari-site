@@ -64,7 +64,10 @@
   <link rel="preload" href="../fonts/source-serif-bold-600.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Immediate authentication check to prevent content flash -->
   <script type="module">
-    import { isAuthenticated } from '../scripts/password-auth.js';
+    import { isAuthenticated, checkRecruiterToken } from '../scripts/password-auth.js';
+
+    // Process recruiter token from URL if present
+    checkRecruiterToken();
 
     // Check authentication immediately
     if (!isAuthenticated('case-subject-pages')) {

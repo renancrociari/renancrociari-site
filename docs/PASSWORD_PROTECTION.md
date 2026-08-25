@@ -18,6 +18,26 @@ This project implements a client-side password protection system for case study 
 4. **Session Storage**: Authentication tokens are stored in sessionStorage
 5. **Redirect**: On success, users are redirected to the protected page
 
+## Recruiter Access Token (Bypass via URL)
+
+You can share links with recruiters that bypass password protection automatically by adding the `?ref=cases` parameter:
+
+- **Homepage link:** `https://www.renancrociari.com?ref=cases`
+- **Direct case study link:** `https://www.renancrociari.com/connecting-every-discovery-with-a-worthy-home?ref=cases`
+
+### How the Token Works
+1. When a user opens any page with `?ref=cases`, all protected case studies are instantly unlocked for that browser session (`sessionStorage`).
+2. The `?ref=` parameter is removed from the browser URL bar immediately (via `history.replaceState`), presenting a clean URL.
+3. The visitor can navigate anywhere across the site without seeing a password dialog.
+4. Regular visitors (without the token) still see the normal password prompt.
+
+### Changing the Recruiter Token
+To change the token, edit `RECRUITER_TOKEN` in `src/scripts/password-config.js`:
+
+```javascript
+export const RECRUITER_TOKEN = 'your-new-token';
+```
+
 ## Testing the Password Dialog
 
 Visit the **Design System** page (`/design-system.html`) and click the "Open Password Dialog" button to test the functionality.

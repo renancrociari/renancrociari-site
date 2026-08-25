@@ -5,7 +5,7 @@
  * Include this script on any page that requires authentication.
  */
 
-import { isAuthenticated } from './password-auth.js';
+import { isAuthenticated, checkRecruiterToken } from './password-auth.js';
 
 /**
  * Initialize protection for a page
@@ -13,6 +13,9 @@ import { isAuthenticated } from './password-auth.js';
  * @param {string} contentId - The ID of the protected content
  */
 export function initProtectedPage(contentId) {
+    // Process recruiter token from URL if present
+    checkRecruiterToken();
+
     // Check if user is authenticated
     if (!isAuthenticated(contentId)) {
         // Store the attempted URL for potential redirect back after auth
@@ -25,3 +28,4 @@ export function initProtectedPage(contentId) {
         document.body.style.visibility = 'visible';
     }
 }
+

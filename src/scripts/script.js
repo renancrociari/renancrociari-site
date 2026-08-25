@@ -72,7 +72,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 /////////////////////////////////////////////////////////////////
 
 import mediumZoom from 'medium-zoom';
-import { validatePassword, storeAuthToken, getRedirectUrl, isAuthenticated } from './password-auth.js';
+import { validatePassword, storeAuthToken, getRedirectUrl, isAuthenticated, checkRecruiterToken } from './password-auth.js';
+
+// Check for recruiter access token on any page
+checkRecruiterToken();
 
 const passwordModal = document.querySelector('.dialog-show-password');
 const openPasswordModal = document.querySelectorAll('.btn-show-password');

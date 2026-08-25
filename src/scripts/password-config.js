@@ -31,3 +31,10 @@ export const PASSWORD_CONFIG = {
 
 // Session storage key for authentication tokens
 export const AUTH_KEY = 'rc_auth_tokens';
+
+// Recruiter access token — when present as ?ref= URL parameter,
+// all protected content is unlocked for the session
+export const RECRUITER_TOKEN = 'cases';
+
+// Session storage key for recruiter token access
+export const RECRUITER_KEY = 'rc_recruiter_access';
