@@ -57,7 +57,7 @@ export function checkRecruiterToken() {
         const refParam = url.searchParams.get('ref');
 
         if (refParam && refParam.toLowerCase() === RECRUITER_TOKEN.toLowerCase()) {
-            sessionStorage.setItem(RECRUITER_KEY, JSON.stringify({ grantedAt: Date.now() }));
+            localStorage.setItem(RECRUITER_KEY, JSON.stringify({ grantedAt: Date.now() }));
 
             // Clean ?ref= parameter from the URL without reloading
             url.searchParams.delete('ref');
@@ -79,7 +79,7 @@ export function checkRecruiterToken() {
  */
 export function hasRecruiterAccess() {
     try {
-        return !!sessionStorage.getItem(RECRUITER_KEY);
+        return !!localStorage.getItem(RECRUITER_KEY);
     } catch (error) {
         return false;
     }
@@ -119,7 +119,7 @@ export function clearAuth(contentId = null) {
         sessionStorage.setItem(AUTH_KEY, JSON.stringify(tokens));
     } else {
         sessionStorage.removeItem(AUTH_KEY);
-        sessionStorage.removeItem(RECRUITER_KEY);
+        localStorage.removeItem(RECRUITER_KEY);
     }
 }
 

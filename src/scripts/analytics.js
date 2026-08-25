@@ -162,7 +162,7 @@ function initAnalytics() {
   // ─────────────────────────────────────────────────────────────
   // 10. AUTH — Recruiter Token Access
   // ─────────────────────────────────────────────────────────────
-  if (sessionStorage.getItem('rc_recruiter_access')) {
+  if (localStorage.getItem('rc_recruiter_access')) {
     trackEvent('access_recruiter_token', 'auth', 'ref_parameter');
   }
 }
