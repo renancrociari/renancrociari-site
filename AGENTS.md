@@ -25,6 +25,11 @@ The following files contain detailed instructions for specific tasks. Read them 
 - **File:** `.agent/workflows/setup_environment.md`
 - **When to use:** When setting up the local development environment for the first time (Node.js, dependencies, HTTPS certificates, dev server).
 
+### Case Title Changes
+
+- **File:** `docs/CASE_TITLE_CHANGES.md`
+- **When to use:** When renaming a case study title, URL slug, or both. Contains the full checklist of files to update, slug formatting rules, and rename history.
+
 ### Skills Registration
 
 - **Config:** `opencode.json` registers `.agent/skills` via `"skills": { "paths": [".agent/skills"] }`.
@@ -75,7 +80,7 @@ renancrociari-2026/
 | :--- | :--- | :--- |
 | `index.html` | `/` | Public |
 | `about.html` | `/about` | Public |
-| `improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html` | `/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands` | Public |
+| `boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html` | `/boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands` | Public |
 | `redesigning-the-mobile-experience-of-a-dating-platform.html` | `/redesigning-the-mobile-experience-of-a-dating-platform` | Public |
 | `connecting-every-discovery-with-a-worthy-home.html` | `/connecting-every-discovery-with-a-worthy-home` | Password (`case-journal-finder`) |
 | `driving-platform-growth-through-targeted-researcher-acquisition.html` | `/driving-platform-growth-through-targeted-researcher-acquisition` | Password (`case-subject-pages`) |
@@ -199,3 +204,4 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 8. **Footer Component**: The footer (`src/components/footer.html`) includes a `.btn-show-email` trigger button (not a password button). Pages using the footer must include `email-dialog.html`.
 9. **GTM Noscript Component**: The `gtm-noscript.html` component must be the **first child element** after the opening `<body>` tag on every page. This is required by Google Tag Manager for proper tracking when JavaScript is disabled.
 10. **Analytics Documentation**: For GTM/GA4 configuration details, event tracking reference, and how to add new events, see `docs/ANALYTICS.md`.
+11. **Case Title Changes Documentation**: When adding new features that impact how case study titles, URLs, or cards work (e.g., new meta tags, new card components, new routing logic, new analytics events), update `docs/CASE_TITLE_CHANGES.md` to keep the checklist current.

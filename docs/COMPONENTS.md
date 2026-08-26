@@ -101,7 +101,7 @@ All dialog components follow the same structure:
 - `index.html`
 - `about.html`
 - `redesigning-the-mobile-experience-of-a-dating-platform.html`
-- `improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html`
+- `boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html`
 - `assets.html` (test page)
 
 ### Password Dialog:
@@ -131,7 +131,7 @@ Navbar with **white logo** variant for dark backgrounds.
 
 **Used by:**
 - `redesigning-the-mobile-experience-of-a-dating-platform.html`
-- `improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html`
+- `boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html`
 
 **Features:**
 - Complete navigation with logo, hamburger menu, and navigation links

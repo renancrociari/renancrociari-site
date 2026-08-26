@@ -45,7 +45,7 @@ Visit the **Design System** page (`/design-system.html`) and click the "Open Pas
 ## Protected Pages
 
 Currently protected pages:
-- **Case Study 1**: Improving the performance of Farfetch's top fashion eCommerce brands
+- **Case Study 1**: Boosting eCommerce conversion by 87.5% for global fashion brands
 - **Case Study 2**: Redesigning the mobile experience of a dating platform
 
 ## Changing Passwords
@@ -75,7 +75,7 @@ Edit `src/scripts/password-config.js` and replace the hash:
 export const PASSWORD_CONFIG = {
   'case-study-1': {
     hash: 'YOUR_NEW_HASH_HERE',
-    redirectUrl: '/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html'
+    redirectUrl: '/boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html'
   },
   'case-study-2': {
     hash: 'YOUR_NEW_HASH_HERE',
@@ -92,7 +92,7 @@ You can set different passwords for each protected page by using different hashe
 export const PASSWORD_CONFIG = {
   'case-study-1': {
     hash: 'hash_for_farfetch_case_study',
-    redirectUrl: '/improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands.html'
+    redirectUrl: '/boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html'
   },
   'case-study-2': {
     hash: 'hash_for_dating_platform_case_study',

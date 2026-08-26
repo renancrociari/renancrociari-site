@@ -12,3 +12,6 @@ RewriteRule ^([^\.]+)$ $1.html [NC,L]
 # Optional: Force remove .html extension from URL (redirect)
 # RewriteCond %{THE_REQUEST} \s/+(.+?)\.html(\s|\?) [NC]
 # RewriteRule ^ /%1 [R=301,L]
+
+# Redirects for renamed case studies
+Redirect 301 /improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands /boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands
