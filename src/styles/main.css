@@ -1722,12 +1722,13 @@ button {
 .card-tag {
   font-size: var(--font-2xs);
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.4px;
   opacity: 0.6;
 }
 
 .featured-projects .project-card .divider {
-  margin: 0 var(--spacing-lg);
+  margin: 0 var(--spacing-2xs);
+  opacity: 0.3;
 }
 
 
@@ -1736,14 +1737,20 @@ button {
 .project-card {
   position: relative;
   transition: 0.6s ease;
-  aspect-ratio: 39 / 50;
+  aspect-ratio: 13 / 18;
 }
 
 .project-card-content {
-  padding: 16% 14% 16% 14%;
+  padding: 16% 12%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-lg);
+}
+
+.project-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
 }
 
 /*project card horizontal*/
@@ -1807,12 +1814,12 @@ button {
 }
 
 .card-4 {
-  background: #C72932 url(../images/case-farfetch/ff-case-home.avif) no-repeat center bottom 0px;
+  background: #b51f27 url(../images/case-farfetch/ff-case-home.avif) no-repeat center bottom 0px;
   background-size: 100%;
 }
 
 .card-4:hover {
-  background-color: #B6111A;
+  background-color: #9d0f16;
 }
 
 .card-5 {
@@ -2638,7 +2645,11 @@ details>div>div {
   /*project card original*/
 
   .project-card {
-    aspect-ratio: 2 / 3;
+    aspect-ratio: 4 / 7;
+  }
+
+  .card-tag {
+    font-size: var(--font-3xs);
   }
 
   .card-1 {
@@ -2681,7 +2692,7 @@ details>div>div {
 
 /********************************** Only applies to the typography of the homepage cards *******************************************/
 @media (768px <=width <=991px) {
-  .project-card>.project-card-content>h2 {
+  .project-card>.project-card-content>.project-card-header>h2 {
     font-size: var(--font-md);
     font-weight: 600;
     line-height: 28px;
@@ -3313,7 +3324,7 @@ details>div>div {
 
   .project-card,
   .featured-projects .project-card {
-    aspect-ratio: 41 / 65;
+    aspect-ratio: 41 / 72;
   }
 
   .card-2 {

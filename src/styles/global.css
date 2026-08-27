@@ -8,6 +8,7 @@ html {
   --font-paragraph: 'Source Serif', 'Georgia', serif;
 
   /* Font sizes */
+  --font-3xs: 14px;
   --font-2xs: 16px;
   --font-xs: 18px;
   --font-sm: 20px;
