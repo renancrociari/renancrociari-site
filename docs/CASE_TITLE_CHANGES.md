@@ -107,6 +107,9 @@ When converting a title to a URL slug:
 | Date | Old Title | New Title | Old Slug | New Slug |
 |------|-----------|-----------|----------|----------|
 | 2026-08-26 | Improving the performance of Farfetch's top fashion eCommerce brands | Boosting eCommerce conversion by 87.5% for global fashion brands | `improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands` | `boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands` |
+| 2026-08-27 | Connecting every discovery with a worthy home | Scaling a journal matching platform to 1M+ sessions with 8.6% conversion | `connecting-every-discovery-with-a-worthy-home` | `scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion` |
+| 2026-08-27 | Redesigning the mobile experience of a dating platform | Driving Day 1 retention for a social platform with 8M+ users | `redesigning-the-mobile-experience-of-a-dating-platform` | `driving-day-1-retention-for-a-social-platform-with-8m-users` |
+| 2026-08-27 | Driving platform growth through targeted researcher acquisition | Turning organic traffic into 250k+ readers with scalable landing pages | `driving-platform-growth-through-targeted-researcher-acquisition` | `turning-organic-traffic-into-250k-readers-with-scalable-landing-pages` |
 
 ---
 

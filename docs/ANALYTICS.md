@@ -221,8 +221,8 @@ Tracks clicks on Figma prototype CTA buttons on protected case study pages.
 
 | Category | Page | Labels |
 |---|---|---|
-| `case_study_subject_pages` | Driving Platform Growth | `desktop`, `mobile` |
-| `case_study_journal_finder` | Connecting Every Discovery | `desktop`, `mobile` |
+| `case_study_subject_pages` | Turning Organic Traffic | `desktop`, `mobile` |
+| `case_study_journal_finder` | Scaling a Journal Matching Platform | `desktop`, `mobile` |
 
 **Detection:** Selects `<a>` elements matching `[aria-label*="igma"]` inside `.cv-btn`, then checks the `aria-label` for `desktop` vs `mobile`.
 

@@ -100,7 +100,7 @@ All dialog components follow the same structure:
 ### Email Dialog:
 - `index.html`
 - `about.html`
-- `redesigning-the-mobile-experience-of-a-dating-platform.html`
+- `driving-day-1-retention-for-a-social-platform-with-8m-users.html`
 - `boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html`
 - `assets.html` (test page)
 
@@ -130,7 +130,7 @@ Navbar with **white logo** variant for dark backgrounds.
 ```
 
 **Used by:**
-- `redesigning-the-mobile-experience-of-a-dating-platform.html`
+- `driving-day-1-retention-for-a-social-platform-with-8m-users.html`
 - `boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html`
 
 **Features:**

@@ -1719,6 +1719,17 @@ button {
   grid-gap: 32px;
 }
 
+.card-tag {
+  font-size: var(--font-2xs);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  opacity: 0.6;
+}
+
+.featured-projects .project-card .divider {
+  margin: 0 var(--spacing-lg);
+}
+
 
 /*project card original*/
 

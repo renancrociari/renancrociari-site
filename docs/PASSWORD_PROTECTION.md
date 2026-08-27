@@ -23,7 +23,7 @@ This project implements a client-side password protection system for case study 
 You can share links with recruiters that bypass password protection automatically by adding the `?ref=cases` parameter:
 
 - **Homepage link:** `https://www.renancrociari.com?ref=cases`
-- **Direct case study link:** `https://www.renancrociari.com/connecting-every-discovery-with-a-worthy-home?ref=cases`
+- **Direct case study link:** `https://www.renancrociari.com/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion?ref=cases`
 
 ### How the Token Works
 1. When a user opens any page with `?ref=cases`, all protected case studies are instantly unlocked for that browser session (`sessionStorage`).
@@ -46,7 +46,7 @@ Visit the **Design System** page (`/design-system.html`) and click the "Open Pas
 
 Currently protected pages:
 - **Case Study 1**: Boosting eCommerce conversion by 87.5% for global fashion brands
-- **Case Study 2**: Redesigning the mobile experience of a dating platform
+- **Case Study 2**: Driving Day 1 retention for a social platform with 8M+ users
 
 ## Changing Passwords
 
@@ -79,7 +79,7 @@ export const PASSWORD_CONFIG = {
   },
   'case-study-2': {
     hash: 'YOUR_NEW_HASH_HERE',
-    redirectUrl: '/redesigning-the-mobile-experience-of-a-dating-platform.html'
+    redirectUrl: '/driving-day-1-retention-for-a-social-platform-with-8m-users.html'
   }
 };
 ```
@@ -96,7 +96,7 @@ export const PASSWORD_CONFIG = {
   },
   'case-study-2': {
     hash: 'hash_for_dating_platform_case_study',
-    redirectUrl: '/redesigning-the-mobile-experience-of-a-dating-platform.html'
+    redirectUrl: '/driving-day-1-retention-for-a-social-platform-with-8m-users.html'
   }
 };
 ```

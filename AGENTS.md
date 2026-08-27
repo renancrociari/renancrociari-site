@@ -81,9 +81,9 @@ renancrociari-2026/
 | `index.html` | `/` | Public |
 | `about.html` | `/about` | Public |
 | `boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html` | `/boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands` | Public |
-| `redesigning-the-mobile-experience-of-a-dating-platform.html` | `/redesigning-the-mobile-experience-of-a-dating-platform` | Public |
-| `connecting-every-discovery-with-a-worthy-home.html` | `/connecting-every-discovery-with-a-worthy-home` | Password (`case-journal-finder`) |
-| `driving-platform-growth-through-targeted-researcher-acquisition.html` | `/driving-platform-growth-through-targeted-researcher-acquisition` | Password (`case-subject-pages`) |
+| `driving-day-1-retention-for-a-social-platform-with-8m-users.html` | `/driving-day-1-retention-for-a-social-platform-with-8m-users` | Public |
+| `scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion.html` | `/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion` | Password (`case-journal-finder`) |
+| `turning-organic-traffic-into-250k-readers-with-scalable-landing-pages.html` | `/turning-organic-traffic-into-250k-readers-with-scalable-landing-pages` | Password (`case-subject-pages`) |
 | `design-system.html` | `/design-system` | Public (internal reference) |
 | `buttons.html` | `/buttons` | Public (internal reference) |
 
@@ -201,7 +201,7 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 5. **HTTPS Certificates**: Dev server requires `localhost+3.pem` and `localhost+3-key.pem` in project root. Do not commit `.pem` or `.key` files to git (they are gitignored).
 6. **Design System Adherence**: Always consult `.agent/skills/design-system/SKILL.md` before adding or modifying visual components, spacing, or typography. When in doubt, cross-reference `src/styles/global.css` as the authoritative source of truth for current variable names and values.
 7. **Sitemap Maintenance**: When adding or removing pages, update `public/sitemap.xml` to keep it in sync.
-8. **Footer Component**: The footer (`src/components/footer.html`) includes a `.btn-show-email` trigger button (not a password button). Pages using the footer must include `email-dialog.html`.
+ 8. **Footer Component**: The footer (`src/components/footer.html`) includes a `.btn-show-email` trigger button (not a password button). Pages using the footer must include `email-dialog.html`.
 9. **GTM Noscript Component**: The `gtm-noscript.html` component must be the **first child element** after the opening `<body>` tag on every page. This is required by Google Tag Manager for proper tracking when JavaScript is disabled.
 10. **Analytics Documentation**: For GTM/GA4 configuration details, event tracking reference, and how to add new events, see `docs/ANALYTICS.md`.
 11. **Case Title Changes Documentation**: When adding new features that impact how case study titles, URLs, or cards work (e.g., new meta tags, new card components, new routing logic, new analytics events), update `docs/CASE_TITLE_CHANGES.md` to keep the checklist current.

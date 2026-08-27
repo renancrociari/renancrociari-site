@@ -94,7 +94,7 @@ Every event pushed to the dataLayer includes:
 
 **Event name:** `click_figma_prototype`
 
-#### Subject Pages (Driving Platform Growth)
+#### Subject Pages (Turning Organic Traffic)
 
 **Category:** `case_study_subject_pages`
 
@@ -103,7 +103,7 @@ Every event pushed to the dataLayer includes:
 | `desktop` | Figma Desktop prototype link |
 | `mobile` | Figma Mobile prototype link |
 
-#### Journal Finder (Connecting Every Discovery)
+#### Journal Finder (Scaling a Journal Matching Platform)
 
 **Category:** `case_study_journal_finder`
 

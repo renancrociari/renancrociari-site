@@ -21,11 +21,11 @@
 export const PASSWORD_CONFIG = {
     'case-journal-finder': {
         hash: 'e4e2ff1a6fc2a6ce836b66c424aa2bdd4803d5b92d9750b0db4df4b1d1a8a597',
-        redirectUrl: '/connecting-every-discovery-with-a-worthy-home'
+        redirectUrl: '/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion'
     },
     'case-subject-pages': {
         hash: 'e4e2ff1a6fc2a6ce836b66c424aa2bdd4803d5b92d9750b0db4df4b1d1a8a597',
-        redirectUrl: '/driving-platform-growth-through-targeted-researcher-acquisition'
+        redirectUrl: '/turning-organic-traffic-into-250k-readers-with-scalable-landing-pages'
     }
 };
 

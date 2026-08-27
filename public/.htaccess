@@ -15,3 +15,6 @@ RewriteRule ^([^\.]+)$ $1.html [NC,L]
 
 # Redirects for renamed case studies
 Redirect 301 /improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands /boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands
+Redirect 301 /connecting-every-discovery-with-a-worthy-home /scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion
+Redirect 301 /redesigning-the-mobile-experience-of-a-dating-platform /driving-day-1-retention-for-a-social-platform-with-8m-users
+Redirect 301 /driving-platform-growth-through-targeted-researcher-acquisition /turning-organic-traffic-into-250k-readers-with-scalable-landing-pages
