@@ -3334,54 +3334,54 @@ details>div>div {
 
   .project-card-header {
     gap: var(--spacing-2xs);
-
-    .card-2 {
-      background-position: left -120px bottom -90px;
-      background-size: 170%;
-    }
-
-    .project-card-content,
-    .related-projects .project-card-content {
-      padding: 16% 8%;
-    }
-
-    /********** DIALOG 0 - 479px **********/
-
-    .dialog-container {
-      margin-top: 18px;
-    }
-
-    .dialog-heading {
-      margin-top: 20vh;
-    }
-
-    /********** CONTENT 0 - 479px **********/
-
-    .content-header-border {
-      height: 50px;
-      margin-top: -50px;
-    }
-
-    .text-block {
-      padding: 0 16px;
-    }
-
-    .two-column-image {
-      margin-left: 16px;
-      margin-right: 16px;
-    }
-
-
-    /**************** BRANDS LIST ****************/
-
-    .brands-list {
-      padding: 0 var(--spacing-sm);
-    }
-
-    .brands-list-grid {
-      grid-template-columns: repeat(2, 1fr);
-      row-gap: 4px;
-    }
-
-
   }
+
+  .card-2 {
+    background-position: left -120px bottom -90px;
+    background-size: 170%;
+  }
+
+  .project-card-content,
+  .related-projects .project-card-content {
+    padding: 16% 8%;
+  }
+
+  /********** DIALOG 0 - 479px **********/
+
+  .dialog-container {
+    margin-top: 18px;
+  }
+
+  .dialog-heading {
+    margin-top: 20vh;
+  }
+
+  /********** CONTENT 0 - 479px **********/
+
+  .content-header-border {
+    height: 50px;
+    margin-top: -50px;
+  }
+
+  .text-block {
+    padding: 0 16px;
+  }
+
+  .two-column-image {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+
+  /**************** BRANDS LIST ****************/
+
+  .brands-list {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .brands-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 4px;
+  }
+
+}
