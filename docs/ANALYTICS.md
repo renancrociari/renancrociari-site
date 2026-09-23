@@ -287,21 +287,88 @@ if (bodyClass.includes('page-body-class')) {
 
 ### Step 3 — Update the event reference
 
-Add the new event to `docs/EVENT_TRACKING.md` in the appropriate section.
+Add the new event to `docs/EVENT_TRACKING.md` in the appropriate section, including the **GTM Status** column (see the GTM Status Tracking section below).
 
-### Step 4 — Configure GTM (if needed)
+### Step 4 — Configure GTM (REQUIRED)
 
-If the new event name hasn't been used before, you may need to create a corresponding **GA4 Event Tag** in the GTM container (`GTM-P7FKT9N`) with a trigger matching the new `event` name. If using a generic "catch-all" GA4 event tag in GTM, this step may not be necessary.
+> **⚠️ This step is MANDATORY.** Without it, the event will be pushed to `dataLayer` but **never reach Google Analytics 4**. The site does not talk to GA4 directly — GTM is the bridge.
 
-### Step 5 — Test
+For **every new event name**, you must create a matching Trigger + Tag pair inside the GTM container (`GTM-P7FKT9N`) at [tagmanager.google.com](https://tagmanager.google.com/):
+
+#### 4a. Create a Custom Event Trigger
+
+1. Go to **Triggers** → **New**.
+2. Trigger Type: **Custom Event**.
+3. Event Name: the exact `event` value from your `dataLayer.push()` call (e.g. `click_figma_prototype`). This is case-sensitive.
+4. This trigger fires on: **All Custom Events**.
+5. Name it: `CE - <event_name>` (e.g. `CE - click_figma_prototype`).
+6. Click **Save**.
+
+#### 4b. Create a GA4 Event Tag
+
+1. Go to **Tags** → **New**.
+2. Tag Type: **Google Analytics: GA4 Event**.
+3. Select your GA4 Measurement ID / Google Tag configuration.
+4. Event Name: same event name (e.g. `click_figma_prototype`).
+5. Under **Event Parameters**, add rows for each custom parameter:
+   | Parameter Name     | Value (Data Layer Variable)   |
+   |---|---|
+   | `event_category`   | `{{dlv - event_category}}`    |
+   | `event_label`      | `{{dlv - event_label}}`       |
+   | `page_location`    | `{{dlv - page_location}}`     |
+   
+   > **Note:** If these Data Layer Variables don't exist yet in GTM, create them: **Variables** → **User-Defined Variables** → **New** → Type: **Data Layer Variable** → Variable Name: `event_category` (matching the key in the `dataLayer.push` object). Repeat for `event_label` and `page_location`.
+
+6. Triggering: select the trigger created in step 4a.
+7. Name it: `GA4 Event - <event_name>` (e.g. `GA4 Event - click_figma_prototype`).
+8. Click **Save**.
+
+> **Naming convention:** Triggers use `CE - <event_name>`, Tags use `GA4 Event - <event_name>`, Data Layer Variables use `DLV - <variable_name>`.
+
+#### 4c. Publish
+
+1. Click **Submit** in the top-right of GTM.
+2. Add a version name (e.g. `Add tracking for click_figma_prototype`).
+3. Click **Publish**.
+
+### Step 5 — Test locally (dataLayer verification)
 
 1. Run the dev server (`npm start`).
 2. Open Chrome DevTools → Console.
 3. Type `dataLayer` and press Enter to inspect the array.
-4. Perform the interaction and verify the new event appears in the dataLayer.
-5. Use GTM's [Preview mode](https://tagmanager.google.com/) to verify the tag fires correctly.
+4. Perform the interaction and verify the new event appears in the dataLayer with the correct `event`, `event_category`, `event_label`, and `page_location` values.
 
 > **Reminder:** GTM does not load on localhost, but `dataLayer.push()` still executes. You can inspect `window.dataLayer` directly in the console to verify events are being pushed with the correct payload.
+
+### Step 6 — Test in production (GTM + GA4 verification)
+
+After deploying the code changes AND publishing the GTM container:
+
+1. Open [GTM Preview mode](https://tagmanager.google.com/) → click **Preview** → enter your production URL.
+2. Perform the interaction on the site.
+3. In the GTM debug panel, verify:
+   - The **trigger** fires for your event.
+   - The **GA4 Event tag** fires and shows the correct event name + parameters.
+4. Open [GA4 Realtime report](https://analytics.google.com/) → **Reports** → **Realtime**.
+5. Look for your event name under **Event count by Event name** in the last 30 minutes.
+6. If the event appears in Realtime, tracking is fully working. ✅
+
+### Step 7 — Update GTM Status in EVENT_TRACKING.md
+
+After confirming the event appears in GA4, update the event's **GTM Status** in `docs/EVENT_TRACKING.md` from `⏳ Pending` to `✅ Active`.
+
+---
+
+## GTM Status Tracking
+
+Every event listed in `docs/EVENT_TRACKING.md` should have a GTM Status indicator to track whether it has been fully configured end-to-end:
+
+| Status | Meaning |
+|---|---|
+| `✅ Active` | Trigger + GA4 Event Tag exist in GTM and have been published. Event appears in GA4 reports. |
+| `⏳ Pending` | Code pushes the event to `dataLayer`, but the GTM Trigger/Tag has not yet been created or published. **Event is NOT reaching GA4.** |
+
+When adding a new event, always set it to `⏳ Pending` initially, then update to `✅ Active` after completing Step 6.
 
 ---
 
@@ -324,4 +391,7 @@ When creating a new page, ensure:
 - [ ] `<include src="components/gtm-noscript.html"></include>` is the first element after `<body>`.
 - [ ] `<script type="module" src="../scripts/analytics.js"></script>` is in the `<head>`.
 - [ ] If the page needs custom event tracking, add the logic inside `initAnalytics()` in `analytics.js` with a `bodyClass` guard.
-- [ ] Update `docs/EVENT_TRACKING.md` with any new events.
+- [ ] Update `docs/EVENT_TRACKING.md` with any new events (set GTM Status to `⏳ Pending`).
+- [ ] Create the matching GTM Trigger + GA4 Event Tag and publish the container.
+- [ ] Verify the event appears in GA4 Realtime, then update GTM Status to `✅ Active`.
+

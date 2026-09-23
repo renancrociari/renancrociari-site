@@ -2,6 +2,8 @@
 
 Reference of all Google Analytics events tracked on renancrociari.com via GTM dataLayer.
 
+> **Important:** Every event listed here must also have a matching **GTM Trigger + GA4 Event Tag** configured and published inside GTM container `GTM-P7FKT9N`. Without this, the event is pushed to `dataLayer` but **never reaches GA4 reports**. See `docs/ANALYTICS.md` → "How to Add a New Tracked Event" for step-by-step instructions.
+
 ## Event Structure
 
 Every event pushed to the dataLayer includes:
@@ -13,11 +15,19 @@ Every event pushed to the dataLayer includes:
 | `event_label` | Identifies the specific element clicked (e.g. `linkedin`) |
 | `page_location` | The URL path where the event was triggered (e.g. `/about`) |
 
+## GTM Status Legend
+
+| Status | Meaning |
+|---|---|
+| ✅ Active | GTM Trigger + GA4 Event Tag are published. Event appears in GA4 reports. |
+| ⏳ Pending | Code pushes to `dataLayer`, but GTM tag is not yet configured. **Event is NOT reaching GA4.** |
+
 ---
 
 ## 1. Navigation Events
 
-**Event name:** `click_nav_link`
+**Event name:** `click_nav_link`  
+**GTM Status:** ✅ Active
 
 ### Home Hero Nav (`home_nav`) — index page only
 
@@ -55,7 +65,8 @@ Every event pushed to the dataLayer includes:
 ### Experience Companies
 
 **Event name:** `click_experience`  
-**Category:** `about`
+**Category:** `about`  
+**GTM Status:** ✅ Active
 
 | Label | Element |
 |---|---|
@@ -67,7 +78,8 @@ Every event pushed to the dataLayer includes:
 ### CTAs (LinkedIn & Resumé)
 
 **Event name:** `click_cta`  
-**Category:** `about`
+**Category:** `about`  
+**GTM Status:** ✅ Active
 
 | Label | Element |
 |---|---|
@@ -77,7 +89,8 @@ Every event pushed to the dataLayer includes:
 ### Testimonials
 
 **Event name:** `click_testimonial`  
-**Category:** `about`
+**Category:** `about`  
+**GTM Status:** ✅ Active
 
 | Label | Element |
 |---|---|
@@ -92,7 +105,8 @@ Every event pushed to the dataLayer includes:
 
 ### Figma Prototypes
 
-**Event name:** `click_figma_prototype`
+**Event name:** `click_figma_prototype`  
+**GTM Status:** ✅ Active
 
 #### Subject Pages (Turning Organic Traffic)
 
@@ -117,7 +131,8 @@ Every event pushed to the dataLayer includes:
 ## 4. Email Dialog Events
 
 **Event name:** `click_copy_email`  
-**Category:** `email`
+**Category:** `email`  
+**GTM Status:** ✅ Active
 
 | Label | Element |
 |---|---|
@@ -128,11 +143,12 @@ Every event pushed to the dataLayer includes:
 ## 5. Auth Events
 
 **Event name:** `access_recruiter_token`  
-**Category:** `auth`
+**Category:** `auth`  
+**GTM Status:** ⏳ Pending — needs GTM trigger/tag setup
 
 | Label | Trigger | Description |
 |---|---|---|
-| `ref_parameter` | Page view with active recruiter session | Triggered when a visitor browses with an active recruiter access token session |
+| `ref_parameter` | First visit with `?ref=` URL parameter | Fired once when `checkRecruiterToken()` detects a valid `?ref=` parameter, before the URL is cleaned. Captures the original full URL (with `?ref=cases`) in `page_location`. |
 
 ---
 
@@ -141,4 +157,4 @@ Every event pushed to the dataLayer includes:
 - **Container ID:** `GTM-P7FKT9N`
 - **Implementation:** Events are pushed to `window.dataLayer` and are available for GA4 Event tags in GTM.
 - **Localhost exclusion:** GTM only loads on production (hostname check in the GTM snippet).
-
+- **Full setup guide:** See `docs/ANALYTICS.md` → "How to Add a New Tracked Event" → Step 4.

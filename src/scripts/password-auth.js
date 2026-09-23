@@ -59,6 +59,17 @@ export function checkRecruiterToken() {
         if (refParam && refParam.toLowerCase() === RECRUITER_TOKEN.toLowerCase()) {
             localStorage.setItem(RECRUITER_KEY, JSON.stringify({ grantedAt: Date.now() }));
 
+            // Push tracking event to dataLayer BEFORE cleaning the URL.
+            // GTM processes all queued dataLayer entries when it loads,
+            // so this works even if gtm.js hasn't finished downloading yet.
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'access_recruiter_token',
+                event_category: 'auth',
+                event_label: 'ref_parameter',
+                page_location: window.location.href  // captures full URL with ?ref=cases
+            });
+
             // Clean ?ref= parameter from the URL without reloading
             url.searchParams.delete('ref');
             const searchStr = url.searchParams.toString();

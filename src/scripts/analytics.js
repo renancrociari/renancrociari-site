@@ -162,9 +162,9 @@ function initAnalytics() {
   // ─────────────────────────────────────────────────────────────
   // 10. AUTH — Recruiter Token Access
   // ─────────────────────────────────────────────────────────────
-  if (localStorage.getItem('rc_recruiter_access')) {
-    trackEvent('access_recruiter_token', 'auth', 'ref_parameter');
-  }
+  // Tracking moved to checkRecruiterToken() in password-auth.js.
+  // The event is now pushed to dataLayer at detection time (before
+  // the URL is cleaned), ensuring GTM always captures it.
 }
 
 // Safe DOM-ready: handles both cases — already loaded or still loading
