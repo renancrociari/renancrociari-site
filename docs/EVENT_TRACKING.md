@@ -144,7 +144,7 @@ Every event pushed to the dataLayer includes:
 
 **Event name:** `access_recruiter_token`  
 **Category:** `auth`  
-**GTM Status:** ⏳ Pending — needs GTM trigger/tag setup
+**GTM Status:** ✅ Active
 
 | Label | Trigger | Description |
 |---|---|---|
@@ -152,7 +152,7 @@ Every event pushed to the dataLayer includes:
 
 **Event name:** `view_password_dialog`  
 **Category:** `auth`  
-**GTM Status:** ⏳ Pending — needs GTM trigger/tag setup
+**GTM Status:** ✅ Active
 
 | Label | Trigger | Description |
 |---|---|---|

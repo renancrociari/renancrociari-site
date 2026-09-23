@@ -238,6 +238,30 @@ Tracks clicks on Figma prototype CTA buttons on protected case study pages.
 
 ---
 
+### 7. Auth Events
+
+Events related to password protection and recruiter token bypass.
+
+#### Recruiter Token Access — `access_recruiter_token`
+
+**Category:** `auth`
+
+| Label | Trigger | Description |
+|---|---|---|
+| `ref_parameter` | First visit with `?ref=cases` URL parameter | Handled in `password-auth.js` by `checkRecruiterToken()`. Pushed to `dataLayer` before the URL parameter is stripped, capturing the full URL in `page_location`. |
+
+#### Password Dialog View — `view_password_dialog`
+
+**Category:** `auth`
+
+| Label | Trigger | Description |
+|---|---|---|
+| `case-journal-finder` | Dialog opens for Journal Finder | Handled in `script.js` by `openPasswordDialog()`. Fired on button click or unauthenticated redirect. |
+| `case-subject-pages` | Dialog opens for Subject Pages | Handled in `script.js` by `openPasswordDialog()`. Fired on button click or unauthenticated redirect. |
+| `<contentId>` | Dialog opens for any configured content | Fired with the specific `contentId` (or `'unknown'`) and current URL in `page_location`. |
+
+---
+
 ## How analytics.js Initializes
 
 ```javascript
