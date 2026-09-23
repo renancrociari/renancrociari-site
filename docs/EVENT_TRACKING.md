@@ -150,6 +150,16 @@ Every event pushed to the dataLayer includes:
 |---|---|---|
 | `ref_parameter` | First visit with `?ref=` URL parameter | Fired once when `checkRecruiterToken()` detects a valid `?ref=` parameter, before the URL is cleaned. Captures the original full URL (with `?ref=cases`) in `page_location`. |
 
+**Event name:** `view_password_dialog`  
+**Category:** `auth`  
+**GTM Status:** ⏳ Pending — needs GTM trigger/tag setup
+
+| Label | Trigger | Description |
+|---|---|---|
+| `case-journal-finder` | Password dialog opens for Journal Finder | Fired when password dialog opens (via card button click or unauthenticated redirect) for Journal Finder. |
+| `case-subject-pages` | Password dialog opens for Subject Pages | Fired when password dialog opens (via card button click or unauthenticated redirect) for Subject Pages. |
+| `<contentId>` | Password dialog opens for any configured content | Fired with the specific `contentId` (or `'unknown'`) when the password dialog opens. Captures current URL in `page_location`. |
+
 ---
 
 ## GTM Container

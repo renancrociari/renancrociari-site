@@ -95,6 +95,15 @@ if (passwordModal && openPasswordModal.length > 0) {
   function openPasswordDialog(skipAnimation = false) {
     body.classList.add('body-fixed');
 
+    // Track password dialog view
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'view_password_dialog',
+      event_category: 'auth',
+      event_label: currentContentId || 'unknown',
+      page_location: window.location.href
+    });
+
     // Add no-animation class to skip fade-in when opening from redirect
     if (skipAnimation) {
       passwordModal.classList.add('no-animation');

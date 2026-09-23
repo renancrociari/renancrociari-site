@@ -165,6 +165,12 @@ function initAnalytics() {
   // Tracking moved to checkRecruiterToken() in password-auth.js.
   // The event is now pushed to dataLayer at detection time (before
   // the URL is cleaned), ensuring GTM always captures it.
+
+  // ─────────────────────────────────────────────────────────────
+  // 11. AUTH — Password Dialog View
+  // ─────────────────────────────────────────────────────────────
+  // Tracking handled in openPasswordDialog() in script.js.
+  // Fired when the password dialog opens (via button click or redirect).
 }
 
 // Safe DOM-ready: handles both cases — already loaded or still loading
