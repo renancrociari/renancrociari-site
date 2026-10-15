@@ -19,13 +19,17 @@
   <meta charset="utf-8" />
 
   <meta name="viewport" content="initial-scale=1, width=device-width" />
-  <title>ARTICLE TEMPLATE · Renan Crociari</title>
-  <meta name="description"
-    content="At Springer Nature, I transformed a technical taxonomy framework into a scalable discovery hub that successfully drove organic researcher acquisition." />
+  <!-- ⚠️ TEMPLATE ONLY: keeps /article-template out of search results.
+       When turning this into a real article, REPLACE with:
+       <meta name="robots" content="index, follow, max-image-preview:large" />
+       The build (scripts/check-seo.js) and the browser console will warn you if you forget. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>[Article Title] · Renan Crociari</title>
+  <meta name="description" content="[Article summary, 140-160 characters]" />
   <meta property="og:site_name" content="Renan Crociari" />
   <meta name="author" content="Renan Crociari">
-  <meta property="og:type" content="website" />
-  <link rel="canonical" href="https://www.renancrociari.com/ARTICLE-TEMPLATE" />
+  <meta property="og:type" content="article" />
+  <link rel="canonical" href="https://www.renancrociari.com/article-slug" />
   <!-- Favicon -->
   <link rel="icon" href="../../public/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="../../public/apple-touch-icon.png">
@@ -35,23 +39,59 @@
   <link rel="mask-icon" href="../../public/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#38C545">
   <meta name="theme-color" content="#38C545">
-  <!-- Facebook Meta Tags -->
-  <meta property="og:url" content="https://www.renancrociari.com/ARTICLE-TEMPLATE">
-  <meta property="og:type" content="website">
-  <meta property="og:title"
-    content="Turning organic traffic into 250k+ readers with scalable landing pages · Renan Crociari">
-  <meta property="og:description"
-    content="At Springer Nature, I transformed a technical taxonomy framework into a scalable discovery hub that successfully drove organic researcher acquisition.">
-  <meta property="og:image" content="https://www.renancrociari.com/images/subjects-case-og-image.jpg">
+  <!-- Facebook / LinkedIn Meta Tags -->
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://www.renancrociari.com/article-slug">
+  <meta property="og:title" content="[Article Title] · Renan Crociari">
+  <meta property="og:description" content="[Article summary, 140-160 characters]">
+  <meta property="og:image" content="https://www.renancrociari.com/images/article-slug-og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="[Describe the cover image]">
+  <!-- Article Meta Tags (ISO 8601 dates; keep in sync with the JSON-LD and the visible <time>) -->
+  <meta property="article:published_time" content="2026-11-04T09:00:00+00:00">
+  <meta property="article:modified_time" content="2026-11-04T09:00:00+00:00">
+  <meta property="article:author" content="https://www.linkedin.com/in/renancrociari/">
+  <meta property="article:section" content="Product Design">
+  <meta property="article:tag" content="Product Strategy">
+  <meta property="article:tag" content="User Research">
+  <meta property="article:tag" content="Product Design">
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:domain" content="renancrociari.com">
-  <meta property="twitter:url" content="https://www.renancrociari.com/ARTICLE-TEMPLATE">
-  <meta name="twitter:title"
-    content="Turning organic traffic into 250k+ readers with scalable landing pages · Renan Crociari">
-  <meta name="twitter:description"
-    content="At Springer Nature, I transformed a technical taxonomy framework into a scalable discovery hub that successfully drove organic researcher acquisition.">
-  <meta name="twitter:image" content="https://www.renancrociari.com/images/subjects-case-og-image.jpg">
+  <meta name="twitter:title" content="[Article Title] · Renan Crociari">
+  <meta name="twitter:description" content="[Article summary, 140-160 characters]">
+  <meta name="twitter:image" content="https://www.renancrociari.com/images/article-slug-og-image.jpg">
+  <meta name="twitter:image:alt" content="[Describe the cover image]">
+  <!-- Structured Data (Google rich results / Discover) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.renancrociari.com/article-slug"
+      },
+      "headline": "[Article Title]",
+      "description": "[Article summary, 140-160 characters]",
+      "image": ["https://www.renancrociari.com/images/article-slug-og-image.jpg"],
+      "datePublished": "2026-11-04T09:00:00+00:00",
+      "dateModified": "2026-11-04T09:00:00+00:00",
+      "inLanguage": "en-US",
+      "author": {
+        "@type": "Person",
+        "name": "Renan Crociari",
+        "url": "https://www.renancrociari.com/about",
+        "jobTitle": "Senior Product Designer",
+        "sameAs": ["https://www.linkedin.com/in/renancrociari/"]
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Renan Crociari",
+        "url": "https://www.renancrociari.com"
+      },
+      "keywords": ["Product Strategy", "User Research", "Product Design"]
+    }
+  </script>
   <!-- CSS -->
   <link rel="stylesheet" href="../styles/global.css" />
   <link rel="stylesheet" href="../styles/reset.css" />
@@ -61,21 +101,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&text=renancrociari" rel="stylesheet">
   <link rel="preload" href="../fonts/source-serif-regular-300.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../fonts/source-serif-bold-600.woff2" as="font" type="font/woff2" crossorigin>
-  <!-- Immediate authentication check to prevent content flash -->
-  <script type="module">
-    import { isAuthenticated, checkRecruiterToken } from '../scripts/password-auth.js';
-
-    // Process recruiter token from URL if present
-    checkRecruiterToken();
-
-    // Check authentication immediately
-    if (!isAuthenticated('case-subject-pages')) {
-      // Not authenticated - redirect immediately before any content renders
-      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
-      window.location.href = '/#password-protected?content=case-subject-pages';
-    }
-    // If authenticated, page will continue loading normally
-  </script>
   <!-- Scripts -->
   <script type="module" src="../scripts/script.js"></script>
   <script type="module" src="../scripts/analytics.js"></script>
@@ -88,6 +113,7 @@
   <include src="components/navbar.html"></include>
 
 
+  <article>
   <header class="content-header mt-4xl">
     <div class="content-hero article-hero wrapper">
       <h1 class="t-gray-200">There are several business opportunities on the third sector economy </h1>
@@ -101,19 +127,19 @@
       </div>
 
       <div class="testimonial-detail-author mt-md">
-        <a href="https://www.linkedin.com/in/renan-crociari/" target="_blank" aria-label="Renan Crociari LinkedIn"
+        <a href="https://www.linkedin.com/in/renancrociari/" target="_blank" aria-label="Renan Crociari LinkedIn"
           rel="noopener noreferrer">
           <img src="../images/renan-picture.webp" alt="Image of Renan Crociari" loading="lazy" />
         </a>
         <div class="testimonial-detail-author-info">
           <div class="testimonial-detail-author-info-name">
-            <a class="btn btn-gray-green body-small" href="https://www.linkedin.com/in/renan-crociari/" target="_blank"
+            <a class="btn btn-gray-green body-small" href="https://www.linkedin.com/in/renancrociari/" target="_blank"
               rel="noopener noreferrer">
               by Renan Crociari
             </a>
 
           </div>
-          <span class="body-small t-gray-300">04/11/2026</span>
+          <time class="body-small t-gray-300" datetime="2026-11-04">Nov 4, 2026</time>
         </div>
       </div>
 
@@ -141,7 +167,7 @@
       <img class="medium-zoom-image" src="../images/case-subject-pages/subjects-business-model.avif"
         style="width: 100%; height: auto;"
         alt="Diagram showing Springer Nature's growth cycle: In scientific publishing, more readership translates to greater impact and relevance for authors and journals. This visibility attracts new authors willing to pay publishers high fees, expecting their research to be widely read and cited in future studies."
-        loading="lazy" id="">
+        loading="lazy">
       <figcaption class="body-small  mt-xs t-ct">
         The Publisher's Growth Cycle: In scientific publishing, more readership translates to greater impact and
         relevance for authors and journals. This visibility attracts new authors willing to pay publishers high fees,
@@ -179,14 +205,17 @@
 
 
   </div>
+  </article>
 
-  <h2 class="wrapper t-ct mt-5xl">More case studies</h2>
+  <h2 class="wrapper t-ct mt-5xl">Keep reading</h2>
   <section class="featured-projects related-projects wrapper mt-xl">
     <include src="components/card-farfetch.html"></include>
     <include src="components/card-journal-finder.html"></include>
     <include src="components/card-sl-mobile.html"></include>
   </section>
 
+  <!-- REQUIRED: card-journal-finder.html (above) has a .btn-show-password button.
+       Do NOT remove while any protected card is included. See AGENTS.md Gotcha #12. -->
   <include src="components/password-dialog.html"></include>
 
 

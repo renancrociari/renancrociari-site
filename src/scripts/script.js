@@ -9,6 +9,15 @@ const openModal = document.querySelectorAll('.btn-show-email'); // Seleciona tod
 const closeModal = document.querySelector('.btn-close-email');
 const body = document.body;
 
+// Alerta: página real ainda com "noindex" copiado do article-template
+const robotsMeta = document.querySelector('meta[name="robots"]');
+if (robotsMeta && /noindex/i.test(robotsMeta.content) && !/article-template|design-system|buttons/.test(window.location.pathname)) {
+  console.warn(
+    '[SEO] This page has <meta name="robots" content="noindex">, so Google will NOT index it. ' +
+    'If this is a real article, replace it with: <meta name="robots" content="index, follow, max-image-preview:large" />'
+  );
+}
+
 
 // Função para abrir a dialog e adicionar um estado ao histórico
 function openDialog() {
@@ -80,6 +89,14 @@ checkRecruiterToken();
 const passwordModal = document.querySelector('.dialog-show-password');
 const openPasswordModal = document.querySelectorAll('.btn-show-password');
 const closePasswordModal = passwordModal?.querySelector('.btn-close-email');
+
+// Alerta: botões de senha existem mas a dialog não foi incluída na página
+if (!passwordModal && openPasswordModal.length > 0) {
+  console.error(
+    `[password-dialog] Missing <include src="components/password-dialog.html"></include> on this page. ` +
+    `${openPasswordModal.length} .btn-show-password button(s) found but will not work. See AGENTS.md Gotcha #12.`
+  );
+}
 
 if (passwordModal && openPasswordModal.length > 0) {
   const passwordInput = passwordModal.querySelector('input[type="password"]');

@@ -30,6 +30,11 @@ The following files contain detailed instructions for specific tasks. Read them 
 - **File:** `docs/CASE_TITLE_CHANGES.md`
 - **When to use:** When renaming a case study title, URL slug, or both. Contains the full checklist of files to update, slug formatting rules, and rename history.
 
+### Publishing Articles
+
+- **File:** `docs/PUBLISHING_ARTICLES.md`
+- **When to use:** When creating a new article from `src/pages/article-template.html` or updating an existing one. Covers the robots/noindex swap, slug, date and topic sync, OG image, sitemap and post-deploy validation.
+
 ### Skills Registration
 
 - **Config:** `opencode.json` registers `.agent/skills` via `"skills": { "paths": [".agent/skills"] }`.
@@ -109,7 +114,7 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 - **Clean URLs**: Server uses Apache `.htaccess` rewriting. **Never use `.html` in link `href` attributes** (e.g., use `<a href="/about">`, not `<a href="/about.html">`).
 - **Required Meta Tags**: Every page must contain complete SEO metadata (title, description, canonical URL, OG tags, favicon links, and GTM script).
 - **Component Includes**: HTML partials are imported via `<include src="components/<name>.html"></include>`. Note that root is `./src`, so path starts with `components/`.
-- **Dialog Requirement**: If a page contains a dialog trigger button (e.g., `.btn-show-email` or `.btn-show-password`), the corresponding dialog partial (`email-dialog.html` or `password-dialog.html`) **must** be included on that page.
+- **Dialog Requirement**: If a page contains a dialog trigger button (e.g., `.btn-show-email` or `.btn-show-password`), the corresponding dialog partial (`email-dialog.html` or `password-dialog.html`) **must** be included on that page. Triggers can come **indirectly from included components** — see Gotcha #12 for the full list.
 
 ### 2. CSS Architecture & Design Tokens
 - **`reset.css`**: CSS reset pattern (`all: unset` + `display: revert`).
@@ -139,7 +144,7 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 3. Add GTM noscript fallback as the first element after `<body>`: `<include src="components/gtm-noscript.html"></include>`.
 4. Add navbar component: `<include src="components/navbar.html"></include>`.
 5. Add main body content using design system classes and CSS custom variables.
-6. Add dialog components if used (`email-dialog.html`, `password-dialog.html`).
+6. Add dialog components if used (`email-dialog.html`, `password-dialog.html`). `password-dialog.html` is required whenever the page includes `card-journal-finder.html` or `card-subject-pages.html` (e.g., in a "More case studies" section) — see Gotcha #12.
 7. Add footer component: `<include src="components/footer.html"></include>`.
 8. Link images with `class="medium-zoom-image"` if image lightbox zoom is desired.
 9. Update `public/sitemap.xml` with the new route.
@@ -183,6 +188,7 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 3. Copies static images: `cp -r public/images dist/images`
 4. Copies `.htaccess`: `cp public/.htaccess dist/.htaccess`
 5. Fixes asset paths: `node scripts/fix-paths.js` (rewrites relative path glitches for `/downloads/`).
+6. SEO safety check: `node scripts/check-seo.js` warns (without failing) if any page other than `article-template.html`, `design-system.html` or `buttons.html` still has `noindex` or template placeholders (`[Article Title]`, `article-slug`).
 
 ### Deployment via GitHub Actions
 - Workflow: `.github/workflows/deploy-to-umbler.yml`.
@@ -205,3 +211,8 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 9. **GTM Noscript Component**: The `gtm-noscript.html` component must be the **first child element** after the opening `<body>` tag on every page. This is required by Google Tag Manager for proper tracking when JavaScript is disabled.
 10. **Analytics — GTM Tag Configuration is MANDATORY**: Pushing events to `window.dataLayer` does **NOT** send them to Google Analytics. Every new event name requires a matching **GTM Trigger + GA4 Event Tag** configured and published inside GTM container `GTM-P7FKT9N`. Without this, the event is silently dropped. Follow the full 7-step checklist in `docs/ANALYTICS.md` → "How to Add a New Tracked Event". Track completion status via the **GTM Status** column in `docs/EVENT_TRACKING.md`.
 11. **Case Title Changes Documentation**: When adding new features that impact how case study titles, URLs, or cards work (e.g., new meta tags, new card components, new routing logic, new analytics events), update `docs/CASE_TITLE_CHANGES.md` to keep the checklist current.
+12. **Password Dialog — Do NOT remove it when cards are present**: `password-dialog.html` is needed on any page that renders a `.btn-show-password` button, **even if the page itself is public** (the dialog is unrelated to whether the current page is protected).
+    - **Components that contain `.btn-show-password`** (keep this list updated): `card-journal-finder.html`, `card-subject-pages.html`. Also check pages with inline buttons (`index.html`, `design-system.html`).
+    - **Removing protection from a page ≠ removing the dialog.** When making a page public, remove only the `initProtectedPage` / `isAuthenticated` script in `<head>`. Keep the `password-dialog.html` include if any protected card is still rendered.
+    - **Symptom if wrongly deleted**: clicking "View case study" on a protected card does nothing (no error for the user). `script.js` logs `[password-dialog] Missing ...` via `console.error` in the browser console to flag it.
+    - **Quick check**: `grep -l "btn-show-password" src/components/*.html` to see which components need the dialog.
