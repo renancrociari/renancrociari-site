@@ -119,7 +119,7 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 - **Clean URLs**: Server uses Apache `.htaccess` rewriting. **Never use `.html` in link `href` attributes** (e.g., use `<a href="/about">`, not `<a href="/about.html">`).
 - **Required Meta Tags**: Every page must contain complete SEO metadata (title, description, canonical URL, OG tags, favicon links, and GTM script).
 - **Component Includes**: HTML partials are imported via `<include src="components/<name>.html"></include>`. Note that root is `./src`, so path starts with `components/`.
-- **Dialog Requirement**: If a page contains a dialog trigger button (e.g., `.btn-show-email` or `.btn-show-password`), the corresponding dialog partial (`email-dialog.html` or `password-dialog.html`) **must** be included on that page. Triggers can come **indirectly from included components** — see Gotcha #12 for the full list.
+- **Dialog Requirement**: If a page contains a dialog trigger button (e.g., `.btn-show-email` or `.btn-show-password`), or is a paywalled case (`data-protected-content` on `<body>`), the corresponding dialog partial (`email-dialog.html` or `password-dialog.html`) **must** be included on that page. See Gotcha #12.
 
 ### 2. CSS Architecture & Design Tokens
 - **`reset.css`**: CSS reset pattern (`all: unset` + `display: revert`).
@@ -133,11 +133,13 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 - **`src/scripts/script.js`**: Primary script handling UI interactions (dialog toggles, smooth scroll, navbar behavior, `mediumZoom`).
 - **Language**: Preserve Brazilian Portuguese comments in legacy JS code files (`script.js`).
 - **Analytics (`analytics.js`)**: Isolated GTM `dataLayer.push` logic for custom user actions. See `docs/ANALYTICS.md` for the comprehensive setup guide and `docs/EVENT_TRACKING.md` for a quick event reference table.
-- **Password Auth System**:
-  - `password-config.js`: Contains content IDs, SHA-256 password hashes, and target redirect URLs. Session storage key is `rc_auth_tokens`.
-  - `password-auth.js`: Handles SHA-256 hashing and `sessionStorage` token validation.
-  - `protected-page.js`: Included on protected pages to enforce authentication checks. Unauthenticated users are redirected to `/#password-protected?content=<contentId>`.
-  - Password trigger buttons use `data-content-id` attribute to identify which content config entry to validate against.
+- **Password Auth System (paywall model)**: protected cases are **public and indexable**; visitors without access see the password dialog on top of the case.
+  - `password-config.js`: Contains content IDs, SHA-256 password hashes, and target redirect URLs. Session storage key is `rc_auth_tokens`. `RECRUITER_TOKEN` (`?ref=cases`) unlocks every protected case (stored in `localStorage` as `rc_recruiter_access`).
+  - `password-auth.js`: Handles SHA-256 hashing, `?ref=` token and `sessionStorage` token validation.
+  - **Protected page**: `<body data-protected-content="<contentId>">` + an inline (non-module) script in `<head>` that adds `.is-locked` to `<html>` before first paint (CSS in `main.css` hides everything but the dialog) + JSON-LD `isAccessibleForFree: false` with `hasPart.cssSelector: ".article-content"` (Google's paywall markup, so the hidden content isn't treated as cloaking).
+  - `script.js` opens the dialog on load if locked; a valid password unlocks in place. "Back to website" goes back to the previous on-site page, or to `/` if the visitor came from outside (Google, LinkedIn, direct).
+  - Cards linking to protected cases are **plain links** (`<a href="<slug>">`); the gate lives on the case page. The homepage still handles legacy `/#password-protected?content=<id>` links.
+  - This is light protection (content is in the HTML source and may appear in Google snippets) — intended only to stop casual visitors.
 
 ---
 
@@ -149,7 +151,7 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 3. Add GTM noscript fallback as the first element after `<body>`: `<include src="components/gtm-noscript.html"></include>`.
 4. Add navbar component: `<include src="components/navbar.html"></include>`.
 5. Add main body content using design system classes and CSS custom variables.
-6. Add dialog components if used (`email-dialog.html`, `password-dialog.html`). `password-dialog.html` is required whenever the page includes `card-journal-finder.html` or `card-subject-pages.html` (e.g., in a "More case studies" section) — see Gotcha #12.
+6. Add dialog components if used (`email-dialog.html`, `password-dialog.html`). Cards for protected cases are plain links, so they no longer require `password-dialog.html` — see Gotcha #12.
 7. Add footer component: `<include src="components/footer.html"></include>`.
 8. Link images with `class="medium-zoom-image"` if image lightbox zoom is desired.
 9. Update `public/sitemap.xml` with the new route.
@@ -167,20 +169,16 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
      redirectUrl: '/new-case-study'
    }
    ```
-3. On the homepage (`index.html`), add a card button with `data-content-id` matching the config key:
+3. Cards for the case (homepage + "More case studies") are **plain links**, like public cases:
    ```html
-   <button class="btn body-medium btn-white btn-show-password" data-content-id="new-case-study">
-     View case study
-   </button>
+   <a class="btn body-medium btn-white" href="new-case-study">See case study …</a>
    ```
-4. Include protection check script in `<head>` of the protected page `src/pages/new-case-study.html`:
-   ```html
-   <script type="module">
-     import { initProtectedPage } from '../scripts/protected-page.js';
-     initProtectedPage('new-case-study');
-   </script>
-   ```
-5. Include `<include src="components/password-dialog.html"></include>` in the HTML page.
+4. On the protected page `src/pages/new-case-study.html`:
+   - Add `data-protected-content="new-case-study"` to `<body>`.
+   - Copy the inline **Paywall gate** `<script>` from an existing protected case into `<head>` (before `script.js`) and change `contentId`.
+   - Add to the JSON-LD: `"isAccessibleForFree": false` and `"hasPart": { "@type": "WebPageElement", "isAccessibleForFree": false, "cssSelector": ".article-content" }`.
+   - Keep the page indexable (no `noindex`).
+5. Include `<include src="components/password-dialog.html"></include>` in the HTML page (it is the gate).
 6. Update `public/sitemap.xml` with the new route.
 
 ---
@@ -217,8 +215,10 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 9. **GTM Noscript Component**: The `gtm-noscript.html` component must be the **first child element** after the opening `<body>` tag on every page. This is required by Google Tag Manager for proper tracking when JavaScript is disabled.
 10. **Analytics — GTM Tag Configuration is MANDATORY**: Pushing events to `window.dataLayer` does **NOT** send them to Google Analytics. Every new event name requires a matching **GTM Trigger + GA4 Event Tag** configured and published inside GTM container `GTM-P7FKT9N`. Without this, the event is silently dropped. Follow the full 7-step checklist in `docs/ANALYTICS.md` → "How to Add a New Tracked Event". Track completion status via the **GTM Status** column in `docs/EVENT_TRACKING.md`.
 11. **Case Title Changes Documentation**: When adding new features that impact how case study titles, URLs, or cards work (e.g., new meta tags, new card components, new routing logic, new analytics events), update `docs/CASE_TITLE_CHANGES.md` to keep the checklist current.
-12. **Password Dialog — Do NOT remove it when cards are present**: `password-dialog.html` is needed on any page that renders a `.btn-show-password` button, **even if the page itself is public** (the dialog is unrelated to whether the current page is protected).
-    - **Components that contain `.btn-show-password`** (keep this list updated): `card-journal-finder.html`, `card-subject-pages.html`. Also check pages with inline buttons (`index.html`, `design-system.html`).
-    - **Removing protection from a page ≠ removing the dialog.** When making a page public, remove only the `initProtectedPage` / `isAuthenticated` script in `<head>`. Keep the `password-dialog.html` include if any protected card is still rendered.
-    - **Symptom if wrongly deleted**: clicking "View case study" on a protected card does nothing (no error for the user). `script.js` logs `[password-dialog] Missing ...` via `console.error` in the browser console to flag it.
-    - **Quick check**: `grep -l "btn-show-password" src/components/*.html` to see which components need the dialog.
+12. **Password Dialog — where it is required**: `password-dialog.html` must be on:
+    - **Every paywalled case** (`data-protected-content` on `<body>`): JF and SP. Without it the case stays hidden forever; `script.js` logs `[password-dialog] Protected page ... is missing` via `console.error`.
+    - **`index.html`**: handles legacy `/#password-protected?content=<id>` links from the old redirect flow.
+    - **Any page with a `.btn-show-password` button** (today only the demo in `design-system.html`). `script.js` logs `[password-dialog] Missing ...` if the dialog is absent.
+    - Protected-case **cards are plain links** (`card-journal-finder.html`, `card-subject-pages.html`), so pages that only render those cards do **not** need the dialog.
+    - **Making a case fully public**: remove `data-protected-content`, the inline Paywall gate script and the `isAccessibleForFree`/`hasPart` JSON-LD; then the dialog include can go too.
+    - **Quick check**: `grep -l "btn-show-password\|data-protected-content" src/pages/*.html src/components/*.html`.

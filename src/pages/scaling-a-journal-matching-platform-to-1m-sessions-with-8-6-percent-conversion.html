@@ -65,6 +65,12 @@
       "image": ["https://www.renancrociari.com/images/jf-case-og-image.jpg"],
       "dateModified": "2026-10-15T23:30:15+01:00",
       "inLanguage": "en-US",
+      "isAccessibleForFree": false,
+      "hasPart": {
+        "@type": "WebPageElement",
+        "isAccessibleForFree": false,
+        "cssSelector": ".article-content"
+      },
       "author": {
         "@type": "Person",
         "name": "Renan Crociari",
@@ -93,20 +99,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&text=renancrociari" rel="stylesheet">
   <link rel="preload" href="../fonts/source-serif-regular-300.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../fonts/source-serif-bold-600.woff2" as="font" type="font/woff2" crossorigin>
-  <!-- Immediate authentication check to prevent content flash -->
-  <script type="module">
-    import { isAuthenticated, checkRecruiterToken } from '../scripts/password-auth.js';
-
-    // Process recruiter token from URL if present
-    checkRecruiterToken();
-
-    // Check authentication immediately
-    if (!isAuthenticated('case-journal-finder')) {
-      // Not authenticated - redirect immediately before any content renders
-      sessionStorage.setItem('rc_attempted_url', window.location.pathname);
-      window.location.href = '/#password-protected?content=case-journal-finder';
-    }
-    // If authenticated, page will continue loading normally
+  <!-- Paywall gate: runs before first paint so visitors without access never see the case.
+       The full case stays in the HTML so Google can index it (see isAccessibleForFree in the JSON-LD).
+       script.js opens the password dialog and removes .is-locked after a valid password.
+       Keep the content ID in sync with <body data-protected-content> and password-config.js;
+       keep 'cases' in sync with RECRUITER_TOKEN and the storage keys with AUTH_KEY / RECRUITER_KEY. -->
+  <script>
+    (function () {
+      var contentId = 'case-journal-finder';
+      try {
+        var ref = new URLSearchParams(window.location.search).get('ref');
+        var unlocked = (ref && ref.toLowerCase() === 'cases') ||
+          localStorage.getItem('rc_recruiter_access') ||
+          JSON.parse(sessionStorage.getItem('rc_auth_tokens') || '{}')[contentId];
+        if (!unlocked) document.documentElement.classList.add('is-locked');
+      } catch (e) {
+        document.documentElement.classList.add('is-locked');
+      }
+    })();
   </script>
   <!-- Scripts -->
   <script type="module" src="../scripts/script.js"></script>
@@ -114,7 +124,7 @@
   <script src="https://unpkg.com/medium-zoom@latest/dist/medium-zoom.min.js"></script>
 </head>
 
-<body class="journal-finder">
+<body class="journal-finder" data-protected-content="case-journal-finder">
   <include src="components/gtm-noscript.html"></include>
   <include src="components/email-dialog.html"></include>
   <include src="components/navbar.html"></include>
@@ -583,7 +593,7 @@
   </section>
   </main>
 
-  <!-- REQUIRED: this page renders .btn-show-password buttons (protected case cards). Do NOT remove. See AGENTS.md Gotcha #12. -->
+  <!-- REQUIRED: this page is paywalled (data-protected-content on <body>); the dialog is the gate. Do NOT remove. See AGENTS.md Gotcha #12. -->
   <include src="components/password-dialog.html"></include>
 
 

@@ -51,6 +51,7 @@ Fixed values (don't change, don't duplicate):
 - [ ] `author`: Person with `url` `/about`, `jobTitle`, `sameAs` LinkedIn (copy as is)
 - [ ] `publisher`: Person, Renan Crociari
 - [ ] `about`: `Organization` with the **client/company name** (e.g. Farfetch, eSapiens, Springer Nature)
+- [ ] Protected cases only: `isAccessibleForFree: false` + `hasPart` (see §8)
 
 ## 5. OG image
 
@@ -78,7 +79,7 @@ Fixed values (don't change, don't duplicate):
   <section class="featured-projects related-projects wrapper mt-xl">…cards…</section>
   </main>
 
-  <include src="components/password-dialog.html"></include>  <!-- see §8 -->
+  <include src="components/password-dialog.html"></include>  <!-- protected cases only, see §8 -->
   <include src="components/footer.html"></include>
 </body>
 ```
@@ -98,9 +99,16 @@ Fixed values (don't change, don't duplicate):
 
 ## 8. Password protection (optional)
 
-- [ ] Follow AGENTS.md → *Password Protected Case Study Checklist* (config hash, `data-content-id` button on the card, head script).
-- [ ] ⚠️ The gate redirects Googlebot too, so protected cases are effectively **not indexed**. Decide this consciously.
-- [ ] `password-dialog.html` must be on **every page that renders a protected card**, public or not (AGENTS.md Gotcha #12). Add the new card component to the component list in Gotcha #12.
+Protected cases use a **paywall**: the full case is in the HTML and indexed by Google, and visitors without access see the password dialog on top of it. `?ref=cases` or the password unlocks it. It's light protection (view-source and Google snippets still show the text), meant to stop casual visitors.
+
+- [ ] Follow AGENTS.md → *Password Protected Case Study Checklist*: config hash, `data-protected-content` on `<body>`, inline Paywall gate script in `<head>`, `password-dialog.html` include.
+- [ ] JSON-LD gets Google's paywall markup (required so the hidden content isn't treated as cloaking):
+  ```json
+  "isAccessibleForFree": false,
+  "hasPart": { "@type": "WebPageElement", "isAccessibleForFree": false, "cssSelector": ".article-content" }
+  ```
+- [ ] Cards stay **plain links** (no `.btn-show-password`), so other pages don't need `password-dialog.html` (AGENTS.md Gotcha #12).
+- [ ] Keep the page indexable (no `noindex`) and in the sitemap.
 
 ## 9. Sitemap
 
@@ -122,8 +130,8 @@ Fixed values (don't change, don't duplicate):
 
 - [ ] `bash scripts/test-redirects.sh` (live) — all checks pass
 - [ ] [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) — preview card renders (also refreshes LinkedIn's cache)
-- [ ] [Google Rich Results Test](https://search.google.com/test/rich-results) — `Article` is valid
-- [ ] Google Search Console → URL Inspection → *Request indexing* (public cases only)
+- [ ] [Google Rich Results Test](https://search.google.com/test/rich-results) — `Article` is valid (protected cases: paywall fields recognised)
+- [ ] Google Search Console → URL Inspection → *Request indexing* (public and protected cases)
 
 ---
 

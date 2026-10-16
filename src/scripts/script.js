@@ -90,6 +90,19 @@ const passwordModal = document.querySelector('.dialog-show-password');
 const openPasswordModal = document.querySelectorAll('.btn-show-password');
 const closePasswordModal = passwordModal?.querySelector('.btn-close-email');
 
+// Paywall mode: protected case pages declare <body data-protected-content="<contentId>">.
+// The full case is in the HTML (indexable by Google); visitors without access see the
+// password dialog on top of the page instead of being redirected to the homepage.
+const protectedContentId = document.body.dataset.protectedContent || null;
+
+// Alerta: página protegida sem a password dialog incluída
+if (protectedContentId && !passwordModal) {
+  console.error(
+    `[password-dialog] Protected page "${protectedContentId}" is missing ` +
+    `<include src="components/password-dialog.html"></include>. The case will stay hidden.`
+  );
+}
+
 // Alerta: botões de senha existem mas a dialog não foi incluída na página
 if (!passwordModal && openPasswordModal.length > 0) {
   console.error(
@@ -98,7 +111,7 @@ if (!passwordModal && openPasswordModal.length > 0) {
   );
 }
 
-if (passwordModal && openPasswordModal.length > 0) {
+if (passwordModal) {
   const passwordInput = passwordModal.querySelector('input[type="password"]');
   const submitButton = passwordModal.querySelector('.btn-submit');
   const errorMessage = passwordModal.querySelector('.error-message');
@@ -187,15 +200,58 @@ if (passwordModal && openPasswordModal.length > 0) {
       errorMessage.style.display = 'none';
     }
 
-    history.pushState(
-      { page: 'password-protected', contentId: currentContentId }, 
-      'password-protected', 
-      `#password-protected${currentContentId ? `?content=${currentContentId}` : ''}`
-    );
+    // On paywalled pages the dialog is the page's initial state, so it must not add a
+    // history entry (otherwise "back" would only reopen the dialog).
+    if (!isPaywallDialog()) {
+      history.pushState(
+        { page: 'password-protected', contentId: currentContentId }, 
+        'password-protected', 
+        `#password-protected${currentContentId ? `?content=${currentContentId}` : ''}`
+      );
+    }
+  }
+
+  // True when the dialog is guarding the case on the current page (paywall mode)
+  function isPaywallDialog() {
+    return !!protectedContentId && currentContentId === protectedContentId && !isAuthenticated(protectedContentId);
+  }
+
+  // Paywall: "Back to website" leaves the case without revealing it.
+  // Came from another page of this site → go back to it. Otherwise (Google, LinkedIn,
+  // bookmark, new tab) → homepage, so the visitor stays on the site.
+  function leavePaywalledPage() {
+    let cameFromThisSite = false;
+    try {
+      const ref = document.referrer ? new URL(document.referrer) : null;
+      cameFromThisSite = !!ref && ref.origin === window.location.origin && ref.pathname !== window.location.pathname;
+    } catch (error) {
+      cameFromThisSite = false;
+    }
+
+    if (cameFromThisSite && window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/';
+    }
+  }
+
+  // Paywall: reveal the case in place after a valid password
+  function unlockPaywalledPage() {
+    document.documentElement.classList.remove('is-locked');
+    passwordModal.classList.add('fade-out');
+    setTimeout(() => {
+      passwordModal.close();
+      body.classList.remove('body-fixed');
+    }, 450);
   }
 
   // Função para fechar a password dialog
   function closePasswordDialog() {
+    if (isPaywallDialog()) {
+      leavePaywalledPage();
+      return;
+    }
+
     passwordModal.classList.add('fade-out');
     setTimeout(() => {
       passwordModal.close();
@@ -240,6 +296,15 @@ if (passwordModal && openPasswordModal.length > 0) {
       const isValid = await validatePassword(currentContentId, password);
 
       if (isValid) {
+        // Paywall: we're already on the case page, so unlock it in place
+        if (protectedContentId && currentContentId === protectedContentId) {
+          storeAuthToken(currentContentId);
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonContent;
+          unlockPaywalledPage();
+          return;
+        }
+
         // Store auth token
         storeAuthToken(currentContentId);
 
@@ -319,6 +384,9 @@ if (passwordModal && openPasswordModal.length > 0) {
 
   // Detecta quando o usuário clica em 'voltar' ou 'avançar' no navegador
   window.addEventListener('popstate', (event) => {
+    // Paywall dialog has no history entry of its own; ignore history navigation
+    if (isPaywallDialog()) return;
+
     if (event.state && event.state.page === 'password-protected') {
       const stateContentId = event.state.contentId || currentContentId;
       if (stateContentId && isAuthenticated(stateContentId)) {
@@ -347,6 +415,17 @@ if (passwordModal && openPasswordModal.length > 0) {
       }
     }
   });
+
+  // Paywall: on a protected case page, show the dialog immediately if the visitor has no access.
+  // (checkRecruiterToken() above already processed any ?ref= token.)
+  if (protectedContentId) {
+    if (isAuthenticated(protectedContentId)) {
+      document.documentElement.classList.remove('is-locked');
+    } else {
+      currentContentId = protectedContentId;
+      openPasswordDialog(true);
+    }
+  }
 
   // Verifica se a URL contém o hash '#password-protected' quando a página é carregada
   // Also check for content ID in query params

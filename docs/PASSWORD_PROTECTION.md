@@ -1,191 +1,123 @@
-# Password Protection System
+# Password Protection System (Paywall Model)
 
 ## Overview
 
-This project implements a client-side password protection system for case study pages. The system uses SHA-256 password hashing and sessionStorage for authentication.
+Protected case studies are **public, indexable pages with a paywall**:
 
-## Default Password
+- The full case is in the HTML, so Google can crawl and index it.
+- Visitors without access see the password dialog on top of the case (the case is hidden behind it).
+- The password or a `?ref=cases` link unlocks it.
 
-**Password:** `demo123`
+It is **light protection**, designed to stop casual visitors (e.g. colleagues browsing the portfolio), not determined ones. The text is visible in view-source, and Google may quote any part of it in search snippets.
 
-> **Note:** This is a demo password. To change it, see the "Changing Passwords" section below.
+## Password
+
+The password is not stored in the repo, only its SHA-256 hash in `password-config.js` (see "Changing Passwords" below). The comment there mentioning `demo123` is outdated.
+
+## Currently Protected Cases
+
+| Content ID | Page |
+|---|---|
+| `case-journal-finder` | `/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion` |
+| `case-subject-pages` | `/turning-organic-traffic-into-250k-readers-with-scalable-landing-pages` |
 
 ## How It Works
 
-1. **Protected Pages**: Case study pages check for authentication on load
-2. **Password Dialog**: Users enter a password to unlock protected content
-3. **Validation**: Password is hashed with SHA-256 and compared to stored hash
-4. **Session Storage**: Authentication tokens are stored in sessionStorage
-5. **Redirect**: On success, users are redirected to the protected page
+1. **Before first paint**, an inline (non-module) script in the page `<head>` checks access (`?ref=cases`, `localStorage.rc_recruiter_access`, `sessionStorage.rc_auth_tokens[contentId]`). Without access it adds `.is-locked` to `<html>`.
+2. **CSS** (`main.css`) hides the page when `html.is-locked`, except the password dialog.
+3. **`script.js`** reads `<body data-protected-content="<contentId>">`, processes any `?ref=` token, and opens the password dialog (full screen, same design as before) if the visitor still has no access.
+4. **Valid password** → token stored in `sessionStorage`, `.is-locked` removed, dialog fades out; the case is revealed in place (no reload).
+5. **"Back to website" / ESC** → never reveals the case:
+   - Came from another page of this site → `history.back()` (returns to that page).
+   - Came from outside (Google, LinkedIn, bookmark, new tab) → `/`.
+6. **Google** sees the full case. The JSON-LD declares it as paywalled content so hiding it from visitors isn't treated as cloaking:
+   ```json
+   "isAccessibleForFree": false,
+   "hasPart": { "@type": "WebPageElement", "isAccessibleForFree": false, "cssSelector": ".article-content" }
+   ```
 
-## Recruiter Access Token (Bypass via URL)
+Cards linking to protected cases (`card-journal-finder.html`, `card-subject-pages.html`, homepage cards) are **plain links**; the gate lives on the case page.
 
-You can share links with recruiters that bypass password protection automatically by adding the `?ref=cases` parameter:
+The homepage still supports legacy links of the form `/#password-protected?content=<id>` (old redirect flow): it opens the dialog and redirects to the case after a valid password.
 
-- **Homepage link:** `https://www.renancrociari.com?ref=cases`
-- **Direct case study link:** `https://www.renancrociari.com/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion?ref=cases`
+## Recruiter Access Token (`?ref=cases`)
 
-### How the Token Works
-1. When a user opens any page with `?ref=cases`, all protected case studies are instantly unlocked for that browser session (`sessionStorage`).
-2. The `?ref=` parameter is removed from the browser URL bar immediately (via `history.replaceState`), presenting a clean URL.
-3. The visitor can navigate anywhere across the site without seeing a password dialog.
-4. Regular visitors (without the token) still see the normal password prompt.
+Share links that skip the password:
 
-### Changing the Recruiter Token
-To change the token, edit `RECRUITER_TOKEN` in `src/scripts/password-config.js`:
+- **Homepage:** `https://www.renancrociari.com?ref=cases`
+- **Direct case:** `https://www.renancrociari.com/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion?ref=cases`
 
-```javascript
-export const RECRUITER_TOKEN = 'your-new-token';
-```
+How it works:
+1. Any page opened with `?ref=cases` unlocks **all** protected cases in that browser (`localStorage`, no expiry).
+2. The `?ref=` parameter is removed from the URL bar (`history.replaceState`) and an `access_recruiter_token` event is pushed to the dataLayer.
+3. Visitors without the token still see the password dialog.
 
-## Testing the Password Dialog
-
-Visit the **Design System** page (`/design-system.html`) and click the "Open Password Dialog" button to test the functionality.
-
-## Protected Pages
-
-Currently protected pages:
-- **Case Study 1**: Boosting eCommerce conversion by 87.5% for global fashion brands
-- **Case Study 2**: Driving Day 1 retention for a social platform with 8M+ users
+To change the token, edit `RECRUITER_TOKEN` in `src/scripts/password-config.js` **and** the `'cases'` string in the inline Paywall gate script of every protected page.
 
 ## Changing Passwords
 
-### Step 1: Generate a New Password Hash
-
-Open your browser console and run:
+Generate a hash in the browser console:
 
 ```javascript
 async function generateHash(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
+  const data = new TextEncoder().encode(password);
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
-
-// Generate hash for your new password
 await generateHash('your-new-password');
 ```
 
-### Step 2: Update the Configuration
+Then replace the `hash` for the content ID in `src/scripts/password-config.js`. Each content ID can have its own password.
 
-Edit `src/scripts/password-config.js` and replace the hash:
+## Adding Protection to a New Case
 
-```javascript
-export const PASSWORD_CONFIG = {
-  'case-study-1': {
-    hash: 'YOUR_NEW_HASH_HERE',
-    redirectUrl: '/boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html'
-  },
-  'case-study-2': {
-    hash: 'YOUR_NEW_HASH_HERE',
-    redirectUrl: '/driving-day-1-retention-for-a-social-platform-with-8m-users.html'
-  }
-};
-```
+1. **Config** — add the content ID to `src/scripts/password-config.js`:
+   ```javascript
+   'new-content-id': {
+     hash: 'your_password_hash',
+     redirectUrl: '/new-case-slug'
+   }
+   ```
+2. **Body** — `<body class="..." data-protected-content="new-content-id">`.
+3. **Head** — copy the inline `<!-- Paywall gate -->` script from an existing protected case, place it before `script.js`, and change `contentId`.
+4. **JSON-LD** — add `isAccessibleForFree: false` and `hasPart` (see "How It Works" §6).
+5. **Dialog** — include `<include src="components/password-dialog.html"></include>` before the footer.
+6. **Cards** — plain `<a class="btn ..." href="new-case-slug">` links.
+7. Keep the page indexable and listed in `public/sitemap.xml`.
 
-## Different Passwords for Different Pages
+## Removing Protection From a Case
 
-You can set different passwords for each protected page by using different hashes:
-
-```javascript
-export const PASSWORD_CONFIG = {
-  'case-study-1': {
-    hash: 'hash_for_farfetch_case_study',
-    redirectUrl: '/boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands.html'
-  },
-  'case-study-2': {
-    hash: 'hash_for_dating_platform_case_study',
-    redirectUrl: '/driving-day-1-retention-for-a-social-platform-with-8m-users.html'
-  }
-};
-```
-
-## Adding Password Protection to New Pages
-
-### Step 1: Add Content ID to Configuration
-
-Edit `src/scripts/password-config.js`:
-
-```javascript
-export const PASSWORD_CONFIG = {
-  // ... existing configs ...
-  'new-content-id': {
-    hash: 'your_password_hash',
-    redirectUrl: '/path-to-your-protected-page.html'
-  }
-};
-```
-
-### Step 2: Add Protection Script to Page
-
-Add this script tag in the `<head>` section of your protected page:
-
-```html
-<script type="module">
-  import { initProtectedPage } from '../scripts/protected-page.js';
-  initProtectedPage('new-content-id');
-</script>
-```
-
-### Step 3: Include Password Dialog Component
-
-Add this line before the closing `</body>` tag:
-
-```html
-<include src="components/password-dialog.html"></include>
-```
-
-## Security Notes
-
-⚠️ **Important**: This is a client-side only solution. The password hash is visible in the source code.
-
-**Security Level**: Medium - Protects against casual users, not determined attackers.
-
-**Best For**: 
-- Portfolio case studies
-- Work samples
-- Content you want to share selectively but isn't highly confidential
-
-**Not Suitable For**:
-- Highly sensitive content
-- NDA-protected work requiring strong security
-- Content that must be completely hidden from public view
+Remove `data-protected-content`, the inline Paywall gate script, the `isAccessibleForFree`/`hasPart` JSON-LD fields and the `password-dialog.html` include. Optionally remove the config entry.
 
 ## Session Behavior
 
-- **Session Persistence**: Authentication persists while the browser tab/window is open
-- **Browser Close**: Authentication is cleared when the browser is closed
-- **Refresh**: Authentication persists on page refresh
-- **New Tab**: New tabs require re-authentication
+- **Password**: stored in `sessionStorage` — lasts while the tab is open; new tabs ask again.
+- **`?ref=cases`**: stored in `localStorage` — persists across tabs and browser restarts until storage is cleared.
 
-## Files Structure
+## Files
 
 ```
 src/
 ├── scripts/
-│   ├── password-config.js      # Password hashes and page mappings
-│   ├── password-auth.js        # Authentication utilities
-│   ├── protected-page.js       # Page protection logic
-│   └── script.js               # Main script with dialog integration
-└── components/
-    └── password-dialog.html    # Password dialog UI component
+│   ├── password-config.js   # Hashes, content IDs, redirect URLs, recruiter token
+│   ├── password-auth.js     # Hashing, token checks, ?ref= handling
+│   └── script.js            # Dialog logic, paywall unlock / leave behaviour
+├── styles/main.css          # html.is-locked rules
+├── components/
+│   └── password-dialog.html # Dialog UI
+└── pages/<protected-case>.html  # data-protected-content + inline Paywall gate + JSON-LD
 ```
+
+## Testing
+
+- Open a protected case in a private window → dialog shows, no flash of the case.
+- "Back to website" after arriving from the homepage → back to the homepage card; after opening the URL directly → `/`.
+- Enter the password → case revealed in place; reload → still unlocked (same tab).
+- Open with `?ref=cases` → no dialog, URL cleaned.
+- Design System page (`/design-system`) → "Open Password Dialog" demo still works.
 
 ## Troubleshooting
 
-### Password dialog doesn't open
-- Check that the button has `data-content-id` attribute
-- Verify the content ID exists in `password-config.js`
-
-### "Content ID not found" error
-- Ensure the content ID in the button matches the config
-- Check console for error messages
-
-### Redirect doesn't work
-- Verify the `redirectUrl` in config is correct
-- Check browser console for errors
-
-### Authentication doesn't persist
-- Check that sessionStorage is enabled in browser
-- Verify no browser extensions are blocking storage
+- **Blank page, no dialog** → `password-dialog.html` missing on the protected page (console: `[password-dialog] Protected page ... is missing`), or a JS error prevents `script.js` from running.
+- **Case visible without password** → check `data-protected-content` on `<body>` and the inline gate script's `contentId`.
+- **"Content ID not found"** → the content ID isn't in `password-config.js`.

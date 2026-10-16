@@ -1687,6 +1687,18 @@ button {
   background-color: white;
 }
 
+/* Paywall: protected case pages add .is-locked to <html> (inline head script) for visitors
+   without access. The case stays in the HTML for Google; only the password dialog is visible.
+   Removed by script.js after a valid password / ?ref= token. */
+html.is-locked body {
+  visibility: hidden;
+  overflow: hidden;
+}
+
+html.is-locked .dialog-show-password {
+  visibility: visible;
+}
+
 
 .image-content-protected {
   width: 80px;

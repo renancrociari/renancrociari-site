@@ -87,8 +87,8 @@ If the case study is password-protected, also update:
 | File | What to Change |
 |------|----------------|
 | `src/scripts/password-config.js` | Update `redirectUrl` value for the matching content ID |
-| Homepage `data-content-id` button | No change needed (content ID is independent of the title/slug) |
-| `src/pages/<new-slug>.html` | Ensure `initProtectedPage('content-id')` still references the correct content ID |
+| `src/pages/<new-slug>.html` | Ensure `data-protected-content` on `<body>` and `contentId` in the inline Paywall gate script still match the content ID; update the JSON-LD `@id` (paywall fields stay) |
+| Card `href` (`card-*.html`, `index.html`) | Update the plain link to the new slug (cards for protected cases are plain links) |
 
 ---
 

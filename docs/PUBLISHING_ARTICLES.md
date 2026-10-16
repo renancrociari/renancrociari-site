@@ -65,7 +65,7 @@ Use ISO 8601 with timezone (e.g. `2026-11-04T09:00:00+00:00`).
 ## 9. Related cards & dialogs
 
 - [ ] Choose which cards appear under "Keep reading"
-- [ ] If `card-journal-finder.html` or `card-subject-pages.html` is included → **keep** `password-dialog.html` (AGENTS.md Gotcha #12)
+- [ ] No `password-dialog.html` needed: protected-case cards are plain links; the gate lives on the case page (AGENTS.md Gotcha #12)
 - [ ] Keep `email-dialog.html` (navbar and footer have email buttons)
 
 ## 10. Sitemap
