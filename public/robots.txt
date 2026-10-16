@@ -1,0 +1,19 @@
+# robots.txt — https://www.renancrociari.com
+# Allows all crawlers and advertises the sitemap.
+# Note: robots.txt is NOT a privacy tool; it doesn't hide pages.
+
+User-agent: *
+Allow: /
+
+# Optional: uncomment to opt out of AI model training crawlers.
+# (Does not affect Google Search rankings.)
+# User-agent: GPTBot
+# Disallow: /
+# User-agent: CCBot
+# Disallow: /
+# User-agent: Google-Extended
+# Disallow: /
+# User-agent: ClaudeBot
+# Disallow: /
+
+Sitemap: https://www.renancrociari.com/sitemap.xml

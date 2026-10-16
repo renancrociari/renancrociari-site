@@ -59,6 +59,7 @@ check https $W /scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-perc
 check https $W /downloads/renancrociari-cv.pdf 200
 check https $W /images/ff-case-og-image.jpg 200
 check https $W /sitemap.xml 200
+check https $W /robots.txt 200
 check https $W "/?content=case-journal-finder" 200
 check https $W /does-not-exist 404
 
