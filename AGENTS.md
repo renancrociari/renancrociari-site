@@ -35,6 +35,11 @@ The following files contain detailed instructions for specific tasks. Read them 
 - **File:** `docs/PUBLISHING_ARTICLES.md`
 - **When to use:** When creating a new article from `src/pages/article-template.html` or updating an existing one. Covers the robots/noindex swap, slug, date and topic sync, OG image, sitemap and post-deploy validation.
 
+### Publishing Case Studies
+
+- **File:** `docs/PUBLISHING_CASES.md`
+- **When to use:** When creating a new case study or overhauling an existing one. Covers outcome-driven title/slug, description formula, head metadata + `Article` JSON-LD, page structure (`<main>`/`<article>`, executive summary, heading hierarchy), cards, password protection, sitemap and post-deploy validation.
+
 ### Skills Registration
 
 - **Config:** `opencode.json` registers `.agent/skills` via `"skills": { "paths": [".agent/skills"] }`.
