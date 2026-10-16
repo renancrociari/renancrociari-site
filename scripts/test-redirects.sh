@@ -51,6 +51,16 @@ check https $W /about.html 301 /about
 check https $W "/about.html?ref=x" 301 "/about?ref=x"
 # 5. trailing slash
 check https $W /about/ 301 /about
+# 5b. Recruiter link ?ref=cases must survive every redirect (read by password-auth.js)
+JF=/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion
+check http  $N "/?ref=cases"            301 "https://www.renancrociari.com/?ref=cases"
+check https $N "$JF?ref=cases"          301 "https://www.renancrociari.com$JF?ref=cases"
+check http  $W "$JF?ref=cases"          301 "https://www.renancrociari.com$JF?ref=cases"
+check https $W "$JF.html?ref=cases"     301 "$JF?ref=cases"
+check https $W "$JF/?ref=cases"         301 "$JF?ref=cases"
+check https $W "/connecting-every-discovery-with-a-worthy-home?ref=cases" 301 "$JF?ref=cases"
+check https $W "/?ref=cases"            200
+check https $W "$JF?ref=cases"          200
 # 6/7. Served pages
 check https $W /       200
 check https $W /about  200

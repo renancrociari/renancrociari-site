@@ -29,10 +29,12 @@ Update all occurrences of the old title and URL within the page:
 |---------|-----------|----------------|
 | `<title>` | `<head>` | Page title text |
 | `<link rel="canonical">` | `<head>` | URL slug in `href` |
-| `og:url` | Facebook meta | URL slug in `content` |
-| `og:title` | Facebook meta | Title text in `content` |
-| `twitter:url` | Twitter meta | URL slug in `content` |
+| `og:url` | Facebook / LinkedIn meta | URL slug in `content` |
+| `og:title` | Facebook / LinkedIn meta | Title text in `content` |
 | `twitter:title` | Twitter meta | Title text in `content` |
+| JSON-LD `headline` | `<script type="application/ld+json">` | Title text (without ` · Renan Crociari`) |
+| JSON-LD `mainEntityOfPage.@id` | `<script type="application/ld+json">` | Full URL with new slug |
+| JSON-LD `dateModified` | `<script type="application/ld+json">` | Date of the change (ISO 8601) |
 | `<h1>` | Page body | Heading text |
 
 ### 3. Update the Homepage (`src/pages/index.html`)
