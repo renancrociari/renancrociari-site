@@ -187,6 +187,7 @@ Local development runs over HTTPS using `localhost+3.pem` and `localhost+3-key.p
 2. Copies static downloads: `cp -r public/downloads dist/downloads`
 3. Copies static images: `cp -r public/images dist/images`
 4. Copies `.htaccess`: `cp public/.htaccess dist/.htaccess`
+   Copies sitemap: `cp public/sitemap.xml dist/sitemap.xml` (any new root-level file in `public/` must be copied explicitly here, or it won't be deployed)
 5. Fixes asset paths: `node scripts/fix-paths.js` (rewrites relative path glitches for `/downloads/`).
 6. SEO safety check: `node scripts/check-seo.js` warns (without failing) if any page other than `article-template.html`, `design-system.html` or `buttons.html` still has `noindex` or template placeholders (`[Article Title]`, `article-slug`).
 

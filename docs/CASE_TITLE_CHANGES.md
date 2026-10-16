@@ -59,13 +59,15 @@ Each case study has a reusable card component used on other pages (e.g., "more c
 
 ### 6. Add .htaccess Redirect (`public/.htaccess`)
 
-Add a 301 redirect from the old URL to the new one under the `# Redirects for renamed case studies` section:
+Add a 301 redirect from the old URL to the new one under section `# 2. Renamed case studies` (use `RewriteRule`, **not** `Redirect 301`, and an absolute `https://www.` target so it's a single hop):
 
 ```apache
-Redirect 301 /old-slug /new-slug
+RewriteRule ^old-slug/?$ https://www.renancrociari.com/new-slug [R=301,L]
 ```
 
-> **Why:** Preserves SEO juice and prevents broken backlinks from external sites, social media shares, and search engine indexes.
+> **Why:** Preserves SEO juice and prevents broken backlinks from external sites, social media shares, and search engine indexes. `Redirect` (mod_alias) and `RewriteRule` (mod_rewrite) run in an unpredictable order, which can create redirect chains.
+>
+> **Verify after deploy:** `bash scripts/test-redirects.sh` (add the old slug to the script first).
 
 ### 7. Update Documentation
 

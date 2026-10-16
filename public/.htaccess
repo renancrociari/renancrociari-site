@@ -1,20 +1,60 @@
 RewriteEngine On
 
-# Allow access to existing files and directories
+# ------------------------------------------------------------
+# 1. Canonical host: force HTTPS + www (single 301 hop)
+#    Restored from the version lost in commit b654db6 (2026-02-04).
+#    Scoped to renancrociari.com / www only, so other subdomains
+#    (e.g. jobs.renancrociari.com, hosted on Vercel) are never
+#    redirected to www if they ever point at this folder.
+# ------------------------------------------------------------
+# 1a. renancrociari.com (http or https) -> https://www
+RewriteCond %{HTTP_HOST} ^renancrociari\.com$ [NC]
+RewriteRule ^ https://www.renancrociari.com%{REQUEST_URI} [R=301,L,NE]
+
+# 1b. http://www -> https://www
+RewriteCond %{HTTP_HOST} ^www\.renancrociari\.com$ [NC]
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://www.renancrociari.com%{REQUEST_URI} [R=301,L,NE]
+
+# ------------------------------------------------------------
+# 2. Renamed case studies (old slug -> new slug)
+#    Use RewriteRule (not "Redirect 301") so ordering with the
+#    rules above is predictable. Targets are absolute so every
+#    redirect is a single hop. See docs/CASE_TITLE_CHANGES.md
+# ------------------------------------------------------------
+RewriteRule ^improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands/?$ https://www.renancrociari.com/boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands [R=301,L]
+RewriteRule ^connecting-every-discovery-with-a-worthy-home/?$ https://www.renancrociari.com/scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion [R=301,L]
+RewriteRule ^redesigning-the-mobile-experience-of-a-dating-platform/?$ https://www.renancrociari.com/driving-day-1-retention-for-a-social-platform-with-8m-users [R=301,L]
+RewriteRule ^driving-platform-growth-through-targeted-researcher-acquisition/?$ https://www.renancrociari.com/turning-organic-traffic-into-250k-readers-with-scalable-landing-pages [R=301,L]
+
+# ------------------------------------------------------------
+# 3. /index and /index.html -> /
+# ------------------------------------------------------------
+RewriteCond %{THE_REQUEST} \s/+index(\.html)?[\s?] [NC]
+RewriteRule ^ https://www.renancrociari.com/ [R=301,L]
+
+# ------------------------------------------------------------
+# 4. /page.html -> /page (removes duplicate URLs)
+#    Uses THE_REQUEST so it never loops with rule 7.
+# ------------------------------------------------------------
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ https://www.renancrociari.com/%1 [R=301,L,NE]
+
+# ------------------------------------------------------------
+# 5. Remove trailing slash (except real directories)
+# ------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ https://www.renancrociari.com/$1 [R=301,L]
+
+# ------------------------------------------------------------
+# 6. Serve existing files and directories as-is
+# ------------------------------------------------------------
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Rewrite URLs without extension to .html
+# ------------------------------------------------------------
+# 7. Clean URLs: /page -> page.html (internal, no redirect)
+# ------------------------------------------------------------
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^([^\.]+)$ $1.html [NC,L]
-
-# Optional: Force remove .html extension from URL (redirect)
-# RewriteCond %{THE_REQUEST} \s/+(.+?)\.html(\s|\?) [NC]
-# RewriteRule ^ /%1 [R=301,L]
-
-# Redirects for renamed case studies
-Redirect 301 /improving-the-performance-of-farfetchs-top-fashion-ecommerce-brands /boosting-ecommerce-conversion-by-87-percent-for-global-fashion-brands
-Redirect 301 /connecting-every-discovery-with-a-worthy-home /scaling-a-journal-matching-platform-to-1m-sessions-with-8-6-percent-conversion
-Redirect 301 /redesigning-the-mobile-experience-of-a-dating-platform /driving-day-1-retention-for-a-social-platform-with-8m-users
-Redirect 301 /driving-platform-growth-through-targeted-researcher-acquisition /turning-organic-traffic-into-250k-readers-with-scalable-landing-pages
+RewriteRule ^(.+)$ $1.html [L]
