@@ -56,6 +56,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      # Always bundle the newest medium-zoom release (lockfile is not modified)
+      - name: Update medium-zoom to latest
+        run: npm install medium-zoom@latest --no-save && npm ls medium-zoom
+      
       - name: Build project
         run: npm run build
       
