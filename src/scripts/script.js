@@ -228,11 +228,15 @@ if (passwordModal) {
       cameFromThisSite = false;
     }
 
-    if (cameFromThisSite && window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = '/';
-    }
+    // Fade out first (same timing as closePasswordDialog), then navigate
+    passwordModal.classList.add('fade-out');
+    setTimeout(() => {
+      if (cameFromThisSite && window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    }, 450);
   }
 
   // Paywall: reveal the case in place after a valid password
@@ -403,6 +407,12 @@ if (passwordModal) {
 
   // Handle BFCache (Back-Forward Cache) restores
   window.addEventListener('pageshow', (event) => {
+    // Paywall page restored from BFCache (e.g. browser "forward") after fading out:
+    // make the dialog visible again
+    if (event.persisted && isPaywallDialog()) {
+      passwordModal.classList.remove('fade-out');
+    }
+
     if (event.persisted && currentContentId && isAuthenticated(currentContentId)) {
       if (passwordModal.hasAttribute('open')) {
         passwordModal.close();
@@ -423,7 +433,7 @@ if (passwordModal) {
       document.documentElement.classList.remove('is-locked');
     } else {
       currentContentId = protectedContentId;
-      openPasswordDialog(true);
+      openPasswordDialog();
     }
   }
 

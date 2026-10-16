@@ -1690,6 +1690,17 @@ button {
 /* Paywall: protected case pages add .is-locked to <html> (inline head script) for visitors
    without access. The case stays in the HTML for Google; only the password dialog is visible.
    Removed by script.js after a valid password / ?ref= token. */
+html.is-locked {
+  /* Keep the dark background + gradient frame on screen while the dialog fades in/out
+     (body is hidden, so its own frame isn't painted) */
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--background-body);
+  border: 8px solid;
+  border-image: linear-gradient(0deg, #C8F686, #75EF81) 1;
+}
+
 html.is-locked body {
   visibility: hidden;
   overflow: hidden;
