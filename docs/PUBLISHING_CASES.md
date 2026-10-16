@@ -18,7 +18,7 @@ Step-by-step checklist for creating (or overhauling) a case study page. There is
 
 One sentence, **140–160 characters**, leading with **role + company + quantified impact**:
 
-> *As Design Lead at eSapiens, I redesigned the mobile first session of SL, a social discovery platform with 8M+ members, to drive activation and Day 1 retention.*
+> *I led the mobile redesign for an 8M+ member social app, streamlining first-session discovery to lift Day 1 retention and accelerate user activation.*
 
 - [ ] Only claim results you can back up in the page body.
 
