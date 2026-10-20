@@ -1867,8 +1867,7 @@ html.is-locked .dialog-show-password {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  aspect-ratio: 41/36;
-  min-height: 0;
+  min-height: 340px;
   /* Prevents flex overflow */
   background-color: var(--background-gray-medium);
   padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
@@ -2696,9 +2695,15 @@ details>div>div {
     background-size: 145% auto;
   }
 
-  .featured-projects {
+  .featured-projects,
+  .featured-articles {
     grid-gap: 8px;
   }
+
+  .article-card {
+    padding: var(--spacing-lg);
+  }
+
 }
 
 
@@ -2772,6 +2777,14 @@ details>div>div {
 
   .card-5 {
     height: 360px;
+  }
+
+  .featured-articles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .article-card {
+    min-height: 300px;
   }
 
   /********** ABOUT 768 - 991 **********/
@@ -2969,6 +2982,14 @@ details>div>div {
 
   .card-2 {
     background-size: 150% auto;
+  }
+
+  .featured-articles {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .article-card {
+    min-height: unset;
   }
 
 
