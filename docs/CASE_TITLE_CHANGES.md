@@ -41,8 +41,7 @@ Update all occurrences of the old title and URL within the page:
 
 | Element | What to Change |
 |---------|----------------|
-| `<h2>` inside the project card | Display title text |
-| `<a href="...">` inside the project card | URL slug |
+| `<a class="project-card-link">` inside the card `<h2>` | Title text and `href="/<slug>"` (this link makes the whole card clickable) |
 
 ### 4. Update the Card Component (`src/components/card-<name>.html`)
 
@@ -50,8 +49,9 @@ Each case study has a reusable card component used on other pages (e.g., "more c
 
 | Element | What to Change |
 |---------|----------------|
-| `<h2>` | Display title text |
-| `<a href="...">` | URL slug |
+| `<a class="project-card-link">` inside the `<h3>` | Title text and `href="/<slug>"` |
+
+> The "See case study" element in cards is a decorative `<div aria-hidden="true">`, not a link — nothing to change there.
 
 ### 5. Update the Sitemap (`public/sitemap.xml`)
 

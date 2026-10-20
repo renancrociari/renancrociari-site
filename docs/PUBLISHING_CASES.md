@@ -93,7 +93,7 @@ Fixed values (don't change, don't duplicate):
 
 ## 7. Cards
 
-- [ ] Create `src/components/card-<name>.html` (copy an existing card; title in `<h2>`, link `href="<slug>"`).
+- [ ] Create `src/components/card-<name>.html` (copy an existing card; title inside `<h3><a class="project-card-link" href="/<slug>">…</a></h3>`, "See case study" stays a decorative `<div aria-hidden="true">`).
 - [ ] Add the card to the homepage grid in `src/pages/index.html`.
 - [ ] Add it to the "More case studies" section of the other cases (each case shows the other 3) and, if relevant, `about.html` / `article-template.html`.
 
